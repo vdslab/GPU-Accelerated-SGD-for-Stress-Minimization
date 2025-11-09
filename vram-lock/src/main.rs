@@ -17,7 +17,7 @@ fn main() {
   let (device, queue) = pollster::block_on(adapter.request_device(&wgpu::DeviceDescriptor {
       label: None,
       required_features: wgpu::Features::empty(),
-      required_limits: wgpu::Limits::downlevel_defaults(),
+      required_limits: adapter.limits(), 
       experimental_features: wgpu::ExperimentalFeatures::disabled(),
       memory_hints: wgpu::MemoryHints::MemoryUsage,
       trace: wgpu::Trace::Off,
@@ -26,6 +26,7 @@ fn main() {
 
   // NOTE: graphics card info
   println!("Running on Adapter: {:#?}", adapter.get_info());
+  println!("thread limit per workgroup: {:#?}", adapter.limits().max_compute_invocations_per_workgroup);
 
   let module = device.create_shader_module(wgpu::include_wgsl!("shader.wgsl"));
 
