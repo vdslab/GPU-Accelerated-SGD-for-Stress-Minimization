@@ -5,6 +5,8 @@ fn main() {
 
   env_logger::init();
 
+  let width = 64u32;
+  let height = 64u32;
   let data = vec![1.0f32, 2.0, 3.0, 4.0];
 
   // GPU setup
@@ -29,6 +31,14 @@ fn main() {
   println!("thread limit per workgroup: {:#?}", adapter.limits().max_compute_invocations_per_workgroup);
 
   let module = device.create_shader_module(wgpu::include_wgsl!("shader.wgsl"));
+
+  // NOTE: uniform buffer is a small GPU buffer used to store constant data
+  let uniform_data = [width];
+  let uniform_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+    label: Some("Uniform Buffer"),
+    contents: bytemuck::cast_slice(&uniform_data),
+    usage: wgpu::BufferUsages::UNIFORM,
+  });
 
   let input_data_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
     label: Some("Input"),
@@ -55,9 +65,21 @@ fn main() {
   let bind_group_layout = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
     label: None,
     entries: &[
-        // Input buffer
+          // Uniform buffer
         wgpu::BindGroupLayoutEntry {
             binding: 0,
+            visibility: wgpu::ShaderStages::COMPUTE,
+            ty: wgpu::BindingType::Buffer {
+                // read only?
+                ty: wgpu::BufferBindingType::Uniform,
+                has_dynamic_offset: false,
+                min_binding_size: None,
+            },
+            count: None,
+        },
+        // Input buffer
+        wgpu::BindGroupLayoutEntry {
+            binding: 1,
             visibility: wgpu::ShaderStages::COMPUTE,
             ty: wgpu::BindingType::Buffer {
                 ty: wgpu::BufferBindingType::Storage { read_only: true },
@@ -69,7 +91,7 @@ fn main() {
         },
         // Output buffer
         wgpu::BindGroupLayoutEntry {
-            binding: 1,
+            binding: 2,
             visibility: wgpu::ShaderStages::COMPUTE,
             ty: wgpu::BindingType::Buffer {
                 ty: wgpu::BufferBindingType::Storage { read_only: false },
@@ -88,10 +110,14 @@ fn main() {
     entries: &[
         wgpu::BindGroupEntry {
             binding: 0,
-            resource: input_data_buffer.as_entire_binding(),
+            resource: uniform_buffer.as_entire_binding(),
         },
         wgpu::BindGroupEntry {
             binding: 1,
+            resource: input_data_buffer.as_entire_binding(),
+        },
+        wgpu::BindGroupEntry {
+            binding: 2,
             resource: output_data_buffer.as_entire_binding(),
         },
     ],
@@ -126,8 +152,9 @@ fn main() {
   compute_pass.set_pipeline(&pipeline);
   compute_pass.set_bind_group(0, &bind_group, &[]);
 
-  let workgroup_count = data.len().div_ceil(64);
-  compute_pass.dispatch_workgroups(workgroup_count as u32, 1, 1);
+  let workgroup_x = width.div_ceil(16);
+  let workgroup_y = height.div_ceil(16);
+  compute_pass.dispatch_workgroups(workgroup_x as u32, workgroup_y as u32, 1);
 
   // NOTE: Rust borrow rules
   drop(compute_pass);
