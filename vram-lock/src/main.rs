@@ -37,7 +37,15 @@ fn main() -> Result<()> {
     // GPU setup
     let gpu_context = gpu::GpuContext::new()?;
 
-    println!("GPU context: {:?}", gpu_context);
+    // LOG: Print GPU context
+    // println!("GPU context: {:?}", gpu_context);
+
+    // Test computation
+    let data = vec![1.0f32, 2.0, 3.0, 4.0];
+    let pipeline = gpu::GpuContext::setup_compute_pipeline(&gpu_context, gpu::GpuParams { data })?;
+
+    // LOG: Print pipeline
+    println!("Pipeline: {:?}", pipeline);
 
     Ok(())
 }
