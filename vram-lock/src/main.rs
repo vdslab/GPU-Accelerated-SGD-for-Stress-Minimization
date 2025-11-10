@@ -45,7 +45,12 @@ fn main() -> Result<()> {
     let pipeline = gpu::GpuContext::setup_compute_pipeline(&gpu_context, gpu::GpuParams { data })?;
 
     // LOG: Print pipeline
-    println!("Pipeline: {:?}", pipeline);
+    // println!("Pipeline: {:?}", pipeline);
+
+    let result = gpu::GpuContext::execute_compute_pipeline(&gpu_context, pipeline)?;
+
+    // LOG: Print result
+    println!("Result: {:?}", result);
 
     Ok(())
 }

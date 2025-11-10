@@ -14,7 +14,7 @@ pub struct GpuPipeline {
 
     // Buffers
     pub uniform_data_buffer: wgpu::Buffer,
-    pub input_data_buffer: wgpu::Buffer,
+    // pub input_data_buffer: wgpu::Buffer,
     pub output_data_buffer: wgpu::Buffer,
     pub download_buffer: wgpu::Buffer,
 }
@@ -182,9 +182,59 @@ impl GpuContext {
             pipeline,
             bind_group,
             uniform_data_buffer,
-            input_data_buffer,
+            // input_data_buffer,
             output_data_buffer,
             download_buffer,
         })
+    }
+
+    pub fn execute_compute_pipeline(&self, p: GpuPipeline) -> Result<Vec<f32>> {
+        // NOTE: Command encoder
+        let mut encoder =
+            self.device.create_command_encoder(&wgpu::CommandEncoderDescriptor { label: None });
+
+        let mut compute_pass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
+            label: None,
+            timestamp_writes: None,
+        });
+
+        compute_pass.set_pipeline(&p.pipeline);
+        compute_pass.set_bind_group(0, &p.bind_group, &[]);
+
+        let workgroup_x = p.uniform_data_buffer.size().div_ceil(16);
+        let workgroup_y = p.uniform_data_buffer.size().div_ceil(16);
+        compute_pass.dispatch_workgroups(workgroup_x as u32, workgroup_y as u32, 1);
+
+        // NOTE: Rust borrow rules
+        drop(compute_pass);
+
+        encoder.copy_buffer_to_buffer(
+            &p.output_data_buffer,
+            0,
+            &p.download_buffer,
+            0,
+            p.output_data_buffer.size(),
+        );
+
+        let command_buffer = encoder.finish();
+
+        self.queue.submit([command_buffer]);
+
+        let buffer_slice = p.download_buffer.slice(..);
+        buffer_slice.map_async(wgpu::MapMode::Read, |_| {
+            // In this case we know exactly when the mapping will be finished,
+            // so we don't need to do anything in the callback.
+        });
+
+        // Wait for the GPU to finish working on the submitted work. This doesn't work on WebGPU, so we would need
+        // to rely on the callback to know when the buffer is mapped.
+        self.device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
+
+        // We can now read the data from the buffer.
+        let data = buffer_slice.get_mapped_range();
+        // Convert the data back to a slice of f32.
+        let result: Vec<f32> = bytemuck::cast_slice(&data).to_vec();
+
+        Ok(result)
     }
 }
