@@ -16,10 +16,10 @@ fn main() {
     // println!("Edge src: {:?}", graph.edge_src);
     // println!("Edge dst: {:?}", graph.edge_dst);
 
-    let adj = graph::Graph::calc_adj_matrix(graph);
+    let dist = graph::Graph::calc_dist_matrix(&graph);
 
-    // LOG: Print adjacency matrix
-    println!("Adj matrix: {:?}", adj);
+    // LOG: Print distance matrix
+    println!("Dist matrix: {:?}", dist);
 
     // GPU setup
     let width = 64u32;
