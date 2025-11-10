@@ -1,5 +1,6 @@
 mod graph;
 
+use rand::Rng;
 use std::num::NonZeroU64;
 use std::path::Path;
 use wgpu::util::DeviceExt;
@@ -26,9 +27,15 @@ fn main() {
     let etas = graph::calc_learning_rate(15, wmin, wmax, 0.1);
 
     // LOG: Print pairs and etas
-    println!("pairs: {:?}", pairs);
-    println!("Etas: {:?}", etas);
+    // println!("pairs: {:?}", pairs);
+    // println!("Etas: {:?}", etas);
 
+    let positions = graph::init_positions_random(graph.node_size, true);
+
+    // LOG: Print positions
+    println!("positions: {:?}", positions);
+
+    
 
 
     // GPU setup
