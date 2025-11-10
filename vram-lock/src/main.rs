@@ -7,7 +7,7 @@ use wgpu::util::DeviceExt;
 fn main() {
     env_logger::init();
 
-    let mtx_path = Path::new("../data/bcspwr01.mtx");
+    let mtx_path = Path::new("../data/lesmis_pattern.mtx");
     let graph = graph::Graph::from_mtx(mtx_path).expect("Failed to load matrix");
 
     // LOG: Print graph information
@@ -19,7 +19,17 @@ fn main() {
     let dist = graph::Graph::calc_dist_matrix(&graph);
 
     // LOG: Print distance matrix
-    println!("Dist matrix: {:?}", dist);
+    // println!("Dist matrix: {:?}", dist);
+
+    let (pairs, wmin, wmax) = graph::Graph::calc_edge_info(&graph, &dist);
+
+    let etas = graph::calc_learning_rate(15, wmin, wmax, 0.1);
+
+    // LOG: Print pairs and etas
+    println!("pairs: {:?}", pairs);
+    println!("Etas: {:?}", etas);
+
+
 
     // GPU setup
     let width = 64u32;

@@ -12,6 +12,14 @@ pub struct Graph {
     pub edge_dst: Vec<usize>,
 }
 
+#[derive(Debug)]
+pub struct EdgeInfo {
+    pub u: usize,
+    pub v: usize,
+    pub dij: f64,
+    pub wij: f64,
+}
+
 impl Graph {
     pub fn from_mtx(path: &Path) -> Result<Self> {
         let matrix: sprs::TriMat<Pattern> = read_matrix_market(path)?;
@@ -64,4 +72,46 @@ impl Graph {
         }
         dist_matrix
     }
+
+    pub fn calc_edge_info(&self, dist: &[Vec<usize>]) -> (Vec<EdgeInfo>, f64, f64) {
+        let mut pairs = Vec::new();
+        let mut dmin: f64 = f64::INFINITY;
+        let mut dmax: f64 = 0.0;
+
+        for u in 0..dist.len() {
+            for v in 0..dist[u].len() {
+                if u >= v {
+                    continue;
+                }
+
+                let dij = dist[u][v] as f64;
+                if dij <= 0.0 {
+                    continue;
+                }
+
+                let wij = 1.0 / (dij * dij);
+                pairs.push(EdgeInfo { u, v, dij, wij });
+
+                dmin = dmin.min(dij);
+                dmax = dmax.max(dij);
+            }
+        }
+
+        let wmin = 1.0 / (dmax * dmax);
+        let wmax = 1.0 / (dmin * dmin);
+
+        (pairs, wmin, wmax)
+    }
+}
+
+pub fn calc_learning_rate(tmax: usize, wmin: f64, wmax: f64, eps: f64) -> Vec<f64> {
+    let eta_max = 1.0 / wmin;
+    let eta_min = eps / wmax;
+    let lamb = (eta_max / eta_min).ln() / (tmax - 1) as f64;
+    
+    let etas: Vec<f64> = (0..tmax)
+        .map(|t| eta_max * (-lamb * t as f64).exp())
+        .collect();
+    
+    etas
 }
