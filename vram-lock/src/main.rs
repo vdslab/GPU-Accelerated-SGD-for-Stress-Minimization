@@ -1,14 +1,31 @@
+mod graph;
+
 use std::num::NonZeroU64;
+use std::path::Path;
 use wgpu::util::DeviceExt;
 
 fn main() {
     env_logger::init();
 
+    let mtx_path = Path::new("../data/bcspwr01.mtx");
+    let graph = graph::Graph::from_mtx(mtx_path).expect("Failed to load matrix");
+
+    // LOG: Print graph information
+    // println!("Node size: {:?}", graph.node_size);
+    // println!("Edge size: {:?}", graph.edge_size);
+    // println!("Edge src: {:?}", graph.edge_src);
+    // println!("Edge dst: {:?}", graph.edge_dst);
+
+    let adj = graph::Graph::calc_adj_matrix(graph);
+
+    // LOG: Print adjacency matrix
+    println!("Adj matrix: {:?}", adj);
+
+    // GPU setup
     let width = 64u32;
     let height = 64u32;
     let data = vec![1.0f32, 2.0, 3.0, 4.0];
 
-    // GPU setup
     let instance = wgpu::Instance::new(&wgpu::InstanceDescriptor::default());
 
     let adapter =
@@ -25,12 +42,12 @@ fn main() {
     }))
     .expect("Failed to create device");
 
-    // NOTE: graphics card info
-    println!("Running on Adapter: {:#?}", adapter.get_info());
-    println!(
-        "thread limit per workgroup: {:#?}",
-        adapter.limits().max_compute_invocations_per_workgroup
-    );
+    // LOG: graphics card info
+    // println!("Running on Adapter: {:#?}", adapter.get_info());
+    // println!(
+    //     "thread limit per workgroup: {:#?}",
+    //     adapter.limits().max_compute_invocations_per_workgroup
+    // );
 
     let module = device.create_shader_module(wgpu::include_wgsl!("shader.wgsl"));
 
