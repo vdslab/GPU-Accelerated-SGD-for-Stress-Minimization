@@ -42,6 +42,7 @@ impl Graph {
         let mut adj = vec![Vec::new(); self.node_size];
         for i in 0..self.edge_size {
             adj[self.edge_src[i]].push(self.edge_dst[i]);
+            adj[self.edge_dst[i]].push(self.edge_src[i]);
         }
         adj
     }
