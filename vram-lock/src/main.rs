@@ -2,15 +2,26 @@ mod gpu;
 mod graph;
 
 use anyhow::Result;
+use sprs::vec;
 use std::path::Path;
 
 fn main() -> Result<()> {
     env_logger::init();
 
-    let mtx_path = Path::new("../data/lesmis_pattern.mtx");
-    let graph = graph::Graph::from_mtx(mtx_path).expect("Failed to load matrix");
+    // let mtx_path = Path::new("../data/lesmis_pattern.mtx");
+    // let graph = graph::Graph::from_mtx(mtx_path).expect("Failed to load matrix");
+
+    let graph = {
+        graph::Graph {
+            node_size: 10,
+            edge_size: 10,
+            edge_src: vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            edge_dst: vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
+        }
+    };
 
     // LOG: Print graph information
+    println!("{:?}",graph);
     // println!("Node size: {:?}", graph.node_size);
     // println!("Edge size: {:?}", graph.edge_size);
     // println!("Edge src: {:?}", graph.edge_src);
