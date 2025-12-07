@@ -16,7 +16,7 @@ var<storage, read_write> output: array<f32>;
 @group(0) @binding(3)
 var<storage, read_write> debug: Debug;
 
-@compute @workgroup_size(16,16,1)
+@compute @workgroup_size(32,32,1)
 fn copyToOutput(@builtin(global_invocation_id) global_id: vec3<u32>) {
     let index = global_id.y * params.width + global_id.x;
     let array_length = arrayLength(&input);
