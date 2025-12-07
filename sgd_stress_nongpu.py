@@ -8,6 +8,9 @@ import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 from datetime import datetime
+import sys
+from scipy.io import mmread
+import scipy.sparse as sp
 
 def calc_adj_matrix(H):
   n = H.number_of_nodes()
@@ -125,17 +128,52 @@ def calc_stress(H, pos):
       # NOTE: 1/2にすることで、勾配の計算が楽になる
       val += (1/2.0) * wij * (calc_dist(X[u]-X[v]) - dij)**2
   return val
+
+def load_graph_from_mtx(mtx_path):
+  """Load graph from Matrix Market file"""
+  matrix = mmread(mtx_path)
+  
+  # Convert to COO format if not already
+  if not sp.isspmatrix_coo(matrix):
+    matrix = sp.coo_matrix(matrix)
+  
+  # Create NetworkX graph from edges
+  H = nx.Graph()
+  
+  # Add edges from the matrix
+  for i, j in zip(matrix.row, matrix.col):
+    if i != j:  # Skip self-loops
+      H.add_edge(int(i), int(j))
+  
+  # Relabel to ensure consecutive node numbering from 0
+  H = nx.convert_node_labels_to_integers(H, first_label=0, label_attribute="orig_label")
+  
+  return H
   
 if __name__ == "__main__":
   # NOTE: グラフ設定
-  n,p,seed = 500,0.005,34
-  base = nx.random_graphs.fast_gnp_random_graph(n,p,seed)
+  # Read graph name from stdin
+  print("Enter graph name (e.g., random_500_591):")
+  graph_name = input().strip()
   
-  # NOTE: リラベル変換(前処理)
-  # リラベル（nxはノード番号が連番でない可能性があるため、0からの連番に変換する）
-  H = nx.convert_node_labels_to_integers(base,first_label=0,label_attribute="orig_label")
-  # リラベルの復元用
-  # orig = nx.get_node_attributes(H, "orig_label")
+  if graph_name:
+    # Load from MTX file in data/ directory
+    mtx_path = f"data/{graph_name}.mtx"
+    print(f"Loading graph from {mtx_path}")
+    H = load_graph_from_mtx(mtx_path)
+  else:
+    # Default: generate random graph
+    n,p,seed = 500,0.005,34
+    base = nx.random_graphs.fast_gnp_random_graph(n,p,seed)
+    
+    # NOTE: リラベル変換(前処理)
+    # リラベル（nxはノード番号が連番でない可能性があるため、0からの連番に変換する）
+    H = nx.convert_node_labels_to_integers(base,first_label=0,label_attribute="orig_label")
+    graph_name = "random"
+    # リラベルの復元用
+    # orig = nx.get_node_attributes(H, "orig_label")
+  
+  print(f"Graph: {H.number_of_nodes()} nodes, {H.number_of_edges()} edges")
   
   pos0, pos1 = sgd(H,iterations=15,epsilon=0.1,seed=0)
 
@@ -147,7 +185,7 @@ if __name__ == "__main__":
   
   # Save initial positions (after randomization) to file with timestamp
   timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-  filename_init = f'output/python-sgd-{timestamp}-0.txt'
+  filename_init = f'output/python-sgd-{graph_name}-{timestamp}-0.txt'
   
   with open(filename_init, 'w') as f:
     f.write("# Python Result (sgd_stress_nongpu.py) - Initial (Randomized)\n")
@@ -167,7 +205,7 @@ if __name__ == "__main__":
   print(f"Initial result saved to {filename_init}")
   
   # Save processed results to file with timestamp
-  filename_processed = f'output/python-sgd-{timestamp}-1.txt'
+  filename_processed = f'output/python-sgd-{graph_name}-{timestamp}-1.txt'
   
   with open(filename_processed, 'w') as f:
     f.write("# Python Result (sgd_stress_nongpu.py) - Processed\n")
