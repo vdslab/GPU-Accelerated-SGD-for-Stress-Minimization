@@ -105,14 +105,17 @@ def visualize(filepath, output_image=None):
     return stress
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python visualize_result.py <result_basename> [output_image]")
-        print("Example: python visualize_result.py vram-lock-20251208_063056")
-        print("         (will read from output/vram-lock-20251208_063056.txt)")
-        print("         python visualize_result.py vram-lock-20251208_063056 output/result.png")
-        sys.exit(1)
+    # Interactive mode: prompt for input
+    print("=== Result Visualizer ===")
+    print("Enter result file basename (e.g., vram-lock-20251208_063056 or python-sgd-20251208_063459)")
+    print("Or enter full path (e.g., output/vram-lock-20251208_063056.txt)")
+    print()
     
-    basename = sys.argv[1]
+    basename = input("ファイル名を入力してください: ").strip()
+    
+    if not basename:
+        print("Error: No filename provided")
+        sys.exit(1)
     
     # Auto-complete path: add output/ prefix and .txt suffix if needed
     if not basename.startswith('output/'):
@@ -128,13 +131,11 @@ if __name__ == "__main__":
         print(f"Error: File not found: {result_file}")
         sys.exit(1)
     
-    # Default output image path based on input
-    if len(sys.argv) > 2:
-        output_image = sys.argv[2]
-    else:
-        # Auto-generate output image name
-        base_without_ext = Path(result_file).stem
-        output_image = f"output/{base_without_ext}.png"
+    # Auto-generate output image name
+    base_without_ext = Path(result_file).stem
+    output_image = f"output/{base_without_ext}.png"
     
+    print()
     visualize(result_file, output_image)
+
 
