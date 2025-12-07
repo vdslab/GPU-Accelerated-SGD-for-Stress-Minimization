@@ -29,6 +29,8 @@ pub struct GpuPipeline {
     pub download_buffer: wgpu::Buffer,
     pub debug_info_buffer: wgpu::Buffer,
     pub debug_download_buffer: wgpu::Buffer,
+    pub debug_pairs_buffer: wgpu::Buffer,
+    pub debug_pairs_download_buffer: wgpu::Buffer,
     pub iteration_buffer: wgpu::Buffer,
     pub node_size: u32,
     pub num_iterations: u32,
@@ -139,6 +141,30 @@ impl GpuContext {
                 usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
             });
 
+        // Lock buffer (initialized to 0 = unlocked for all nodes)
+        let lock_buffer = self
+            .device
+            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("Lock Buffer"),
+                contents: bytemuck::cast_slice(&vec![0u32; params.positions.len()]),
+                usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
+            });
+
+        // Debug pairs buffer (to store node 2's pair partners)
+        let debug_pairs_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("Debug Pairs Buffer"),
+            size: (params.positions.len() * 4) as u64, // Max possible pairs
+            usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_SRC,
+            mapped_at_creation: false,
+        });
+
+        let debug_pairs_download_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("Debug Pairs Download Buffer"),
+            size: (params.positions.len() * 4) as u64,
+            usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
+            mapped_at_creation: false,
+        });
+
         // NOTE: Bind group
         let bind_group_layout =
             self.device
@@ -200,6 +226,28 @@ impl GpuContext {
                             },
                             count: None,
                         },
+                        // Lock buffer
+                        wgpu::BindGroupLayoutEntry {
+                            binding: 5,
+                            visibility: wgpu::ShaderStages::COMPUTE,
+                            ty: wgpu::BindingType::Buffer {
+                                ty: wgpu::BufferBindingType::Storage { read_only: false },
+                                min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                                has_dynamic_offset: false,
+                            },
+                            count: None,
+                        },
+                        // Debug pairs buffer
+                        wgpu::BindGroupLayoutEntry {
+                            binding: 6,
+                            visibility: wgpu::ShaderStages::COMPUTE,
+                            ty: wgpu::BindingType::Buffer {
+                                ty: wgpu::BufferBindingType::Storage { read_only: false },
+                                min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                                has_dynamic_offset: false,
+                            },
+                            count: None,
+                        },
                     ],
                 });
 
@@ -226,6 +274,14 @@ impl GpuContext {
                 wgpu::BindGroupEntry {
                     binding: 4,
                     resource: iteration_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 5,
+                    resource: lock_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 6,
+                    resource: debug_pairs_buffer.as_entire_binding(),
                 },
             ],
         });
@@ -257,6 +313,8 @@ impl GpuContext {
             download_buffer,
             debug_info_buffer,
             debug_download_buffer,
+            debug_pairs_buffer,
+            debug_pairs_download_buffer,
             iteration_buffer,
             node_size: params.positions.len() as u32,
             num_iterations: params.etas.len() as u32,
@@ -298,6 +356,14 @@ impl GpuContext {
                 p.debug_info_buffer.size(),
             );
 
+            encoder.copy_buffer_to_buffer(
+                &p.debug_pairs_buffer,
+                0,
+                &p.debug_pairs_download_buffer,
+                0,
+                p.debug_pairs_buffer.size(),
+            );
+
             self.queue.submit([encoder.finish()]);
 
             let debug_slice = p.debug_download_buffer.slice(..);
@@ -305,9 +371,21 @@ impl GpuContext {
             self.device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
             let debug_data = debug_slice.get_mapped_range();
             let debug_floats: &[f32] = bytemuck::cast_slice(&debug_data);
-            println!("Debug info: val1={}", debug_floats[0]);
+            
+            // Read debug pairs
+            let pairs_slice = p.debug_pairs_download_buffer.slice(..);
+            pairs_slice.map_async(wgpu::MapMode::Read, |_| {});
+            self.device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
+            let pairs_data = pairs_slice.get_mapped_range();
+            let pairs_u32: &[u32] = bytemuck::cast_slice(&pairs_data);
+            let node2_partners: Vec<u32> = pairs_u32.to_vec();
+            
+            println!("Debug info: Iteration {}: val1={},node2 partners={:?}", iteration, debug_floats[0], node2_partners);
+            
             drop(debug_data);
+            drop(pairs_data);
             p.debug_download_buffer.unmap();
+            p.debug_pairs_download_buffer.unmap();
         }
         
         // NOTE: Download final results
