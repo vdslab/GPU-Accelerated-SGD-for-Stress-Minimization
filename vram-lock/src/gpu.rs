@@ -30,6 +30,7 @@ pub struct GpuPipeline {
     pub debug_info_buffer: wgpu::Buffer,
     pub debug_download_buffer: wgpu::Buffer,
     pub node_size: u32,
+    pub num_iterations: u32,
 }
 
 #[derive(Debug)]
@@ -233,31 +234,40 @@ impl GpuContext {
             debug_info_buffer,
             debug_download_buffer,
             node_size: params.positions.len() as u32,
+            num_iterations: params.etas.len() as u32,
         })
     }
 
     pub fn execute_compute_pipeline(&self, p: GpuPipeline) -> Result<Vec<[f32; 2]>> {
-        // NOTE: Command encoder
-        let mut encoder =
-            self.device.create_command_encoder(&wgpu::CommandEncoderDescriptor { label: None });
-
-        let mut compute_pass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
-            label: None,
-            timestamp_writes: None,
-        });
-
-        compute_pass.set_pipeline(&p.pipeline);
-        compute_pass.set_bind_group(0, &p.bind_group, &[]);
-
         // @workgroup_size(32,32,1) = 1024 threads per workgroup
         let workgroup_size = 32u32;
         let workgroup_x = (p.node_size + workgroup_size - 1) / workgroup_size;
         let workgroup_y = (p.node_size + workgroup_size - 1) / workgroup_size;
         
-        compute_pass.dispatch_workgroups(workgroup_x, workgroup_y, 1);
+        for iteration in 0..p.num_iterations {
+            let mut encoder =
+                self.device.create_command_encoder(&wgpu::CommandEncoderDescriptor { 
+                    label: Some(&format!("SGD Iteration {}", iteration)) 
+                });
 
-        // NOTE: Rust borrow rules
-        drop(compute_pass);
+            let mut compute_pass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
+                label: Some(&format!("SGD Pass {}", iteration)),
+                timestamp_writes: None,
+            });
+
+            compute_pass.set_pipeline(&p.pipeline);
+            compute_pass.set_bind_group(0, &p.bind_group, &[]);
+            
+            compute_pass.dispatch_workgroups(workgroup_x, workgroup_y, 1);
+
+            drop(compute_pass);
+
+            self.queue.submit([encoder.finish()]);
+        }
+        
+        // NOTE: Download final results
+        let mut encoder =
+            self.device.create_command_encoder(&wgpu::CommandEncoderDescriptor { label: None });
 
         encoder.copy_buffer_to_buffer(
             &p.output_data_buffer,
