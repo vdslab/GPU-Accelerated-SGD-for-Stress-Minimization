@@ -32,23 +32,22 @@ var<storage, read_write> locks: array<atomic<u32>>;
 @group(0) @binding(6)
 var<storage, read_write> debug_pairs: array<u32>;
 
-@compute @workgroup_size(32,32,1)
-fn sgd(@builtin(global_invocation_id) global_id: vec3<u32>) {
-    let i = iteration;
-    debug.val1 = f32(i);
+// Debug helper function (called only by thread 0,0)
+fn log_debug_info() {
+    debug.val1 = f32(iteration);
     
-    // LOG: Find pairs that involve node 2 (0-indexed) and record their partners
+    // Count pairs that involve node 2
     let target_node = 2u;
     var node2_pair_count = 0u;
     
     for (var idx = 0u; idx < arrayLength(&pairs); idx++) {
-        let pair = pairs[idx];
-        var partner: u32 = 0xFFFFFFFFu; // Invalid value
+        let p = pairs[idx];
+        var partner: u32 = 0xFFFFFFFFu;
         
-        if (pair.u == target_node) {
-            partner = pair.v;
-        } else if (pair.v == target_node) {
-            partner = pair.u;
+        if (p.u == target_node) {
+            partner = p.v;
+        } else if (p.v == target_node) {
+            partner = p.u;
         }
         
         if (partner != 0xFFFFFFFFu) {
@@ -56,5 +55,12 @@ fn sgd(@builtin(global_invocation_id) global_id: vec3<u32>) {
             node2_pair_count++;
         }
     }
+}
 
+@compute @workgroup_size(32,32,1)
+fn sgd(@builtin(global_invocation_id) global_id: vec3<u32>) {
+    // Debug: Only thread (0,0) logs
+    if (global_id.x == 0u && global_id.y == 0u) {
+        log_debug_info();
+    }
 }
