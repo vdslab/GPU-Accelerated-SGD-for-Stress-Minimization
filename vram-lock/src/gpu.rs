@@ -290,7 +290,24 @@ impl GpuContext {
 
             drop(compute_pass);
 
+            encoder.copy_buffer_to_buffer(
+                &p.debug_info_buffer,
+                0,
+                &p.debug_download_buffer,
+                0,
+                p.debug_info_buffer.size(),
+            );
+
             self.queue.submit([encoder.finish()]);
+
+            let debug_slice = p.debug_download_buffer.slice(..);
+            debug_slice.map_async(wgpu::MapMode::Read, |_| {});
+            self.device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
+            let debug_data = debug_slice.get_mapped_range();
+            let debug_floats: &[f32] = bytemuck::cast_slice(&debug_data);
+            println!("Debug info: val1={}", debug_floats[0]);
+            drop(debug_data);
+            p.debug_download_buffer.unmap();
         }
         
         // NOTE: Download final results
