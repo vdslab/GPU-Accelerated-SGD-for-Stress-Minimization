@@ -119,6 +119,7 @@ impl Graph {
         let etas = calc_learning_rate(iterations, wmin, wmax, epsilon);
 
         let positions = init_positions_random(self.node_size, center);
+        println!("positions: {:?}", positions);
         
         // Convert to GPU data
         let gpu_etas: Vec<f32> = etas.iter().map(|&e| e as f32).collect();
