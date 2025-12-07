@@ -1,10 +1,22 @@
 use anyhow::Result;
 use std::num::NonZeroU64;
 use wgpu::util::DeviceExt;
+use bytemuck::{Pod, Zeroable};
+
+#[repr(C)]
+#[derive(Debug, Clone, Copy, Pod, Zeroable)]
+pub struct GpuEdgeInfo {
+    pub u: u32,
+    pub v: u32,
+    pub dij: f32,
+    pub wij: f32,
+}
 
 #[derive(Debug)]
-pub struct GpuParams {
-    pub data: Vec<f32>,
+pub struct GpuGraphParams {
+    pub etas: Vec<f32>,
+    pub positions: Vec<[f32; 2]>,
+    pub pairs: Vec<GpuEdgeInfo>,
 }
 
 #[derive(Debug)]
@@ -20,12 +32,11 @@ pub struct GpuPipeline {
     pub bind_group: wgpu::BindGroup,
 
     // Buffers
-    pub uniform_data_buffer: wgpu::Buffer,
-    // pub input_data_buffer: wgpu::Buffer,
     pub output_data_buffer: wgpu::Buffer,
     pub download_buffer: wgpu::Buffer,
     pub debug_info_buffer: wgpu::Buffer,
     pub debug_download_buffer: wgpu::Buffer,
+    pub node_size: u32,
 }
 
 #[derive(Debug)]
@@ -70,27 +81,34 @@ impl GpuContext {
         })
     }
 
-    pub fn setup_compute_pipeline(&self, params: GpuParams) -> Result<GpuPipeline> {
-        // NOTE: uniform buffer is a small GPU buffer used to store constant data
-        let uniform_data_buffer =
-            self.device
-                .create_buffer_init(&wgpu::util::BufferInitDescriptor {
-                    label: Some("Uniform Buffer"),
-                    contents: bytemuck::cast_slice(&[params.data.len()]),
-                    usage: wgpu::BufferUsages::UNIFORM,
-                });
-
-        let input_data_buffer = self
+    pub fn setup_compute_pipeline(&self, params: GpuGraphParams) -> Result<GpuPipeline> {
+        let etas_buffer = self
             .device
             .create_buffer_init(&wgpu::util::BufferInitDescriptor {
-                label: Some("Input"),
-                contents: bytemuck::cast_slice(&params.data),
+                label: Some("Etas Buffer"),
+                contents: bytemuck::cast_slice(&params.etas),
+                usage: wgpu::BufferUsages::STORAGE,
+            });
+
+        let positions_buffer = self
+            .device
+            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("Positions Buffer"),
+                contents: bytemuck::cast_slice(&params.positions),
+                usage: wgpu::BufferUsages::STORAGE,
+            });
+
+        let pairs_buffer = self
+            .device
+            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("Pairs Buffer"),
+                contents: bytemuck::cast_slice(&params.pairs),
                 usage: wgpu::BufferUsages::STORAGE,
             });
 
         let output_data_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
             label: Some("Output"),
-            size: input_data_buffer.size(),
+            size: positions_buffer.size(),
             usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_SRC,
             mapped_at_creation: false,
         });
@@ -98,7 +116,7 @@ impl GpuContext {
         // NOTE: Only use this if you need to read the data on the CPU.
         let download_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
             label: None,
-            size: input_data_buffer.size(),
+            size: positions_buffer.size(),
             usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
             mapped_at_creation: false,
         });
@@ -110,6 +128,7 @@ impl GpuContext {
             mapped_at_creation: false,
         });
 
+        // NOTE: Only use this if you need to read the data on the CPU.
         let debug_download_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
             label: Some("Debug Download Buffer"),
             size: 12,
@@ -123,38 +142,35 @@ impl GpuContext {
                 .create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
                     label: None,
                     entries: &[
-                        // Uniform buffer
+                        // Etas buffer
                         wgpu::BindGroupLayoutEntry {
                             binding: 0,
                             visibility: wgpu::ShaderStages::COMPUTE,
                             ty: wgpu::BindingType::Buffer {
-                                // read only?
-                                ty: wgpu::BufferBindingType::Uniform,
+                                ty: wgpu::BufferBindingType::Storage { read_only: true },
+                                min_binding_size: Some(NonZeroU64::new(4).unwrap()),
                                 has_dynamic_offset: false,
-                                min_binding_size: None,
                             },
                             count: None,
                         },
-                        // Input buffer
+                        // Positions buffer
                         wgpu::BindGroupLayoutEntry {
                             binding: 1,
                             visibility: wgpu::ShaderStages::COMPUTE,
                             ty: wgpu::BindingType::Buffer {
-                                ty: wgpu::BufferBindingType::Storage { read_only: true },
-                                // This is the size of a single element in the buffer.
-                                min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                                ty: wgpu::BufferBindingType::Storage { read_only: false },
+                                min_binding_size: Some(NonZeroU64::new(8).unwrap()),
                                 has_dynamic_offset: false,
                             },
                             count: None,
                         },
-                        // Output buffer
+                        // Pairs buffer
                         wgpu::BindGroupLayoutEntry {
                             binding: 2,
                             visibility: wgpu::ShaderStages::COMPUTE,
                             ty: wgpu::BindingType::Buffer {
-                                ty: wgpu::BufferBindingType::Storage { read_only: false },
-                                // This is the size of a single element in the buffer.
-                                min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                                ty: wgpu::BufferBindingType::Storage { read_only: true },
+                                min_binding_size: Some(NonZeroU64::new(16).unwrap()),
                                 has_dynamic_offset: false,
                             },
                             count: None,
@@ -179,15 +195,15 @@ impl GpuContext {
             entries: &[
                 wgpu::BindGroupEntry {
                     binding: 0,
-                    resource: uniform_data_buffer.as_entire_binding(),
+                    resource: etas_buffer.as_entire_binding(),
                 },
                 wgpu::BindGroupEntry {
                     binding: 1,
-                    resource: input_data_buffer.as_entire_binding(),
+                    resource: positions_buffer.as_entire_binding(),
                 },
                 wgpu::BindGroupEntry {
                     binding: 2,
-                    resource: output_data_buffer.as_entire_binding(),
+                    resource: pairs_buffer.as_entire_binding(),
                 },
                 wgpu::BindGroupEntry {
                     binding: 3,
@@ -219,12 +235,11 @@ impl GpuContext {
         Ok(GpuPipeline {
             pipeline,
             bind_group,
-            uniform_data_buffer,
-            // input_data_buffer,
             output_data_buffer,
             download_buffer,
             debug_info_buffer,
             debug_download_buffer,
+            node_size: params.positions.len() as u32,
         })
     }
 
@@ -241,9 +256,12 @@ impl GpuContext {
         compute_pass.set_pipeline(&p.pipeline);
         compute_pass.set_bind_group(0, &p.bind_group, &[]);
 
-        let workgroup_x = p.uniform_data_buffer.size().div_ceil(16);
-        let workgroup_y = p.uniform_data_buffer.size().div_ceil(16);
-        compute_pass.dispatch_workgroups(workgroup_x as u32, workgroup_y as u32, 1);
+        // @workgroup_size(32,32,1) = 1024 threads per workgroup
+        let workgroup_size = 32u32;
+        let workgroup_x = (p.node_size + workgroup_size - 1) / workgroup_size;
+        let workgroup_y = (p.node_size + workgroup_size - 1) / workgroup_size;
+        
+        compute_pass.dispatch_workgroups(workgroup_x, workgroup_y, 1);
 
         // NOTE: Rust borrow rules
         drop(compute_pass);

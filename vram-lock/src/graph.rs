@@ -4,6 +4,7 @@ use sprs::io::read_matrix_market;
 use sprs::num_kinds::Pattern;
 use std::collections::VecDeque;
 use std::path::Path;
+use crate::gpu;
 
 #[derive(Debug)]
 pub struct Graph {
@@ -103,6 +104,38 @@ impl Graph {
         let wmax = 1.0 / (dmin * dmin);
 
         (pairs, wmin, wmax)
+    }
+
+    pub fn create_gpu_pipeline(
+        &self,
+        gpu_context: &gpu::GpuContext,
+        iterations: usize,
+        epsilon: f64,
+        center: bool,
+    ) -> Result<gpu::GpuPipeline> {
+        let dist = self.calc_dist_matrix();
+        let (pairs, wmin, wmax) = self.calc_edge_info(&dist);
+
+        let etas = calc_learning_rate(iterations, wmin, wmax, epsilon);
+
+        let positions = init_positions_random(self.node_size, center);
+        
+        // Convert to GPU data
+        let gpu_etas: Vec<f32> = etas.iter().map(|&e| e as f32).collect();
+        let gpu_positions: Vec<[f32; 2]> = positions.iter().map(|&p| [p[0] as f32, p[1] as f32]).collect();
+        let gpu_pairs: Vec<gpu::GpuEdgeInfo> = pairs.iter().map(|p| gpu::GpuEdgeInfo {
+            u: p.u as u32,
+            v: p.v as u32,
+            dij: p.dij as f32,
+            wij: p.wij as f32,
+        }).collect();
+        
+        // Create pipeline
+        gpu_context.setup_compute_pipeline(gpu::GpuGraphParams {
+            etas: gpu_etas,
+            positions: gpu_positions,
+            pairs: gpu_pairs,
+        })
     }
 }
 
