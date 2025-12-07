@@ -23,5 +23,8 @@ var<storage, read> pairs: array<EdgeInfo>;
 @group(0) @binding(3)
 var<storage, read_write> debug: Debug;
 
+@group(0) @binding(4)
+var<uniform> iteration: u32;
+
 @compute @workgroup_size(32,32,1)
 fn sgd(@builtin(global_invocation_id) global_id: vec3<u32>) {}

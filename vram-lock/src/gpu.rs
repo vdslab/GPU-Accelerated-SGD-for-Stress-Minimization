@@ -29,6 +29,7 @@ pub struct GpuPipeline {
     pub download_buffer: wgpu::Buffer,
     pub debug_info_buffer: wgpu::Buffer,
     pub debug_download_buffer: wgpu::Buffer,
+    pub iteration_buffer: wgpu::Buffer,
     pub node_size: u32,
     pub num_iterations: u32,
 }
@@ -130,6 +131,14 @@ impl GpuContext {
             mapped_at_creation: false,
         });
 
+        let iteration_buffer = self
+            .device
+            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("Iteration Buffer"),
+                contents: bytemuck::cast_slice(&[0u32]),
+                usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
+            });
+
         // NOTE: Bind group
         let bind_group_layout =
             self.device
@@ -180,6 +189,17 @@ impl GpuContext {
                             },
                             count: None,
                         },
+                        // Iteration buffer
+                        wgpu::BindGroupLayoutEntry {
+                            binding: 4,
+                            visibility: wgpu::ShaderStages::COMPUTE,
+                            ty: wgpu::BindingType::Buffer {
+                                ty: wgpu::BufferBindingType::Uniform,
+                                min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                                has_dynamic_offset: false,
+                            },
+                            count: None,
+                        },
                     ],
                 });
 
@@ -202,6 +222,10 @@ impl GpuContext {
                 wgpu::BindGroupEntry {
                     binding: 3,
                     resource: debug_info_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 4,
+                    resource: iteration_buffer.as_entire_binding(),
                 },
             ],
         });
@@ -233,6 +257,7 @@ impl GpuContext {
             download_buffer,
             debug_info_buffer,
             debug_download_buffer,
+            iteration_buffer,
             node_size: params.positions.len() as u32,
             num_iterations: params.etas.len() as u32,
         })
@@ -245,6 +270,9 @@ impl GpuContext {
         let workgroup_y = (p.node_size + workgroup_size - 1) / workgroup_size;
         
         for iteration in 0..p.num_iterations {
+            // Update iteration buffer
+            self.queue.write_buffer(&p.iteration_buffer, 0, bytemuck::cast_slice(&[iteration]));
+            
             let mut encoder =
                 self.device.create_command_encoder(&wgpu::CommandEncoderDescriptor { 
                     label: Some(&format!("SGD Iteration {}", iteration)) 
