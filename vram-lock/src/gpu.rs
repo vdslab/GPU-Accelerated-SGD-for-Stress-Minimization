@@ -8,6 +8,13 @@ pub struct GpuParams {
 }
 
 #[derive(Debug)]
+pub struct GpuDebugInfo {
+    pub val1:f32,
+    pub val2:f32,
+    pub val3:f32,
+}
+
+#[derive(Debug)]
 pub struct GpuPipeline {
     pub pipeline: wgpu::ComputePipeline,
     pub bind_group: wgpu::BindGroup,
@@ -17,6 +24,8 @@ pub struct GpuPipeline {
     // pub input_data_buffer: wgpu::Buffer,
     pub output_data_buffer: wgpu::Buffer,
     pub download_buffer: wgpu::Buffer,
+    pub debug_info_buffer: wgpu::Buffer,
+    pub debug_download_buffer: wgpu::Buffer,
 }
 
 #[derive(Debug)]
@@ -94,6 +103,20 @@ impl GpuContext {
             mapped_at_creation: false,
         });
 
+        let debug_info_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("Debug Info Buffer"),
+            size: 12, // 3 x f32 = 12 bytes
+            usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_SRC,
+            mapped_at_creation: false,
+        });
+
+        let debug_download_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("Debug Download Buffer"),
+            size: 12,
+            usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
+            mapped_at_creation: false,
+        });
+
         // NOTE: Bind group
         let bind_group_layout =
             self.device
@@ -136,6 +159,17 @@ impl GpuContext {
                             },
                             count: None,
                         },
+                        // Debug info buffer
+                        wgpu::BindGroupLayoutEntry {
+                            binding: 3,
+                            visibility: wgpu::ShaderStages::COMPUTE,
+                            ty: wgpu::BindingType::Buffer {
+                                ty: wgpu::BufferBindingType::Storage { read_only: false },
+                                min_binding_size: Some(NonZeroU64::new(12).unwrap()),
+                                has_dynamic_offset: false,
+                            },
+                            count: None,
+                        },
                     ],
                 });
 
@@ -154,6 +188,10 @@ impl GpuContext {
                 wgpu::BindGroupEntry {
                     binding: 2,
                     resource: output_data_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 3,
+                    resource: debug_info_buffer.as_entire_binding(),
                 },
             ],
         });
@@ -185,6 +223,8 @@ impl GpuContext {
             // input_data_buffer,
             output_data_buffer,
             download_buffer,
+            debug_info_buffer,
+            debug_download_buffer,
         })
     }
 
@@ -216,24 +256,41 @@ impl GpuContext {
             p.output_data_buffer.size(),
         );
 
+        encoder.copy_buffer_to_buffer(
+            &p.debug_info_buffer,
+            0,
+            &p.debug_download_buffer,
+            0,
+            p.debug_info_buffer.size(),
+        );
+
         let command_buffer = encoder.finish();
 
         self.queue.submit([command_buffer]);
 
         let buffer_slice = p.download_buffer.slice(..);
-        buffer_slice.map_async(wgpu::MapMode::Read, |_| {
-            // In this case we know exactly when the mapping will be finished,
-            // so we don't need to do anything in the callback.
-        });
-
-        // Wait for the GPU to finish working on the submitted work. This doesn't work on WebGPU, so we would need
-        // to rely on the callback to know when the buffer is mapped.
+        buffer_slice.map_async(wgpu::MapMode::Read, |_| {});
+        // Wait for the GPU to finish working on the submitted work.
+        // Note: poll() works on native (desktop) environments, but NOT on Web (wasm/browser).
+        // On Web, you must use the callback to know when the buffer is mapped.
         self.device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
 
         // We can now read the data from the buffer.
         let data = buffer_slice.get_mapped_range();
         // Convert the data back to a slice of f32.
         let result: Vec<f32> = bytemuck::cast_slice(&data).to_vec();
+
+        // Read debug info
+        let debug_slice = p.debug_download_buffer.slice(..);
+        debug_slice.map_async(wgpu::MapMode::Read, |_| {});
+        self.device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
+        let debug_data = debug_slice.get_mapped_range();
+        // Convert the data back to a slice of f32.
+        let debug_floats: &[f32] = bytemuck::cast_slice(&debug_data);
+        
+        if debug_floats.len() >= 3 {
+            println!("Debug info: val1={}, val2={}, val3={}", debug_floats[0], debug_floats[1], debug_floats[2]);
+        }
 
         Ok(result)
     }
