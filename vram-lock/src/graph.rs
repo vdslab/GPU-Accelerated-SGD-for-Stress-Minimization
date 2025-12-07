@@ -112,7 +112,7 @@ impl Graph {
         iterations: usize,
         epsilon: f64,
         center: bool,
-    ) -> Result<gpu::GpuPipeline> {
+    ) -> Result<(gpu::GpuPipeline, Vec<[f32; 2]>)> {
         let dist = self.calc_dist_matrix();
         let (pairs, wmin, wmax) = self.calc_edge_info(&dist);
 
@@ -124,6 +124,8 @@ impl Graph {
         // Convert to GPU data
         let gpu_etas: Vec<f32> = etas.iter().map(|&e| e as f32).collect();
         let gpu_positions: Vec<[f32; 2]> = positions.iter().map(|&p| [p[0] as f32, p[1] as f32]).collect();
+        let initial_positions = gpu_positions.clone();
+        
         let gpu_pairs: Vec<gpu::GpuEdgeInfo> = pairs.iter().map(|p| gpu::GpuEdgeInfo {
             u: p.u as u32,
             v: p.v as u32,
@@ -140,12 +142,14 @@ impl Graph {
         }
         
         // Create pipeline
-        gpu_context.setup_compute_pipeline(gpu::GpuGraphParams {
+        let pipeline = gpu_context.setup_compute_pipeline(gpu::GpuGraphParams {
             etas: gpu_etas,
             positions: gpu_positions,
             pairs: gpu_pairs,
             pair_map,
-        })
+        })?;
+        
+        Ok((pipeline, initial_positions))
     }
 }
 

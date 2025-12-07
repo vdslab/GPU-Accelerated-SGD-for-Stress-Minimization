@@ -145,12 +145,32 @@ if __name__ == "__main__":
   print(f"stress (init) = {s0:.3f}")
   print(f"stress (after) = {s1:.3f}")
   
-  # Save results to file with timestamp (same format as vram-lock)
+  # Save initial positions (after randomization) to file with timestamp
   timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-  filename = f'output/python-sgd-{timestamp}.txt'
+  filename_init = f'output/python-sgd-{timestamp}-0.txt'
   
-  with open(filename, 'w') as f:
-    f.write("# Python Result (sgd_stress_nongpu.py)\n")
+  with open(filename_init, 'w') as f:
+    f.write("# Python Result (sgd_stress_nongpu.py) - Initial (Randomized)\n")
+    f.write(f"# Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+    f.write(f"# Node count: {H.number_of_nodes()}\n")
+    f.write(f"# Edge count: {H.number_of_edges()}\n")
+    f.write("\n")
+    f.write("# Edges (source target)\n")
+    for edge in H.edges():
+      f.write(f"{edge[0]} {edge[1]}\n")
+    f.write("\n")
+    f.write("# Positions (x y)\n")
+    for node in sorted(pos0.keys()):
+      x, y = pos0[node]
+      f.write(f"{x} {y}\n")
+  
+  print(f"Initial result saved to {filename_init}")
+  
+  # Save processed results to file with timestamp
+  filename_processed = f'output/python-sgd-{timestamp}-1.txt'
+  
+  with open(filename_processed, 'w') as f:
+    f.write("# Python Result (sgd_stress_nongpu.py) - Processed\n")
     f.write(f"# Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
     f.write(f"# Node count: {H.number_of_nodes()}\n")
     f.write(f"# Edge count: {H.number_of_edges()}\n")
@@ -164,7 +184,7 @@ if __name__ == "__main__":
       x, y = pos1[node]
       f.write(f"{x} {y}\n")
   
-  print(f"Result saved to {filename}")
+  print(f"Processed result saved to {filename_processed}")
 
   fig, axes = plt.subplots(1, 2, figsize=(30,10))
   axes[0].set_title(f"Initial (stress={s0:.2f})")
