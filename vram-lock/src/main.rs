@@ -22,38 +22,12 @@ fn main() -> Result<()> {
 
     // LOG: Print graph information
     println!("{:?}",graph);
-    // println!("Node size: {:?}", graph.node_size);
-    // println!("Edge size: {:?}", graph.edge_size);
-    // println!("Edge src: {:?}", graph.edge_src);
-    // println!("Edge dst: {:?}", graph.edge_dst);
-
-    let dist = graph::Graph::calc_dist_matrix(&graph);
-
-    // LOG: Print distance matrix
-    // println!("Dist matrix: {:?}", dist);
-
-    let (pairs, wmin, wmax) = graph::Graph::calc_edge_info(&graph, &dist);
-
-    let etas = graph::calc_learning_rate(15, wmin, wmax, 0.1);
-
-    // LOG: Print pairs and etas
-    // println!("pairs: {:?}", pairs);
-    // println!("Etas: {:?}", etas);
-
-    let positions = graph::init_positions_random(graph.node_size, true);
-
-    // LOG: Print positions
-    // println!("positions: {:?}", positions);
 
     // GPU setup
     let gpu_context = gpu::GpuContext::new()?;
 
-    // LOG: Print GPU context
-    // println!("GPU context: {:?}", gpu_context);
-
-    // Test computation
-    let data = vec![1.0f32, 2.0, 3.0, 4.0];
-    let pipeline = gpu::GpuContext::setup_compute_pipeline(&gpu_context, gpu::GpuParams { data })?;
+    // Create GPU pipeline
+    let pipeline = graph::Graph::create_gpu_pipeline(&graph, &gpu_context, 15, 0.1, true)?;
 
     // LOG: Print pipeline
     // println!("Pipeline: {:?}", pipeline);
