@@ -20,13 +20,6 @@ pub struct GpuGraphParams {
 }
 
 #[derive(Debug)]
-pub struct GpuDebugInfo {
-    pub val1:f32,
-    pub val2:f32,
-    pub val3:f32,
-}
-
-#[derive(Debug)]
 pub struct GpuPipeline {
     pub pipeline: wgpu::ComputePipeline,
     pub bind_group: wgpu::BindGroup,
