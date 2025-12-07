@@ -1,6 +1,7 @@
 mod gpu;
 mod graph;
 
+use std::path::Path;
 use anyhow::Result;
 use std::fs::File;
 use std::io::Write;
@@ -9,17 +10,17 @@ use chrono::Local;
 fn main() -> Result<()> {
     env_logger::init();
 
-    // let mtx_path = Path::new("../data/lesmis_pattern.mtx");
-    // let graph = graph::Graph::from_mtx(mtx_path).expect("Failed to load matrix");
+    let mtx_path = Path::new("../data/lesmis_pattern.mtx");
+    let graph = graph::Graph::from_mtx(mtx_path).expect("Failed to load matrix");
 
-    let graph = {
-        graph::Graph {
-            node_size: 10,
-            edge_size: 10,
-            edge_src: vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-            edge_dst: vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
-        }
-    };
+    // let graph = {
+    //     graph::Graph {
+    //         node_size: 10,
+    //         edge_size: 10,
+    //         edge_src: vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    //         edge_dst: vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
+    //     }
+    // };
 
     // LOG: Print graph information
     println!("{:?}",graph);
