@@ -7,6 +7,7 @@ import math
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
+from datetime import datetime
 
 def calc_adj_matrix(H):
   n = H.number_of_nodes()
@@ -143,6 +144,27 @@ if __name__ == "__main__":
   
   print(f"stress (init) = {s0:.3f}")
   print(f"stress (after) = {s1:.3f}")
+  
+  # Save results to file with timestamp (same format as vram-lock)
+  timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+  filename = f'output/python-sgd-{timestamp}.txt'
+  
+  with open(filename, 'w') as f:
+    f.write("# Python Result (sgd_stress_nongpu.py)\n")
+    f.write(f"# Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+    f.write(f"# Node count: {H.number_of_nodes()}\n")
+    f.write(f"# Edge count: {H.number_of_edges()}\n")
+    f.write("\n")
+    f.write("# Edges (source target)\n")
+    for edge in H.edges():
+      f.write(f"{edge[0]} {edge[1]}\n")
+    f.write("\n")
+    f.write("# Positions (x y)\n")
+    for node in sorted(pos1.keys()):
+      x, y = pos1[node]
+      f.write(f"{x} {y}\n")
+  
+  print(f"Result saved to {filename}")
 
   fig, axes = plt.subplots(1, 2, figsize=(30,10))
   axes[0].set_title(f"Initial (stress={s0:.2f})")
