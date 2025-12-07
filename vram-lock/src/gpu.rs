@@ -17,6 +17,7 @@ pub struct GpuGraphParams {
     pub etas: Vec<f32>,
     pub positions: Vec<[f32; 2]>,
     pub pairs: Vec<GpuEdgeInfo>,
+    pub pair_map: Vec<u32>,
 }
 
 #[derive(Debug)]
@@ -25,15 +26,17 @@ pub struct GpuPipeline {
     pub bind_group: wgpu::BindGroup,
 
     // Buffers
-    pub output_data_buffer: wgpu::Buffer,
+    pub positions_buffer: wgpu::Buffer,
     pub download_buffer: wgpu::Buffer,
     pub debug_info_buffer: wgpu::Buffer,
     pub debug_download_buffer: wgpu::Buffer,
     pub debug_pairs_buffer: wgpu::Buffer,
     pub debug_pairs_download_buffer: wgpu::Buffer,
     pub iteration_buffer: wgpu::Buffer,
+    pub pair_map_buffer: wgpu::Buffer,
     pub node_size: u32,
     pub num_iterations: u32,
+    pub num_pairs: u32,
 }
 
 #[derive(Debug)]
@@ -92,7 +95,7 @@ impl GpuContext {
             .create_buffer_init(&wgpu::util::BufferInitDescriptor {
                 label: Some("Positions Buffer"),
                 contents: bytemuck::cast_slice(&params.positions),
-                usage: wgpu::BufferUsages::STORAGE,
+                usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_SRC,
             });
 
         let pairs_buffer = self
@@ -100,6 +103,14 @@ impl GpuContext {
             .create_buffer_init(&wgpu::util::BufferInitDescriptor {
                 label: Some("Pairs Buffer"),
                 contents: bytemuck::cast_slice(&params.pairs),
+                usage: wgpu::BufferUsages::STORAGE,
+            });
+
+        let pair_map_buffer = self
+            .device
+            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("Pair Map Buffer"),
+                contents: bytemuck::cast_slice(&params.pair_map),
                 usage: wgpu::BufferUsages::STORAGE,
             });
 
@@ -248,6 +259,17 @@ impl GpuContext {
                             },
                             count: None,
                         },
+                        // Pair map buffer
+                        wgpu::BindGroupLayoutEntry {
+                            binding: 7,
+                            visibility: wgpu::ShaderStages::COMPUTE,
+                            ty: wgpu::BindingType::Buffer {
+                                ty: wgpu::BufferBindingType::Storage { read_only: true },
+                                min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                                has_dynamic_offset: false,
+                            },
+                            count: None,
+                        },
                     ],
                 });
 
@@ -283,6 +305,10 @@ impl GpuContext {
                     binding: 6,
                     resource: debug_pairs_buffer.as_entire_binding(),
                 },
+                wgpu::BindGroupEntry {
+                    binding: 7,
+                    resource: pair_map_buffer.as_entire_binding(),
+                },
             ],
         });
 
@@ -309,15 +335,17 @@ impl GpuContext {
         Ok(GpuPipeline {
             pipeline,
             bind_group,
-            output_data_buffer,
+            positions_buffer,
             download_buffer,
             debug_info_buffer,
             debug_download_buffer,
             debug_pairs_buffer,
             debug_pairs_download_buffer,
             iteration_buffer,
+            pair_map_buffer,
             node_size: params.positions.len() as u32,
             num_iterations: params.etas.len() as u32,
+            num_pairs: params.pairs.len() as u32,
         })
     }
 
@@ -326,6 +354,8 @@ impl GpuContext {
         let workgroup_size = 32u32;
         let workgroup_x = (p.node_size + workgroup_size - 1) / workgroup_size;
         let workgroup_y = (p.node_size + workgroup_size - 1) / workgroup_size;
+        
+        println!("Dispatching {}x{} workgroups for {} nodes ({} pairs)", workgroup_x, workgroup_y, p.node_size, p.num_pairs);
         
         for iteration in 0..p.num_iterations {
             // Update iteration buffer
@@ -344,6 +374,7 @@ impl GpuContext {
             compute_pass.set_pipeline(&p.pipeline);
             compute_pass.set_bind_group(0, &p.bind_group, &[]);
             
+            // Dispatch based on nodes (shader will filter threads)
             compute_pass.dispatch_workgroups(workgroup_x, workgroup_y, 1);
 
             drop(compute_pass);
@@ -378,9 +409,10 @@ impl GpuContext {
             self.device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
             let pairs_data = pairs_slice.get_mapped_range();
             let pairs_u32: &[u32] = bytemuck::cast_slice(&pairs_data);
-            let node2_partners: Vec<u32> = pairs_u32.to_vec();
+            let num_pairs = debug_floats[1] as usize;
+            let node2_partners: Vec<u32> = pairs_u32[..num_pairs.min(pairs_u32.len())].to_vec();
             
-            println!("Debug info: Iteration {}: val1={},node2 partners={:?}", iteration, debug_floats[0], node2_partners);
+            println!("Debug info: Iteration {}: val1={}, node2 partners={:?}", iteration, debug_floats[0], node2_partners);
             
             drop(debug_data);
             drop(pairs_data);
@@ -392,12 +424,13 @@ impl GpuContext {
         let mut encoder =
             self.device.create_command_encoder(&wgpu::CommandEncoderDescriptor { label: None });
 
+        // Copy positions_buffer (the one actually updated) to download_buffer
         encoder.copy_buffer_to_buffer(
-            &p.output_data_buffer,
+            &p.positions_buffer,
             0,
             &p.download_buffer,
             0,
-            p.output_data_buffer.size(),
+            p.positions_buffer.size(),
         );
 
         encoder.copy_buffer_to_buffer(
