@@ -2,8 +2,6 @@ mod gpu;
 mod graph;
 
 use anyhow::Result;
-use sprs::vec;
-use std::path::Path;
 use std::fs::File;
 use std::io::Write;
 use chrono::Local;
@@ -29,8 +27,8 @@ fn main() -> Result<()> {
     // GPU setup
     let gpu_context = gpu::GpuContext::new()?;
 
-    // Create GPU pipeline
-    let pipeline = graph::Graph::create_gpu_pipeline(&graph, &gpu_context, 15, 0.1, true)?;
+    // Create GPU pipeline and get initial positions
+    let (pipeline, initial_positions) = graph::Graph::create_gpu_pipeline(&graph, &gpu_context, 15, 0.1, true)?;
 
     // LOG: Print pipeline
     // println!("Pipeline: {:?}", pipeline);
@@ -40,11 +38,30 @@ fn main() -> Result<()> {
     // LOG: Print result
     println!("Result: {:?}", result);
     
-    // Save result to file with timestamp (including graph structure)
+    // Save initial positions (after randomization) to file with timestamp
     let timestamp = Local::now().format("%Y%m%d_%H%M%S");
-    let filename = format!("../output/vram-lock-{}.txt", timestamp);
-    let mut file = File::create(&filename)?;
-    writeln!(file, "# Rust GPU Result (vram-lock)")?;
+    let filename_init = format!("../output/vram-lock-{}-0.txt", timestamp);
+    let mut file = File::create(&filename_init)?;
+    writeln!(file, "# Rust GPU Result (vram-lock) - Initial (Randomized)")?;
+    writeln!(file, "# Timestamp: {}", Local::now().format("%Y-%m-%d %H:%M:%S"))?;
+    writeln!(file, "# Node count: {}", graph.node_size)?;
+    writeln!(file, "# Edge count: {}", graph.edge_size)?;
+    writeln!(file, "")?;
+    writeln!(file, "# Edges (source target)")?;
+    for i in 0..graph.edge_size {
+        writeln!(file, "{} {}", graph.edge_src[i], graph.edge_dst[i])?;
+    }
+    writeln!(file, "")?;
+    writeln!(file, "# Positions (x y)")?;
+    for pos in &initial_positions {
+        writeln!(file, "{} {}", pos[0], pos[1])?;
+    }
+    println!("Initial result saved to {}", filename_init);
+    
+    // Save processed result to file with timestamp
+    let filename_processed = format!("../output/vram-lock-{}-1.txt", timestamp);
+    let mut file = File::create(&filename_processed)?;
+    writeln!(file, "# Rust GPU Result (vram-lock) - Processed")?;
     writeln!(file, "# Timestamp: {}", Local::now().format("%Y-%m-%d %H:%M:%S"))?;
     writeln!(file, "# Node count: {}", graph.node_size)?;
     writeln!(file, "# Edge count: {}", graph.edge_size)?;
@@ -58,7 +75,7 @@ fn main() -> Result<()> {
     for pos in &result {
         writeln!(file, "{} {}", pos[0], pos[1])?;
     }
-    println!("Result saved to {}", filename);
+    println!("Processed result saved to {}", filename_processed);
 
     Ok(())
 }
