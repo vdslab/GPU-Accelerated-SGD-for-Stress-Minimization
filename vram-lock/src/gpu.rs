@@ -243,7 +243,7 @@ impl GpuContext {
         })
     }
 
-    pub fn execute_compute_pipeline(&self, p: GpuPipeline) -> Result<Vec<f32>> {
+    pub fn execute_compute_pipeline(&self, p: GpuPipeline) -> Result<Vec<[f32; 2]>> {
         // NOTE: Command encoder
         let mut encoder =
             self.device.create_command_encoder(&wgpu::CommandEncoderDescriptor { label: None });
@@ -295,8 +295,9 @@ impl GpuContext {
 
         // We can now read the data from the buffer.
         let data = buffer_slice.get_mapped_range();
-        // Convert the data back to a slice of f32.
-        let result: Vec<f32> = bytemuck::cast_slice(&data).to_vec();
+        // Convert the data to Vec<[f32; 2]>
+        let positions_data: &[[f32; 2]] = bytemuck::cast_slice(&data);
+        let result: Vec<[f32; 2]> = positions_data.to_vec();
 
         // Read debug info
         let debug_slice = p.debug_download_buffer.slice(..);
