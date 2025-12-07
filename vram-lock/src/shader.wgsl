@@ -17,14 +17,4 @@ var<storage, read_write> output: array<f32>;
 var<storage, read_write> debug: Debug;
 
 @compute @workgroup_size(32,32,1)
-fn copyToOutput(@builtin(global_invocation_id) global_id: vec3<u32>) {
-    let index = global_id.y * params.width + global_id.x;
-    let array_length = arrayLength(&input);
-    if (index >= array_length) {
-        return;
-    } 
-    debug.val1 = input[1];
-    debug.val2 = input[2];
-    debug.val3 = input[3];
-    output[index] = input[index];
-}
+fn sgd(@builtin(global_invocation_id) global_id: vec3<u32>) {}
