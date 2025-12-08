@@ -93,7 +93,7 @@ def visualize(filepath, output_image=None):
     # Visualize
     plt.figure(figsize=(12, 10))
     plt.title(f"vram-lock Result (stress={stress:.2f})")
-    nx.draw(G, pos_dict, node_size=30, width=0.8, with_labels=True, font_size=8)
+    nx.draw(G, pos_dict, node_size=5, width=0.5, with_labels=False)
     plt.axis("equal")
     
     if output_image:
