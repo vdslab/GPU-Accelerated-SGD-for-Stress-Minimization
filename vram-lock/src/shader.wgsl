@@ -5,12 +5,6 @@ struct EdgeInfo {
     wij: f32,
 }
 
-struct Debug {
-    val1: f32,
-    val2: f32,
-    val3: f32,
-}
-
 @group(0) @binding(0)
 var<storage, read> etas: array<f32>;
 
@@ -21,79 +15,90 @@ var<storage, read_write> positions: array<vec2<f32>>;
 var<storage, read> pairs: array<EdgeInfo>;
 
 @group(0) @binding(3)
-var<storage, read_write> debug: Debug;
-
-@group(0) @binding(4)
 var<uniform> iteration: u32;
 
-@group(0) @binding(5)
+@group(0) @binding(4)
 var<storage, read_write> locks: array<atomic<u32>>;
 
-@group(0) @binding(6)
-var<storage, read_write> debug_pairs: array<u32>;
-
-@group(0) @binding(7)
-var<storage, read> pair_map: array<u32>;
-
-// Debug helper function (called only by thread 0,0)
-fn log_debug_info() {
-    debug.val1 = f32(iteration);
-    
-    // Count pairs that involve node 2
-    let target_node = 2u;
-    var node2_pair_count = 0u;
-    
-    for (var idx = 0u; idx < arrayLength(&pairs); idx++) {
-        let p = pairs[idx];
-        var partner: u32 = 0xFFFFFFFFu;
-        
-        if (p.u == target_node) {
-            partner = p.v;
-        } else if (p.v == target_node) {
-            partner = p.u;
-        }
-        
-        if (partner != 0xFFFFFFFFu) {
-            debug_pairs[node2_pair_count] = partner;
-            node2_pair_count++;
-        }
-    }
-    
-    debug.val2 = f32(node2_pair_count);
+// Atomic lock helper functions (based on WebGPU best practices)
+fn try_lock(node: u32) -> bool {
+    // Try to swap 0 -> 1. If old value was 0, we got the lock
+    let old_value = atomicExchange(&locks[node], 1u);
+    return old_value == 0u;
 }
 
-@compute @workgroup_size(32,32,1)
-fn sgd(@builtin(global_invocation_id) global_id: vec3<u32>) {
+fn unlock(node: u32) {
+    atomicExchange(&locks[node], 0u);
+}
+
+fn acquire_locks(node1: u32, node2: u32) -> bool {
+    // Always lock in order: smaller index first (deadlock prevention)
+    let first = min(node1, node2);
+    let second = max(node1, node2);
+    
+    // Spin until both locks are acquired (with timeout for safety)
+    let max_retries = 1000000u;
+    for (var retry = 0u; retry < max_retries; retry++) {
+        if (try_lock(first)) {
+            if (try_lock(second)) {
+                return true;  // Both locks acquired successfully
+            } else {
+                unlock(first);  // Release first lock and retry
+            }
+        }
+        // Small yield to allow other workgroups to progress
+    }
+    
+    // Timeout (should be extremely rare with proper GPU parallelism)
+    return false;
+}
+
+fn release_locks(node1: u32, node2: u32) {
+    unlock(node1);
+    unlock(node2);
+}
+
+@compute @workgroup_size(32, 1, 1)
+fn sgd(@builtin(local_invocation_id) local_id: vec3<u32>,@builtin(workgroup_id) workgroup_id: vec3<u32>) {
     let node_size = arrayLength(&positions);
-    let i = global_id.y;
-    let j = global_id.x;
     
-    // Debug: Only thread (0,0) logs
-    if (global_id.x == 0u && global_id.y == 0u) {
-        log_debug_info();
-    }
+    // 1 workgroup = 32 threads (= 1 warp)
+    // each workgroup handles 1 pair
+    // use 2D dispatch to handle more pairs: pair_idx = y * 65535 + x
+    // only local_id.x == 0 does the work
+    let total_pairs = arrayLength(&pairs);
+    let pair_idx = workgroup_id.y * 65535u + workgroup_id.x;
     
-    // Early return if out of bounds or not upper triangle
-    if (i >= node_size || j >= node_size || i >= j) {
+    // only thread 0 in the workgroup does the work
+    if (local_id.x != 0u) {
         return;
     }
     
-    // Look up pair using pair_map (O(1) instead of O(n) scan)
-    let map_idx = i * node_size + j;
-    let pair_idx = pair_map[map_idx];
-    
-    // If pair not found (0xFFFFFFFF), return
-    if (pair_idx == 0xFFFFFFFFu) {
+    if (pair_idx >= total_pairs) {
         return;
     }
     
-    // Get pair information directly
     let pair = pairs[pair_idx];
+    let i = pair.u;
+    let j = pair.v;
+    
+    // Only process upper triangular matrix (i < j)
+    if (i >= j) {
+        return;
+    }
+    
     let dij = pair.dij;
     let wij = pair.wij;
     
     // Get learning rate for this iteration
     let eta = etas[iteration];
+    
+    // Acquire locks for both nodes (deadlock-free with retry limit)
+    if (!acquire_locks(i, j)) {
+        // Failed to acquire locks after max retries
+        // Skip this pair in this iteration
+        return;
+    }
     
     // SGD update (matching Python implementation)
     let tiny = 1e-12;
@@ -111,4 +116,7 @@ fn sgd(@builtin(global_invocation_id) global_id: vec3<u32>) {
     
     positions[i] += mu * r;
     positions[j] -= mu * r;
+    
+    // Release locks
+    release_locks(i, j);
 }

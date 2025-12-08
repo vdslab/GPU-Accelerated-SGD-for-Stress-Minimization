@@ -148,20 +148,11 @@ impl Graph {
             wij: p.wij as f32,
         }).collect();
         
-        // Create pair mapping: (i,j) -> pair_idx
-        // Use 0xFFFFFFFF for non-existent pairs
-        let mut pair_map = vec![0xFFFFFFFFu32; self.node_size * self.node_size];
-        for (idx, pair) in pairs.iter().enumerate() {
-            pair_map[pair.u * self.node_size + pair.v] = idx as u32;
-            pair_map[pair.v * self.node_size + pair.u] = idx as u32;
-        }
-        
         // Create pipeline
         let pipeline = gpu_context.setup_compute_pipeline(gpu::GpuGraphParams {
             etas: gpu_etas,
             positions: gpu_positions,
             pairs: gpu_pairs,
-            pair_map,
         })?;
         
         Ok((pipeline, initial_positions))
