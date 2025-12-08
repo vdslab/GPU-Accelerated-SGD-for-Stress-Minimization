@@ -27,9 +27,19 @@ impl Graph {
         let matrix: sprs::TriMat<Pattern> = read_matrix_market(path)?;
 
         let node_size: usize = matrix.rows();
-        let edge_size: usize = matrix.nnz();
-        let edge_src: Vec<usize> = matrix.row_inds().to_vec();
-        let edge_dst: Vec<usize> = matrix.col_inds().to_vec();
+        
+        // Filter out self-loops
+        let mut edge_src = Vec::new();
+        let mut edge_dst = Vec::new();
+        
+        for (row, col) in matrix.row_inds().iter().zip(matrix.col_inds().iter()) {
+            if row != col {
+                edge_src.push(*row);
+                edge_dst.push(*col);
+            }
+        }
+        
+        let edge_size = edge_src.len();
 
         Ok(Graph {
             node_size,
@@ -87,6 +97,11 @@ impl Graph {
                     continue;
                 }
 
+                // Skip unreachable nodes (distance == usize::MAX)
+                if dist[u][v] == usize::MAX {
+                    continue;
+                }
+
                 let dij = dist[u][v] as f64;
                 if dij <= 0.0 {
                     continue;
@@ -112,7 +127,7 @@ impl Graph {
         iterations: usize,
         epsilon: f64,
         center: bool,
-    ) -> Result<gpu::GpuPipeline> {
+    ) -> Result<(gpu::GpuPipeline, Vec<[f32; 2]>)> {
         let dist = self.calc_dist_matrix();
         let (pairs, wmin, wmax) = self.calc_edge_info(&dist);
 
@@ -124,6 +139,8 @@ impl Graph {
         // Convert to GPU data
         let gpu_etas: Vec<f32> = etas.iter().map(|&e| e as f32).collect();
         let gpu_positions: Vec<[f32; 2]> = positions.iter().map(|&p| [p[0] as f32, p[1] as f32]).collect();
+        let initial_positions = gpu_positions.clone();
+        
         let gpu_pairs: Vec<gpu::GpuEdgeInfo> = pairs.iter().map(|p| gpu::GpuEdgeInfo {
             u: p.u as u32,
             v: p.v as u32,
@@ -132,11 +149,13 @@ impl Graph {
         }).collect();
         
         // Create pipeline
-        gpu_context.setup_compute_pipeline(gpu::GpuGraphParams {
+        let pipeline = gpu_context.setup_compute_pipeline(gpu::GpuGraphParams {
             etas: gpu_etas,
             positions: gpu_positions,
             pairs: gpu_pairs,
-        })
+        })?;
+        
+        Ok((pipeline, initial_positions))
     }
 }
 
