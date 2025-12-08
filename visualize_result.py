@@ -67,7 +67,8 @@ def calc_stress(G, pos):
             xi, yi = pos[i]
             xj, yj = pos[j]
             euc = np.sqrt((xi-xj)**2 + (yi-yj)**2)
-            stress += (euc - dij)**2
+            wij = 1.0 / (dij * dij)
+            stress += wij * (euc - dij)**2
     return stress
 
 def visualize(filepath, output_image=None):
