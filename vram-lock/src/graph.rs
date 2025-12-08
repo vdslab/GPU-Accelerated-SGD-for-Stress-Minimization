@@ -27,9 +27,19 @@ impl Graph {
         let matrix: sprs::TriMat<Pattern> = read_matrix_market(path)?;
 
         let node_size: usize = matrix.rows();
-        let edge_size: usize = matrix.nnz();
-        let edge_src: Vec<usize> = matrix.row_inds().to_vec();
-        let edge_dst: Vec<usize> = matrix.col_inds().to_vec();
+        
+        // Filter out self-loops
+        let mut edge_src = Vec::new();
+        let mut edge_dst = Vec::new();
+        
+        for (row, col) in matrix.row_inds().iter().zip(matrix.col_inds().iter()) {
+            if row != col {
+                edge_src.push(*row);
+                edge_dst.push(*col);
+            }
+        }
+        
+        let edge_size = edge_src.len();
 
         Ok(Graph {
             node_size,
@@ -84,6 +94,11 @@ impl Graph {
         for u in 0..dist.len() {
             for v in 0..dist[u].len() {
                 if u >= v {
+                    continue;
+                }
+
+                // Skip unreachable nodes (distance == usize::MAX)
+                if dist[u][v] == usize::MAX {
                     continue;
                 }
 
