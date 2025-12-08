@@ -93,7 +93,7 @@ def sgd(H,dim=2,iterations=15,epsilon=0.1,seed=0,center=True):
   
   # NOTE: SGDを実行
   tiny = 1e-12
-  for eta in etas:
+  for iteration, eta in enumerate(etas):
     random.shuffle(pairs)
     for i,j,dij,wij in pairs:
       diff = X[j]-X[i]
@@ -107,6 +107,8 @@ def sgd(H,dim=2,iterations=15,epsilon=0.1,seed=0,center=True):
       mu = min(wij*eta,1.0)
       X[i] += mu*r
       X[j] -= mu*r
+      
+    print("Iteration: ", iteration+1)
       
   if center:
     X -= X.mean(axis=0,keepdims=True)
