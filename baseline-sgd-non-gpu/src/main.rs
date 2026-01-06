@@ -1,5 +1,5 @@
-mod gpu;
 mod graph;
+mod algorithm;
 
 use std::path::Path;
 use anyhow::Result;
@@ -10,7 +10,7 @@ use chrono::Local;
 fn main() -> Result<()> {
     env_logger::init();
 
-    let mtx_path = Path::new("../data/lesmis_pattern.mtx");
+    let mtx_path = Path::new("../data/bcspwr10.mtx");
     let graph = graph::Graph::from_mtx(mtx_path).expect("Failed to load matrix");
 
     // let graph = {
@@ -23,21 +23,14 @@ fn main() -> Result<()> {
     // };
 
     // LOG: Print graph information
-    println!("{:?}",graph);
-
-    // GPU setup
-    let gpu_context = gpu::GpuContext::new()?;
+    // println!("{:?}",graph);
 
     // CPU precompute
     let sgd_params = graph.prepare_sgd_params(15, 0.1, true);
+    // println!("{:?}", sgd_params);
+    let initial_positions = sgd_params.positions.clone();
 
-    // GPU: convert + create pipeline
-    let (pipeline, initial_positions) = gpu_context.create_pipeline_from_cpu_params(sgd_params)?;
-
-    // LOG: Print pipeline
-    // println!("Pipeline: {:?}", pipeline);
-
-    let result = gpu::GpuContext::execute_compute_pipeline(&gpu_context, pipeline)?;
+    let result = algorithm::execute_sgd(sgd_params);
 
     // LOG: Print result
     println!("Result: {:?}", result);

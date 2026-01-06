@@ -18,9 +18,10 @@ pub struct SgdParams {
     pub etas: Vec<f64>,
     pub positions: Vec<[f64; 2]>,
     pub pairs: Vec<EdgeInfo>,
+    pub center: bool,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct EdgeInfo {
     pub u: usize,
     pub v: usize,
@@ -145,6 +146,7 @@ impl Graph {
             etas,
             positions,
             pairs,
+            center,
         }
     }
 }
