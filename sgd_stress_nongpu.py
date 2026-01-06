@@ -4,6 +4,7 @@
 from collections import deque
 import random
 import math
+import time
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -177,8 +178,12 @@ if __name__ == "__main__":
   
   print(f"Graph: {H.number_of_nodes()} nodes, {H.number_of_edges()} edges")
   
+  sgd_start = time.perf_counter()
   pos0, pos1 = sgd(H,iterations=15,epsilon=0.1,seed=0)
 
+  sgd_end = time.perf_counter()
+  print(f"Time taken: {sgd_end-sgd_start}s")
+  
   s0 = calc_stress(H,pos0)
   s1 = calc_stress(H,pos1)
   
