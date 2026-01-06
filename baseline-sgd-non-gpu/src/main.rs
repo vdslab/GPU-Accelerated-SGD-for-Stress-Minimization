@@ -33,7 +33,7 @@ fn main() -> Result<()> {
     let result = algorithm::execute_sgd(sgd_params);
 
     // LOG: Print result
-    println!("Result: {:?}", result);
+    // println!("Result: {:?}", result);
     
     // Save initial positions (after randomization) to file with timestamp
     let timestamp = Local::now().format("%Y%m%d_%H%M%S");

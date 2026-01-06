@@ -23,7 +23,7 @@ fn main() -> Result<()> {
     // };
 
     // LOG: Print graph information
-    println!("{:?}",graph);
+    // println!("{:?}",graph);
 
     // GPU setup
     let gpu_context = gpu::GpuContext::new()?;
@@ -40,7 +40,7 @@ fn main() -> Result<()> {
     let result = gpu::GpuContext::execute_compute_pipeline(&gpu_context, pipeline)?;
 
     // LOG: Print result
-    println!("Result: {:?}", result);
+    // println!("Result: {:?}", result);
     
     // Save initial positions (after randomization) to file with timestamp
     let timestamp = Local::now().format("%Y%m%d_%H%M%S");
