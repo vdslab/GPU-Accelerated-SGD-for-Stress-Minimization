@@ -20,6 +20,12 @@ var<uniform> iteration: u32;
 @group(0) @binding(4)
 var<storage, read_write> locks: array<atomic<u32>>;
 
+@group(0) @binding(5)
+var<storage, read_write> updated_pairs: array<u32>;
+
+@group(0) @binding(6)
+var<storage, read_write> updated_count: atomic<u32>;
+
 // Atomic lock helper functions (based on WebGPU best practices)
 fn try_lock(node: u32) -> bool {
     // Try to swap 0 -> 1. If old value was 0, we got the lock
@@ -116,6 +122,10 @@ fn sgd(@builtin(local_invocation_id) local_id: vec3<u32>,@builtin(workgroup_id) 
     
     positions[i] += mu * r;
     positions[j] -= mu * r;
+    
+    // Record successfully updated pair
+    let idx = atomicAdd(&updated_count, 1u);
+    updated_pairs[idx] = pair_idx;
     
     // Release locks
     release_locks(i, j);

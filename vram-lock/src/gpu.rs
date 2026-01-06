@@ -31,6 +31,10 @@ pub struct GpuPipeline {
     pub iteration_buffer: wgpu::Buffer,
     #[allow(dead_code)]
     pub lock_buffer: wgpu::Buffer,  // Used by GPU shader for atomic locks
+    pub updated_pairs_buffer: wgpu::Buffer,
+    pub updated_count_buffer: wgpu::Buffer,
+    pub updated_pairs_download_buffer: wgpu::Buffer,
+    pub updated_count_download_buffer: wgpu::Buffer,
     pub node_size: u32,
     pub num_iterations: u32,
     pub num_pairs: u32,
@@ -128,6 +132,38 @@ impl GpuContext {
                 usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::COPY_SRC,
             });
 
+        // Updated pairs buffer (to track which pairs were successfully updated)
+        let updated_pairs_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("Updated Pairs Buffer"),
+            size: (params.pairs.len() * std::mem::size_of::<u32>()) as u64,
+            usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_SRC,
+            mapped_at_creation: false,
+        });
+
+        // Updated count buffer (atomic counter for number of updated pairs)
+        let updated_count_buffer = self
+            .device
+            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("Updated Count Buffer"),
+                contents: bytemuck::cast_slice(&[0u32]),
+                usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::COPY_SRC,
+            });
+
+        // Download buffers for reading back updated pairs info
+        let updated_pairs_download_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("Updated Pairs Download Buffer"),
+            size: updated_pairs_buffer.size(),
+            usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
+            mapped_at_creation: false,
+        });
+
+        let updated_count_download_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("Updated Count Download Buffer"),
+            size: updated_count_buffer.size(),
+            usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
+            mapped_at_creation: false,
+        });
+
         // NOTE: Bind group
         let bind_group_layout =
             self.device
@@ -189,6 +225,28 @@ impl GpuContext {
                             },
                             count: None,
                         },
+                        // Updated pairs buffer
+                        wgpu::BindGroupLayoutEntry {
+                            binding: 5,
+                            visibility: wgpu::ShaderStages::COMPUTE,
+                            ty: wgpu::BindingType::Buffer {
+                                ty: wgpu::BufferBindingType::Storage { read_only: false },
+                                min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                                has_dynamic_offset: false,
+                            },
+                            count: None,
+                        },
+                        // Updated count buffer
+                        wgpu::BindGroupLayoutEntry {
+                            binding: 6,
+                            visibility: wgpu::ShaderStages::COMPUTE,
+                            ty: wgpu::BindingType::Buffer {
+                                ty: wgpu::BufferBindingType::Storage { read_only: false },
+                                min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                                has_dynamic_offset: false,
+                            },
+                            count: None,
+                        },
                     ],
                 });
 
@@ -215,6 +273,14 @@ impl GpuContext {
                 wgpu::BindGroupEntry {
                     binding: 4,
                     resource: lock_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 5,
+                    resource: updated_pairs_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 6,
+                    resource: updated_count_buffer.as_entire_binding(),
                 },
             ],
         });
@@ -246,6 +312,10 @@ impl GpuContext {
             download_buffer,
             iteration_buffer,
             lock_buffer,
+            updated_pairs_buffer,
+            updated_count_buffer,
+            updated_pairs_download_buffer,
+            updated_count_download_buffer,
             node_size: params.positions.len() as u32,
             num_iterations: params.etas.len() as u32,
             num_pairs: params.pairs.len() as u32,
@@ -298,6 +368,9 @@ impl GpuContext {
         println!("Dispatching {}x{} workgroups (1 WG per pair, 32 threads per WG) for {} pairs on {} nodes", workgroup_count_x, workgroup_count_y, p.num_pairs, p.node_size);
         
         for iteration in 0..p.num_iterations {
+            // Reset updated_count to 0 at the beginning of each iteration
+            self.queue.write_buffer(&p.updated_count_buffer, 0, bytemuck::cast_slice(&[0u32]));
+            
             // Update iteration buffer
             self.queue.write_buffer(&p.iteration_buffer, 0, bytemuck::cast_slice(&[iteration]));
             
@@ -319,12 +392,50 @@ impl GpuContext {
 
             drop(compute_pass);
 
+            // Copy updated_count and updated_pairs to download buffers
+            encoder.copy_buffer_to_buffer(
+                &p.updated_count_buffer,
+                0,
+                &p.updated_count_download_buffer,
+                0,
+                p.updated_count_buffer.size(),
+            );
+
+            encoder.copy_buffer_to_buffer(
+                &p.updated_pairs_buffer,
+                0,
+                &p.updated_pairs_download_buffer,
+                0,
+                p.updated_pairs_buffer.size(),
+            );
+
             self.queue.submit([encoder.finish()]);
 
-            // Wait for GPU to complete this iteration before printing
+            // Wait for GPU to complete this iteration
             self.device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
             
-            println!("Iteration {}", iteration);
+            // Read back the updated count
+            let count_slice = p.updated_count_download_buffer.slice(..);
+            count_slice.map_async(wgpu::MapMode::Read, |_| {});
+            self.device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
+            
+            let count_data = count_slice.get_mapped_range();
+            let count: u32 = bytemuck::cast_slice::<u8, u32>(&count_data)[0];
+            drop(count_data);
+            p.updated_count_download_buffer.unmap();
+            
+            // Read back the updated pairs
+            let pairs_slice = p.updated_pairs_download_buffer.slice(..);
+            pairs_slice.map_async(wgpu::MapMode::Read, |_| {});
+            self.device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
+            
+            let pairs_data = pairs_slice.get_mapped_range();
+            let pairs: &[u32] = bytemuck::cast_slice(&pairs_data);
+            let updated_pairs: Vec<u32> = pairs[0..count as usize].to_vec();
+            drop(pairs_data);
+            p.updated_pairs_download_buffer.unmap();
+            
+            println!("Iteration {} - Updated {} pairs in order: {:?}", iteration, count, updated_pairs);
         }
         
         // NOTE: Download final results
