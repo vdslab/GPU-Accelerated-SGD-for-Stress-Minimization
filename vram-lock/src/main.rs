@@ -28,8 +28,11 @@ fn main() -> Result<()> {
     // GPU setup
     let gpu_context = gpu::GpuContext::new()?;
 
-    // Create GPU pipeline and get initial positions
-    let (pipeline, initial_positions) = graph::Graph::create_gpu_pipeline(&graph, &gpu_context, 15, 0.1, true)?;
+    // CPU precompute
+    let sgd_params = graph.prepare_sgd_params(15, 0.1, true);
+
+    // GPU: convert + create pipeline
+    let (pipeline, initial_positions) = gpu_context.create_pipeline_from_cpu_params(sgd_params)?;
 
     // LOG: Print pipeline
     // println!("Pipeline: {:?}", pipeline);

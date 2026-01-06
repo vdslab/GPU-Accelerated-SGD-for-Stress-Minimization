@@ -4,7 +4,6 @@ use sprs::io::read_matrix_market;
 use sprs::num_kinds::Pattern;
 use std::collections::VecDeque;
 use std::path::Path;
-use crate::gpu;
 
 #[derive(Debug)]
 pub struct Graph {
@@ -12,6 +11,13 @@ pub struct Graph {
     pub edge_size: usize,
     pub edge_src: Vec<usize>,
     pub edge_dst: Vec<usize>,
+}
+
+#[derive(Debug)]
+pub struct SgdParams {
+    pub etas: Vec<f64>,
+    pub positions: Vec<[f64; 2]>,
+    pub pairs: Vec<EdgeInfo>,
 }
 
 #[derive(Debug)]
@@ -121,41 +127,25 @@ impl Graph {
         (pairs, wmin, wmax)
     }
 
-    pub fn create_gpu_pipeline(
+    /// Precompute SGD parameters
+    pub fn prepare_sgd_params(
         &self,
-        gpu_context: &gpu::GpuContext,
         iterations: usize,
         epsilon: f64,
         center: bool,
-    ) -> Result<(gpu::GpuPipeline, Vec<[f32; 2]>)> {
+    ) -> SgdParams {
         let dist = self.calc_dist_matrix();
         let (pairs, wmin, wmax) = self.calc_edge_info(&dist);
 
         let etas = calc_learning_rate(iterations, wmin, wmax, epsilon);
 
         let positions = init_positions_random(self.node_size, center);
-        println!("positions: {:?}", positions);
-        
-        // Convert to GPU data
-        let gpu_etas: Vec<f32> = etas.iter().map(|&e| e as f32).collect();
-        let gpu_positions: Vec<[f32; 2]> = positions.iter().map(|&p| [p[0] as f32, p[1] as f32]).collect();
-        let initial_positions = gpu_positions.clone();
-        
-        let gpu_pairs: Vec<gpu::GpuEdgeInfo> = pairs.iter().map(|p| gpu::GpuEdgeInfo {
-            u: p.u as u32,
-            v: p.v as u32,
-            dij: p.dij as f32,
-            wij: p.wij as f32,
-        }).collect();
-        
-        // Create pipeline
-        let pipeline = gpu_context.setup_compute_pipeline(gpu::GpuGraphParams {
-            etas: gpu_etas,
-            positions: gpu_positions,
-            pairs: gpu_pairs,
-        })?;
-        
-        Ok((pipeline, initial_positions))
+
+        SgdParams {
+            etas,
+            positions,
+            pairs,
+        }
     }
 }
 

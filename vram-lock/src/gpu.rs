@@ -1,3 +1,4 @@
+use crate::graph;
 use anyhow::Result;
 use std::num::NonZeroU64;
 use wgpu::util::DeviceExt;
@@ -249,6 +250,41 @@ impl GpuContext {
             num_iterations: params.etas.len() as u32,
             num_pairs: params.pairs.len() as u32,
         })
+    }
+
+    /// Build a GPU pipeline from CPU-precomputed SGD parameters.
+    /// Conversion (f64 -> f32, struct packing) lives in GPU impl by design.
+    pub fn create_pipeline_from_cpu_params(
+        &self,
+        params: graph::SgdParams,
+    ) -> Result<(GpuPipeline, Vec<[f32; 2]>)> {
+        let gpu_etas: Vec<f32> = params.etas.into_iter().map(|e| e as f32).collect();
+
+        let gpu_positions: Vec<[f32; 2]> = params
+            .positions
+            .into_iter()
+            .map(|p| [p[0] as f32, p[1] as f32])
+            .collect();
+        let initial_positions = gpu_positions.clone();
+
+        let gpu_pairs: Vec<GpuEdgeInfo> = params
+            .pairs
+            .into_iter()
+            .map(|p| GpuEdgeInfo {
+                u: p.u as u32,
+                v: p.v as u32,
+                dij: p.dij as f32,
+                wij: p.wij as f32,
+            })
+            .collect();
+
+        let pipeline = self.setup_compute_pipeline(GpuGraphParams {
+            etas: gpu_etas,
+            positions: gpu_positions,
+            pairs: gpu_pairs,
+        })?;
+
+        Ok((pipeline, initial_positions))
     }
 
     pub fn execute_compute_pipeline(&self, p: GpuPipeline) -> Result<Vec<[f32; 2]>> {
