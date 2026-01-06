@@ -2,6 +2,7 @@ mod graph;
 mod algorithm;
 
 use std::path::Path;
+use std::time::Instant;
 use anyhow::Result;
 use std::fs::File;
 use std::io::Write;
@@ -30,7 +31,11 @@ fn main() -> Result<()> {
     // println!("{:?}", sgd_params);
     let initial_positions = sgd_params.positions.clone();
 
+    let start = Instant::now();
     let result = algorithm::execute_sgd(sgd_params);
+
+    let duration = start.elapsed();
+    println!("Time taken: {:?}", duration);
 
     // LOG: Print result
     // println!("Result: {:?}", result);

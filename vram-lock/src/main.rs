@@ -2,6 +2,7 @@ mod gpu;
 mod graph;
 
 use std::path::Path;
+use std::time::Instant;
 use anyhow::Result;
 use std::fs::File;
 use std::io::Write;
@@ -10,7 +11,7 @@ use chrono::Local;
 fn main() -> Result<()> {
     env_logger::init();
 
-    let mtx_path = Path::new("../data/lesmis_pattern.mtx");
+    let mtx_path = Path::new("../data/bcspwr10.mtx");
     let graph = graph::Graph::from_mtx(mtx_path).expect("Failed to load matrix");
 
     // let graph = {
@@ -37,7 +38,10 @@ fn main() -> Result<()> {
     // LOG: Print pipeline
     // println!("Pipeline: {:?}", pipeline);
 
+    let start = Instant::now();
     let result = gpu::GpuContext::execute_compute_pipeline(&gpu_context, pipeline)?;
+    let duration = start.elapsed();
+    println!("Time taken: {:?}", duration);
 
     // LOG: Print result
     // println!("Result: {:?}", result);
