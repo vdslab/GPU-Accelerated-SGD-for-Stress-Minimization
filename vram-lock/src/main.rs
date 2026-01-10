@@ -11,17 +11,17 @@ use chrono::Local;
 fn main() -> Result<()> {
     env_logger::init();
 
-    let mtx_path = Path::new("../data/bcspwr10.mtx");
-    let graph = graph::Graph::from_mtx(mtx_path).expect("Failed to load matrix");
+    // let mtx_path = Path::new("../data/bcspwr10.mtx");
+    // let graph = graph::Graph::from_mtx(mtx_path).expect("Failed to load matrix");
 
-    // let graph = {
-    //     graph::Graph {
-    //         node_size: 10,
-    //         edge_size: 10,
-    //         edge_src: vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    //         edge_dst: vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
-    //     }
-    // };
+    let graph = {
+        graph::Graph {
+            node_size: 10,
+            edge_size: 10,
+            edge_src: vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            edge_dst: vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
+        }
+    };
 
     // LOG: Print graph information
     // println!("{:?}",graph);
@@ -30,16 +30,16 @@ fn main() -> Result<()> {
     let gpu_context = gpu::GpuContext::new()?;
 
     // CPU precompute
-    let sgd_params = graph.prepare_sgd_params(15, 0.1, true);
+    let sgd_params = graph.prepare_sgd_params(1, 0.1, true);
 
     // GPU: convert + create pipeline
-    let (pipeline, initial_positions) = gpu_context.create_pipeline_from_cpu_params(sgd_params)?;
+    let (pipeline, initial_positions, pairs_info) = gpu_context.create_pipeline_from_cpu_params(sgd_params)?;
 
     // LOG: Print pipeline
     // println!("Pipeline: {:?}", pipeline);
 
     let start = Instant::now();
-    let result = gpu::GpuContext::execute_compute_pipeline(&gpu_context, pipeline)?;
+    let result = gpu::GpuContext::execute_compute_pipeline(&gpu_context, pipeline, &pairs_info)?;
     let duration = start.elapsed();
     println!("Time taken: {:?}", duration);
 

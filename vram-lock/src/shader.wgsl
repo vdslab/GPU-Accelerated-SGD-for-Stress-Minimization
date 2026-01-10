@@ -26,6 +26,9 @@ var<storage, read_write> updated_pairs: array<u32>;
 @group(0) @binding(6)
 var<storage, read_write> updated_count: atomic<u32>;
 
+@group(0) @binding(7)
+var<storage, read_write> positions_before: array<vec4<f32>>;  // Store [xi, yi, xj, yj] for each updated pair
+
 // Atomic lock helper functions (based on WebGPU best practices)
 fn try_lock(node: u32) -> bool {
     // Try to swap 0 -> 1. If old value was 0, we got the lock
@@ -106,6 +109,11 @@ fn sgd(@builtin(local_invocation_id) local_id: vec3<u32>,@builtin(workgroup_id) 
         return;
     }
     
+    // Record the pair index and positions BEFORE update (right after acquiring locks)
+    let record_idx = atomicAdd(&updated_count, 1u);
+    updated_pairs[record_idx] = pair_idx;
+    positions_before[record_idx] = vec4<f32>(positions[i].x, positions[i].y, positions[j].x, positions[j].y);
+    
     // SGD update (matching Python implementation)
     let tiny = 1e-12;
     var diff = positions[j] - positions[i];
@@ -122,10 +130,6 @@ fn sgd(@builtin(local_invocation_id) local_id: vec3<u32>,@builtin(workgroup_id) 
     
     positions[i] += mu * r;
     positions[j] -= mu * r;
-    
-    // Record successfully updated pair
-    let idx = atomicAdd(&updated_count, 1u);
-    updated_pairs[idx] = pair_idx;
     
     // Release locks
     release_locks(i, j);

@@ -33,8 +33,10 @@ pub struct GpuPipeline {
     pub lock_buffer: wgpu::Buffer,  // Used by GPU shader for atomic locks
     pub updated_pairs_buffer: wgpu::Buffer,
     pub updated_count_buffer: wgpu::Buffer,
+    pub positions_before_buffer: wgpu::Buffer,
     pub updated_pairs_download_buffer: wgpu::Buffer,
     pub updated_count_download_buffer: wgpu::Buffer,
+    pub positions_before_download_buffer: wgpu::Buffer,
     pub node_size: u32,
     pub num_iterations: u32,
     pub num_pairs: u32,
@@ -149,6 +151,14 @@ impl GpuContext {
                 usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::COPY_SRC,
             });
 
+        // Positions before buffer (to track positions right after acquiring locks)
+        let positions_before_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("Positions Before Buffer"),
+            size: (params.pairs.len() * std::mem::size_of::<[f32; 4]>()) as u64,  // vec4<f32> per pair
+            usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_SRC,
+            mapped_at_creation: false,
+        });
+
         // Download buffers for reading back updated pairs info
         let updated_pairs_download_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
             label: Some("Updated Pairs Download Buffer"),
@@ -160,6 +170,13 @@ impl GpuContext {
         let updated_count_download_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
             label: Some("Updated Count Download Buffer"),
             size: updated_count_buffer.size(),
+            usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
+            mapped_at_creation: false,
+        });
+
+        let positions_before_download_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("Positions Before Download Buffer"),
+            size: positions_before_buffer.size(),
             usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
             mapped_at_creation: false,
         });
@@ -247,6 +264,17 @@ impl GpuContext {
                             },
                             count: None,
                         },
+                        // Positions before buffer
+                        wgpu::BindGroupLayoutEntry {
+                            binding: 7,
+                            visibility: wgpu::ShaderStages::COMPUTE,
+                            ty: wgpu::BindingType::Buffer {
+                                ty: wgpu::BufferBindingType::Storage { read_only: false },
+                                min_binding_size: Some(NonZeroU64::new(16).unwrap()),  // vec4<f32> = 16 bytes
+                                has_dynamic_offset: false,
+                            },
+                            count: None,
+                        },
                     ],
                 });
 
@@ -282,6 +310,10 @@ impl GpuContext {
                     binding: 6,
                     resource: updated_count_buffer.as_entire_binding(),
                 },
+                wgpu::BindGroupEntry {
+                    binding: 7,
+                    resource: positions_before_buffer.as_entire_binding(),
+                },
             ],
         });
 
@@ -314,8 +346,10 @@ impl GpuContext {
             lock_buffer,
             updated_pairs_buffer,
             updated_count_buffer,
+            positions_before_buffer,
             updated_pairs_download_buffer,
             updated_count_download_buffer,
+            positions_before_download_buffer,
             node_size: params.positions.len() as u32,
             num_iterations: params.etas.len() as u32,
             num_pairs: params.pairs.len() as u32,
@@ -327,7 +361,7 @@ impl GpuContext {
     pub fn create_pipeline_from_cpu_params(
         &self,
         params: graph::SgdParams,
-    ) -> Result<(GpuPipeline, Vec<[f32; 2]>)> {
+    ) -> Result<(GpuPipeline, Vec<[f32; 2]>, Vec<GpuEdgeInfo>)> {
         let gpu_etas: Vec<f32> = params.etas.into_iter().map(|e| e as f32).collect();
 
         let gpu_positions: Vec<[f32; 2]> = params
@@ -347,6 +381,8 @@ impl GpuContext {
                 wij: p.wij as f32,
             })
             .collect();
+        
+        let pairs_copy = gpu_pairs.clone();
 
         let pipeline = self.setup_compute_pipeline(GpuGraphParams {
             etas: gpu_etas,
@@ -354,10 +390,10 @@ impl GpuContext {
             pairs: gpu_pairs,
         })?;
 
-        Ok((pipeline, initial_positions))
+        Ok((pipeline, initial_positions, pairs_copy))
     }
 
-    pub fn execute_compute_pipeline(&self, p: GpuPipeline) -> Result<Vec<[f32; 2]>> {
+    pub fn execute_compute_pipeline(&self, p: GpuPipeline, pairs_info: &[GpuEdgeInfo]) -> Result<Vec<[f32; 2]>> {
         // @workgroup_size(32,1,1): Each workgroup = 32 threads (= 1 warp)
         // Each workgroup processes one pair (only local_id.x == 0 does work)
         // Use 2D dispatch to handle more pairs (up to 65535 * 65535)
@@ -409,6 +445,14 @@ impl GpuContext {
                 p.updated_pairs_buffer.size(),
             );
 
+            encoder.copy_buffer_to_buffer(
+                &p.positions_before_buffer,
+                0,
+                &p.positions_before_download_buffer,
+                0,
+                p.positions_before_buffer.size(),
+            );
+
             self.queue.submit([encoder.finish()]);
 
             // Wait for GPU to complete this iteration
@@ -435,7 +479,27 @@ impl GpuContext {
             drop(pairs_data);
             p.updated_pairs_download_buffer.unmap();
             
-            println!("Iteration {} - Updated {} pairs in order: {:?}", iteration, count, updated_pairs);
+            // Read back the positions before update
+            let positions_before_slice = p.positions_before_download_buffer.slice(..);
+            positions_before_slice.map_async(wgpu::MapMode::Read, |_| {});
+            self.device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
+            
+            let positions_before_data = positions_before_slice.get_mapped_range();
+            let positions_before: &[[f32; 4]] = bytemuck::cast_slice(&positions_before_data);
+            
+            println!("Iteration {} - Updated {} pairs:", iteration, count);
+            for idx in 0..count as usize {
+                let pair_idx = updated_pairs[idx] as usize;
+                let pair = &pairs_info[pair_idx];
+                let pos_before = positions_before[idx];
+                println!("  pair[{}] (nodes {}-{}): pos[{}]=({:.4}, {:.4}), pos[{}]=({:.4}, {:.4})", 
+                    pair_idx, pair.u, pair.v, 
+                    pair.u, pos_before[0], pos_before[1], 
+                    pair.v, pos_before[2], pos_before[3]);
+            }
+            
+            drop(positions_before_data);
+            p.positions_before_download_buffer.unmap();
         }
         
         // NOTE: Download final results
