@@ -1066,6 +1066,7 @@ dependencies = [
  "env_logger",
  "pollster",
  "rand",
+ "rayon",
  "sprs",
  "wgpu",
 ]

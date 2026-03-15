@@ -1,5 +1,6 @@
 use anyhow::Result;
 use rand::Rng;
+use rayon::prelude::*;
 use sprs::io::read_matrix_market;
 use sprs::num_kinds::Pattern;
 use std::collections::VecDeque;
@@ -68,58 +69,72 @@ impl Graph {
     pub fn calc_dist_matrix(&self) -> Vec<Vec<usize>> {
         let adj = Self::calc_adj_matrix(self);
         let n = adj.len();
-        let mut dist_matrix = vec![vec![usize::MAX; n]; n];
 
-        // bfs
-        for i in 0..n {
-            let mut deq = VecDeque::new();
-            let mut seen = vec![false; n];
+        // 各ソースノード i からの BFS は独立しているため rayon で並列実行。
+        // スレッドごとに自分の dist_row を所有するので競合なし。
+        println!("BFS 並列実行中 ({} ノード, {} スレッド)...", n, rayon::current_num_threads());
+        (0..n)
+            .into_par_iter()
+            .map(|i| {
+                let mut dist_row = vec![usize::MAX; n];
+                let mut deq = VecDeque::new();
+                let mut seen = vec![false; n];
 
-            deq.push_back(i);
-            seen[i] = true;
-            dist_matrix[i][i] = 0;
+                dist_row[i] = 0;
+                deq.push_back(i);
+                seen[i] = true;
 
-            while let Some(v) = deq.pop_front() {
-                for &u in &adj[v] {
-                    if seen[u] {
-                        continue;
+                while let Some(v) = deq.pop_front() {
+                    for &u in &adj[v] {
+                        if !seen[u] {
+                            seen[u] = true;
+                            dist_row[u] = dist_row[v] + 1;
+                            deq.push_back(u);
+                        }
                     }
-                    deq.push_back(u);
-                    seen[u] = true;
-                    dist_matrix[i][u] = dist_matrix[i][v] + 1;
                 }
-            }
-        }
-        dist_matrix
+                dist_row
+            })
+            .collect()
     }
 
     pub fn calc_edge_info(&self, dist: &[Vec<usize>]) -> (Vec<EdgeInfo>, f64, f64) {
+        let n = dist.len();
+
+        // u 行ごとにスレッドを割り当て、各スレッドがローカルの pairs/dmin/dmax を持つ。
+        // 最後にメインスレッドで結果を統合する。
+        let row_results: Vec<(Vec<EdgeInfo>, f64, f64)> = (0..n)
+            .into_par_iter()
+            .map(|u| {
+                let mut local_pairs = Vec::new();
+                let mut dmin = f64::INFINITY;
+                let mut dmax = 0.0_f64;
+
+                for v in (u + 1)..n {
+                    if dist[u][v] == usize::MAX {
+                        continue;
+                    }
+                    let dij = dist[u][v] as f64;
+                    if dij <= 0.0 {
+                        continue;
+                    }
+                    let wij = 1.0 / (dij * dij);
+                    local_pairs.push(EdgeInfo { u, v, dij, wij });
+                    dmin = dmin.min(dij);
+                    dmax = dmax.max(dij);
+                }
+                (local_pairs, dmin, dmax)
+            })
+            .collect();
+
+        // 各行の結果を統合
         let mut pairs = Vec::new();
-        let mut dmin: f64 = f64::INFINITY;
-        let mut dmax: f64 = 0.0;
-
-        for u in 0..dist.len() {
-            for v in 0..dist[u].len() {
-                if u >= v {
-                    continue;
-                }
-
-                // Skip unreachable nodes (distance == usize::MAX)
-                if dist[u][v] == usize::MAX {
-                    continue;
-                }
-
-                let dij = dist[u][v] as f64;
-                if dij <= 0.0 {
-                    continue;
-                }
-
-                let wij = 1.0 / (dij * dij);
-                pairs.push(EdgeInfo { u, v, dij, wij });
-
-                dmin = dmin.min(dij);
-                dmax = dmax.max(dij);
-            }
+        let mut dmin = f64::INFINITY;
+        let mut dmax = 0.0_f64;
+        for (local_pairs, local_dmin, local_dmax) in row_results {
+            pairs.extend(local_pairs);
+            dmin = dmin.min(local_dmin);
+            dmax = dmax.max(local_dmax);
         }
 
         let wmin = 1.0 / (dmax * dmax);
