@@ -32,6 +32,8 @@ struct Uniforms {
 @group(0) @binding(3) var<storage, read>       block_lens : array<u32>;
 // binding 4: ラウンドごとのタイル割り当て。tiles[g] = vec2<u32>(i, j)
 @group(0) @binding(4) var<storage, read>       tiles      : array<vec2<u32>>;
+// binding 5: ケースA内側ループのオフセット順列（長さ T、ラウンドごとにシャッフル）
+@group(0) @binding(5) var<storage, read>       inner_perm : array<u32>;
 
 // ワークグループキャッシュ（各 1024×8 = 8KB, 合計 16KB < Metal 上限 32KB）
 var<workgroup> wg_pos_i : array<vec2<f32>, 1024>; // i側
@@ -71,11 +73,13 @@ fn sgd_rr(
         workgroupBarrier();
 
         // 内側サイクルアルゴリズム:
-        //   r_inner ごとに thread tx は j スロット b=(tx+r_inner)%lj を担当。
+        //   r_inner ごとに thread tx は j スロット b=(tx+offset)%lj を担当。
+        //   offset = inner_perm[r_inner]（ラウンドごとにシャッフルされた順列）
         //   tx ↦ b は lj 上の全単射 → 同一 r_inner 内に b への書き込みは1スレッドのみ。
         for (var r_inner = 0u; r_inner < lj; r_inner++) {
             if tx < li {
-                let b   = (tx + r_inner) % lj;
+                let offset = inner_perm[r_inner];
+                let b   = (tx + offset) % lj;
                 let gu  = i * BLOCK_T + tx;
                 let gv  = j * BLOCK_T + b;
                 let d   = dist_flat[gu * uniforms.n + gv];
