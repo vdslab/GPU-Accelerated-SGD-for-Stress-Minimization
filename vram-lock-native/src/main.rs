@@ -56,7 +56,8 @@ fn main() -> Result<()> {
     
     // Save initial positions (after randomization) to file with timestamp
     let timestamp = Local::now().format("%Y%m%d_%H%M%S");
-    let filename_init = format!("../output/vram-lock-{}-0.txt", timestamp);
+    let data_name = mtx_path.file_stem().unwrap_or_default().to_string_lossy();
+    let filename_init = format!("../output/vram-lock-{}-{}-0.txt", data_name, timestamp);
     let mut file = File::create(&filename_init)?;
     writeln!(file, "# Rust GPU Result (vram-lock) - Initial (Randomized)")?;
     writeln!(file, "# Timestamp: {}", Local::now().format("%Y-%m-%d %H:%M:%S"))?;
@@ -75,7 +76,7 @@ fn main() -> Result<()> {
     println!("Initial result saved to {}", filename_init);
     
     // Save processed result to file with timestamp
-    let filename_processed = format!("../output/vram-lock-{}-1.txt", timestamp);
+    let filename_processed = format!("../output/vram-lock-{}-{}-1.txt", data_name, timestamp);
     let mut file = File::create(&filename_processed)?;
     writeln!(file, "# Rust GPU Result (vram-lock) - Processed")?;
     writeln!(file, "# Timestamp: {}", Local::now().format("%Y-%m-%d %H:%M:%S"))?;
