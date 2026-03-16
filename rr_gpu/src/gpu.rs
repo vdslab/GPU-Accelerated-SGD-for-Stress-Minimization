@@ -1,6 +1,7 @@
 use crate::graph;
 use anyhow::Result;
 use bytemuck::{Pod, Zeroable};
+use rand::seq::SliceRandom;
 use std::num::NonZeroU64;
 use wgpu::util::DeviceExt;
 
@@ -198,6 +199,15 @@ impl GpuContext {
             mapped_at_creation: false,
         });
 
+        // inner_perm バッファ: ケースAの内側ループオフセット列（長さ T、u32 × T = 4KB）
+        // ラウンドごとに CPU でシャッフルして write_buffer で更新する
+        let perm_init: Vec<u32> = (0..T).collect();
+        let perm_buffer = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label:    Some("inner_perm"),
+            contents: bytemuck::cast_slice(&perm_init),
+            usage:    wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
+        });
+
         let download_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
             label:              Some("download"),
             size:               positions_buffer.size(),
@@ -266,6 +276,17 @@ impl GpuContext {
                     },
                     count: None,
                 },
+                // binding 5: inner_perm (read) — ケースA内側ループのオフセット順列
+                wgpu::BindGroupLayoutEntry {
+                    binding:    5,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty:                 wgpu::BufferBindingType::Storage { read_only: true },
+                        has_dynamic_offset: false,
+                        min_binding_size:   Some(NonZeroU64::new(4).unwrap()),
+                    },
+                    count: None,
+                },
             ],
         });
 
@@ -278,6 +299,7 @@ impl GpuContext {
                 wgpu::BindGroupEntry { binding: 2, resource: dist_buffer.as_entire_binding() },
                 wgpu::BindGroupEntry { binding: 3, resource: block_lens_buffer.as_entire_binding() },
                 wgpu::BindGroupEntry { binding: 4, resource: tiles_buffer.as_entire_binding() },
+                wgpu::BindGroupEntry { binding: 5, resource: perm_buffer.as_entire_binding() },
             ],
         });
 
@@ -301,18 +323,33 @@ impl GpuContext {
         println!("SGD 開始: iterations={}, rounds/iter={}", num_iterations, schedule.len());
 
         let iter_start = std::time::Instant::now();
+        let mut rng = rand::rng();
+
+        // 外側シャッフル用にスケジュールのインデックス列を用意
+        let mut round_order: Vec<usize> = (0..schedule.len()).collect();
 
         for iter in 0..num_iterations {
             let eta = etas[iter];
             let uni = Uniforms { n, eta, _pad: [0; 2] };
             self.queue.write_buffer(&uniforms_buffer, 0, bytemuck::bytes_of(&uni));
 
-            for round in &schedule {
+            // 外側ランダム: ラウンドの処理順をイテレーションごとにシャッフル
+            round_order.shuffle(&mut rng);
+
+            for &ri in &round_order {
+                let round = &schedule[ri];
+
                 // タイルバッファを今ラウンドの割り当てで更新
                 let tiles_flat: Vec<u32> = round.iter()
                     .flat_map(|&(ti, tj)| [ti, tj])
                     .collect();
                 self.queue.write_buffer(&tiles_buffer, 0, bytemuck::cast_slice(&tiles_flat));
+
+                // 内側ランダム: ケースAの内側ループオフセット列をラウンドごとにシャッフル
+                // inner_perm は [0..T) の順列。シェーダーで r_inner の代わりに使う。
+                let mut inner_perm: Vec<u32> = (0..T).collect();
+                inner_perm.shuffle(&mut rng);
+                self.queue.write_buffer(&perm_buffer, 0, bytemuck::cast_slice(&inner_perm));
 
                 let mut encoder = self.device.create_command_encoder(
                     &wgpu::CommandEncoderDescriptor { label: None },
