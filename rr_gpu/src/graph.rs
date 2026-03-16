@@ -1,6 +1,5 @@
 use anyhow::Result;
 use rand::Rng;
-use rayon::prelude::*;
 use sprs::io::read_matrix_market;
 use sprs::num_kinds::Pattern;
 use std::collections::VecDeque;
@@ -70,11 +69,8 @@ impl Graph {
         let adj = Self::calc_adj_matrix(self);
         let n = adj.len();
 
-        // 各ソースノード i からの BFS は独立しているため rayon で並列実行。
-        // スレッドごとに自分の dist_row を所有するので競合なし。
-        println!("BFS 並列実行中 ({} ノード, {} スレッド)...", n, rayon::current_num_threads());
+        println!("BFS 実行中 ({} ノード)...", n);
         (0..n)
-            .into_par_iter()
             .map(|i| {
                 let mut dist_row = vec![usize::MAX; n];
                 let mut deq = VecDeque::new();
@@ -101,10 +97,7 @@ impl Graph {
     pub fn calc_edge_info(&self, dist: &[Vec<usize>]) -> (Vec<EdgeInfo>, f64, f64) {
         let n = dist.len();
 
-        // u 行ごとにスレッドを割り当て、各スレッドがローカルの pairs/dmin/dmax を持つ。
-        // 最後にメインスレッドで結果を統合する。
         let row_results: Vec<(Vec<EdgeInfo>, f64, f64)> = (0..n)
-            .into_par_iter()
             .map(|u| {
                 let mut local_pairs = Vec::new();
                 let mut dmin = f64::INFINITY;
