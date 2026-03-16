@@ -11,7 +11,7 @@ use std::time::Instant;
 fn main() -> Result<()> {
     env_logger::init();
 
-    let mtx_path = Path::new("../data/bcsstm38.mtx");
+    let mtx_path = Path::new("../data/bcspwr08.mtx");
     let graph = graph::Graph::from_mtx(mtx_path).expect("MTX ファイルの読み込みに失敗しました");
 
     println!("グラフ読み込み完了: nodes={}, edges={}", graph.node_size, graph.edge_size);

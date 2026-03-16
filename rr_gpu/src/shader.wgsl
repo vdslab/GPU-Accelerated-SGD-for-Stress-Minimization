@@ -1,44 +1,48 @@
-// ラウンドロビン GPU SGD カーネル（T=1024 最適化版）
+// Bidirectional Round-Robin GPU SGD カーネル
 //
-// ブロックサイズ T=1024 により WG の 1024 スレッドを全て活用する。
-// B = ceil(n/1024) となり dispatch 数が T=32 版の約 1/32 に削減される。
+// スケジューリング変更点:
+//   旧: cyclic shift j=(g+r_outer)%B → 各ラウンドで各ブロックが2回登場 → 一方向更新のみ可能
+//   新: Berger 1-factorization      → 各ラウンドで各ブロックが高々1回 → 両側更新が安全
 //
 // ケースA (i != j): 異なるブロック間
-//   全1024スレッドで i側ポジションを wg_pos に並列ロード
-//   内側ラウンド r_inner (0..lj-1) を順番に処理（サイクルアルゴリズム）
-//     ラウンド r_inner: thread tx → pair (wg_pos[tx], positions[j*T+(tx+r_inner)%lj])
-//     各ラウンド後に workgroupBarrier()
-//   最後に wg_pos を positions に並列書き戻し
+//   wg_pos_i に i側、wg_pos_j に j側を並列ロード
+//   内側ラウンド r_inner (0..lj-1) を逐次実行（サイクルアルゴリズム）
+//     thread tx: pair (wg_pos_i[tx], wg_pos_j[(tx+r_inner)%lj])
+//     wg_pos_i[tx] += delta  （i側更新）
+//     wg_pos_j[b]  -= delta  （j側更新: b=(tx+r_inner)%lj はラウンド内で tx の全単射）
+//     → j スロット b を同時に書くスレッドは tx だけ → 競合なし
+//   最後に両バッファを positions に書き戻し
 //
-// ケースB (i == j): 同一ブロック内
-//   全スレッドで positions を wg_pos に並列ロード
-//   Berger テーブルのサイクルアルゴリズムで対称更新（最大1023ラウンド）
-//   ラウンド間は workgroupBarrier() で同期
-//   最後に wg_pos を positions に並列書き戻し
+// ケースB (i == j): 同一ブロック内（変更なし）
+//   Berger テーブルによる対称更新
 
 const BLOCK_T: u32 = 1024u;
 
 struct Uniforms {
-    r_outer : u32,
-    n       : u32,
-    big_b   : u32,
-    eta     : f32,
+    n   : u32,
+    eta : f32,
+    // r_outer / big_b は廃止。tiles バッファから (i,j) を受け取る。
+    pad0: u32,
+    pad1: u32,
 }
 
 @group(0) @binding(0) var<uniform>            uniforms   : Uniforms;
 @group(0) @binding(1) var<storage, read_write> positions  : array<vec2<f32>>;
 @group(0) @binding(2) var<storage, read>       dist_flat  : array<f32>;
 @group(0) @binding(3) var<storage, read>       block_lens : array<u32>;
+// binding 4: ラウンドごとのタイル割り当て。tiles[g] = vec2<u32>(i, j)
+@group(0) @binding(4) var<storage, read>       tiles      : array<vec2<u32>>;
 
-// ケースA・ケースBで排他的に共有する座標キャッシュ（8192 bytes = 8KB）
-var<workgroup> wg_pos : array<vec2<f32>, 1024>;
+// ワークグループキャッシュ（各 1024×8 = 8KB, 合計 16KB < Metal 上限 32KB）
+var<workgroup> wg_pos_i : array<vec2<f32>, 1024>; // i側
+var<workgroup> wg_pos_j : array<vec2<f32>, 1024>; // j側
 
 fn sgd_delta(pos_u: vec2<f32>, pos_v: vec2<f32>, d: f32, eta: f32) -> vec2<f32> {
-    let diff = pos_v - pos_u;
+    let diff     = pos_v - pos_u;
     let dist_cur = max(length(diff), 1e-12);
-    let r = ((dist_cur - d) / 2.0) * (diff / dist_cur);
-    let w = 1.0 / (d * d);
-    let mu = min(w * eta, 1.0);
+    let r        = ((dist_cur - d) / 2.0) * (diff / dist_cur);
+    let w        = 1.0 / (d * d);
+    let mu       = min(w * eta, 1.0);
     return mu * r;
 }
 
@@ -48,69 +52,62 @@ fn sgd_rr(
     @builtin(local_invocation_id) lid : vec3<u32>,
 ) {
     let g  = wg.x;
-    let i  = g;
-    let j  = (g + uniforms.r_outer) % uniforms.big_b;
+    // タイル割り当てを tiles バッファから読む
+    let tile = tiles[g];
+    let i  = tile.x;
+    let j  = tile.y;
     let li = block_lens[i];
     let lj = block_lens[j];
 
-    let tx = lid.x;  // 0..1023（全スレッド活動）
+    let tx = lid.x; // 0..1023
 
     // =========================================================
-    // ケースA: 異なるブロック間（一方向更新）
+    // ケースA: 異なるブロック間（両側更新）
     // =========================================================
     if i != j {
-        // --- i側を全1024スレッドで並列ロード ---
-        if tx < li {
-            wg_pos[tx] = positions[i * BLOCK_T + tx];
-        }
+        // 両側を並列ロード
+        if tx < li { wg_pos_i[tx] = positions[i * BLOCK_T + tx]; }
+        if tx < lj { wg_pos_j[tx] = positions[j * BLOCK_T + tx]; }
         workgroupBarrier();
 
-        // --- 内側ラウンドを順番に実行（サイクルアルゴリズム）---
-        // ラウンド r_inner: thread tx → pair (wg_pos[tx], positions[j*T+(tx+r_inner)%lj])
-        // 各ラウンド内で node u=i*T+tx を担当するのは thread tx のみ → 競合なし
-        // ラウンドをまたいで wg_pos[tx] が更新されるため逐次 SGD と等価
+        // 内側サイクルアルゴリズム:
+        //   r_inner ごとに thread tx は j スロット b=(tx+r_inner)%lj を担当。
+        //   tx ↦ b は lj 上の全単射 → 同一 r_inner 内に b への書き込みは1スレッドのみ。
         for (var r_inner = 0u; r_inner < lj; r_inner++) {
             if tx < li {
-                let b = (tx + r_inner) % lj;
-                let v = j * BLOCK_T + b;
-                let d = dist_flat[(i * BLOCK_T + tx) * uniforms.n + v];
+                let b   = (tx + r_inner) % lj;
+                let gu  = i * BLOCK_T + tx;
+                let gv  = j * BLOCK_T + b;
+                let d   = dist_flat[gu * uniforms.n + gv];
                 if d >= 0.5 {
-                    let delta = sgd_delta(wg_pos[tx], positions[v], d, uniforms.eta);
-                    wg_pos[tx] += delta;  // i側のみ更新（一方向）
+                    let delta = sgd_delta(wg_pos_i[tx], wg_pos_j[b], d, uniforms.eta);
+                    wg_pos_i[tx] += delta; // i側更新
+                    wg_pos_j[b]  -= delta; // j側更新（競合なし）
                 }
             }
-            workgroupBarrier();  // 各ラウンド後に全スレッドで同期
+            workgroupBarrier();
         }
 
-        // --- 書き戻し: wg_pos → positions ---
-        if tx < li {
-            positions[i * BLOCK_T + tx] = wg_pos[tx];
-        }
+        // 両側書き戻し
+        if tx < li { positions[i * BLOCK_T + tx] = wg_pos_i[tx]; }
+        if tx < lj { positions[j * BLOCK_T + tx] = wg_pos_j[tx]; }
 
         return;
     }
 
     // =========================================================
-    // ケースB: 同一ブロック内（サイクルアルゴリズム・対称更新）
+    // ケースB: 同一ブロック内（Berger テーブル・対称更新、変更なし）
     // =========================================================
 
-    // --- 全スレッドで positions を wg_pos に並列ロード ---
     if tx < li {
-        wg_pos[tx] = positions[i * BLOCK_T + tx];
+        wg_pos_i[tx] = positions[i * BLOCK_T + tx];
     }
     workgroupBarrier();
 
     let L     = li;
-    // L が奇数のときダミーノードを追加して偶数化
-    let L_eff : u32 = L + (L % 2u);
+    let L_eff : u32 = L + (L % 2u); // 奇数のときダミーを追加して偶数化
     let rounds: u32 = L_eff - 1u;
 
-    // Berger テーブル方式（最大1023ラウンド）:
-    //   固定ノード: L_eff-1
-    //   ラウンド r (0..rounds-1):
-    //     tx=0:   (L_eff-1, r)
-    //     tx=k>0: ((r+k)%(L_eff-1), (r+L_eff-1-k)%(L_eff-1))
-    //   1ラウンドあたり最大512スレッドが並列に担当ペアを処理
     for (var r = 0u; r < rounds; r++) {
         var lu: u32 = 0u;
         var lv: u32 = 0u;
@@ -126,22 +123,20 @@ fn sgd_rr(
             do_work = true;
         }
 
-        // lu, lv が有効ノード（ダミーではない）かチェック
         if do_work && lu < L && lv < L {
-            let gu = i * BLOCK_T + lu;
-            let gv = i * BLOCK_T + lv;
-            let d  = dist_flat[gu * uniforms.n + gv];
+            let gu    = i * BLOCK_T + lu;
+            let gv    = i * BLOCK_T + lv;
+            let d     = dist_flat[gu * uniforms.n + gv];
             if d >= 0.5 {
-                let delta = sgd_delta(wg_pos[lu], wg_pos[lv], d, uniforms.eta);
-                wg_pos[lu] += delta;
-                wg_pos[lv] -= delta;
+                let delta = sgd_delta(wg_pos_i[lu], wg_pos_i[lv], d, uniforms.eta);
+                wg_pos_i[lu] += delta;
+                wg_pos_i[lv] -= delta;
             }
         }
         workgroupBarrier();
     }
 
-    // --- 全スレッドで wg_pos → positions に並列書き戻し ---
     if tx < li {
-        positions[i * BLOCK_T + tx] = wg_pos[tx];
+        positions[i * BLOCK_T + tx] = wg_pos_i[tx];
     }
 }
