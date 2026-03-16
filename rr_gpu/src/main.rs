@@ -27,14 +27,18 @@ fn main() -> Result<()> {
     println!("合計時間: {:.3}s", duration.as_secs_f64());
 
     let timestamp = Local::now().format("%Y%m%d_%H%M%S");
+    let data_name = mtx_path
+        .file_stem()
+        .unwrap_or_default()
+        .to_string_lossy();
 
     // ---- 初期座標を保存 ----
-    let path_init = format!("../output/rr-gpu-{}-0.txt", timestamp);
+    let path_init = format!("../output/rr-gpu-{}-{}-0.txt", data_name, timestamp);
     save_result(&path_init, "rr-gpu - Initial (Randomized)", &graph, &init_pos)?;
     println!("初期座標を保存: {}", path_init);
 
     // ---- 最終座標を保存 ----
-    let path_final = format!("../output/rr-gpu-{}-1.txt", timestamp);
+    let path_final = format!("../output/rr-gpu-{}-{}-1.txt", data_name, timestamp);
     save_result(&path_final, "rr-gpu - Processed", &graph, &final_pos)?;
     println!("最終座標を保存: {}", path_final);
 
