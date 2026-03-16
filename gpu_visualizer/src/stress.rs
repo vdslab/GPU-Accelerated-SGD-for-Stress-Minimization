@@ -1,7 +1,7 @@
 use std::collections::VecDeque;
 
 /// Threshold above which stress computation is skipped (O(n²) memory/time).
-const MAX_N_FOR_STRESS: usize = 8_000;
+const MAX_N_FOR_STRESS: usize = usize::MAX;
 
 pub enum StressResult {
     Value(f64),
