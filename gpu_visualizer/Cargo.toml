@@ -1,0 +1,15 @@
+[package]
+name = "gpu-visualizer"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "gpu-visualizer"
+path = "src/main.rs"
+
+[dependencies]
+anyhow   = "1.0"
+bytemuck = { version = "1", features = ["derive"] }
+image    = "0.25"
+pollster = "0.4"
+wgpu     = "27"
