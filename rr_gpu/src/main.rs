@@ -11,20 +11,30 @@ use std::time::Instant;
 fn main() -> Result<()> {
     env_logger::init();
 
-    let mtx_path = Path::new("../data/bcspwr08.mtx");
+    let mtx_path = Path::new("../data/bcspwr10.mtx");
     let graph = graph::Graph::from_mtx(mtx_path).expect("MTX ファイルの読み込みに失敗しました");
 
     println!("グラフ読み込み完了: nodes={}, edges={}", graph.node_size, graph.edge_size);
 
+    let total_start = Instant::now();
+
     let sgd_params = graph.prepare_sgd_params(15, 0.1, true);
+    let num_iterations = sgd_params.etas.len();
 
     let ctx = gpu::GpuContext::new()?;
 
-    let start = Instant::now();
+    let sgd_start = Instant::now();
     let (init_pos, final_pos) = ctx.execute_sgd(sgd_params)?;
-    let duration = start.elapsed();
+    let sgd_duration = sgd_start.elapsed();
 
-    println!("合計時間: {:.3}s", duration.as_secs_f64());
+    let total_duration = total_start.elapsed();
+
+    println!("全体合計時間 (BFS+SGD): {:.3}s", total_duration.as_secs_f64());
+    println!(
+        "SGD時間 (GPU-CPU伝送含む): {:.3}s / iter平均: {:.1}ms",
+        sgd_duration.as_secs_f64(),
+        sgd_duration.as_secs_f64() / num_iterations as f64 * 1000.0
+    );
 
     let timestamp = Local::now().format("%Y%m%d_%H%M%S");
     let data_name = mtx_path

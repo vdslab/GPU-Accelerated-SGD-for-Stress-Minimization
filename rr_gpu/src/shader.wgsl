@@ -1,20 +1,21 @@
 // Bidirectional Round-Robin GPU SGD カーネル
 //
-// スケジューリング変更点:
-//   旧: cyclic shift j=(g+r_outer)%B → 各ラウンドで各ブロックが2回登場 → 一方向更新のみ可能
-//   新: Berger 1-factorization      → 各ラウンドで各ブロックが高々1回 → 両側更新が安全
+// 外側RR・内側RRは同じ構造:
+//   「全サブラウンドを inner_perm でランダム化した順に処理する」
 //
-// ケースA (i != j): 異なるブロック間
+//   外側RR (CPU): round_order.shuffle() → ラウンド（タイル）の処理順をイテレーションごとにシャッフル
+//   内側RR (GPU): inner_perm[s] % count → サブラウンドの処理順をラウンドごとにシャッフル
+//
+// ケースA (i != j): 異なるブロック間（両側更新）
 //   wg_pos_i に i側、wg_pos_j に j側を並列ロード
-//   内側ラウンド r_inner (0..lj-1) を逐次実行（サイクルアルゴリズム）
+//   内側RR: s=0..lj-1、r_inner = inner_perm[s] % lj の順でサブラウンドを処理
 //     thread tx: pair (wg_pos_i[tx], wg_pos_j[(tx+r_inner)%lj])
-//     wg_pos_i[tx] += delta  （i側更新）
-//     wg_pos_j[b]  -= delta  （j側更新: b=(tx+r_inner)%lj はラウンド内で tx の全単射）
-//     → j スロット b を同時に書くスレッドは tx だけ → 競合なし
+//     b=(tx+r_inner)%lj は tx の全単射 → j スロット b への書き込みは1スレッドのみ → 競合なし
 //   最後に両バッファを positions に書き戻し
 //
-// ケースB (i == j): 同一ブロック内（変更なし）
-//   Berger テーブルによる対称更新
+// ケースB (i == j): 同一ブロック内（サイクルアルゴリズム・対称更新）
+//   内側RR: s=0..rounds-1、r = inner_perm[s] % rounds の順でサブラウンドを処理
+//   ケースAと同じ構造、違いは lu==lv のペアをスキップするだけ
 
 const BLOCK_T: u32 = 1024u;
 
@@ -32,7 +33,7 @@ struct Uniforms {
 @group(0) @binding(3) var<storage, read>       block_lens : array<u32>;
 // binding 4: ラウンドごとのタイル割り当て。tiles[g] = vec2<u32>(i, j)
 @group(0) @binding(4) var<storage, read>       tiles      : array<vec2<u32>>;
-// binding 5: ケースA内側ループのオフセット順列（長さ T、ラウンドごとにシャッフル）
+// binding 5: 内側RRのサブラウンド処理順列（長さ T、ラウンドごとにシャッフル、ケースA・B共用）
 @group(0) @binding(5) var<storage, read>       inner_perm : array<u32>;
 
 // ワークグループキャッシュ（各 1024×8 = 8KB, 合計 16KB < Metal 上限 32KB）
@@ -72,14 +73,14 @@ fn sgd_rr(
         if tx < lj { wg_pos_j[tx] = positions[j * BLOCK_T + tx]; }
         workgroupBarrier();
 
-        // 内側サイクルアルゴリズム:
-        //   r_inner ごとに thread tx は j スロット b=(tx+offset)%lj を担当。
-        //   offset = inner_perm[r_inner]（ラウンドごとにシャッフルされた順列）
-        //   tx ↦ b は lj 上の全単射 → 同一 r_inner 内に b への書き込みは1スレッドのみ。
-        for (var r_inner = 0u; r_inner < lj; r_inner++) {
+        // 内側RR: s=0..lj-1 を inner_perm でランダム化した順にサブラウンドを処理
+        //   r_inner = inner_perm[s] % lj （処理するサブラウンドのインデックス）
+        //   thread tx: pair (wg_pos_i[tx], wg_pos_j[(tx+r_inner)%lj])
+        //   tx ↦ b は lj 上の全単射 → 同一サブラウンド内に b への書き込みは1スレッドのみ。
+        for (var s = 0u; s < lj; s++) {
             if tx < li {
-                let offset = inner_perm[r_inner];
-                let b   = (tx + offset) % lj;
+                let r_inner = inner_perm[s] % lj;
+                let b   = (tx + r_inner) % lj;
                 let gu  = i * BLOCK_T + tx;
                 let gv  = j * BLOCK_T + b;
                 let d   = dist_flat[gu * uniforms.n + gv];
@@ -100,7 +101,8 @@ fn sgd_rr(
     }
 
     // =========================================================
-    // ケースB: 同一ブロック内（Berger テーブル・対称更新、変更なし）
+    // ケースB: 同一ブロック内（サイクルアルゴリズム・対称更新）
+    // サブラウンド順を inner_perm でランダム化（ケースAと対称）
     // =========================================================
 
     if tx < li {
@@ -112,7 +114,8 @@ fn sgd_rr(
     let L_eff : u32 = L + (L % 2u); // 奇数のときダミーを追加して偶数化
     let rounds: u32 = L_eff - 1u;
 
-    for (var r = 0u; r < rounds; r++) {
+    for (var s = 0u; s < rounds; s++) {
+        let r = inner_perm[s] % rounds;
         var lu: u32 = 0u;
         var lv: u32 = 0u;
         var do_work: bool = false;

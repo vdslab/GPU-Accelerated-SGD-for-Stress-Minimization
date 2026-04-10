@@ -25,7 +25,7 @@ pub struct GpuContext {
 
 // ── スケジュール生成 ──────────────────────────────────────────────────────────
 
-/// Berger 1-factorization に基づくラウンドスケジュールを生成する。
+/// サイクルアルゴリズムに基づくラウンドスケジュールを生成する。
 ///
 /// 各ラウンドは独立なタイル集合（各ブロックが高々1回のみ登場）で構成されるため、
 /// 同一ラウンド内を並列 dispatch しても書き込み競合が発生しない。
@@ -49,7 +49,7 @@ pub fn build_schedule(big_b: u32) -> Vec<Vec<(u32, u32)>> {
         return rounds;
     }
 
-    // ── Cross-block タイル: Berger round-robin ──────────────────────────────
+    // ── サイクルアルゴリズム ──────────────────────────────
     // B が奇数のときダミーブロック B を追加して偶数化。
     // ダミーを含むペアは skip する。
     let b_eff = if b % 2 == 0 { b } else { b + 1 };
@@ -101,6 +101,8 @@ impl GpuContext {
                 .map_err(|e| anyhow::anyhow!("GPU アダプタが見つかりません: {:?}", e))?;
 
         println!("GPU: {} ({:?})", adapter.get_info().name, adapter.get_info().backend);
+        let limits = adapter.limits();
+        println!("max_compute_invocations_per_workgroup: {}", limits.max_compute_invocations_per_workgroup);
 
         let (device, queue) = pollster::block_on(adapter.request_device(
             &wgpu::DeviceDescriptor {
@@ -322,7 +324,6 @@ impl GpuContext {
         let num_iterations = etas.len();
         println!("SGD 開始: iterations={}, rounds/iter={}", num_iterations, schedule.len());
 
-        let iter_start = std::time::Instant::now();
         let mut rng = rand::rng();
 
         // 外側シャッフル用にスケジュールのインデックス列を用意
@@ -370,13 +371,6 @@ impl GpuContext {
 
             println!("iter {}/{} 完了 (eta={:.4})", iter + 1, num_iterations, eta);
         }
-
-        let elapsed = iter_start.elapsed();
-        println!(
-            "\nSGD 完了: 合計 {:.3}s / iter平均 {:.1}ms",
-            elapsed.as_secs_f64(),
-            elapsed.as_secs_f64() / num_iterations as f64 * 1000.0
-        );
 
         // ── 結果ダウンロード ───────────────────────────────────────────────────
         let mut encoder = self.device.create_command_encoder(
