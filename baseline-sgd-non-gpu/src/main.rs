@@ -11,7 +11,7 @@ use chrono::Local;
 fn main() -> Result<()> {
     env_logger::init();
 
-    let mtx_path = Path::new("../data/bcspwr10.mtx");
+    let mtx_path = Path::new("../data/USpowerGrid.mtx");
     let graph = graph::Graph::from_mtx(mtx_path).expect("Failed to load matrix");
 
     // let graph = {
