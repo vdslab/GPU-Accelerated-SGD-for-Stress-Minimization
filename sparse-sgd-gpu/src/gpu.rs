@@ -219,6 +219,7 @@ impl GpuContext {
         let mut pivot_permutation: Vec<u32> = (0..h as u32).collect();
         let mut round_order: Vec<usize> = (0..schedule.round_count()).collect();
         for (iteration, &eta) in params.etas.iter().enumerate() {
+            println!("{}", iteration_log(iteration));
             pivot_permutation.shuffle(&mut rng);
             round_order.shuffle(&mut rng);
             self.queue.write_buffer(
@@ -359,6 +360,10 @@ impl GpuContext {
     }
 }
 
+fn iteration_log(iteration: usize) -> String {
+    format!("Iteration: {}", iteration + 1)
+}
+
 fn buffer_layout(
     binding: u32,
     ty: wgpu::BufferBindingType,
@@ -387,6 +392,12 @@ mod tests {
     #[test]
     fn uniform_has_wgsl_compatible_size() {
         assert_eq!(std::mem::size_of::<Uniforms>(), 32);
+    }
+
+    #[test]
+    fn iteration_log_is_one_based() {
+        assert_eq!(iteration_log(0), "Iteration: 1");
+        assert_eq!(iteration_log(2), "Iteration: 3");
     }
 
     #[test]

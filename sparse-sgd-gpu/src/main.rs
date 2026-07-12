@@ -27,7 +27,7 @@ impl Default for Config {
             input: PathBuf::from("../data/luxembourg_osm.mtx"),
             output_dir: PathBuf::from("../output"),
             iterations: 15,
-            pivot_count: 200,
+            pivot_count: 50,
             epsilon: 0.1,
             seed: 0,
             center: true,
