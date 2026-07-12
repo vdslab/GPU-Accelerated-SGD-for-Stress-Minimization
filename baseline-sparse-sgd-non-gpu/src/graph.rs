@@ -1,5 +1,4 @@
 use anyhow::{anyhow, bail, Context, Result};
-use rand::prelude::IndexedRandom;
 use rand::Rng;
 use std::collections::{BTreeMap, HashSet, VecDeque};
 use std::fs::File;
@@ -20,10 +19,11 @@ pub struct EdgeInfo {
     pub u: usize,
     pub v: usize,
     pub dij: f64,
-    pub wij: f64,
+    pub weight_u: f64,
+    pub weight_v: f64,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct SgdParams {
     pub etas: Vec<f64>,
     pub positions: Vec<[f64; 2]>,
@@ -155,6 +155,10 @@ impl Graph {
         &self.adjacency[vertex]
     }
 
+    pub fn has_edge(&self, u: usize, v: usize) -> bool {
+        self.adjacency[u].binary_search(&v).is_ok()
+    }
+
     pub fn shortest_path_distances(&self, start: usize) -> Vec<usize> {
         assert!(start < self.node_size, "始点が頂点数の範囲外です");
         let mut distances = vec![usize::MAX; self.node_size];
@@ -174,63 +178,122 @@ impl Graph {
         distances
     }
 
-    pub fn select_pivots<R: Rng + ?Sized>(&self, h: usize, rng: &mut R) -> Vec<usize> {
+    pub fn ensure_connected(&self) -> Result<()> {
+        if self.node_size == 0 {
+            bail!("空のグラフでは Sparse SGD を実行できません");
+        }
+        let distances = self.shortest_path_distances(0);
+        let reached = distances
+            .iter()
+            .filter(|&&distance| distance != usize::MAX)
+            .count();
+        if reached != self.node_size {
+            bail!(
+                "Sparse SGD には連結グラフが必要です: 到達頂点数={reached}, 全頂点数={}",
+                self.node_size
+            );
+        }
+        Ok(())
+    }
+
+    fn select_pivots_with_distances<R: Rng + ?Sized>(
+        &self,
+        h: usize,
+        rng: &mut R,
+    ) -> Result<(Vec<usize>, Vec<Vec<usize>>)> {
         let target = h.min(self.node_size);
         if target == 0 {
-            return Vec::new();
+            bail!("pivot 数は1以上である必要があります");
         }
 
         let first = rng.random_range(0..self.node_size);
         let mut pivots = vec![first];
-        let mut selected = vec![false; self.node_size];
-        selected[first] = true;
-        let mut nearest_distance = self.shortest_path_distances(first);
+        let first_distances = self.shortest_path_distances(first);
+        let mut nearest_distance = first_distances.clone();
+        let mut pivot_distances = vec![first_distances];
 
         while pivots.len() < target {
-            let maximum = (0..self.node_size)
-                .filter(|&vertex| !selected[vertex])
-                .map(|vertex| nearest_distance[vertex])
-                .max()
-                .expect("未選択頂点が存在する必要があります");
-            let candidates: Vec<_> = (0..self.node_size)
-                .filter(|&vertex| !selected[vertex] && nearest_distance[vertex] == maximum)
-                .collect();
-            let next = *candidates
-                .choose(rng)
-                .expect("max-min 候補が存在する必要があります");
+            let total = nearest_distance.iter().try_fold(0_u64, |sum, &distance| {
+                let distance = u64::try_from(distance)
+                    .map_err(|_| anyhow!("最短路距離を u64 に変換できません"))?;
+                sum.checked_add(distance)
+                    .ok_or_else(|| anyhow!("pivot sampling の距離合計が大きすぎます"))
+            })?;
+            if total == 0 {
+                bail!("未選択 pivot の距離重みがありません");
+            }
 
-            selected[next] = true;
+            let mut ticket = rng.random_range(0..total);
+            let mut next = None;
+            for (vertex, &distance) in nearest_distance.iter().enumerate() {
+                let weight = distance as u64;
+                if ticket < weight {
+                    next = Some(vertex);
+                    break;
+                }
+                ticket -= weight;
+            }
+            let next = next.ok_or_else(|| anyhow!("pivot の weighted sampling に失敗しました"))?;
+
             pivots.push(next);
             let distances = self.shortest_path_distances(next);
-            for (nearest, distance) in nearest_distance.iter_mut().zip(distances) {
+            for (nearest, &distance) in nearest_distance.iter_mut().zip(&distances) {
                 *nearest = (*nearest).min(distance);
             }
+            pivot_distances.push(distances);
         }
-        pivots
+
+        Ok((pivots, pivot_distances))
     }
 
-    pub fn build_sparse_constraints(&self, pivots: &[usize]) -> Result<Vec<EdgeInfo>> {
+    fn build_sparse_constraints_from_distances(
+        &self,
+        pivots: &[usize],
+        pivot_distances: &[Vec<usize>],
+    ) -> Result<Vec<EdgeInfo>> {
+        if pivots.len() != pivot_distances.len() || pivots.is_empty() {
+            bail!("pivot と距離配列の数が一致しません");
+        }
+        if pivot_distances
+            .iter()
+            .any(|distances| distances.len() != self.node_size)
+        {
+            bail!("pivot 距離配列の頂点数が一致しません");
+        }
+
+        let regions = assign_regions(pivot_distances, self.node_size)?;
+        let prefix_counts = region_distance_prefix_counts(pivot_distances, &regions)?;
         let mut constraints = BTreeMap::new();
 
-        for &pivot in pivots {
-            if pivot >= self.node_size {
-                bail!("pivot が頂点数の範囲外です: {pivot}");
-            }
-            for (vertex, distance) in self.shortest_path_distances(pivot).into_iter().enumerate() {
-                if vertex == pivot || distance == usize::MAX {
+        for (pivot_index, &pivot) in pivots.iter().enumerate() {
+            let distances = &pivot_distances[pivot_index];
+            for (vertex, &distance) in distances.iter().enumerate() {
+                if vertex == pivot || self.has_edge(vertex, pivot) {
                     continue;
                 }
+                if distance == usize::MAX || distance == 0 {
+                    bail!("連結グラフに有限でない pivot 距離があります");
+                }
+
+                let s_ip = prefix_counts[pivot_index][distance / 2];
                 let dij = distance as f64;
+                let weight = s_ip as f64 / (dij * dij);
                 let (u, v) = canonical_pair(vertex, pivot);
-                constraints.insert(
-                    (u, v),
-                    EdgeInfo {
-                        u,
-                        v,
-                        dij,
-                        wij: 1.0 / (dij * dij),
-                    },
-                );
+                let pair = constraints.entry((u, v)).or_insert(EdgeInfo {
+                    u,
+                    v,
+                    dij,
+                    weight_u: 0.0,
+                    weight_v: 0.0,
+                });
+                if (pair.dij - dij).abs() > f64::EPSILON {
+                    bail!("同じ頂点対で目標距離が一致しません");
+                }
+                if vertex == u {
+                    pair.weight_u = weight;
+                } else {
+                    pair.weight_v = weight;
+                }
             }
         }
 
@@ -242,7 +305,8 @@ impl Graph {
                     u,
                     v,
                     dij: 1.0,
-                    wij: 1.0,
+                    weight_u: 1.0,
+                    weight_v: 1.0,
                 },
             );
         }
@@ -258,8 +322,9 @@ impl Graph {
         center: bool,
         rng: &mut R,
     ) -> Result<SgdParams> {
-        let pivots = self.select_pivots(h, rng);
-        let pairs = self.build_sparse_constraints(&pivots)?;
+        self.ensure_connected()?;
+        let (pivots, pivot_distances) = self.select_pivots_with_distances(h, rng)?;
+        let pairs = self.build_sparse_constraints_from_distances(&pivots, &pivot_distances)?;
         let (wmin, wmax) = positive_weight_range(&pairs)?;
         let etas = calc_learning_rate(iterations, wmin, wmax, epsilon)?;
         let positions = init_positions_random(self.node_size, center, rng);
@@ -274,6 +339,55 @@ impl Graph {
     }
 }
 
+fn assign_regions(pivot_distances: &[Vec<usize>], node_size: usize) -> Result<Vec<usize>> {
+    if pivot_distances.is_empty() {
+        bail!("領域割当に pivot が必要です");
+    }
+    let mut regions = vec![0; node_size];
+    for vertex in 0..node_size {
+        let mut best_distance = usize::MAX;
+        let mut best_pivot = 0;
+        for (pivot_index, distances) in pivot_distances.iter().enumerate() {
+            let distance = distances[vertex];
+            if distance < best_distance {
+                best_distance = distance;
+                best_pivot = pivot_index;
+            }
+        }
+        if best_distance == usize::MAX {
+            bail!("どの pivot からも到達できない頂点があります: {vertex}");
+        }
+        regions[vertex] = best_pivot;
+    }
+    Ok(regions)
+}
+
+fn region_distance_prefix_counts(
+    pivot_distances: &[Vec<usize>],
+    regions: &[usize],
+) -> Result<Vec<Vec<usize>>> {
+    let mut prefix_counts = Vec::with_capacity(pivot_distances.len());
+    for (pivot_index, distances) in pivot_distances.iter().enumerate() {
+        let max_distance = distances
+            .iter()
+            .copied()
+            .filter(|&distance| distance != usize::MAX)
+            .max()
+            .ok_or_else(|| anyhow!("pivot 距離が空です"))?;
+        let mut counts = vec![0_usize; max_distance + 1];
+        for (vertex, &region) in regions.iter().enumerate() {
+            if region == pivot_index {
+                counts[distances[vertex]] += 1;
+            }
+        }
+        for distance in 1..counts.len() {
+            counts[distance] += counts[distance - 1];
+        }
+        prefix_counts.push(counts);
+    }
+    Ok(prefix_counts)
+}
+
 fn canonical_pair(u: usize, v: usize) -> (usize, usize) {
     if u < v {
         (u, v)
@@ -285,10 +399,10 @@ fn canonical_pair(u: usize, v: usize) -> (usize, usize) {
 pub fn positive_weight_range(pairs: &[EdgeInfo]) -> Result<(f64, f64)> {
     let mut wmin = f64::INFINITY;
     let mut wmax: f64 = 0.0;
-    for pair in pairs {
-        if pair.wij.is_finite() && pair.wij > 0.0 {
-            wmin = wmin.min(pair.wij);
-            wmax = wmax.max(pair.wij);
+    for weight in pairs.iter().flat_map(|pair| [pair.weight_u, pair.weight_v]) {
+        if weight.is_finite() && weight > 0.0 {
+            wmin = wmin.min(weight);
+            wmax = wmax.max(weight);
         }
     }
     if !wmin.is_finite() || wmax == 0.0 {
@@ -395,63 +509,92 @@ mod tests {
     }
 
     #[test]
-    fn bfs_marks_unreachable_vertices() {
+    fn bfs_marks_unreachable_vertices_and_connectivity_rejects_graph() {
         let graph = graph(5, &[(0, 1), (1, 2), (3, 4)]);
         assert_eq!(
             graph.shortest_path_distances(0),
             vec![0, 1, 2, usize::MAX, usize::MAX]
         );
+        assert!(graph.ensure_connected().is_err());
     }
 
     #[test]
-    fn max_min_pivots_are_unique_clamped_and_cover_components() {
-        let graph = graph(5, &[(0, 1), (1, 2), (3, 4)]);
-        let mut rng = StdRng::seed_from_u64(7);
-        let pivots = graph.select_pivots(99, &mut rng);
-        let unique: HashSet<_> = pivots.iter().copied().collect();
-        assert_eq!(pivots.len(), 5);
-        assert_eq!(unique.len(), 5);
-
-        let first_component = pivots[0] <= 2;
-        let second_component = pivots[1] <= 2;
-        assert_ne!(first_component, second_component);
+    fn distance_weighted_pivots_are_unique_clamped_and_reproducible() {
+        let graph = graph(7, &[(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)]);
+        let mut first_rng = StdRng::seed_from_u64(7);
+        let mut second_rng = StdRng::seed_from_u64(7);
+        let first = graph
+            .select_pivots_with_distances(99, &mut first_rng)
+            .unwrap()
+            .0;
+        let second = graph
+            .select_pivots_with_distances(99, &mut second_rng)
+            .unwrap()
+            .0;
+        let unique: HashSet<_> = first.iter().copied().collect();
+        assert_eq!(first, second);
+        assert_eq!(first.len(), 7);
+        assert_eq!(unique.len(), 7);
     }
 
     #[test]
-    fn sparse_constraints_are_deduplicated_and_edges_have_unit_distance() {
-        let graph = graph(4, &[(0, 1), (1, 2), (2, 3), (1, 0)]);
-        let constraints = graph.build_sparse_constraints(&[0, 3]).unwrap();
-        assert_eq!(constraints.len(), 6);
-        assert_eq!(
-            constraints.iter().find(|pair| (pair.u, pair.v) == (0, 1)),
-            Some(&EdgeInfo {
-                u: 0,
-                v: 1,
-                dij: 1.0,
-                wij: 1.0
-            })
-        );
-        let long = constraints
+    fn regions_use_early_pivot_for_ties_and_prefix_counts_match_formula() {
+        let graph = graph(5, &[(0, 1), (1, 2), (2, 3), (3, 4)]);
+        let distances = vec![
+            graph.shortest_path_distances(0),
+            graph.shortest_path_distances(4),
+        ];
+        let regions = assign_regions(&distances, 5).unwrap();
+        assert_eq!(regions, vec![0, 0, 0, 1, 1]);
+        let prefix = region_distance_prefix_counts(&distances, &regions).unwrap();
+        assert_eq!(prefix[0][1], 2);
+        assert_eq!(prefix[0][2], 3);
+        assert_eq!(prefix[1][1], 2);
+    }
+
+    #[test]
+    fn sparse_constraints_have_region_corrected_directional_weights() {
+        let graph = graph(5, &[(0, 1), (1, 2), (2, 3), (3, 4)]);
+        let pivot_distances = vec![
+            graph.shortest_path_distances(0),
+            graph.shortest_path_distances(4),
+        ];
+        let constraints = graph
+            .build_sparse_constraints_from_distances(&[0, 4], &pivot_distances)
+            .unwrap();
+
+        let edge = constraints
+            .iter()
+            .find(|pair| (pair.u, pair.v) == (1, 2))
+            .unwrap();
+        assert_eq!((edge.dij, edge.weight_u, edge.weight_v), (1.0, 1.0, 1.0));
+
+        let vertex_pivot = constraints
             .iter()
             .find(|pair| (pair.u, pair.v) == (0, 3))
             .unwrap();
-        assert_eq!(long.dij, 3.0);
-        assert!((long.wij - 1.0 / 9.0).abs() < 1e-12);
-    }
+        assert!((vertex_pivot.weight_u - 0.0).abs() < 1e-12);
+        assert!((vertex_pivot.weight_v - 2.0 / 9.0).abs() < 1e-12);
 
-    #[test]
-    fn unreachable_pivot_relations_are_omitted() {
-        let graph = graph(4, &[(0, 1), (2, 3)]);
-        let constraints = graph.build_sparse_constraints(&[0]).unwrap();
-        assert_eq!(constraints.len(), 2);
-        assert!(constraints
+        let pivot_pair = constraints
             .iter()
-            .all(|pair| pair.dij.is_finite() && pair.wij.is_finite()));
+            .find(|pair| (pair.u, pair.v) == (0, 4))
+            .unwrap();
+        assert!((pivot_pair.weight_u - 2.0 / 16.0).abs() < 1e-12);
+        assert!((pivot_pair.weight_v - 3.0 / 16.0).abs() < 1e-12);
     }
 
     #[test]
     fn learning_rate_has_expected_endpoints() {
-        let rates = calc_learning_rate(5, 0.25, 1.0, 0.1).unwrap();
+        let pairs = [EdgeInfo {
+            u: 0,
+            v: 1,
+            dij: 2.0,
+            weight_u: 0.25,
+            weight_v: 1.0,
+        }];
+        let (wmin, wmax) = positive_weight_range(&pairs).unwrap();
+        let rates = calc_learning_rate(5, wmin, wmax, 0.1).unwrap();
         assert_eq!(rates.len(), 5);
         assert!((rates[0] - 4.0).abs() < 1e-12);
         assert!((rates[4] - 0.1).abs() < 1e-12);
@@ -466,5 +609,19 @@ mod tests {
         let sum_y: f64 = positions.iter().map(|position| position[1]).sum();
         assert!(sum_x.abs() < 1e-12);
         assert!(sum_y.abs() < 1e-12);
+    }
+
+    #[test]
+    fn prepared_parameters_are_reproducible_for_same_seed() {
+        let graph = graph(6, &[(0, 1), (1, 2), (2, 3), (3, 4), (4, 5)]);
+        let mut first_rng = StdRng::seed_from_u64(19);
+        let mut second_rng = StdRng::seed_from_u64(19);
+        let first = graph
+            .prepare_sgd_params(5, 0.1, 3, true, &mut first_rng)
+            .unwrap();
+        let second = graph
+            .prepare_sgd_params(5, 0.1, 3, true, &mut second_rng)
+            .unwrap();
+        assert_eq!(first, second);
     }
 }

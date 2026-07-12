@@ -1,4 +1,4 @@
-//! CPU 上で動作する Sparse SGD の座標更新。
+//! CPU 上で動作する論文準拠 Sparse SGD の座標更新。
 
 use crate::graph::{center_inplace, EdgeInfo, SgdParams};
 use rand::seq::SliceRandom;
@@ -30,12 +30,13 @@ pub fn apply_constraint<R: Rng + ?Sized>(
 
     let scale = (norm - pair.dij) / (2.0 * norm);
     let displacement = [scale * difference[0], scale * difference[1]];
-    let mu = (pair.wij * eta).min(1.0);
+    let mu_u = (pair.weight_u * eta).min(1.0);
+    let mu_v = (pair.weight_v * eta).min(1.0);
 
-    positions[pair.u][0] += mu * displacement[0];
-    positions[pair.u][1] += mu * displacement[1];
-    positions[pair.v][0] -= mu * displacement[0];
-    positions[pair.v][1] -= mu * displacement[1];
+    positions[pair.u][0] += mu_u * displacement[0];
+    positions[pair.u][1] += mu_u * displacement[1];
+    positions[pair.v][0] -= mu_v * displacement[0];
+    positions[pair.v][1] -= mu_v * displacement[1];
 }
 
 pub fn execute_sgd<R: Rng + ?Sized>(sgd_params: SgdParams, rng: &mut R) -> Vec<[f64; 2]> {
@@ -59,51 +60,57 @@ pub fn execute_sgd<R: Rng + ?Sized>(sgd_params: SgdParams, rng: &mut R) -> Vec<[
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::graph::Graph;
     use rand::rngs::StdRng;
     use rand::SeedableRng;
 
-    fn pair(distance: f64, weight: f64) -> EdgeInfo {
+    fn pair(distance: f64, weight_u: f64, weight_v: f64) -> EdgeInfo {
         EdgeInfo {
             u: 0,
             v: 1,
             dij: distance,
-            wij: weight,
+            weight_u,
+            weight_v,
         }
     }
 
     #[test]
-    fn update_moves_endpoints_equally_in_opposite_directions() {
+    fn symmetric_update_moves_endpoints_equally_in_opposite_directions() {
         let mut positions = vec![[0.0, 0.0], [4.0, 0.0]];
-        let before_center = [
-            (positions[0][0] + positions[1][0]) / 2.0,
-            (positions[0][1] + positions[1][1]) / 2.0,
-        ];
         let mut rng = StdRng::seed_from_u64(1);
-        apply_constraint(&mut positions, pair(2.0, 1.0), 1.0, &mut rng);
-
+        apply_constraint(&mut positions, pair(2.0, 1.0, 1.0), 1.0, &mut rng);
         assert_eq!(positions, vec![[1.0, 0.0], [3.0, 0.0]]);
-        assert_eq!(
-            before_center,
-            [
-                (positions[0][0] + positions[1][0]) / 2.0,
-                (positions[0][1] + positions[1][1]) / 2.0,
-            ]
-        );
     }
 
     #[test]
-    fn mu_is_clamped_to_one() {
+    fn directional_weights_move_endpoints_by_different_amounts() {
         let mut positions = vec![[0.0, 0.0], [4.0, 0.0]];
         let mut rng = StdRng::seed_from_u64(2);
-        apply_constraint(&mut positions, pair(2.0, 10.0), 10.0, &mut rng);
+        apply_constraint(&mut positions, pair(2.0, 1.0, 0.5), 1.0, &mut rng);
+        assert_eq!(positions, vec![[1.0, 0.0], [3.5, 0.0]]);
+    }
+
+    #[test]
+    fn zero_directional_weight_keeps_that_endpoint_fixed() {
+        let mut positions = vec![[0.0, 0.0], [4.0, 0.0]];
+        let mut rng = StdRng::seed_from_u64(3);
+        apply_constraint(&mut positions, pair(2.0, 1.0, 0.0), 1.0, &mut rng);
+        assert_eq!(positions, vec![[1.0, 0.0], [4.0, 0.0]]);
+    }
+
+    #[test]
+    fn each_directional_mu_is_clamped_to_one() {
+        let mut positions = vec![[0.0, 0.0], [4.0, 0.0]];
+        let mut rng = StdRng::seed_from_u64(4);
+        apply_constraint(&mut positions, pair(2.0, 10.0, 10.0), 10.0, &mut rng);
         assert_eq!(positions, vec![[1.0, 0.0], [3.0, 0.0]]);
     }
 
     #[test]
     fn coincident_positions_remain_finite() {
         let mut positions = vec![[0.0, 0.0], [0.0, 0.0]];
-        let mut rng = StdRng::seed_from_u64(3);
-        apply_constraint(&mut positions, pair(1.0, 1.0), 1.0, &mut rng);
+        let mut rng = StdRng::seed_from_u64(5);
+        apply_constraint(&mut positions, pair(1.0, 1.0, 0.0), 1.0, &mut rng);
         assert!(positions
             .iter()
             .flatten()
@@ -121,19 +128,21 @@ mod tests {
                     u: 0,
                     v: 1,
                     dij: 1.0,
-                    wij: 1.0,
+                    weight_u: 1.0,
+                    weight_v: 1.0,
                 },
                 EdgeInfo {
                     u: 1,
                     v: 2,
                     dij: 1.0,
-                    wij: 1.0,
+                    weight_u: 1.0,
+                    weight_v: 0.5,
                 },
             ],
             pivots: vec![0],
             center: true,
         };
-        let mut rng = StdRng::seed_from_u64(4);
+        let mut rng = StdRng::seed_from_u64(6);
         let result = execute_sgd(params, &mut rng);
         let mean_x = result.iter().map(|position| position[0]).sum::<f64>() / 3.0;
         let mean_y = result.iter().map(|position| position[1]).sum::<f64>() / 3.0;
@@ -143,5 +152,19 @@ mod tests {
             .iter()
             .flatten()
             .all(|coordinate| coordinate.is_finite()));
+    }
+
+    #[test]
+    fn complete_pipeline_is_reproducible_for_same_seed() {
+        let graph = Graph::try_from_edges(6, &[(0, 1), (1, 2), (2, 3), (3, 4), (4, 5)]).unwrap();
+        let run = |seed| {
+            let mut rng = StdRng::seed_from_u64(seed);
+            let params = graph.prepare_sgd_params(5, 0.1, 3, true, &mut rng).unwrap();
+            let pivots = params.pivots.clone();
+            let initial = params.positions.clone();
+            let final_positions = execute_sgd(params, &mut rng);
+            (pivots, initial, final_positions)
+        };
+        assert_eq!(run(23), run(23));
     }
 }
