@@ -73,6 +73,8 @@ impl Config {
                     config.seed = next_value(&mut args, "--seed")?.parse()?;
                 }
                 "--no-center" => config.center = false,
+                // 以前の明示指定は、最大連結成分が既定になった後も受け付ける。
+                "--largest-component" => {}
                 value if !value.starts_with('-') && !positional_input_seen => {
                     config.input = PathBuf::from(value);
                     positional_input_seen = true;
@@ -112,8 +114,23 @@ fn main() -> Result<()> {
     env_logger::init();
     let config = Config::from_args()?;
     let graph = Graph::from_mtx(&config.input)
-        .with_context(|| format!("グラフを読み込めません: {}", config.input.display()))?;
-    graph.ensure_connected()?;
+        .with_context(|| format!("グラフを読み込めません: {}", config.input.display()))?
+        .largest_connected_component()?;
+    println!(
+        "Input graph: nodes={}, edges={}, components={}",
+        graph.component_info.original_node_size,
+        graph.component_info.original_edge_size,
+        graph.component_info.component_count,
+    );
+    println!(
+        "Largest component used: nodes={}/{} ({:.2}%), edges={}/{} ({:.2}%)",
+        graph.node_size,
+        graph.component_info.original_node_size,
+        graph.component_info.retained_vertex_ratio() * 100.0,
+        graph.edge_size,
+        graph.component_info.original_edge_size,
+        graph.component_info.retained_edge_ratio(graph.edge_size) * 100.0,
+    );
     println!(
         "Graph: nodes={}, edges={}, seed={}",
         graph.node_size, graph.edge_size, config.seed
@@ -151,6 +168,9 @@ fn main() -> Result<()> {
         "../output/baseline-sparse-sgd-non-gpu-{data_name}-seed{}-{timestamp}",
         config.seed
     );
+    let vertex_map_path = format!("{prefix}-vertex-map.txt");
+    save_vertex_map(Path::new(&vertex_map_path), &graph)?;
+    println!("Vertex map saved to {vertex_map_path}");
     let initial_path = format!("{prefix}-0.txt");
     save_result(
         Path::new(&initial_path),
@@ -160,6 +180,7 @@ fn main() -> Result<()> {
         &config,
         &pivots,
         constraint_count,
+        Path::new(&vertex_map_path),
     )?;
     println!("Initial result saved to {initial_path}");
 
@@ -172,6 +193,7 @@ fn main() -> Result<()> {
         &config,
         &pivots,
         constraint_count,
+        Path::new(&vertex_map_path),
     )?;
     println!("Processed result saved to {processed_path}");
 
@@ -187,6 +209,7 @@ fn save_result(
     config: &Config,
     pivots: &[usize],
     constraint_count: usize,
+    vertex_map_path: &Path,
 ) -> Result<()> {
     let mut file = File::create(path)?;
     writeln!(
@@ -201,6 +224,32 @@ fn save_result(
     writeln!(file, "# Dataset: {}", config.input.display())?;
     writeln!(file, "# Node count: {}", graph.node_size)?;
     writeln!(file, "# Edge count: {}", graph.edge_size)?;
+    writeln!(
+        file,
+        "# Original node count: {}",
+        graph.component_info.original_node_size
+    )?;
+    writeln!(
+        file,
+        "# Original edge count: {}",
+        graph.component_info.original_edge_size
+    )?;
+    writeln!(
+        file,
+        "# Component count: {}",
+        graph.component_info.component_count
+    )?;
+    writeln!(
+        file,
+        "# Retained vertex ratio: {:.8}",
+        graph.component_info.retained_vertex_ratio()
+    )?;
+    writeln!(
+        file,
+        "# Retained edge ratio: {:.8}",
+        graph.component_info.retained_edge_ratio(graph.edge_size)
+    )?;
+    writeln!(file, "# Vertex map file: {}", vertex_map_path.display())?;
     writeln!(file, "# Iterations: {}", config.iterations)?;
     writeln!(file, "# Epsilon: {}", config.epsilon)?;
     writeln!(file, "# Seed: {}", config.seed)?;
@@ -227,6 +276,14 @@ fn save_result(
     writeln!(file, "# Positions (x y)")?;
     for position in positions {
         writeln!(file, "{} {}", position[0], position[1])?;
+    }
+    Ok(())
+}
+
+fn save_vertex_map(path: &Path, graph: &Graph) -> Result<()> {
+    let mut file = File::create(path)?;
+    for (local_id, &original_id) in graph.component_info.original_vertex_ids.iter().enumerate() {
+        writeln!(file, "{local_id} {original_id}")?;
     }
     Ok(())
 }
@@ -279,7 +336,11 @@ mod tests {
     fn result_file_contains_reproduction_metadata_edges_and_positions() {
         let directory = tempfile::tempdir().unwrap();
         let path = directory.path().join("result.txt");
-        let graph = Graph::try_from_edges(2, &[(0, 1)]).unwrap();
+        let map_path = directory.path().join("result-vertex-map.txt");
+        let graph = Graph::try_from_edges(2, &[(0, 1)])
+            .unwrap()
+            .largest_connected_component()
+            .unwrap();
         let config = Config {
             input: PathBuf::from("graph.mtx"),
             iterations: 3,
@@ -296,6 +357,7 @@ mod tests {
             &config,
             &[0],
             1,
+            &map_path,
         )
         .unwrap();
 
@@ -304,7 +366,17 @@ mod tests {
         assert!(contents.contains(&format!("# Pivot selection: {PIVOT_SELECTION}")));
         assert!(contents.contains(&format!("# Weight model: {WEIGHT_MODEL}")));
         assert!(contents.contains("# Pivot count: 1"));
+        assert!(contents.contains("# Component count: 1"));
+        assert!(contents.contains(&format!("# Vertex map file: {}", map_path.display())));
         assert!(contents.contains("# Edges (source target)\n0 1"));
         assert!(contents.contains("# Positions (x y)\n0 0\n1 1"));
+
+        save_vertex_map(&map_path, &graph).unwrap();
+        assert_eq!(std::fs::read_to_string(map_path).unwrap(), "0 0\n1 1\n");
+    }
+
+    #[test]
+    fn historical_largest_component_flag_remains_accepted() {
+        assert!(Config::from_iter(["--largest-component"].into_iter().map(str::to_owned)).is_ok());
     }
 }

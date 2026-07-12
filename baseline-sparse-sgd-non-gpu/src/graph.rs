@@ -11,7 +11,36 @@ pub struct Graph {
     pub edge_size: usize,
     pub edge_src: Vec<usize>,
     pub edge_dst: Vec<usize>,
+    pub component_info: ComponentInfo,
     adjacency: Vec<Vec<usize>>,
+}
+
+/// Matrix Market入力と、レイアウトに採用した最大連結成分の対応情報。
+/// `original_vertex_ids[local_id]`は入力の0始まり頂点番号を表す。
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ComponentInfo {
+    pub original_node_size: usize,
+    pub original_edge_size: usize,
+    pub component_count: usize,
+    pub original_vertex_ids: Vec<usize>,
+}
+
+impl ComponentInfo {
+    pub fn retained_vertex_ratio(&self) -> f64 {
+        if self.original_node_size == 0 {
+            0.0
+        } else {
+            self.original_vertex_ids.len() as f64 / self.original_node_size as f64
+        }
+    }
+
+    pub fn retained_edge_ratio(&self, selected_edge_size: usize) -> f64 {
+        if self.original_edge_size == 0 {
+            0.0
+        } else {
+            selected_edge_size as f64 / self.original_edge_size as f64
+        }
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -128,6 +157,7 @@ impl Graph {
 
         let mut edges: Vec<_> = unique_edges.into_iter().collect();
         edges.sort_unstable();
+        let edge_size = edges.len();
 
         let mut adjacency = vec![Vec::new(); node_size];
         let mut edge_src = Vec::with_capacity(edges.len());
@@ -142,13 +172,21 @@ impl Graph {
             neighbors.sort_unstable();
         }
 
-        Ok(Self {
+        let mut graph = Self {
             node_size,
-            edge_size: edge_src.len(),
+            edge_size,
             edge_src,
             edge_dst,
+            component_info: ComponentInfo {
+                original_node_size: node_size,
+                original_edge_size: edge_size,
+                component_count: 0,
+                original_vertex_ids: (0..node_size).collect(),
+            },
             adjacency,
-        })
+        };
+        graph.component_info.component_count = graph.connected_components().len();
+        Ok(graph)
     }
 
     pub fn neighbors(&self, vertex: usize) -> &[usize] {
@@ -194,6 +232,83 @@ impl Graph {
             );
         }
         Ok(())
+    }
+
+    /// 全成分を列挙する。各成分の頂点番号は昇順で、成分列は最小頂点番号順となる。
+    pub fn connected_components(&self) -> Vec<Vec<usize>> {
+        let mut visited = vec![false; self.node_size];
+        let mut components = Vec::new();
+        for start in 0..self.node_size {
+            if visited[start] {
+                continue;
+            }
+            let mut queue = VecDeque::new();
+            let mut component = Vec::new();
+            visited[start] = true;
+            queue.push_back(start);
+            while let Some(u) = queue.pop_front() {
+                component.push(u);
+                for &v in self.neighbors(u) {
+                    if !visited[v] {
+                        visited[v] = true;
+                        queue.push_back(v);
+                    }
+                }
+            }
+            component.sort_unstable();
+            components.push(component);
+        }
+        components
+    }
+
+    /// 最大連結成分を選び、頂点を0..k-1に再番号付けしたレイアウト用グラフを返す。
+    /// 同率なら最小の元頂点番号を含む成分を選ぶ。
+    pub fn largest_connected_component(&self) -> Result<Self> {
+        let components = self.connected_components();
+        let component_count = components.len();
+        let mut selected = components
+            .into_iter()
+            .max_by(|left, right| {
+                left.len().cmp(&right.len()).then_with(|| {
+                    self.component_info.original_vertex_ids[right[0]]
+                        .cmp(&self.component_info.original_vertex_ids[left[0]])
+                })
+            })
+            .ok_or_else(|| anyhow!("空のグラフでは最大連結成分を選択できません"))?;
+        selected.sort_by_key(|&vertex| self.component_info.original_vertex_ids[vertex]);
+
+        let mut local_ids = vec![usize::MAX; self.node_size];
+        for (local_id, &vertex) in selected.iter().enumerate() {
+            local_ids[vertex] = local_id;
+        }
+        let selected_edges: Vec<_> = self
+            .edge_src
+            .iter()
+            .zip(&self.edge_dst)
+            .filter_map(|(&u, &v)| {
+                (local_ids[u] != usize::MAX && local_ids[v] != usize::MAX)
+                    .then_some((local_ids[u], local_ids[v]))
+            })
+            .collect();
+        if selected.len() < 2 || selected_edges.is_empty() {
+            bail!(
+                "最大連結成分では Sparse SGD を実行できません: 採用頂点数={}, 採用辺数={}, 全成分数={component_count}",
+                selected.len(),
+                selected_edges.len(),
+            );
+        }
+
+        let mut graph = Self::try_from_edges(selected.len(), &selected_edges)?;
+        graph.component_info = ComponentInfo {
+            original_node_size: self.component_info.original_node_size,
+            original_edge_size: self.component_info.original_edge_size,
+            component_count,
+            original_vertex_ids: selected
+                .into_iter()
+                .map(|vertex| self.component_info.original_vertex_ids[vertex])
+                .collect(),
+        };
+        Ok(graph)
     }
 
     fn select_pivots_with_distances<R: Rng + ?Sized>(
@@ -516,6 +631,47 @@ mod tests {
             vec![0, 1, 2, usize::MAX, usize::MAX]
         );
         assert!(graph.ensure_connected().is_err());
+    }
+
+    #[test]
+    fn largest_component_reindexes_vertices_and_records_statistics() {
+        let graph = graph(8, &[(0, 1), (2, 4), (4, 6)]);
+        let largest = graph.largest_connected_component().unwrap();
+        assert_eq!(largest.node_size, 3);
+        assert_eq!(largest.edge_size, 2);
+        assert_eq!(largest.edge_src, vec![0, 1]);
+        assert_eq!(largest.edge_dst, vec![1, 2]);
+        assert_eq!(largest.component_info.original_node_size, 8);
+        assert_eq!(largest.component_info.original_edge_size, 3);
+        assert_eq!(largest.component_info.component_count, 5);
+        assert_eq!(largest.component_info.original_vertex_ids, vec![2, 4, 6]);
+        assert!((largest.component_info.retained_vertex_ratio() - 0.375).abs() < f64::EPSILON);
+        assert!((largest.component_info.retained_edge_ratio(2) - 2.0 / 3.0).abs() < f64::EPSILON);
+        largest.ensure_connected().unwrap();
+    }
+
+    #[test]
+    fn equally_sized_components_choose_smallest_original_vertex() {
+        let graph = graph(6, &[(0, 2), (3, 5)]);
+        let largest = graph.largest_connected_component().unwrap();
+        assert_eq!(largest.component_info.original_vertex_ids, vec![0, 2]);
+    }
+
+    #[test]
+    fn largest_component_rejects_self_loop_only_input_with_statistics() {
+        let graph = graph(3, &[(0, 0), (1, 1), (2, 2)]);
+        let error = graph.largest_connected_component().unwrap_err().to_string();
+        assert!(error.contains("採用頂点数=1"));
+        assert!(error.contains("採用辺数=0"));
+        assert!(error.contains("全成分数=3"));
+    }
+
+    #[test]
+    fn connected_graph_largest_component_is_identity_map() {
+        let graph = graph(3, &[(0, 1), (1, 2)]);
+        let largest = graph.largest_connected_component().unwrap();
+        assert_eq!(largest.component_info.component_count, 1);
+        assert_eq!(largest.component_info.original_vertex_ids, vec![0, 1, 2]);
     }
 
     #[test]
