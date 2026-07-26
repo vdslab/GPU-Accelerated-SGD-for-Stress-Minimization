@@ -24,7 +24,7 @@ struct Config {
 impl Default for Config {
     fn default() -> Self {
         Self {
-            input: PathBuf::from("../data/luxembourg_osm.mtx"),
+            input: PathBuf::from("../data/web-Stanford.mtx"),
             output_dir: PathBuf::from("../output"),
             iterations: 15,
             pivot_count: 50,
@@ -146,6 +146,10 @@ fn main() -> Result<()> {
     let context = GpuContext::new()?;
     println!("GPU: {}", context.adapter_name);
     let run = context.execute(params, &schedule, config.seed)?;
+    println!(
+        "GPU batching: dispatches/iteration={}, submissions/iteration={}",
+        run.dispatches_per_iteration, run.submissions_per_iteration
+    );
     println!(
         "Timing: preprocessing={:?}, scheduling={:?}, upload={:?}, compute={:?} ({:?}/iteration), readback={:?}, total={:?}",
         preprocessing_time,
