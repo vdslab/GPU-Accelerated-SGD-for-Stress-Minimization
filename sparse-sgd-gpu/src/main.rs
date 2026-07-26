@@ -24,7 +24,7 @@ struct Config {
 impl Default for Config {
     fn default() -> Self {
         Self {
-            input: PathBuf::from("../data/web-Stanford.mtx"),
+            input: PathBuf::from("../data/luxembourg_osm.mtx"),
             output_dir: PathBuf::from("../output"),
             iterations: 15,
             pivot_count: 50,
