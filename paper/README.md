@@ -12,6 +12,8 @@ GPU-Accelerated SGD for Stress Minimization の研究完了と論文執筆を、
 - [docs/prior-work-experiments.md](docs/prior-work-experiments.md): 先行研究の実験設計
 - [docs/experiment-plan.md](docs/experiment-plan.md): 比較対象、データセット、評価指標
 - [docs/measurement-policy.md](docs/measurement-policy.md): 時間とstressの計測・報告方法
+- [docs/experiment-output-format.md](docs/experiment-output-format.md): 1 runのJSON出力とfield定義
+- [docs/experiment-runbook.md](docs/experiment-runbook.md): manifestによる自動実行・再開・検証手順
 - [docs/experiment-log.md](docs/experiment-log.md): 実験結果と再現情報
 - [docs/decisions.md](docs/decisions.md): 研究・執筆上の意思決定
 - [manuscript/outline.md](manuscript/outline.md): 論文の章立てと本文の下書き
