@@ -5,10 +5,12 @@ use bytemuck::{Pod, Zeroable};
 use experiment_common::OutputFormat;
 use rand::{rngs::StdRng, seq::SliceRandom, Rng, SeedableRng};
 use std::num::NonZeroU64;
+use std::ops::Range;
 use std::time::{Duration, Instant};
 use wgpu::util::DeviceExt;
 
 const WORKGROUP_SIZE: u32 = 256;
+const MAX_PASSES_PER_SUBMISSION: usize = 256;
 const CANARY: [f32; 2] = [123_456.0, -654_321.0];
 
 #[repr(C)]
@@ -42,6 +44,7 @@ pub struct GpuRunResult {
     pub readback_time: Duration,
     pub gpu_device_time: Option<Duration>,
     pub dispatches_per_iteration: usize,
+    pub submissions_per_iteration: usize,
 }
 
 impl GpuContext {
@@ -142,6 +145,7 @@ impl GpuContext {
         let alignment = self.device.limits().min_uniform_buffer_offset_alignment as usize;
         let slot_size = std::mem::size_of::<Uniforms>().div_ceil(alignment) * alignment;
         let invocation_count = schedule.round_count() + 1;
+        let submission_ranges = submission_ranges(invocation_count);
         let uniform_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
             label: Some("dynamic iteration uniforms"),
             size: (slot_size * invocation_count.max(1)) as u64,
@@ -321,54 +325,56 @@ impl GpuContext {
             }
             self.queue.write_buffer(&uniform_buffer, 0, &uniform_bytes);
 
-            let mut encoder = self
-                .device
-                .create_command_encoder(&wgpu::CommandEncoderDescriptor {
-                    label: Some("one Sparse SGD iteration"),
-                });
-            for (slot, round) in invocations.iter().enumerate() {
-                let count = round.map(|ri| schedule.round_range(ri).len()).unwrap_or(n);
-                if count == 0 {
-                    continue;
-                }
-                let timestamp_writes =
-                    timestamp_resources.as_ref().and_then(|(query_set, _, _)| {
-                        let beginning_of_pass_write_index =
-                            (Some(slot) == first_active_slot).then_some(timestamp_index);
-                        let end_of_pass_write_index =
-                            (Some(slot) == last_active_slot).then_some(timestamp_index + 1);
-                        (beginning_of_pass_write_index.is_some()
-                            || end_of_pass_write_index.is_some())
-                        .then_some(wgpu::ComputePassTimestampWrites {
-                            query_set,
-                            beginning_of_pass_write_index,
-                            end_of_pass_write_index,
-                        })
+            for batch_range in &submission_ranges {
+                let mut encoder =
+                    self.device
+                        .create_command_encoder(&wgpu::CommandEncoderDescriptor {
+                            label: Some("Sparse SGD invocation batch"),
+                        });
+                for slot in batch_range.clone() {
+                    let round = invocations[slot];
+                    let count = round.map(|ri| schedule.round_range(ri).len()).unwrap_or(n);
+                    if count == 0 {
+                        continue;
+                    }
+                    let timestamp_writes =
+                        timestamp_resources.as_ref().and_then(|(query_set, _, _)| {
+                            let beginning_of_pass_write_index =
+                                (Some(slot) == first_active_slot).then_some(timestamp_index);
+                            let end_of_pass_write_index =
+                                (Some(slot) == last_active_slot).then_some(timestamp_index + 1);
+                            (beginning_of_pass_write_index.is_some()
+                                || end_of_pass_write_index.is_some())
+                            .then_some(wgpu::ComputePassTimestampWrites {
+                                query_set,
+                                beginning_of_pass_write_index,
+                                end_of_pass_write_index,
+                            })
+                        });
+                    let mut pass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
+                        label: Some(if round.is_some() {
+                            "two-sided matching"
+                        } else {
+                            "one-sided owners"
+                        }),
+                        timestamp_writes,
                     });
-                let mut pass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
-                    label: Some(if round.is_some() {
-                        "two-sided matching"
+                    pass.set_pipeline(if round.is_some() {
+                        &two_pipeline
                     } else {
-                        "one-sided owners"
-                    }),
-                    timestamp_writes,
-                });
-                pass.set_pipeline(if round.is_some() {
-                    &two_pipeline
-                } else {
-                    &one_pipeline
-                });
-                pass.set_bind_group(0, &bind_group, &[(slot * slot_size) as u32]);
-                pass.dispatch_workgroups((count as u32).div_ceil(WORKGROUP_SIZE), 1, 1);
-                drop(pass);
+                        &one_pipeline
+                    });
+                    pass.set_bind_group(0, &bind_group, &[(slot * slot_size) as u32]);
+                    pass.dispatch_workgroups((count as u32).div_ceil(WORKGROUP_SIZE), 1, 1);
+                }
+                self.queue.submit([encoder.finish()]);
+                self.device
+                    .poll(wgpu::PollType::wait_indefinitely())
+                    .unwrap();
             }
             if timestamp_resources.is_some() {
                 timestamp_index += 2;
             }
-            self.queue.submit([encoder.finish()]);
-            self.device
-                .poll(wgpu::PollType::wait_indefinitely())
-                .unwrap();
         }
         let compute_time = compute_start.elapsed();
 
@@ -448,6 +454,7 @@ impl GpuContext {
             readback_time,
             gpu_device_time,
             dispatches_per_iteration: passes_per_iteration,
+            submissions_per_iteration: submission_ranges.len(),
         })
     }
 
@@ -466,6 +473,19 @@ impl GpuContext {
                 cache: None,
             })
     }
+}
+
+fn submission_ranges(invocation_count: usize) -> Vec<Range<usize>> {
+    let mut ranges = Vec::with_capacity(invocation_count.div_ceil(MAX_PASSES_PER_SUBMISSION));
+    let mut start = 0;
+    while start < invocation_count {
+        let end = start
+            .saturating_add(MAX_PASSES_PER_SUBMISSION)
+            .min(invocation_count);
+        ranges.push(start..end);
+        start = end;
+    }
+    ranges
 }
 
 fn iteration_log(iteration: usize) -> String {
@@ -506,6 +526,24 @@ mod tests {
     fn iteration_log_is_one_based() {
         assert_eq!(iteration_log(0), "Iteration: 1");
         assert_eq!(iteration_log(2), "Iteration: 3");
+    }
+
+    #[test]
+    fn submission_ranges_are_contiguous_and_bounded() {
+        for (invocations, expected_batches) in [(1, 1), (256, 1), (257, 2), (38_626, 151)] {
+            let ranges = submission_ranges(invocations);
+            assert_eq!(ranges.len(), expected_batches);
+            assert_eq!(ranges.first().unwrap().start, 0);
+            assert_eq!(ranges.last().unwrap().end, invocations);
+            for (index, range) in ranges.iter().enumerate() {
+                assert!(!range.is_empty());
+                assert!(range.len() <= MAX_PASSES_PER_SUBMISSION);
+                if index > 0 {
+                    assert_eq!(ranges[index - 1].end, range.start);
+                }
+            }
+        }
+        assert!(submission_ranges(0).is_empty());
     }
 
     #[test]

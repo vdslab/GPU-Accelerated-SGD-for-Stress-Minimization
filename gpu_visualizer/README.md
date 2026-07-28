@@ -2,12 +2,14 @@
 
 Sparse SGD/RR-SGDが出力した座標TXTをWGPUでPNGへ描画します。入力を省略した従来の対話実行も利用できます。
 
-既定の出力サイズは **2048×2048**、自動ノード半径の上限は **1px** です。サイズや半径は `--size WxH` と `--node-radius PX` で上書きできます。
+既定の出力サイズは **8192×8192**、自動ノード半径の上限は **1px** です。正方形の解像度は `-2`、`-4`、`-8`、`-16` の短縮オプションで選べます。任意サイズと半径は `--size WxH` と `--node-radius PX` で上書きできます。16K出力は数GiBの一時メモリを使用します。
 
 ```sh
-cargo run -- ../output/result.txt result.png
-cargo run -- ../output/result.txt result-4k.png --size 4096x4096
+cargo rr -8
+cargo rr -16
 ```
+
+`cargo rr`は、このcrateに設定した`cargo run --release --`の短縮形です。入力パスと出力パスを省略すると、起動後に入力ファイル名を指定でき、出力先は入力ファイルと同じディレクトリへ自動設定されます。パスをコマンドで渡す場合は `cargo rr ../output/result.txt result-4k.png -4` のように指定します。
 
 ## 大規模グラフ
 

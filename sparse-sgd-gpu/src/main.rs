@@ -170,6 +170,10 @@ fn main() -> Result<()> {
         config.common.verbose,
         config.common.output_format,
     )?;
+    config.log(format!(
+        "GPU batching: dispatches/iteration={}, submissions/iteration={}",
+        run.dispatches_per_iteration, run.submissions_per_iteration
+    ));
 
     let postprocess_started = Instant::now();
     if config.center {
