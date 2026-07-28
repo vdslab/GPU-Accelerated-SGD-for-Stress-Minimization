@@ -4,7 +4,7 @@
 
 このrunbookは、実験条件をmanifestで固定し、5手法を同じ流れで実行して`results.jsonl`へ収集する手順を定める。比較条件は[experiment-plan.md](experiment-plan.md)、時間区間は[measurement-policy.md](measurement-policy.md)、1 runのfieldは[experiment-output-format.md](experiment-output-format.md)を参照する。
 
-ここに記載するrunnerと共通CLIは、OpenSpec change `standardize-experiment-output`の実装予定である。実装完了まではコマンド例を実行できない。
+ここに記載するrunnerと共通CLIは、OpenSpec change `standardize-experiment-output`で実装されている。runnerの正本は`experiments/run_experiments.py`、E0のmanifestは`experiments/manifests/e0-uspowergrid.json`である。
 
 ## 基本方針
 
@@ -19,7 +19,7 @@
 
 ## 配置
 
-実装後の自動化コードはrepository rootの`experiments/`、生の実験結果は`output/experiments/`へ置く。
+自動化コードはrepository rootの`experiments/`、生の実験結果は`output/experiments/`へ置く。
 
 ```text
 experiments/
@@ -62,9 +62,9 @@ E0で実装済み5手法をseed 0〜2に対して確認する例を示す。条�
   ],
   "datasets": [
     {
-      "name": "USPowerGrid",
+      "name": "USpowerGrid",
       "path": "data/USpowerGrid.mtx",
-      "sha256": "取得後に固定する"
+      "sha256": "8fda7edfc1844d73d4f5be7d9a49963104349292aae64e73782c1a55c3b5f05f"
     }
   ],
   "seeds": [0, 1, 2],
@@ -101,7 +101,7 @@ git rev-parse HEAD
 
 ### 2. release build
 
-実装後はrunnerが必要binaryの存在とcommitを検証する。初回は対象5手法をrelease buildする。
+runnerは必要binaryの存在と入力checksumを検証する。初回は対象5手法をrelease buildする。
 
 ```bash
 cargo build --release --manifest-path baseline-sgd-non-gpu/Cargo.toml
@@ -184,7 +184,7 @@ atomicのretry詳細やGPU counterを取るために追加同期・readbackが�
 
 ### E0: 計測系の検証
 
-- dataset: `USPowerGrid`
+- dataset: `USpowerGrid`
 - methods: 実装済み5手法
 - seeds: 0〜2
 - iterations: 15
@@ -214,4 +214,3 @@ raw JSONLは加工せず保管し、集計scriptの入力とする。論文repos
 - 中央値、IQR、paired ratio、信頼区間の計算条件
 
 手作業で表の数値を書き換えず、JSONLから再生成できる状態を保つ。
-

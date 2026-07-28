@@ -1,26 +1,43 @@
 use crate::graph;
 use anyhow::Result;
 use bytemuck::{Pod, Zeroable};
+use experiment_common::seed::{rng_for_stream, FULL_UPDATE_STREAM};
+use experiment_common::OutputFormat;
 use rand::seq::SliceRandom;
 use std::num::NonZeroU64;
+use std::time::{Duration, Instant};
 use wgpu::util::DeviceExt;
 
-const T: u32 = 1024; // ブロックサイズ
+pub const T: u32 = 1024; // ブロックサイズ
 
 /// カーネルに渡す uniform バッファ
 /// r_outer / big_b は廃止。タイル割り当ては tiles バッファで渡す。
 #[repr(C)]
 #[derive(Debug, Clone, Copy, Pod, Zeroable)]
 pub struct Uniforms {
-    pub n:   u32,
+    pub n: u32,
     pub eta: f32,
-    _pad:    [u32; 2],
+    _pad: [u32; 2],
 }
 
 pub struct GpuContext {
     pub device: wgpu::Device,
-    pub queue:  wgpu::Queue,
+    pub queue: wgpu::Queue,
     pub module: wgpu::ShaderModule,
+    pub adapter_name: String,
+    pub backend: String,
+    pub timestamp_supported: bool,
+}
+
+#[derive(Debug)]
+pub struct GpuRunResult {
+    pub initial_positions: Vec<[f64; 2]>,
+    pub positions: Vec<[f32; 2]>,
+    pub upload_time: Duration,
+    pub iteration_time: Duration,
+    pub gpu_device_time: Option<Duration>,
+    pub readback_time: Duration,
+    pub dispatches: u64,
 }
 
 // ── スケジュール生成 ──────────────────────────────────────────────────────────
@@ -100,47 +117,60 @@ impl GpuContext {
             pollster::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions::default()))
                 .map_err(|e| anyhow::anyhow!("GPU アダプタが見つかりません: {:?}", e))?;
 
-        println!("GPU: {} ({:?})", adapter.get_info().name, adapter.get_info().backend);
-        let limits = adapter.limits();
-        println!("max_compute_invocations_per_workgroup: {}", limits.max_compute_invocations_per_workgroup);
+        let info = adapter.get_info();
+        let supported_features = adapter.features();
+        let timestamp_supported = supported_features.contains(wgpu::Features::TIMESTAMP_QUERY);
+        let required_features = if timestamp_supported {
+            wgpu::Features::TIMESTAMP_QUERY
+        } else {
+            wgpu::Features::empty()
+        };
 
-        let (device, queue) = pollster::block_on(adapter.request_device(
-            &wgpu::DeviceDescriptor {
-                label:                None,
-                required_features:    wgpu::Features::empty(),
-                required_limits:      adapter.limits(),
-                experimental_features: wgpu::ExperimentalFeatures::disabled(),
-                memory_hints:         wgpu::MemoryHints::MemoryUsage,
-                trace:                wgpu::Trace::Off,
-            },
-        ))
+        let (device, queue) = pollster::block_on(adapter.request_device(&wgpu::DeviceDescriptor {
+            label: None,
+            required_features,
+            required_limits: adapter.limits(),
+            experimental_features: wgpu::ExperimentalFeatures::disabled(),
+            memory_hints: wgpu::MemoryHints::MemoryUsage,
+            trace: wgpu::Trace::Off,
+        }))
         .map_err(|e| anyhow::anyhow!("デバイス作成失敗: {}", e))?;
 
         let module = device.create_shader_module(wgpu::include_wgsl!("shader.wgsl"));
 
-        Ok(GpuContext { device, queue, module })
+        Ok(GpuContext {
+            device,
+            queue,
+            module,
+            adapter_name: info.name,
+            backend: format!("{:?}", info.backend),
+            timestamp_supported,
+        })
     }
 
     /// SGD を実行し、初期座標と最終座標を返す
     pub fn execute_sgd(
         &self,
         params: graph::SgdParams,
-    ) -> Result<(Vec<[f32; 2]>, Vec<[f32; 2]>)> {
-        let n      = params.positions.len() as u32;
-        let big_b  = n.div_ceil(T);
-
-        println!("n={}, T={}, B={}", n, T, big_b);
+        schedule: &[Vec<(u32, u32)>],
+        seed: u64,
+        verbose: bool,
+        output_format: OutputFormat,
+    ) -> Result<GpuRunResult> {
+        let upload_started = Instant::now();
+        let n = params.positions.len() as u32;
 
         // ── f64 → f32 変換 ────────────────────────────────────────────────────
         let etas: Vec<f32> = params.etas.iter().map(|&e| e as f32).collect();
 
-        let positions_f32: Vec<[f32; 2]> = params.positions.iter()
+        let initial_positions = params.positions.clone();
+        let positions_f32: Vec<[f32; 2]> = params
+            .positions
+            .iter()
             .map(|p| [p[0] as f32, p[1] as f32])
             .collect();
-        let initial_positions = positions_f32.clone();
 
         // ── 距離行列 n×n (f32, 到達不能=0.0) ──────────────────────────────────
-        println!("距離行列を構築中... ({}×{})", n, n);
         let mut dist_flat = vec![0.0f32; (n * n) as usize];
         for e in &params.pairs {
             let d = e.dij as f32;
@@ -149,216 +179,290 @@ impl GpuContext {
         }
 
         // ── ブロック長配列 ─────────────────────────────────────────────────────
-        let block_lens: Vec<u32> = (0..big_b)
-            .map(|bi| T.min(n - bi * T))
-            .collect();
+        let big_b = n.div_ceil(T);
+        let block_lens: Vec<u32> = (0..big_b).map(|bi| T.min(n - bi * T)).collect();
 
-        // ── スケジュール生成 ───────────────────────────────────────────────────
-        let schedule = build_schedule(big_b);
         let max_tiles_per_round = schedule.iter().map(|r| r.len()).max().unwrap_or(1);
 
-        println!("スケジュール: {} ラウンド, 最大 {} タイル/ラウンド",
-            schedule.len(), max_tiles_per_round);
-
         // ── バッファ作成 ───────────────────────────────────────────────────────
-        let positions_flat: Vec<f32> = positions_f32.iter()
-            .flat_map(|p| [p[0], p[1]])
-            .collect();
+        let positions_flat: Vec<f32> = positions_f32.iter().flat_map(|p| [p[0], p[1]]).collect();
 
-        let positions_buffer = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
-            label:    Some("positions"),
-            contents: bytemuck::cast_slice(&positions_flat),
-            usage:    wgpu::BufferUsages::STORAGE
+        let positions_buffer = self
+            .device
+            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("positions"),
+                contents: bytemuck::cast_slice(&positions_flat),
+                usage: wgpu::BufferUsages::STORAGE
                     | wgpu::BufferUsages::COPY_SRC
                     | wgpu::BufferUsages::COPY_DST,
-        });
+            });
 
-        let dist_buffer = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
-            label:    Some("dist_flat"),
-            contents: bytemuck::cast_slice(&dist_flat),
-            usage:    wgpu::BufferUsages::STORAGE,
-        });
+        let dist_buffer = self
+            .device
+            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("dist_flat"),
+                contents: bytemuck::cast_slice(&dist_flat),
+                usage: wgpu::BufferUsages::STORAGE,
+            });
 
-        let block_lens_buffer = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
-            label:    Some("block_lens"),
-            contents: bytemuck::cast_slice(&block_lens),
-            usage:    wgpu::BufferUsages::STORAGE,
-        });
+        let block_lens_buffer = self
+            .device
+            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("block_lens"),
+                contents: bytemuck::cast_slice(&block_lens),
+                usage: wgpu::BufferUsages::STORAGE,
+            });
 
-        let uniforms_init = Uniforms { n, eta: etas[0], _pad: [0; 2] };
-        let uniforms_buffer = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
-            label:    Some("uniforms"),
-            contents: bytemuck::bytes_of(&uniforms_init),
-            usage:    wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
-        });
+        let uniforms_init = Uniforms {
+            n,
+            eta: etas[0],
+            _pad: [0; 2],
+        };
+        let uniforms_buffer = self
+            .device
+            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("uniforms"),
+                contents: bytemuck::bytes_of(&uniforms_init),
+                usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
+            });
 
         // tiles バッファ: 各ラウンドのタイル割り当て [(i,j), ...]
         // 最大 max_tiles_per_round タイル × 8 bytes（vec2<u32>）
         let tiles_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
-            label:              Some("tiles"),
-            size:               (max_tiles_per_round * 8).max(8) as u64,
-            usage:              wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
+            label: Some("tiles"),
+            size: (max_tiles_per_round * 8).max(8) as u64,
+            usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
             mapped_at_creation: false,
         });
 
         // inner_perm バッファ: ケースAの内側ループオフセット列（長さ T、u32 × T = 4KB）
         // ラウンドごとに CPU でシャッフルして write_buffer で更新する
         let perm_init: Vec<u32> = (0..T).collect();
-        let perm_buffer = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
-            label:    Some("inner_perm"),
-            contents: bytemuck::cast_slice(&perm_init),
-            usage:    wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
-        });
+        let perm_buffer = self
+            .device
+            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("inner_perm"),
+                contents: bytemuck::cast_slice(&perm_init),
+                usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
+            });
 
         let download_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
-            label:              Some("download"),
-            size:               positions_buffer.size(),
-            usage:              wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
+            label: Some("download"),
+            size: positions_buffer.size(),
+            usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
             mapped_at_creation: false,
         });
 
         // ── バインドグループレイアウト ──────────────────────────────────────────
-        let bgl = self.device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
-            label:   None,
-            entries: &[
-                // binding 0: Uniforms
-                wgpu::BindGroupLayoutEntry {
-                    binding:    0,
-                    visibility: wgpu::ShaderStages::COMPUTE,
-                    ty: wgpu::BindingType::Buffer {
-                        ty:                 wgpu::BufferBindingType::Uniform,
-                        has_dynamic_offset: false,
-                        min_binding_size:   Some(
-                            NonZeroU64::new(std::mem::size_of::<Uniforms>() as u64).unwrap()
-                        ),
+        let bgl = self
+            .device
+            .create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
+                label: None,
+                entries: &[
+                    // binding 0: Uniforms
+                    wgpu::BindGroupLayoutEntry {
+                        binding: 0,
+                        visibility: wgpu::ShaderStages::COMPUTE,
+                        ty: wgpu::BindingType::Buffer {
+                            ty: wgpu::BufferBindingType::Uniform,
+                            has_dynamic_offset: false,
+                            min_binding_size: Some(
+                                NonZeroU64::new(std::mem::size_of::<Uniforms>() as u64).unwrap(),
+                            ),
+                        },
+                        count: None,
                     },
-                    count: None,
-                },
-                // binding 1: positions (read_write)
-                wgpu::BindGroupLayoutEntry {
-                    binding:    1,
-                    visibility: wgpu::ShaderStages::COMPUTE,
-                    ty: wgpu::BindingType::Buffer {
-                        ty:                 wgpu::BufferBindingType::Storage { read_only: false },
-                        has_dynamic_offset: false,
-                        min_binding_size:   Some(NonZeroU64::new(8).unwrap()),
+                    // binding 1: positions (read_write)
+                    wgpu::BindGroupLayoutEntry {
+                        binding: 1,
+                        visibility: wgpu::ShaderStages::COMPUTE,
+                        ty: wgpu::BindingType::Buffer {
+                            ty: wgpu::BufferBindingType::Storage { read_only: false },
+                            has_dynamic_offset: false,
+                            min_binding_size: Some(NonZeroU64::new(8).unwrap()),
+                        },
+                        count: None,
                     },
-                    count: None,
-                },
-                // binding 2: dist_flat (read)
-                wgpu::BindGroupLayoutEntry {
-                    binding:    2,
-                    visibility: wgpu::ShaderStages::COMPUTE,
-                    ty: wgpu::BindingType::Buffer {
-                        ty:                 wgpu::BufferBindingType::Storage { read_only: true },
-                        has_dynamic_offset: false,
-                        min_binding_size:   Some(NonZeroU64::new(4).unwrap()),
+                    // binding 2: dist_flat (read)
+                    wgpu::BindGroupLayoutEntry {
+                        binding: 2,
+                        visibility: wgpu::ShaderStages::COMPUTE,
+                        ty: wgpu::BindingType::Buffer {
+                            ty: wgpu::BufferBindingType::Storage { read_only: true },
+                            has_dynamic_offset: false,
+                            min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                        },
+                        count: None,
                     },
-                    count: None,
-                },
-                // binding 3: block_lens (read)
-                wgpu::BindGroupLayoutEntry {
-                    binding:    3,
-                    visibility: wgpu::ShaderStages::COMPUTE,
-                    ty: wgpu::BindingType::Buffer {
-                        ty:                 wgpu::BufferBindingType::Storage { read_only: true },
-                        has_dynamic_offset: false,
-                        min_binding_size:   Some(NonZeroU64::new(4).unwrap()),
+                    // binding 3: block_lens (read)
+                    wgpu::BindGroupLayoutEntry {
+                        binding: 3,
+                        visibility: wgpu::ShaderStages::COMPUTE,
+                        ty: wgpu::BindingType::Buffer {
+                            ty: wgpu::BufferBindingType::Storage { read_only: true },
+                            has_dynamic_offset: false,
+                            min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                        },
+                        count: None,
                     },
-                    count: None,
-                },
-                // binding 4: tiles (read) — ラウンドごとのタイル割り当て
-                wgpu::BindGroupLayoutEntry {
-                    binding:    4,
-                    visibility: wgpu::ShaderStages::COMPUTE,
-                    ty: wgpu::BindingType::Buffer {
-                        ty:                 wgpu::BufferBindingType::Storage { read_only: true },
-                        has_dynamic_offset: false,
-                        min_binding_size:   Some(NonZeroU64::new(8).unwrap()),
+                    // binding 4: tiles (read) — ラウンドごとのタイル割り当て
+                    wgpu::BindGroupLayoutEntry {
+                        binding: 4,
+                        visibility: wgpu::ShaderStages::COMPUTE,
+                        ty: wgpu::BindingType::Buffer {
+                            ty: wgpu::BufferBindingType::Storage { read_only: true },
+                            has_dynamic_offset: false,
+                            min_binding_size: Some(NonZeroU64::new(8).unwrap()),
+                        },
+                        count: None,
                     },
-                    count: None,
-                },
-                // binding 5: inner_perm (read) — ケースA内側ループのオフセット順列
-                wgpu::BindGroupLayoutEntry {
-                    binding:    5,
-                    visibility: wgpu::ShaderStages::COMPUTE,
-                    ty: wgpu::BindingType::Buffer {
-                        ty:                 wgpu::BufferBindingType::Storage { read_only: true },
-                        has_dynamic_offset: false,
-                        min_binding_size:   Some(NonZeroU64::new(4).unwrap()),
+                    // binding 5: inner_perm (read) — ケースA内側ループのオフセット順列
+                    wgpu::BindGroupLayoutEntry {
+                        binding: 5,
+                        visibility: wgpu::ShaderStages::COMPUTE,
+                        ty: wgpu::BindingType::Buffer {
+                            ty: wgpu::BufferBindingType::Storage { read_only: true },
+                            has_dynamic_offset: false,
+                            min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                        },
+                        count: None,
                     },
-                    count: None,
-                },
-            ],
-        });
+                ],
+            });
 
         let bind_group = self.device.create_bind_group(&wgpu::BindGroupDescriptor {
-            label:  None,
+            label: None,
             layout: &bgl,
             entries: &[
-                wgpu::BindGroupEntry { binding: 0, resource: uniforms_buffer.as_entire_binding() },
-                wgpu::BindGroupEntry { binding: 1, resource: positions_buffer.as_entire_binding() },
-                wgpu::BindGroupEntry { binding: 2, resource: dist_buffer.as_entire_binding() },
-                wgpu::BindGroupEntry { binding: 3, resource: block_lens_buffer.as_entire_binding() },
-                wgpu::BindGroupEntry { binding: 4, resource: tiles_buffer.as_entire_binding() },
-                wgpu::BindGroupEntry { binding: 5, resource: perm_buffer.as_entire_binding() },
+                wgpu::BindGroupEntry {
+                    binding: 0,
+                    resource: uniforms_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 1,
+                    resource: positions_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 2,
+                    resource: dist_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 3,
+                    resource: block_lens_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 4,
+                    resource: tiles_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 5,
+                    resource: perm_buffer.as_entire_binding(),
+                },
             ],
         });
 
-        let pipeline_layout = self.device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
-            label:                None,
-            bind_group_layouts:   &[&bgl],
-            push_constant_ranges: &[],
-        });
+        let pipeline_layout = self
+            .device
+            .create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
+                label: None,
+                bind_group_layouts: &[&bgl],
+                push_constant_ranges: &[],
+            });
 
-        let pipeline = self.device.create_compute_pipeline(&wgpu::ComputePipelineDescriptor {
-            label:               None,
-            layout:              Some(&pipeline_layout),
-            module:              &self.module,
-            entry_point:         None,
-            compilation_options: wgpu::PipelineCompilationOptions::default(),
-            cache:               None,
-        });
+        let pipeline = self
+            .device
+            .create_compute_pipeline(&wgpu::ComputePipelineDescriptor {
+                label: None,
+                layout: Some(&pipeline_layout),
+                module: &self.module,
+                entry_point: None,
+                compilation_options: wgpu::PipelineCompilationOptions::default(),
+                cache: None,
+            });
 
         // ── SGD 実行 ───────────────────────────────────────────────────────────
         let num_iterations = etas.len();
-        println!("SGD 開始: iterations={}, rounds/iter={}", num_iterations, schedule.len());
-
-        let mut rng = rand::rng();
+        let timestamp_passes = num_iterations;
+        let timestamp_count = (timestamp_passes * 2) as u32;
+        let timestamp_resources = if self.timestamp_supported && timestamp_count > 0 {
+            let query_set = self.device.create_query_set(&wgpu::QuerySetDescriptor {
+                label: Some("RR-SGD iteration timestamps"),
+                ty: wgpu::QueryType::Timestamp,
+                count: timestamp_count,
+            });
+            let resolve_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
+                label: Some("RR-SGD timestamp resolve"),
+                size: u64::from(timestamp_count) * 8,
+                usage: wgpu::BufferUsages::QUERY_RESOLVE | wgpu::BufferUsages::COPY_SRC,
+                mapped_at_creation: false,
+            });
+            let read_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
+                label: Some("RR-SGD timestamp readback"),
+                size: u64::from(timestamp_count) * 8,
+                usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
+                mapped_at_creation: false,
+            });
+            Some((query_set, resolve_buffer, read_buffer))
+        } else {
+            None
+        };
+        let upload_time = upload_started.elapsed();
+        let iteration_started = Instant::now();
+        let mut rng = rng_for_stream(seed, FULL_UPDATE_STREAM);
+        let mut timestamp_index = 0_u32;
 
         // 外側シャッフル用にスケジュールのインデックス列を用意
         let mut round_order: Vec<usize> = (0..schedule.len()).collect();
 
         for iter in 0..num_iterations {
             let eta = etas[iter];
-            let uni = Uniforms { n, eta, _pad: [0; 2] };
-            self.queue.write_buffer(&uniforms_buffer, 0, bytemuck::bytes_of(&uni));
+            let uni = Uniforms {
+                n,
+                eta,
+                _pad: [0; 2],
+            };
+            self.queue
+                .write_buffer(&uniforms_buffer, 0, bytemuck::bytes_of(&uni));
 
             // 外側ランダム: ラウンドの処理順をイテレーションごとにシャッフル
             round_order.shuffle(&mut rng);
 
-            for &ri in &round_order {
+            for (round_position, &ri) in round_order.iter().enumerate() {
                 let round = &schedule[ri];
 
                 // タイルバッファを今ラウンドの割り当てで更新
-                let tiles_flat: Vec<u32> = round.iter()
-                    .flat_map(|&(ti, tj)| [ti, tj])
-                    .collect();
-                self.queue.write_buffer(&tiles_buffer, 0, bytemuck::cast_slice(&tiles_flat));
+                let tiles_flat: Vec<u32> = round.iter().flat_map(|&(ti, tj)| [ti, tj]).collect();
+                self.queue
+                    .write_buffer(&tiles_buffer, 0, bytemuck::cast_slice(&tiles_flat));
 
                 // 内側ランダム: ケースAの内側ループオフセット列をラウンドごとにシャッフル
                 // inner_perm は [0..T) の順列。シェーダーで r_inner の代わりに使う。
                 let mut inner_perm: Vec<u32> = (0..T).collect();
                 inner_perm.shuffle(&mut rng);
-                self.queue.write_buffer(&perm_buffer, 0, bytemuck::cast_slice(&inner_perm));
+                self.queue
+                    .write_buffer(&perm_buffer, 0, bytemuck::cast_slice(&inner_perm));
 
-                let mut encoder = self.device.create_command_encoder(
-                    &wgpu::CommandEncoderDescriptor { label: None },
-                );
+                let mut encoder = self
+                    .device
+                    .create_command_encoder(&wgpu::CommandEncoderDescriptor { label: None });
                 {
+                    let timestamp_writes =
+                        timestamp_resources.as_ref().and_then(|(query_set, _, _)| {
+                            let beginning_of_pass_write_index =
+                                (round_position == 0).then_some(timestamp_index);
+                            let end_of_pass_write_index = (round_position + 1 == round_order.len())
+                                .then_some(timestamp_index + 1);
+                            (beginning_of_pass_write_index.is_some()
+                                || end_of_pass_write_index.is_some())
+                            .then_some(wgpu::ComputePassTimestampWrites {
+                                query_set,
+                                beginning_of_pass_write_index,
+                                end_of_pass_write_index,
+                            })
+                        });
                     let mut pass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
-                        label:            None,
-                        timestamp_writes: None,
+                        label: None,
+                        timestamp_writes,
                     });
                     pass.set_pipeline(&pipeline);
                     pass.set_bind_group(0, &bind_group, &[]);
@@ -366,34 +470,91 @@ impl GpuContext {
                     pass.dispatch_workgroups(round.len() as u32, 1, 1);
                 }
                 self.queue.submit([encoder.finish()]);
-                self.device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
+                self.device
+                    .poll(wgpu::PollType::wait_indefinitely())
+                    .unwrap();
+            }
+            if timestamp_resources.is_some() {
+                timestamp_index += 2;
             }
 
-            println!("iter {}/{} 完了 (eta={:.4})", iter + 1, num_iterations, eta);
+            if verbose {
+                let message = format!("Iteration {}/{} (eta={eta:.4})", iter + 1, num_iterations);
+                match output_format {
+                    OutputFormat::Json => eprintln!("{message}"),
+                    OutputFormat::Human => println!("{message}"),
+                }
+            }
         }
+        let iteration_time = iteration_started.elapsed();
 
         // ── 結果ダウンロード ───────────────────────────────────────────────────
-        let mut encoder = self.device.create_command_encoder(
-            &wgpu::CommandEncoderDescriptor { label: None },
-        );
+        let readback_started = Instant::now();
+        let mut encoder = self
+            .device
+            .create_command_encoder(&wgpu::CommandEncoderDescriptor { label: None });
         encoder.copy_buffer_to_buffer(
-            &positions_buffer, 0,
-            &download_buffer,  0,
+            &positions_buffer,
+            0,
+            &download_buffer,
+            0,
             positions_buffer.size(),
         );
+        if let Some((query_set, resolve_buffer, read_buffer)) = &timestamp_resources {
+            encoder.resolve_query_set(query_set, 0..timestamp_index, resolve_buffer, 0);
+            encoder.copy_buffer_to_buffer(
+                resolve_buffer,
+                0,
+                read_buffer,
+                0,
+                u64::from(timestamp_index) * 8,
+            );
+        }
         self.queue.submit([encoder.finish()]);
 
         let buf_slice = download_buffer.slice(..);
         buf_slice.map_async(wgpu::MapMode::Read, |_| {});
-        self.device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
+        let timestamp_slice = timestamp_resources
+            .as_ref()
+            .map(|(_, _, read_buffer)| read_buffer.slice(..u64::from(timestamp_index) * 8));
+        if let Some(slice) = &timestamp_slice {
+            slice.map_async(wgpu::MapMode::Read, |_| {});
+        }
+        self.device
+            .poll(wgpu::PollType::wait_indefinitely())
+            .unwrap();
 
         let data = buf_slice.get_mapped_range();
         let floats: &[f32] = bytemuck::cast_slice(&data);
-        let final_positions: Vec<[f32; 2]> = floats
-            .chunks(2)
-            .map(|c| [c[0], c[1]])
-            .collect();
+        let final_positions: Vec<[f32; 2]> = floats.chunks(2).map(|c| [c[0], c[1]]).collect();
+        drop(data);
+        download_buffer.unmap();
+        let gpu_device_time = timestamp_slice.map(|slice| {
+            let mapped = slice.get_mapped_range();
+            let timestamps: &[u64] = bytemuck::cast_slice(&mapped);
+            let ticks: u64 = timestamps
+                .chunks_exact(2)
+                .map(|pair| pair[1].saturating_sub(pair[0]))
+                .sum();
+            let duration = Duration::from_secs_f64(
+                ticks as f64 * f64::from(self.queue.get_timestamp_period()) / 1_000_000_000.0,
+            );
+            drop(mapped);
+            if let Some((_, _, read_buffer)) = &timestamp_resources {
+                read_buffer.unmap();
+            }
+            duration
+        });
+        let readback_time = readback_started.elapsed();
 
-        Ok((initial_positions, final_positions))
+        Ok(GpuRunResult {
+            initial_positions,
+            positions: final_positions,
+            upload_time,
+            iteration_time,
+            gpu_device_time,
+            readback_time,
+            dispatches: (schedule.len() * num_iterations) as u64,
+        })
     }
 }

@@ -1,8 +1,8 @@
 mod reader;
 mod renderer;
-mod stress;
 
 use anyhow::{Context, Result};
+use experiment_common::stress;
 use image::{ImageBuffer, Rgba};
 use std::ffi::OsString;
 use std::io::Write as _;
@@ -66,7 +66,7 @@ fn main() -> Result<()> {
         eprintln!("Warning: {}頂点の厳密ストレスは非常に高コストです。中止する場合はCtrl-C、通常は --stress sampled を使用してください。", graph.node_count);
     }
     let started = Instant::now();
-    let stress_result = stress::evaluate(
+    let stress_result = stress::evaluate_f32(
         config.stress_mode,
         &graph.positions,
         &graph.edges,

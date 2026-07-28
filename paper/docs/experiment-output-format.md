@@ -4,7 +4,7 @@
 
 この文書は、論文実験で1 runから取得するデータとコンソール出力の形式を固定する。速度指標の意味は[measurement-policy.md](measurement-policy.md)、比較条件は[experiment-plan.md](experiment-plan.md)を正本とする。
 
-この形式はOpenSpec change `standardize-experiment-output`の実装目標であり、現時点の全binaryが対応済みという意味ではない。実装後にschemaとサンプルを照合し、`schema_version = 1`として確定する。
+この形式はOpenSpec change `standardize-experiment-output`で実装した共通契約である。機械可読な正本は`experiments/schema/experiment-record-v1.json`とし、現在の`schema_version`は`1`である。
 
 ## 対象手法
 
@@ -70,13 +70,14 @@ Sparse群は`--pivots <N>`も受け付ける。正式な速度計測は`benchmar
 | `input_sha256` | string | yes | 入力ファイルのSHA-256 |
 | `seed` | integer | yes | アルゴリズム用seed |
 | `initial_positions_sha256` | string | yes | 初期座標列のhash |
+| `preprocess_sha256` | string/null | yes | Sparse群のpivot・制約・学習率fingerprint。Full群は`null` |
 
 ### 問題規模・パラメータ
 
 | field | 型 | 非該当時 | 内容 |
 |---|---|---|---|
-| `nodes` | integer | - | 採用した最大連結成分の頂点数 |
-| `edges` | integer | - | 無向化・自己ループ除去後の辺数 |
+| `nodes` | integer | - | 採用した最大連結成分の頂点数。失敗recordでは`null`可 |
+| `edges` | integer | - | 無向化・自己ループ除去後の辺数。失敗recordでは`null`可 |
 | `constraints` | integer/null | `null` | 実際に更新対象とした制約数 |
 | `pivots` | integer/null | `null` | Sparse群のpivot数 |
 | `iterations` | integer | - | 正式実験の基本値は15 |
@@ -182,6 +183,7 @@ CPU手法でGPU固有区間が存在しない場合、recordには`null`を保�
   "input_sha256": "sha256-value",
   "seed": 0,
   "initial_positions_sha256": "positions-sha256",
+  "preprocess_sha256": "sparse-preprocess-sha256",
   "nodes": 4941,
   "edges": 6594,
   "constraints": 123456,
@@ -234,4 +236,4 @@ runnerはrecordを追記する前に、少なくとも次を検証する。
 6. `exact`と`sampled`に必要なfieldの組合せが正しい。
 7. 非該当値が0や空文字ではなく`null`である。
 8. 成功時の成果物が存在する。
-
+9. 同じFull条件では初期座標hash、同じSparse条件では初期座標hashと前処理fingerprintが手法間で一致する。

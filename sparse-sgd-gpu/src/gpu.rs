@@ -1,7 +1,8 @@
-use crate::graph::{center_inplace, SgdParams};
+use crate::graph::SgdParams;
 use crate::schedule::Schedule;
 use anyhow::{ensure, Context, Result};
 use bytemuck::{Pod, Zeroable};
+use experiment_common::OutputFormat;
 use rand::{rngs::StdRng, seq::SliceRandom, Rng, SeedableRng};
 use std::num::NonZeroU64;
 use std::time::{Duration, Instant};
@@ -27,6 +28,8 @@ pub struct GpuContext {
     pub device: wgpu::Device,
     pub queue: wgpu::Queue,
     pub adapter_name: String,
+    pub backend: String,
+    pub timestamp_supported: bool,
     shader: wgpu::ShaderModule,
 }
 
@@ -37,6 +40,7 @@ pub struct GpuRunResult {
     pub upload_time: Duration,
     pub compute_time: Duration,
     pub readback_time: Duration,
+    pub gpu_device_time: Option<Duration>,
     pub dispatches_per_iteration: usize,
 }
 
@@ -47,9 +51,15 @@ impl GpuContext {
             pollster::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions::default()))
                 .map_err(|e| anyhow::anyhow!("GPUアダプタが見つかりません: {e:?}"))?;
         let info = adapter.get_info();
+        let timestamp_supported = adapter.features().contains(wgpu::Features::TIMESTAMP_QUERY);
+        let required_features = if timestamp_supported {
+            wgpu::Features::TIMESTAMP_QUERY
+        } else {
+            wgpu::Features::empty()
+        };
         let (device, queue) = pollster::block_on(adapter.request_device(&wgpu::DeviceDescriptor {
             label: Some("Sparse SGD GPU device"),
-            required_features: wgpu::Features::empty(),
+            required_features,
             required_limits: adapter.limits(),
             experimental_features: wgpu::ExperimentalFeatures::disabled(),
             memory_hints: wgpu::MemoryHints::MemoryUsage,
@@ -60,7 +70,9 @@ impl GpuContext {
         Ok(Self {
             device,
             queue,
-            adapter_name: format!("{} ({:?})", info.name, info.backend),
+            adapter_name: info.name,
+            backend: format!("{:?}", info.backend),
+            timestamp_supported,
             shader,
         })
     }
@@ -70,6 +82,8 @@ impl GpuContext {
         params: SgdParams,
         schedule: &Schedule,
         seed: u64,
+        verbose: bool,
+        output_format: OutputFormat,
     ) -> Result<GpuRunResult> {
         let upload_start = Instant::now();
         let n = params.positions.len();
@@ -212,14 +226,49 @@ impl GpuContext {
             });
         let one_pipeline = self.create_pipeline(&pipeline_layout, "one_sided_phase");
         let two_pipeline = self.create_pipeline(&pipeline_layout, "two_sided_round");
+        let passes_per_iteration = usize::from(n > 0)
+            + (0..schedule.round_count())
+                .filter(|&round| !schedule.round_range(round).is_empty())
+                .count();
+        let timestamp_passes = params.etas.len();
+        let timestamp_count = (timestamp_passes * 2) as u32;
+        let timestamp_resources = if self.timestamp_supported && timestamp_count > 0 {
+            let query_set = self.device.create_query_set(&wgpu::QuerySetDescriptor {
+                label: Some("Sparse SGD iteration timestamps"),
+                ty: wgpu::QueryType::Timestamp,
+                count: timestamp_count,
+            });
+            let resolve_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
+                label: Some("Sparse SGD timestamp resolve"),
+                size: u64::from(timestamp_count) * 8,
+                usage: wgpu::BufferUsages::QUERY_RESOLVE | wgpu::BufferUsages::COPY_SRC,
+                mapped_at_creation: false,
+            });
+            let read_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
+                label: Some("Sparse SGD timestamp readback"),
+                size: u64::from(timestamp_count) * 8,
+                usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
+                mapped_at_creation: false,
+            });
+            Some((query_set, resolve_buffer, read_buffer))
+        } else {
+            None
+        };
         let upload_time = upload_start.elapsed();
 
         let compute_start = Instant::now();
         let mut rng = StdRng::seed_from_u64(seed ^ 0x4750_555f_5350_4152);
         let mut pivot_permutation: Vec<u32> = (0..h as u32).collect();
         let mut round_order: Vec<usize> = (0..schedule.round_count()).collect();
+        let mut timestamp_index = 0_u32;
         for (iteration, &eta) in params.etas.iter().enumerate() {
-            println!("{}", iteration_log(iteration));
+            if verbose {
+                let message = iteration_log(iteration);
+                match output_format {
+                    OutputFormat::Json => eprintln!("{message}"),
+                    OutputFormat::Human => println!("{message}"),
+                }
+            }
             pivot_permutation.shuffle(&mut rng);
             round_order.shuffle(&mut rng);
             self.queue.write_buffer(
@@ -239,6 +288,17 @@ impl GpuContext {
             }
 
             let mut uniform_bytes = vec![0u8; slot_size * invocation_count];
+            let active_slots: Vec<usize> = invocations
+                .iter()
+                .enumerate()
+                .filter_map(|(slot, round)| {
+                    let count = round.map(|ri| schedule.round_range(ri).len()).unwrap_or(n);
+                    (count > 0).then_some(slot)
+                })
+                .collect();
+            let first_active_slot = active_slots.first().copied();
+            let last_active_slot = active_slots.last().copied();
+
             for (slot, round) in invocations.iter().enumerate() {
                 let (start, count) = round
                     .map(|ri| {
@@ -271,13 +331,27 @@ impl GpuContext {
                 if count == 0 {
                     continue;
                 }
+                let timestamp_writes =
+                    timestamp_resources.as_ref().and_then(|(query_set, _, _)| {
+                        let beginning_of_pass_write_index =
+                            (Some(slot) == first_active_slot).then_some(timestamp_index);
+                        let end_of_pass_write_index =
+                            (Some(slot) == last_active_slot).then_some(timestamp_index + 1);
+                        (beginning_of_pass_write_index.is_some()
+                            || end_of_pass_write_index.is_some())
+                        .then_some(wgpu::ComputePassTimestampWrites {
+                            query_set,
+                            beginning_of_pass_write_index,
+                            end_of_pass_write_index,
+                        })
+                    });
                 let mut pass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
                     label: Some(if round.is_some() {
                         "two-sided matching"
                     } else {
                         "one-sided owners"
                     }),
-                    timestamp_writes: None,
+                    timestamp_writes,
                 });
                 pass.set_pipeline(if round.is_some() {
                     &two_pipeline
@@ -286,6 +360,10 @@ impl GpuContext {
                 });
                 pass.set_bind_group(0, &bind_group, &[(slot * slot_size) as u32]);
                 pass.dispatch_workgroups((count as u32).div_ceil(WORKGROUP_SIZE), 1, 1);
+                drop(pass);
+            }
+            if timestamp_resources.is_some() {
+                timestamp_index += 2;
             }
             self.queue.submit([encoder.finish()]);
             self.device
@@ -307,9 +385,25 @@ impl GpuContext {
             0,
             positions_buffer.size(),
         );
+        if let Some((query_set, resolve_buffer, read_buffer)) = &timestamp_resources {
+            encoder.resolve_query_set(query_set, 0..timestamp_index, resolve_buffer, 0);
+            encoder.copy_buffer_to_buffer(
+                resolve_buffer,
+                0,
+                read_buffer,
+                0,
+                u64::from(timestamp_index) * 8,
+            );
+        }
         self.queue.submit([encoder.finish()]);
         let slice = download_buffer.slice(..);
         slice.map_async(wgpu::MapMode::Read, |_| {});
+        let timestamp_slice = timestamp_resources
+            .as_ref()
+            .map(|(_, _, read_buffer)| read_buffer.slice(..u64::from(timestamp_index) * 8));
+        if let Some(slice) = &timestamp_slice {
+            slice.map_async(wgpu::MapMode::Read, |_| {});
+        }
         self.device
             .poll(wgpu::PollType::wait_indefinitely())
             .unwrap();
@@ -319,7 +413,7 @@ impl GpuContext {
             values[n] == CANARY && values[n + 1] == CANARY,
             "GPU境界外書き込みを検出しました"
         );
-        let mut positions: Vec<[f64; 2]> = values[..n]
+        let positions: Vec<[f64; 2]> = values[..n]
             .iter()
             .map(|p| [p[0] as f64, p[1] as f64])
             .collect();
@@ -329,9 +423,22 @@ impl GpuContext {
             positions.iter().flatten().all(|v| v.is_finite()),
             "GPU結果にNaNまたはInfがあります"
         );
-        if params.center {
-            center_inplace(&mut positions);
-        }
+        let gpu_device_time = timestamp_slice.map(|slice| {
+            let mapped = slice.get_mapped_range();
+            let timestamps: &[u64] = bytemuck::cast_slice(&mapped);
+            let ticks: u64 = timestamps
+                .chunks_exact(2)
+                .map(|pair| pair[1].saturating_sub(pair[0]))
+                .sum();
+            let duration = Duration::from_secs_f64(
+                ticks as f64 * f64::from(self.queue.get_timestamp_period()) / 1_000_000_000.0,
+            );
+            drop(mapped);
+            if let Some((_, _, read_buffer)) = &timestamp_resources {
+                read_buffer.unmap();
+            }
+            duration
+        });
         let readback_time = readback_start.elapsed();
         Ok(GpuRunResult {
             initial_positions,
@@ -339,7 +446,8 @@ impl GpuContext {
             upload_time,
             compute_time,
             readback_time,
-            dispatches_per_iteration: invocation_count,
+            gpu_device_time,
+            dispatches_per_iteration: passes_per_iteration,
         })
     }
 
@@ -472,7 +580,10 @@ mod tests {
             };
             let cpu_positions = crate::cpu_reference::execute_sgd(cpu_params, &mut rng);
             let schedule = build_schedule(&graph, &params, seed).unwrap();
-            let gpu_positions = context.execute(params, &schedule, seed).unwrap().positions;
+            let gpu_positions = context
+                .execute(params, &schedule, seed, false, OutputFormat::Human)
+                .unwrap()
+                .positions;
             let cpu_stress = full_stress(&graph, &cpu_positions);
             let gpu_stress = full_stress(&graph, &gpu_positions);
             assert!(gpu_positions.iter().flatten().all(|v| v.is_finite()));

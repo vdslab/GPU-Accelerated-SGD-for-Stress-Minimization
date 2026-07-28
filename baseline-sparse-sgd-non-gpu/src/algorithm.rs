@@ -39,19 +39,26 @@ pub fn apply_constraint<R: Rng + ?Sized>(
     positions[pair.v][1] -= mu_v * displacement[1];
 }
 
-pub fn execute_sgd<R: Rng + ?Sized>(sgd_params: SgdParams, rng: &mut R) -> Vec<[f64; 2]> {
+pub fn execute_sgd_iterations<R: Rng + ?Sized>(
+    sgd_params: SgdParams,
+    rng: &mut R,
+) -> Vec<[f64; 2]> {
     let mut positions = sgd_params.positions;
     let mut pairs = sgd_params.pairs;
 
-    for (iteration, eta) in sgd_params.etas.into_iter().enumerate() {
+    for eta in sgd_params.etas {
         pairs.shuffle(rng);
         for &pair in &pairs {
             apply_constraint(&mut positions, pair, eta, rng);
         }
-        println!("Iteration: {}", iteration + 1);
     }
+    positions
+}
 
-    if sgd_params.center {
+pub fn execute_sgd<R: Rng + ?Sized>(sgd_params: SgdParams, rng: &mut R) -> Vec<[f64; 2]> {
+    let center = sgd_params.center;
+    let mut positions = execute_sgd_iterations(sgd_params, rng);
+    if center {
         center_inplace(&mut positions);
     }
     positions

@@ -3,8 +3,10 @@
 //! This module is intended to be used as a namespace (no stateful struct).
 
 use crate::graph;
-use rand::Rng;
+use experiment_common::seed::{rng_for_stream, FULL_UPDATE_STREAM};
+use experiment_common::OutputFormat;
 use rand::seq::SliceRandom;
+use rand::Rng;
 
 fn norm2(v: [f64; 2]) -> f64 {
     (v[0] * v[0] + v[1] * v[1]).sqrt()
@@ -14,7 +16,7 @@ fn sub(a: [f64; 2], b: [f64; 2]) -> [f64; 2] {
     [a[0] - b[0], a[1] - b[1]]
 }
 
-fn center_inplace(positions: &mut [[f64; 2]]) {
+pub fn center_inplace(positions: &mut [[f64; 2]]) {
     if positions.is_empty() {
         return;
     }
@@ -35,8 +37,13 @@ fn center_inplace(positions: &mut [[f64; 2]]) {
 ///   - `r = ((||xv-xu|| - dij)/2) * (diff / ||diff||)`
 ///   - `mu = min(wij * eta, 1)`
 ///   - `xu += mu * r`, `xv -= mu * r`
-pub fn execute_sgd(sgd_params: graph::SgdParams) -> Vec<[f64; 2]> {
-    let mut rng = rand::rng();
+pub fn execute_sgd(
+    sgd_params: graph::SgdParams,
+    seed: u64,
+    verbose: bool,
+    output_format: OutputFormat,
+) -> Vec<[f64; 2]> {
+    let mut rng = rng_for_stream(seed, FULL_UPDATE_STREAM);
     let mut positions = sgd_params.positions.clone();
     let mut pairs = sgd_params.pairs.clone();
 
@@ -73,11 +80,12 @@ pub fn execute_sgd(sgd_params: graph::SgdParams) -> Vec<[f64; 2]> {
             positions[v][1] -= mu * r[1];
         }
 
-        println!("Iteration: {}", iteration + 1);
-    }
-
-    if sgd_params.center {
-        center_inplace(&mut positions);
+        if verbose {
+            match output_format {
+                OutputFormat::Json => eprintln!("Iteration: {}", iteration + 1),
+                OutputFormat::Human => println!("Iteration: {}", iteration + 1),
+            }
+        }
     }
 
     positions
