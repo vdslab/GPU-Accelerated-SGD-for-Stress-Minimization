@@ -214,3 +214,103 @@ raw JSONLは加工せず保管し、集計scriptの入力とする。論文repos
 - 中央値、IQR、paired ratio、信頼区間の計算条件
 
 手作業で表の数値を書き換えず、JSONLから再生成できる状態を保つ。
+
+## JSONLから論文用表を生成する
+
+集計CLIの正本は`experiments/aggregate_results.py`である。raw JSONLを直接編集せず、experiment directoryを入力としてCSV、Markdown、LaTeXを同時に生成する。
+
+### 1. 集計dry-run
+
+E0のrun数、比較group、警告、生成予定fileを確認する。
+
+```bash
+python3 experiments/aggregate_results.py \
+  --experiment-dir output/experiments/e0-uspowergrid \
+  --profile validation \
+  --dry-run
+```
+
+`--dry-run`はtable directoryを作成しない。`planned_runs`、`successful_runs`、`failed_runs`、`group_count`、warning/error件数が意図した値か確認する。
+
+### 2. E0・開発中データのdraft表
+
+```bash
+python3 experiments/aggregate_results.py \
+  --experiment-dir output/experiments/e0-uspowergrid \
+  --profile validation \
+  --output-dir paper/tables/e0-validation
+```
+
+`validation`はdirty commit、標本不足、失敗を警告として記録し、確認用のdraft表を生成する。`aggregation-metadata.json`と`validation-report.json`の`publication_ready`は必ず`false`であり、この速度値を論文の性能比較へ採用しない。
+
+### 3. 正式な速度表
+
+```bash
+python3 experiments/aggregate_results.py \
+  --experiment-dir output/experiments/e3-timing \
+  --profile timing \
+  --output-dir paper/tables/e3-timing
+```
+
+`timing`は次を満たさない場合に表を生成せず非0で終了する。
+
+- 計画runの欠損・failureが0件
+- 全runが`git_dirty=false`
+- 比較group内のcommit、入力checksum、環境、パラメータが一致
+- 各method・条件に10標本以上ある
+- 同じseed・repetitionのCPU基準runが存在する
+
+主表示は3速度指標の`median [Q1, Q3]`である。speedupはFullではSGD、SparseではSparseSGDを基準とし、各seed・repetitionで`baseline_time / method_time`を計算してから集計する。
+
+### 4. 正式な品質表
+
+```bash
+python3 experiments/aggregate_results.py \
+  --experiment-dir output/experiments/e2-quality \
+  --profile quality \
+  --output-dir paper/tables/e2-quality
+```
+
+`quality`は同一条件を持つ25個以上の共通seedを要求する。同じseedに複数repetitionがある場合はseed内stressのmedianを代表値とする。paired stress ratioは`method_stress / baseline_stress`であり、FullはSGD、SparseはSparseSGDを基準にする。exactとsampledは別groupであり、同じ統計へ混ぜない。
+
+### 5. 生成物を確認する
+
+各table directoryには次の10 fileが生成される。
+
+```text
+runs.csv
+speed-summary.csv
+quality-summary.csv
+method-stats.csv
+speed-table.md
+speed-table.tex
+quality-table.md
+quality-table.tex
+validation-report.json
+aggregation-metadata.json
+```
+
+確認順は次のとおり。
+
+1. `validation-report.json`の`errors`が空である。
+2. 正式表では`publication_ready=true`である。
+3. `runs.csv`のrun数、method、seed、repetitionがmanifestと一致する。
+4. Markdown表とLaTeX表の数値が対応する集計CSVと一致する。
+5. `aggregation-metadata.json`に入力JSONL・manifest・environment、集計実装、出力fileのSHA-256がある。
+6. retryがある場合は`retry_history`と実験台帳の理由が一致する。
+
+### 6. 再生成と上書き
+
+既存fileを含む出力directoryは上書きされない。再生成するときは既存tableを退避または削除したうえで、同じcommandを新しい空directoryへ実行する。同じ入力bytes、profile、集計実装から生成したfileはbyte単位で一致する。
+
+複数experimentを1回で読む場合は`--experiment-dir`を繰り返す。
+
+```bash
+python3 experiments/aggregate_results.py \
+  --experiment-dir output/experiments/e3-dataset-a \
+  --experiment-dir output/experiments/e3-dataset-b \
+  --profile timing \
+  --output-dir paper/tables/e3-timing
+```
+
+論文repositoryへは表示表だけでなく、集計CSV、`validation-report.json`、`aggregation-metadata.json`も一緒に移す。

@@ -108,6 +108,7 @@ class RunnerTests(unittest.TestCase):
         methods: list[str] | None = None,
         seeds: list[int] | None = None,
         warmups: int = 0,
+        repetitions: int = 1,
     ) -> Path:
         selected = methods or ["sgd", "rr_sparse_sgd"]
         value = {
@@ -125,7 +126,7 @@ class RunnerTests(unittest.TestCase):
             "iterations": [2],
             "epsilon": [0.1],
             "pivots": [1],
-            "repetitions": 1,
+            "repetitions": repetitions,
             "warmups": warmups,
             "timeout_seconds": 10,
             "fail_fast": False,
@@ -145,6 +146,59 @@ class RunnerTests(unittest.TestCase):
         self.assertTrue(all(run.pivots is None for run in first if run.method == "sgd"))
         self.assertTrue(
             all(run.pivots == 1 for run in first if run.method == "rr_sparse_sgd")
+        )
+
+    def test_e0_run_ids_and_commands_are_stable(self) -> None:
+        path = MODULE_PATH.parent / "manifests/e0-uspowergrid.json"
+        manifest = runner.load_manifest(path)
+        runs = runner.expand_runs(manifest, path)
+        self.assertEqual(
+            [run.run_id for run in runs],
+            [
+                "e0-uspowergrid-USpowerGrid-sgd-7dd9767ead4f",
+                "e0-uspowergrid-USpowerGrid-sgd-078f8c31de3f",
+                "e0-uspowergrid-USpowerGrid-sgd-925ec82a7ca2",
+                "e0-uspowergrid-USpowerGrid-atomic_sgd-c03a325b0fa2",
+                "e0-uspowergrid-USpowerGrid-atomic_sgd-40a9a26f1ba2",
+                "e0-uspowergrid-USpowerGrid-atomic_sgd-6188e124906e",
+                "e0-uspowergrid-USpowerGrid-rr_sgd-f8ba8b0629d3",
+                "e0-uspowergrid-USpowerGrid-rr_sgd-c60c475167ac",
+                "e0-uspowergrid-USpowerGrid-rr_sgd-4442af2f0d2a",
+                "e0-uspowergrid-USpowerGrid-sparse_sgd-a6b781876e70",
+                "e0-uspowergrid-USpowerGrid-sparse_sgd-cf94ddbc6db6",
+                "e0-uspowergrid-USpowerGrid-sparse_sgd-ceb4c0101559",
+                "e0-uspowergrid-USpowerGrid-rr_sparse_sgd-c2ee7f883926",
+                "e0-uspowergrid-USpowerGrid-rr_sparse_sgd-332ad7c707f5",
+                "e0-uspowergrid-USpowerGrid-rr_sparse_sgd-080dfb88888a",
+            ],
+        )
+        full_command = runner.command_for(runs[0], Path("/tmp/artifacts"))
+        sparse_command = runner.command_for(runs[-1], Path("/tmp/artifacts"))
+        self.assertNotIn("--pivots", full_command)
+        self.assertEqual(sparse_command[-2:], ["--pivots", "200"])
+
+    def test_repetition_and_paired_key_are_exposed(self) -> None:
+        path = self.manifest(
+            methods=["sgd", "rr_sgd", "sparse_sgd", "rr_sparse_sgd"],
+            repetitions=2,
+        )
+        runs = runner.expand_runs(runner.load_manifest(path), path)
+        self.assertEqual([run.repetition for run in runs[:2]], [0, 1])
+        by_method = {
+            (run.method, run.repetition): run
+            for run in runs
+        }
+        self.assertEqual(
+            by_method[("sgd", 1)].paired_key,
+            by_method[("rr_sgd", 1)].paired_key,
+        )
+        self.assertEqual(
+            by_method[("sparse_sgd", 0)].paired_key,
+            by_method[("rr_sparse_sgd", 0)].paired_key,
+        )
+        self.assertNotEqual(
+            by_method[("sgd", 0)].paired_key,
+            by_method[("sparse_sgd", 0)].paired_key,
         )
 
     def test_dry_run_does_not_create_experiment_output(self) -> None:

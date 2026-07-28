@@ -237,3 +237,80 @@ runnerはrecordを追記する前に、少なくとも次を検証する。
 7. 非該当値が0や空文字ではなく`null`である。
 8. 成功時の成果物が存在する。
 9. 同じFull条件では初期座標hash、同じSparse条件では初期座標hashと前処理fingerprintが手法間で一致する。
+
+## 集計データと論文表
+
+`results.jsonl`が変更しない一次データの正本であり、CSV、Markdown、LaTeXは`experiments/aggregate_results.py`から再生成する派生artifactである。表の数値を手作業で変更してはならない。
+
+```text
+manifest.json + environment.json + results.jsonl
+  └─ aggregate_results.py
+      ├─ runs.csv
+      ├─ speed-summary.csv
+      ├─ quality-summary.csv
+      ├─ method-stats.csv
+      ├─ speed-table.md / speed-table.tex
+      ├─ quality-table.md / quality-table.tex
+      ├─ validation-report.json
+      └─ aggregation-metadata.json
+```
+
+### runの選別
+
+append-only JSONLに同じrun IDが複数ある場合は、ファイル内で最後のrecordを現在状態とする。`failure → success`は再開成功として最新successを使い、`success → failure`は最新failureとして扱う。過去のfailureを削除せず、`validation-report.json`の`retry_history`へ保存する。
+
+manifestの条件直積を再展開してrun IDを照合し、recordにない`repetition`を復元する。未知run IDやrecordとmanifestの条件不一致がある場合は集計を停止する。
+
+### 正本となる集計CSV
+
+- `runs.csv`: 最新recordを1 run 1行へ正規化したデータ。manifestから復元したrepetition、履歴件数、比較環境fingerprintを含む
+- `speed-summary.csv`: 3速度指標とpaired speedupの全統計量
+- `quality-summary.csv`: seed単位stressとpaired stress ratioの全統計量
+- `method-stats.csv`: atomic update、retry、RR round・dispatch、GPU device timeなどの補助統計
+
+集計CSVは丸め前の値を十分な精度で保存する。MarkdownとLaTeXだけに固定の表示丸めを適用する。
+
+### 速度統計
+
+対象は`benchmark` recordだけで、FullとSparseを別groupにする。各速度指標について次を保存する。
+
+```text
+n, seed_count, repetition_count
+mean, sample_sd
+median, q1, q3, iqr
+minimum, maximum
+```
+
+Q1・Q3はsort済み標本の両端を含む線形補間で計算する。主表示は`median [Q1, Q3]`である。
+
+paired speedupは先にrun単位で計算する。
+
+```text
+paired_speedup = baseline_time / method_time
+```
+
+Fullのbaselineは`sgd`、Sparseのbaselineは`sparse_sgd`である。median同士の比をpaired speedupの代わりにしてはならない。
+
+### 品質統計
+
+同じseedに複数repetitionがある場合、method・seed内のstress medianをseed代表値とする。その代表値からstressのmean、sample SD、median、Q1、Q3、IQRを計算する。
+
+```text
+paired_stress_ratio = method_seed_stress / baseline_seed_stress
+```
+
+ratioが1なら基準と同等、1未満なら基準より低stress、1より大きければ基準より高stressである。exactとsampledは別groupとし、混在させない。
+
+### `null`と欠測の扱い
+
+- CSVでは非該当・取得不能の`null`を空欄にする。
+- Markdown・LaTeXでは非該当・取得不能を`—`と表示する。
+- `null`、failure、timeout、OOMを0へ変換しない。
+- speedupまたはstress ratioの対応baselineがなければ、正式表を生成しない。
+- 標本数1ではsample SDを`null`とし、表示表では`—`にする。
+
+### provenance
+
+`aggregation-metadata.json`は集計規則version、profile、experiment ID、実験commit、入力3 fileのSHA-256、集計scriptのSHA-256、正規化した生成command、各生成artifactのSHA-256を持つ。再生成のたびに変わる現在時刻や出力先絶対pathは保存しない。
+
+`validation-report.json`は欠損・failure・dirty commit・標本不足・条件不一致・再試行履歴と`publication_ready`を持つ。`validation` profileは常に`publication_ready=false`であり、確認用draftとしてのみ使用する。

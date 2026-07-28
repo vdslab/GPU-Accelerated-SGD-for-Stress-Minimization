@@ -1,0 +1,11 @@
+\begin{tabular}{llllllll}
+\hline
+Dataset & Family & Method & Iteration (ms) & Algorithm cold (ms) & CLI total cold (ms) & Algorithm speedup & n \\
+\hline
+USpowerGrid & Full & AtomicSGD & 1304.04 [1274.85, 1322.09] & 1772.61 [1741.79, 1785.19] & 1773.07 [1742.24, 1785.65] & 2.364 [2.356, 2.371]× & 3 \\
+USpowerGrid & Full & RR-SGD & 308.62 [307.72, 312.72] & 768.86 [768.74, 775.51] & 769.34 [769.21, 776.00] & 5.323 [5.308, 5.425]× & 3 \\
+USpowerGrid & Full & SGD & 3828.83 [3785.70, 3872.23] & 4163.13 [4115.55, 4206.27] & 4163.61 [4116.04, 4206.73] & 1.000 [1.000, 1.000]× & 3 \\
+USpowerGrid & Sparse & RR-SparseSGD & 177.32 [173.50, 177.57] & 384.56 [382.29, 387.25] & 386.96 [384.73, 389.74] & 0.995 [0.985, 1.014]× & 3 \\
+USpowerGrid & Sparse & SparseSGD & 217.42 [216.93, 219.25] & 382.66 [381.35, 387.76] & 385.06 [383.73, 390.15] & 1.000 [1.000, 1.000]× & 3 \\
+\hline
+\end{tabular}
