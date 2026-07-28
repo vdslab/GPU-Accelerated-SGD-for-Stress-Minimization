@@ -9,7 +9,7 @@ use experiment_common::{
 use rand::{rngs::StdRng, SeedableRng};
 use sparse_sgd_gpu::{
     gpu::GpuContext,
-    graph::{center_inplace, Graph, SgdParams},
+    graph::{Graph, SgdParams},
     schedule::build_schedule,
 };
 use std::fs::{create_dir_all, File};
@@ -159,11 +159,11 @@ fn main() -> Result<()> {
     let context = GpuContext::new()?;
     let runtime_init_time = runtime_started.elapsed();
     config.log(format!(
-        "GPU: {} ({}) timestamp_query={}",
-        context.adapter_name, context.backend, context.timestamp_supported
+        "GPU: {} ({})",
+        context.adapter_name, context.backend
     ));
 
-    let mut run = context.execute(
+    let run = context.execute(
         params,
         &schedule,
         config.seed,
@@ -174,12 +174,6 @@ fn main() -> Result<()> {
         "GPU batching: dispatches/iteration={}, submissions/iteration={}",
         run.dispatches_per_iteration, run.submissions_per_iteration
     ));
-
-    let postprocess_started = Instant::now();
-    if config.center {
-        center_inplace(&mut run.positions);
-    }
-    let postprocess_time = postprocess_started.elapsed();
 
     let edges: Vec<_> = graph
         .edge_src
@@ -254,7 +248,7 @@ fn main() -> Result<()> {
             iteration_time_ms: Some(ms(run.compute_time)),
             gpu_device_time_ms: run.gpu_device_time.map(ms),
             readback_time_ms: Some(ms(run.readback_time)),
-            postprocess_time_ms: Some(ms(postprocess_time)),
+            postprocess_time_ms: Some(ms(run.postprocess_time)),
             ..TimingBreakdown::default()
         },
         stress,
