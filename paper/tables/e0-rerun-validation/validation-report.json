@@ -1,0 +1,159 @@
+{
+  "aggregation_rules_version": 1,
+  "current_records": 15,
+  "errors": [],
+  "failed_runs": 0,
+  "group_count": 2,
+  "planned_runs": 15,
+  "profile": "validation",
+  "publication_ready": false,
+  "retry_history": [],
+  "successful_runs": 15,
+  "warnings": [
+    {
+      "code": "insufficient_timing_samples",
+      "details": {
+        "actual": 3,
+        "expected": 10,
+        "group": [
+          "e0-uspowergrid",
+          "USpowerGrid",
+          "8fda7edfc1844d73d4f5be7d9a49963104349292aae64e73782c1a55c3b5f05f",
+          "full",
+          "benchmark",
+          15,
+          0.1,
+          null,
+          "exact",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ],
+        "method": "atomic_sgd"
+      },
+      "message": "正式timing表には10標本以上必要です"
+    },
+    {
+      "code": "insufficient_timing_samples",
+      "details": {
+        "actual": 3,
+        "expected": 10,
+        "group": [
+          "e0-uspowergrid",
+          "USpowerGrid",
+          "8fda7edfc1844d73d4f5be7d9a49963104349292aae64e73782c1a55c3b5f05f",
+          "full",
+          "benchmark",
+          15,
+          0.1,
+          null,
+          "exact",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ],
+        "method": "rr_sgd"
+      },
+      "message": "正式timing表には10標本以上必要です"
+    },
+    {
+      "code": "insufficient_timing_samples",
+      "details": {
+        "actual": 3,
+        "expected": 10,
+        "group": [
+          "e0-uspowergrid",
+          "USpowerGrid",
+          "8fda7edfc1844d73d4f5be7d9a49963104349292aae64e73782c1a55c3b5f05f",
+          "full",
+          "benchmark",
+          15,
+          0.1,
+          null,
+          "exact",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ],
+        "method": "sgd"
+      },
+      "message": "正式timing表には10標本以上必要です"
+    },
+    {
+      "code": "insufficient_quality_seeds",
+      "details": {
+        "actual": 3,
+        "expected": 25,
+        "group": [
+          "e0-uspowergrid",
+          "USpowerGrid",
+          "8fda7edfc1844d73d4f5be7d9a49963104349292aae64e73782c1a55c3b5f05f",
+          "full",
+          "benchmark",
+          15,
+          0.1,
+          null,
+          "exact",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ]
+      },
+      "message": "正式quality表には25個以上の共通seedが必要です"
+    },
+    {
+      "code": "insufficient_timing_samples",
+      "details": {
+        "actual": 3,
+        "expected": 10,
+        "group": [
+          "e0-uspowergrid",
+          "USpowerGrid",
+          "8fda7edfc1844d73d4f5be7d9a49963104349292aae64e73782c1a55c3b5f05f",
+          "sparse",
+          "benchmark",
+          15,
+          0.1,
+          200,
+          "exact",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ],
+        "method": "rr_sparse_sgd"
+      },
+      "message": "正式timing表には10標本以上必要です"
+    },
+    {
+      "code": "insufficient_timing_samples",
+      "details": {
+        "actual": 3,
+        "expected": 10,
+        "group": [
+          "e0-uspowergrid",
+          "USpowerGrid",
+          "8fda7edfc1844d73d4f5be7d9a49963104349292aae64e73782c1a55c3b5f05f",
+          "sparse",
+          "benchmark",
+          15,
+          0.1,
+          200,
+          "exact",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ],
+        "method": "sparse_sgd"
+      },
+      "message": "正式timing表には10標本以上必要です"
+    },
+    {
+      "code": "insufficient_quality_seeds",
+      "details": {
+        "actual": 3,
+        "expected": 25,
+        "group": [
+          "e0-uspowergrid",
+          "USpowerGrid",
+          "8fda7edfc1844d73d4f5be7d9a49963104349292aae64e73782c1a55c3b5f05f",
+          "sparse",
+          "benchmark",
+          15,
+          0.1,
+          200,
+          "exact",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ]
+      },
+      "message": "正式quality表には25個以上の共通seedが必要です"
+    }
+  ]
+}
