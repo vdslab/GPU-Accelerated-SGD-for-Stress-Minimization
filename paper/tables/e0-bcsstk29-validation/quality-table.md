@@ -1,0 +1,7 @@
+| Dataset | Family | Method | Stress kind | Stress mean ± SD | Stress median [Q1, Q3] | Paired stress ratio | seeds |
+|---|---|---|---|---|---|---|---|
+| bcsstk29 | Full | AtomicSGD | sampled | 6824264.86 ± 3494.93 | 6823345.21 [6822333.46, 6825736.43] | 1.1139 ± 0.0006 | 3 |
+| bcsstk29 | Full | RR-SGD | sampled | 6857273.61 ± 105956.92 | 6871890.83 [6808328.91, 6913526.92] | 1.1193 ± 0.0173 | 3 |
+| bcsstk29 | Full | SGD | sampled | 6126272.08 ± 220.60 | 6126259.15 [6126158.69, 6126379.00] | 1.0000 ± 0.0000 | 3 |
+| bcsstk29 | Sparse | RR-SparseSGD | sampled | 6417405.00 ± 48810.15 | 6442870.01 [6401999.25, 6445543.26] | 1.0004 ± 0.0081 | 3 |
+| bcsstk29 | Sparse | SparseSGD | sampled | 6415185.20 ± 22062.32 | 6414435.40 [6403971.37, 6426024.14] | 1.0000 ± 0.0000 | 3 |

@@ -1,0 +1,182 @@
+{
+  "aggregation_rules_version": 1,
+  "current_records": 15,
+  "errors": [],
+  "failed_runs": 0,
+  "group_count": 2,
+  "planned_runs": 15,
+  "profile": "validation",
+  "publication_ready": false,
+  "retry_history": [],
+  "successful_runs": 15,
+  "warnings": [
+    {
+      "code": "dirty_commit",
+      "details": {
+        "run_ids": [
+          "e0-bcsstk29-bcsstk29-atomic_sgd-08440bf71ed9",
+          "e0-bcsstk29-bcsstk29-atomic_sgd-66c3875a8025",
+          "e0-bcsstk29-bcsstk29-atomic_sgd-97351710b10a",
+          "e0-bcsstk29-bcsstk29-rr_sgd-b2f0b95736c9",
+          "e0-bcsstk29-bcsstk29-rr_sgd-de825db9c875",
+          "e0-bcsstk29-bcsstk29-rr_sgd-e22ff3f99b41",
+          "e0-bcsstk29-bcsstk29-rr_sparse_sgd-8155e348f6ed",
+          "e0-bcsstk29-bcsstk29-rr_sparse_sgd-d1ac4ca231fa",
+          "e0-bcsstk29-bcsstk29-rr_sparse_sgd-e4cc78642227",
+          "e0-bcsstk29-bcsstk29-sgd-2de2d81290c9",
+          "e0-bcsstk29-bcsstk29-sgd-ca7f11910524",
+          "e0-bcsstk29-bcsstk29-sgd-ec542108499e",
+          "e0-bcsstk29-bcsstk29-sparse_sgd-051c0e406c00",
+          "e0-bcsstk29-bcsstk29-sparse_sgd-53891515e384",
+          "e0-bcsstk29-bcsstk29-sparse_sgd-5482e8fa1f69"
+        ]
+      },
+      "message": "dirty worktree由来のrunがあります"
+    },
+    {
+      "code": "insufficient_timing_samples",
+      "details": {
+        "actual": 3,
+        "expected": 10,
+        "group": [
+          "e0-bcsstk29",
+          "bcsstk29",
+          "49251de30c5a231009d60890fcbdf590412b9421818952ce67ebf8b8279c50ce",
+          "full",
+          "benchmark",
+          15,
+          0.1,
+          null,
+          "sampled",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ],
+        "method": "atomic_sgd"
+      },
+      "message": "正式timing表には10標本以上必要です"
+    },
+    {
+      "code": "insufficient_timing_samples",
+      "details": {
+        "actual": 3,
+        "expected": 10,
+        "group": [
+          "e0-bcsstk29",
+          "bcsstk29",
+          "49251de30c5a231009d60890fcbdf590412b9421818952ce67ebf8b8279c50ce",
+          "full",
+          "benchmark",
+          15,
+          0.1,
+          null,
+          "sampled",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ],
+        "method": "rr_sgd"
+      },
+      "message": "正式timing表には10標本以上必要です"
+    },
+    {
+      "code": "insufficient_timing_samples",
+      "details": {
+        "actual": 3,
+        "expected": 10,
+        "group": [
+          "e0-bcsstk29",
+          "bcsstk29",
+          "49251de30c5a231009d60890fcbdf590412b9421818952ce67ebf8b8279c50ce",
+          "full",
+          "benchmark",
+          15,
+          0.1,
+          null,
+          "sampled",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ],
+        "method": "sgd"
+      },
+      "message": "正式timing表には10標本以上必要です"
+    },
+    {
+      "code": "insufficient_quality_seeds",
+      "details": {
+        "actual": 3,
+        "expected": 25,
+        "group": [
+          "e0-bcsstk29",
+          "bcsstk29",
+          "49251de30c5a231009d60890fcbdf590412b9421818952ce67ebf8b8279c50ce",
+          "full",
+          "benchmark",
+          15,
+          0.1,
+          null,
+          "sampled",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ]
+      },
+      "message": "正式quality表には25個以上の共通seedが必要です"
+    },
+    {
+      "code": "insufficient_timing_samples",
+      "details": {
+        "actual": 3,
+        "expected": 10,
+        "group": [
+          "e0-bcsstk29",
+          "bcsstk29",
+          "49251de30c5a231009d60890fcbdf590412b9421818952ce67ebf8b8279c50ce",
+          "sparse",
+          "benchmark",
+          15,
+          0.1,
+          200,
+          "sampled",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ],
+        "method": "rr_sparse_sgd"
+      },
+      "message": "正式timing表には10標本以上必要です"
+    },
+    {
+      "code": "insufficient_timing_samples",
+      "details": {
+        "actual": 3,
+        "expected": 10,
+        "group": [
+          "e0-bcsstk29",
+          "bcsstk29",
+          "49251de30c5a231009d60890fcbdf590412b9421818952ce67ebf8b8279c50ce",
+          "sparse",
+          "benchmark",
+          15,
+          0.1,
+          200,
+          "sampled",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ],
+        "method": "sparse_sgd"
+      },
+      "message": "正式timing表には10標本以上必要です"
+    },
+    {
+      "code": "insufficient_quality_seeds",
+      "details": {
+        "actual": 3,
+        "expected": 25,
+        "group": [
+          "e0-bcsstk29",
+          "bcsstk29",
+          "49251de30c5a231009d60890fcbdf590412b9421818952ce67ebf8b8279c50ce",
+          "sparse",
+          "benchmark",
+          15,
+          0.1,
+          200,
+          "sampled",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ]
+      },
+      "message": "正式quality表には25個以上の共通seedが必要です"
+    }
+  ]
+}

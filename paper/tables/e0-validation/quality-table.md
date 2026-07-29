@@ -1,0 +1,7 @@
+| Dataset | Family | Method | Stress kind | Stress mean ± SD | Stress median [Q1, Q3] | Paired stress ratio | seeds |
+|---|---|---|---|---|---|---|---|
+| USpowerGrid | Full | AtomicSGD | exact | 733235.09 ± 7015.10 | 729326.64 [729185.73, 735330.22] | 1.0443 ± 0.0100 | 3 |
+| USpowerGrid | Full | RR-SGD | exact | 717275.60 ± 5803.78 | 720027.74 [715317.73, 720609.54] | 1.0216 ± 0.0083 | 3 |
+| USpowerGrid | Full | SGD | exact | 702132.07 ± 13.17 | 702137.50 [702127.28, 702139.58] | 1.0000 ± 0.0000 | 3 |
+| USpowerGrid | Sparse | RR-SparseSGD | exact | 725794.41 ± 4532.33 | 727323.86 [724009.54, 728344.00] | 1.0016 ± 0.0037 | 3 |
+| USpowerGrid | Sparse | SparseSGD | exact | 724625.27 ± 1892.55 | 724994.10 [723784.77, 725650.17] | 1.0000 ± 0.0000 | 3 |

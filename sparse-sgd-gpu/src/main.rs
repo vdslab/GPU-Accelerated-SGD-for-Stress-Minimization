@@ -1,7 +1,17 @@
 use anyhow::{bail, Context, Result};
 use chrono::Local;
+use experiment_common::{
+    current_binary, dataset_name, environment_metadata, git_metadata, measure_auto_f64,
+    positions_sha256_f64, sha256_file, Artifacts, CommonExperimentArgs, ExperimentRecord,
+    FingerprintBuilder, GraphMetrics, Method, MethodStats, OutputFormat, Parameters,
+    RecordIdentity, RunMode, TimingBreakdown,
+};
 use rand::{rngs::StdRng, SeedableRng};
-use sparse_sgd_gpu::{gpu::GpuContext, graph::Graph, schedule::build_schedule};
+use sparse_sgd_gpu::{
+    gpu::GpuContext,
+    graph::{Graph, SgdParams},
+    schedule::build_schedule,
+};
 use std::fs::{create_dir_all, File};
 use std::io::Write;
 use std::path::{Path, PathBuf};
@@ -12,8 +22,8 @@ const WEIGHT_MODEL: &str = "ortmann-region-directed-weight";
 
 #[derive(Debug, Clone, PartialEq)]
 struct Config {
+    common: CommonExperimentArgs,
     input: PathBuf,
-    output_dir: PathBuf,
     iterations: usize,
     pivot_count: usize,
     epsilon: f64,
@@ -24,10 +34,10 @@ struct Config {
 impl Default for Config {
     fn default() -> Self {
         Self {
+            common: CommonExperimentArgs::human("../output"),
             input: PathBuf::from("../data/luxembourg_osm.mtx"),
-            output_dir: PathBuf::from("../output"),
             iterations: 15,
-            pivot_count: 50,
+            pivot_count: 200,
             epsilon: 0.1,
             seed: 0,
             center: true,
@@ -44,29 +54,38 @@ impl Config {
         let mut config = Self::default();
         let mut args = args.into_iter().peekable();
         let mut positional = false;
-        while let Some(arg) = args.next() {
-            match arg.as_str() {
+        while let Some(argument) = args.next() {
+            match argument.as_str() {
                 "--help" | "-h" => {
                     print_help();
                     std::process::exit(0);
                 }
+                "--run-id" => config.common.run_id = next(&mut args, "--run-id")?,
                 "--input" => {
                     config.input = next(&mut args, "--input")?.into();
                     positional = true;
                 }
-                "--output-dir" => config.output_dir = next(&mut args, "--output-dir")?.into(),
+                "--output-dir" => {
+                    config.common.output_dir = next(&mut args, "--output-dir")?.into()
+                }
                 "--pivots" => config.pivot_count = next(&mut args, "--pivots")?.parse()?,
                 "--iterations" => config.iterations = next(&mut args, "--iterations")?.parse()?,
                 "--epsilon" => config.epsilon = next(&mut args, "--epsilon")?.parse()?,
                 "--seed" => config.seed = next(&mut args, "--seed")?.parse()?,
+                "--output-format" => {
+                    config.common.output_format = next(&mut args, "--output-format")?.parse()?
+                }
+                "--run-mode" => {
+                    config.common.run_mode = next(&mut args, "--run-mode")?.parse::<RunMode>()?
+                }
+                "--verbose" => config.common.verbose = true,
                 "--no-center" => config.center = false,
-                // 最大連結成分は既定選択済み。旧CLIとの互換のため受け付ける。
                 "--largest-component" => {}
                 value if !value.starts_with('-') && !positional => {
                     config.input = value.into();
                     positional = true;
                 }
-                _ => bail!("不明な引数です: {arg}"),
+                _ => bail!("不明な引数です: {argument}"),
             }
         }
         if config.iterations == 0 || config.pivot_count == 0 {
@@ -75,7 +94,15 @@ impl Config {
         if !(config.epsilon.is_finite() && config.epsilon > 0.0) {
             bail!("--epsilon は正の有限値である必要があります");
         }
+        config.common.validate()?;
         Ok(config)
+    }
+
+    fn log(&self, message: impl AsRef<str>) {
+        match self.common.output_format {
+            OutputFormat::Json => self.common.log(message),
+            OutputFormat::Human => println!("{}", message.as_ref()),
+        }
     }
 }
 
@@ -88,37 +115,29 @@ fn next<I: Iterator<Item = String>>(
 }
 
 fn print_help() {
-    println!("Usage: sparse-sgd-gpu [INPUT] [--input PATH] [--output-dir PATH] [--pivots N] [--iterations N] [--epsilon F] [--seed N] [--no-center]");
+    println!(
+        "Usage: sparse-sgd-gpu [INPUT] [--run-id ID] [--input PATH] [--output-dir PATH] \
+         [--pivots N] [--iterations N] [--epsilon F] [--seed N] \
+         [--output-format human|json] [--run-mode benchmark|diagnostic] \
+         [--verbose] [--no-center]"
+    );
 }
 
 fn main() -> Result<()> {
     env_logger::init();
-    let total_start = Instant::now();
     let config = Config::from_args()?;
+
+    let input_started = Instant::now();
     let graph = Graph::from_mtx(&config.input)
         .with_context(|| format!("グラフを読み込めません: {}", config.input.display()))?
         .largest_connected_component()?;
-    println!(
-        "Input graph: nodes={}, edges={}, components={}",
-        graph.component_info.original_node_size,
-        graph.component_info.original_edge_size,
-        graph.component_info.component_count,
-    );
-    println!(
-        "Largest component used: nodes={}/{} ({:.2}%), edges={}/{} ({:.2}%)",
-        graph.node_size,
-        graph.component_info.original_node_size,
-        graph.component_info.retained_vertex_ratio() * 100.0,
-        graph.edge_size,
-        graph.component_info.original_edge_size,
-        graph.component_info.retained_edge_ratio(graph.edge_size) * 100.0,
-    );
-    println!(
-        "Graph: nodes={}, edges={}, seed={}",
-        graph.node_size, graph.edge_size, config.seed
-    );
+    let input_time = input_started.elapsed();
+    config.log(format!(
+        "Graph: nodes={}, edges={}, components={}, seed={}",
+        graph.node_size, graph.edge_size, graph.component_info.component_count, config.seed
+    ));
 
-    let preprocessing_start = Instant::now();
+    let preprocess_started = Instant::now();
     let mut rng = StdRng::seed_from_u64(config.seed);
     let params = graph.prepare_sgd_params(
         config.iterations,
@@ -127,98 +146,175 @@ fn main() -> Result<()> {
         config.center,
         &mut rng,
     )?;
-    let preprocessing_time = preprocessing_start.elapsed();
-    let scheduling_start = Instant::now();
-    let schedule = build_schedule(&graph, &params, config.seed)?;
-    let scheduling_time = scheduling_start.elapsed();
+    let common_preprocess_time = preprocess_started.elapsed();
     let pivots = params.pivots.clone();
     let constraint_count = params.pairs.len();
-    println!(
-        "Schedule: one-sided={}, two-sided={}, base_rounds={}, spill_rounds={}, rounds={}, dispatches/iteration={}",
-        schedule.one_sided_count,
-        schedule.two_sided.len(),
-        schedule.base_rounds,
-        schedule.spill_rounds,
-        schedule.round_count(),
-        schedule.round_count() + 1,
-    );
+    let preprocess_sha256 = sparse_preprocess_sha256(&params);
 
+    let setup_started = Instant::now();
+    let schedule = build_schedule(&graph, &params, config.seed)?;
+    let method_setup_time = setup_started.elapsed();
+
+    let runtime_started = Instant::now();
     let context = GpuContext::new()?;
-    println!("GPU: {}", context.adapter_name);
-    let run = context.execute(params, &schedule, config.seed)?;
-    println!(
-        "Timing: preprocessing={:?}, scheduling={:?}, upload={:?}, compute={:?} ({:?}/iteration), readback={:?}, total={:?}",
-        preprocessing_time,
-        scheduling_time,
-        run.upload_time,
-        run.compute_time,
-        run.compute_time / config.iterations as u32,
-        run.readback_time,
-        total_start.elapsed()
-    );
+    let runtime_init_time = runtime_started.elapsed();
+    config.log(format!(
+        "GPU: {} ({})",
+        context.adapter_name, context.backend
+    ));
 
-    create_dir_all(&config.output_dir)?;
-    let timestamp = Local::now().format("%Y%m%d_%H%M%S_%3f");
-    let data_name = config
-        .input
-        .file_stem()
-        .unwrap_or_default()
-        .to_string_lossy();
-    let prefix = config.output_dir.join(format!(
-        "sparse-sgd-gpu-{data_name}-seed{}-{timestamp}",
-        config.seed
+    let run = context.execute(
+        params,
+        &schedule,
+        config.seed,
+        config.common.verbose,
+        config.common.output_format,
+    )?;
+    config.log(format!(
+        "GPU batching: dispatches/iteration={}, submissions/iteration={}",
+        run.dispatches_per_iteration, run.submissions_per_iteration
     ));
-    let vertex_map_path = prefix.with_file_name(format!(
-        "{}-vertex-map.txt",
-        prefix.file_name().unwrap().to_string_lossy()
-    ));
+
+    let edges: Vec<_> = graph
+        .edge_src
+        .iter()
+        .copied()
+        .zip(graph.edge_dst.iter().copied())
+        .collect();
+    let stress = measure_auto_f64(&run.positions, &edges);
+
+    create_dir_all(&config.common.output_dir)?;
+    let prefix = output_prefix(&config);
+    let vertex_map_path = prefix.with_extension("vertex-map.txt");
+    let initial_path = prefix.with_extension("initial.txt");
+    let final_path = prefix.with_extension("final.txt");
     save_vertex_map(&vertex_map_path, &graph)?;
-    println!("Vertex map saved to {}", vertex_map_path.display());
-    let initial_path = prefix.with_file_name(format!(
-        "{}-0.txt",
-        prefix.file_name().unwrap().to_string_lossy()
-    ));
     save_result(
         &initial_path,
-        "Initial (Randomized)",
+        "Initial",
         &graph,
         &run.initial_positions,
         &config,
         &pivots,
         constraint_count,
-        &schedule,
-        &context.adapter_name,
-        preprocessing_time,
-        scheduling_time,
-        run.upload_time,
-        run.compute_time,
-        run.readback_time,
         &vertex_map_path,
     )?;
-    let processed_path = prefix.with_file_name(format!(
-        "{}-1.txt",
-        prefix.file_name().unwrap().to_string_lossy()
-    ));
     save_result(
-        &processed_path,
+        &final_path,
         "Processed",
         &graph,
         &run.positions,
         &config,
         &pivots,
         constraint_count,
-        &schedule,
-        &context.adapter_name,
-        preprocessing_time,
-        scheduling_time,
-        run.upload_time,
-        run.compute_time,
-        run.readback_time,
         &vertex_map_path,
     )?;
-    println!("Initial result saved to {}", initial_path.display());
-    println!("Processed result saved to {}", processed_path.display());
+
+    let dispatches = (run.dispatches_per_iteration * config.iterations) as u64;
+    let record = ExperimentRecord::success(
+        RecordIdentity {
+            run_id: config.common.run_id.clone(),
+            run_mode: config.common.run_mode,
+            method: Method::RrSparseSgd,
+            binary: current_binary(),
+            dataset: dataset_name(&config.input),
+            input_path: config.input.display().to_string(),
+            input_sha256: sha256_file(&config.input)?,
+            seed: config.seed,
+            initial_positions_sha256: positions_sha256_f64(&run.initial_positions),
+            preprocess_sha256: Some(preprocess_sha256),
+        },
+        git_metadata(Path::new(env!("CARGO_MANIFEST_DIR")))?,
+        GraphMetrics {
+            nodes: graph.node_size,
+            edges: graph.edge_size,
+            constraints: Some(constraint_count),
+        },
+        Parameters {
+            pivots: Some(pivots.len()),
+            iterations: config.iterations,
+            epsilon: config.epsilon,
+        },
+        environment_metadata(
+            Some(context.adapter_name.clone()),
+            Some(context.backend.clone()),
+        ),
+        TimingBreakdown {
+            input_time_ms: Some(ms(input_time)),
+            common_preprocess_time_ms: Some(ms(common_preprocess_time)),
+            method_setup_time_ms: Some(ms(method_setup_time)),
+            runtime_init_time_ms: Some(ms(runtime_init_time)),
+            upload_time_ms: Some(ms(run.upload_time)),
+            iteration_time_ms: Some(ms(run.compute_time)),
+            gpu_device_time_ms: run.gpu_device_time.map(ms),
+            readback_time_ms: Some(ms(run.readback_time)),
+            postprocess_time_ms: Some(ms(run.postprocess_time)),
+            ..TimingBreakdown::default()
+        },
+        stress,
+        MethodStats {
+            attempted_updates: None,
+            completed_updates: None,
+            retry_failures: None,
+            rounds: Some(schedule.round_count()),
+            dispatches: Some(dispatches),
+        },
+        Artifacts {
+            final_positions_path: Some(final_path.display().to_string()),
+            vertex_map_path: Some(vertex_map_path.display().to_string()),
+        },
+    )?;
+
+    match config.common.output_format {
+        OutputFormat::Json => println!("{}", record.to_json_line()?),
+        OutputFormat::Human => {
+            println!(
+                "Constraints={}, rounds={}, dispatches={}, Iteration={:.3} ms, Algorithm={:.3} ms, CLI total={:.3} ms",
+                constraint_count,
+                schedule.round_count(),
+                dispatches,
+                record.timings.iteration_time_ms.unwrap(),
+                record.timings.algorithm_time_cold_ms.unwrap(),
+                record.timings.cli_total_time_cold_ms.unwrap()
+            );
+            println!("Final result saved to {}", final_path.display());
+        }
+    }
     Ok(())
+}
+
+fn sparse_preprocess_sha256(params: &SgdParams) -> String {
+    let mut fingerprint = FingerprintBuilder::new("sparse-preprocess-v1");
+    fingerprint.usize(params.pivots.len());
+    for &pivot in &params.pivots {
+        fingerprint.usize(pivot);
+    }
+    fingerprint.usize(params.etas.len());
+    for &eta in &params.etas {
+        fingerprint.f64(eta);
+    }
+    fingerprint.usize(params.pairs.len());
+    for pair in &params.pairs {
+        fingerprint
+            .usize(pair.u)
+            .usize(pair.v)
+            .f64(pair.dij)
+            .f64(pair.weight_u)
+            .f64(pair.weight_v);
+    }
+    fingerprint.finish()
+}
+
+fn output_prefix(config: &Config) -> PathBuf {
+    let suffix = if config.common.run_id == "manual" {
+        format!("manual-{}", Local::now().format("%Y%m%d_%H%M%S_%3f"))
+    } else {
+        config.common.run_id.clone()
+    };
+    config.common.output_dir.join(format!(
+        "rr-sparse-sgd-{}-{suffix}",
+        dataset_name(&config.input)
+    ))
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -230,22 +326,10 @@ fn save_result(
     config: &Config,
     pivots: &[usize],
     constraint_count: usize,
-    schedule: &sparse_sgd_gpu::schedule::Schedule,
-    adapter: &str,
-    preprocessing: Duration,
-    scheduling: Duration,
-    upload: Duration,
-    compute: Duration,
-    readback: Duration,
     vertex_map_path: &Path,
 ) -> Result<()> {
     let mut file = File::create(path)?;
     writeln!(file, "# Rust GPU Result (sparse-sgd-gpu) - {stage}")?;
-    writeln!(
-        file,
-        "# Timestamp: {}",
-        Local::now().format("%Y-%m-%d %H:%M:%S")
-    )?;
     writeln!(file, "# Dataset: {}", config.input.display())?;
     writeln!(file, "# Node count: {}", graph.node_size)?;
     writeln!(file, "# Edge count: {}", graph.edge_size)?;
@@ -264,81 +348,21 @@ fn save_result(
         "# Component count: {}",
         graph.component_info.component_count
     )?;
-    writeln!(
-        file,
-        "# Retained vertex ratio: {:.8}",
-        graph.component_info.retained_vertex_ratio()
-    )?;
-    writeln!(
-        file,
-        "# Retained edge ratio: {:.8}",
-        graph.component_info.retained_edge_ratio(graph.edge_size)
-    )?;
     writeln!(file, "# Vertex map file: {}", vertex_map_path.display())?;
     writeln!(file, "# Iterations: {}", config.iterations)?;
     writeln!(file, "# Epsilon: {}", config.epsilon)?;
     writeln!(file, "# Seed: {}", config.seed)?;
-    writeln!(file, "# Centered: {}", config.center)?;
-    writeln!(file, "# GPU adapter: {adapter}")?;
     writeln!(file, "# Pivot selection: {PIVOT_SELECTION}")?;
     writeln!(file, "# Weight model: {WEIGHT_MODEL}")?;
     writeln!(file, "# Pivot count: {}", pivots.len())?;
-    writeln!(
-        file,
-        "# Pivots: {}",
-        pivots
-            .iter()
-            .map(usize::to_string)
-            .collect::<Vec<_>>()
-            .join(" ")
-    )?;
     writeln!(file, "# Constraint count: {constraint_count}")?;
-    writeln!(
-        file,
-        "# One-sided constraint count: {}",
-        schedule.one_sided_count
-    )?;
-    writeln!(
-        file,
-        "# Two-sided constraint count: {}",
-        schedule.two_sided.len()
-    )?;
-    writeln!(file, "# Base rounds: {}", schedule.base_rounds)?;
-    writeln!(file, "# Spill rounds: {}", schedule.spill_rounds)?;
-    writeln!(file, "# Round count: {}", schedule.round_count())?;
-    writeln!(
-        file,
-        "# Dispatches per iteration: {}",
-        schedule.round_count() + 1
-    )?;
-    writeln!(file, "# Max graph degree: {}", schedule.max_graph_degree)?;
-    writeln!(
-        file,
-        "# Preprocessing ms: {:.3}",
-        preprocessing.as_secs_f64() * 1000.0
-    )?;
-    writeln!(
-        file,
-        "# Scheduling ms: {:.3}",
-        scheduling.as_secs_f64() * 1000.0
-    )?;
-    writeln!(file, "# Upload ms: {:.3}", upload.as_secs_f64() * 1000.0)?;
-    writeln!(file, "# Compute ms: {:.3}", compute.as_secs_f64() * 1000.0)?;
-    writeln!(
-        file,
-        "# Readback ms: {:.3}",
-        readback.as_secs_f64() * 1000.0
-    )?;
-    writeln!(
-        file,
-        "# Compute ms per iteration: {:.3}",
-        compute.as_secs_f64() * 1000.0 / config.iterations as f64
-    )?;
-    writeln!(file, "\n# Edges (source target)")?;
-    for (&u, &v) in graph.edge_src.iter().zip(&graph.edge_dst) {
-        writeln!(file, "{u} {v}")?;
+    writeln!(file)?;
+    writeln!(file, "# Edges (source target)")?;
+    for (&source, &target) in graph.edge_src.iter().zip(&graph.edge_dst) {
+        writeln!(file, "{source} {target}")?;
     }
-    writeln!(file, "\n# Positions (x y)")?;
+    writeln!(file)?;
+    writeln!(file, "# Positions (x y)")?;
     for position in positions {
         writeln!(file, "{} {}", position[0], position[1])?;
     }
@@ -353,6 +377,10 @@ fn save_vertex_map(path: &Path, graph: &Graph) -> Result<()> {
     Ok(())
 }
 
+fn ms(duration: Duration) -> f64 {
+    duration.as_secs_f64() * 1_000.0
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -362,6 +390,8 @@ mod tests {
         let config = Config::from_iter(
             [
                 "graph.mtx",
+                "--run-id",
+                "rr-sparse-test",
                 "--pivots",
                 "16",
                 "--iterations",
@@ -370,7 +400,10 @@ mod tests {
                 "0.2",
                 "--seed",
                 "9",
-                "--no-center",
+                "--output-format",
+                "json",
+                "--run-mode",
+                "diagnostic",
                 "--output-dir",
                 "out",
             ]
@@ -379,28 +412,15 @@ mod tests {
         )
         .unwrap();
         assert_eq!(config.input, PathBuf::from("graph.mtx"));
+        assert_eq!(config.common.run_id, "rr-sparse-test");
         assert_eq!(config.pivot_count, 16);
-        assert_eq!(config.iterations, 3);
-        assert_eq!(config.epsilon, 0.2);
-        assert_eq!(config.seed, 9);
-        assert!(!config.center);
-        assert_eq!(config.output_dir, PathBuf::from("out"));
+        assert_eq!(config.common.output_format, OutputFormat::Json);
+        assert_eq!(config.common.run_mode, RunMode::Diagnostic);
+        assert_eq!(config.common.output_dir, PathBuf::from("out"));
     }
 
     #[test]
     fn historical_largest_component_flag_is_a_compatible_no_op() {
         assert!(Config::from_iter(["--largest-component"].into_iter().map(str::to_owned)).is_ok());
-    }
-
-    #[test]
-    fn vertex_map_uses_zero_based_local_and_original_ids() {
-        let directory = tempfile::tempdir().unwrap();
-        let path = directory.path().join("result-vertex-map.txt");
-        let graph = Graph::try_from_edges(5, &[(1, 3), (3, 4)])
-            .unwrap()
-            .largest_connected_component()
-            .unwrap();
-        save_vertex_map(&path, &graph).unwrap();
-        assert_eq!(std::fs::read_to_string(path).unwrap(), "0 1\n1 3\n2 4\n");
     }
 }

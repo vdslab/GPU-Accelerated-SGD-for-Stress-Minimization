@@ -1,0 +1,219 @@
+{
+  "aggregation_rules_version": 1,
+  "current_records": 15,
+  "errors": [],
+  "failed_runs": 0,
+  "group_count": 2,
+  "planned_runs": 15,
+  "profile": "validation",
+  "publication_ready": false,
+  "retry_history": [
+    {
+      "attempts": 2,
+      "experiment_id": "e0-uspowergrid",
+      "failure_stages": [
+        "warmup"
+      ],
+      "run_id": "e0-uspowergrid-USpowerGrid-rr_sparse_sgd-080dfb88888a",
+      "statuses": [
+        "failure",
+        "success"
+      ]
+    },
+    {
+      "attempts": 2,
+      "experiment_id": "e0-uspowergrid",
+      "failure_stages": [
+        "warmup"
+      ],
+      "run_id": "e0-uspowergrid-USpowerGrid-rr_sparse_sgd-332ad7c707f5",
+      "statuses": [
+        "failure",
+        "success"
+      ]
+    },
+    {
+      "attempts": 2,
+      "experiment_id": "e0-uspowergrid",
+      "failure_stages": [
+        "warmup"
+      ],
+      "run_id": "e0-uspowergrid-USpowerGrid-rr_sparse_sgd-c2ee7f883926",
+      "statuses": [
+        "failure",
+        "success"
+      ]
+    }
+  ],
+  "successful_runs": 15,
+  "warnings": [
+    {
+      "code": "dirty_commit",
+      "details": {
+        "run_ids": [
+          "e0-uspowergrid-USpowerGrid-atomic_sgd-40a9a26f1ba2",
+          "e0-uspowergrid-USpowerGrid-atomic_sgd-6188e124906e",
+          "e0-uspowergrid-USpowerGrid-atomic_sgd-c03a325b0fa2",
+          "e0-uspowergrid-USpowerGrid-rr_sgd-4442af2f0d2a",
+          "e0-uspowergrid-USpowerGrid-rr_sgd-c60c475167ac",
+          "e0-uspowergrid-USpowerGrid-rr_sgd-f8ba8b0629d3",
+          "e0-uspowergrid-USpowerGrid-rr_sparse_sgd-080dfb88888a",
+          "e0-uspowergrid-USpowerGrid-rr_sparse_sgd-332ad7c707f5",
+          "e0-uspowergrid-USpowerGrid-rr_sparse_sgd-c2ee7f883926",
+          "e0-uspowergrid-USpowerGrid-sgd-078f8c31de3f",
+          "e0-uspowergrid-USpowerGrid-sgd-7dd9767ead4f",
+          "e0-uspowergrid-USpowerGrid-sgd-925ec82a7ca2",
+          "e0-uspowergrid-USpowerGrid-sparse_sgd-a6b781876e70",
+          "e0-uspowergrid-USpowerGrid-sparse_sgd-ceb4c0101559",
+          "e0-uspowergrid-USpowerGrid-sparse_sgd-cf94ddbc6db6"
+        ]
+      },
+      "message": "dirty worktree由来のrunがあります"
+    },
+    {
+      "code": "insufficient_timing_samples",
+      "details": {
+        "actual": 3,
+        "expected": 10,
+        "group": [
+          "e0-uspowergrid",
+          "USpowerGrid",
+          "8fda7edfc1844d73d4f5be7d9a49963104349292aae64e73782c1a55c3b5f05f",
+          "full",
+          "benchmark",
+          15,
+          0.1,
+          null,
+          "exact",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ],
+        "method": "atomic_sgd"
+      },
+      "message": "正式timing表には10標本以上必要です"
+    },
+    {
+      "code": "insufficient_timing_samples",
+      "details": {
+        "actual": 3,
+        "expected": 10,
+        "group": [
+          "e0-uspowergrid",
+          "USpowerGrid",
+          "8fda7edfc1844d73d4f5be7d9a49963104349292aae64e73782c1a55c3b5f05f",
+          "full",
+          "benchmark",
+          15,
+          0.1,
+          null,
+          "exact",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ],
+        "method": "rr_sgd"
+      },
+      "message": "正式timing表には10標本以上必要です"
+    },
+    {
+      "code": "insufficient_timing_samples",
+      "details": {
+        "actual": 3,
+        "expected": 10,
+        "group": [
+          "e0-uspowergrid",
+          "USpowerGrid",
+          "8fda7edfc1844d73d4f5be7d9a49963104349292aae64e73782c1a55c3b5f05f",
+          "full",
+          "benchmark",
+          15,
+          0.1,
+          null,
+          "exact",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ],
+        "method": "sgd"
+      },
+      "message": "正式timing表には10標本以上必要です"
+    },
+    {
+      "code": "insufficient_quality_seeds",
+      "details": {
+        "actual": 3,
+        "expected": 25,
+        "group": [
+          "e0-uspowergrid",
+          "USpowerGrid",
+          "8fda7edfc1844d73d4f5be7d9a49963104349292aae64e73782c1a55c3b5f05f",
+          "full",
+          "benchmark",
+          15,
+          0.1,
+          null,
+          "exact",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ]
+      },
+      "message": "正式quality表には25個以上の共通seedが必要です"
+    },
+    {
+      "code": "insufficient_timing_samples",
+      "details": {
+        "actual": 3,
+        "expected": 10,
+        "group": [
+          "e0-uspowergrid",
+          "USpowerGrid",
+          "8fda7edfc1844d73d4f5be7d9a49963104349292aae64e73782c1a55c3b5f05f",
+          "sparse",
+          "benchmark",
+          15,
+          0.1,
+          200,
+          "exact",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ],
+        "method": "rr_sparse_sgd"
+      },
+      "message": "正式timing表には10標本以上必要です"
+    },
+    {
+      "code": "insufficient_timing_samples",
+      "details": {
+        "actual": 3,
+        "expected": 10,
+        "group": [
+          "e0-uspowergrid",
+          "USpowerGrid",
+          "8fda7edfc1844d73d4f5be7d9a49963104349292aae64e73782c1a55c3b5f05f",
+          "sparse",
+          "benchmark",
+          15,
+          0.1,
+          200,
+          "exact",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ],
+        "method": "sparse_sgd"
+      },
+      "message": "正式timing表には10標本以上必要です"
+    },
+    {
+      "code": "insufficient_quality_seeds",
+      "details": {
+        "actual": 3,
+        "expected": 25,
+        "group": [
+          "e0-uspowergrid",
+          "USpowerGrid",
+          "8fda7edfc1844d73d4f5be7d9a49963104349292aae64e73782c1a55c3b5f05f",
+          "sparse",
+          "benchmark",
+          15,
+          0.1,
+          200,
+          "exact",
+          "541667d23f49a2dfcb1d9e524eb41e7880c41398e7c06274081e93fcdfac2a26"
+        ]
+      },
+      "message": "正式quality表には25個以上の共通seedが必要です"
+    }
+  ]
+}

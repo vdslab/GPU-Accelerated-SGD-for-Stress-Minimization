@@ -1,0 +1,26 @@
+{
+  "experiment_id": "e0-bcsstk29",
+  "run_mode": "benchmark",
+  "methods": [
+    "sgd",
+    "atomic_sgd",
+    "rr_sgd",
+    "sparse_sgd",
+    "rr_sparse_sgd"
+  ],
+  "datasets": [
+    {
+      "name": "bcsstk29",
+      "path": "data/bcsstk29.mtx",
+      "sha256": "49251de30c5a231009d60890fcbdf590412b9421818952ce67ebf8b8279c50ce"
+    }
+  ],
+  "seeds": [0, 1, 2],
+  "iterations": [15],
+  "epsilon": [0.1],
+  "pivots": [200],
+  "repetitions": 1,
+  "warmups": 1,
+  "timeout_seconds": 3600,
+  "fail_fast": false
+}

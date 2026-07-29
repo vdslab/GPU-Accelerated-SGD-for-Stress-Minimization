@@ -1,0 +1,43 @@
+{
+  "aggregation_rules_version": 1,
+  "aggregation_sources": {
+    "experiments/aggregate_results.py": "9f5790b561e9d023e2de8e8d90791c1f4b90120f9e7f7b4308c7821e3fe5b381",
+    "experiments/aggregation.py": "ede435a3c92c94ca44502acc393a2fe2d3d9fa3b677eb8c7e8217db68176d389",
+    "experiments/experiment_plan.py": "f38d4ce276d5b5aa6544bf77c315f464baf18d1bfffc0db628ecb372352734bf"
+  },
+  "artifacts": {
+    "method-stats.csv": "251295162e39ea205d678cc3bbe8e7df82a27694b1340781eb6150b83a2bb1a3",
+    "quality-summary.csv": "d9d2f85e725532079daa1aeb7274f92e2eeb21d757bf8db209799053c2f74d32",
+    "quality-table.md": "2ee5b170eabb1cc741b6e63dd119e424891698158f0a7e01e611c0f845c35e58",
+    "quality-table.tex": "36d1321a12c46a9e14b96781226c2c024955f03cecf1b93aeb5a75290450ab58",
+    "runs.csv": "25d35b2601eb244b5fb962c0d8ea717aa27e94a65fe127462fb1a4a507379031",
+    "speed-summary.csv": "1091b01c9ada1e49e82fdf131c17592be546e685417bbe0139dbce135cbde398",
+    "speed-table.md": "9a52ef3336ff1575e5d1aefabbdb36eeef1f205d8acb029df3038a676a39b9af",
+    "speed-table.tex": "af48939d917d6fa47b2b7dedb58a0bf72aa95f2ae158efae569d8821ec45d6c8",
+    "validation-report.json": "d5e66747428272dfbd335d1d992648edc93b83f295d14ff18abe90de00d552c6"
+  },
+  "command": [
+    "python3",
+    "experiments/aggregate_results.py",
+    "--profile",
+    "validation",
+    "--experiment-dir",
+    "e0-uspowergrid"
+  ],
+  "experiment_ids": [
+    "e0-uspowergrid"
+  ],
+  "inputs": [
+    {
+      "environment_sha256": "8c9bacb419362aee2d2e0be2ebf1454ff74d65730c1981145aee375b9a85fe45",
+      "experiment_id": "e0-uspowergrid",
+      "manifest_sha256": "ef8e7dd3cbe15df5b52fa61ed814de12c3bd090718b8e1073dbc4d80127196ed",
+      "results_sha256": "faeca54876176b75124af30c5ea11b388ed4e6761a2f4cd8748641d8bc1cae06"
+    }
+  ],
+  "profile": "validation",
+  "record_schema_version": 1,
+  "source_commits": [
+    "14ead51da42e617a297f88f6a90eb204d083e302"
+  ]
+}

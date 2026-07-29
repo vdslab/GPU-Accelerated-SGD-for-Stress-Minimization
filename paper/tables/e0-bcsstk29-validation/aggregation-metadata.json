@@ -1,0 +1,43 @@
+{
+  "aggregation_rules_version": 1,
+  "aggregation_sources": {
+    "experiments/aggregate_results.py": "9f5790b561e9d023e2de8e8d90791c1f4b90120f9e7f7b4308c7821e3fe5b381",
+    "experiments/aggregation.py": "ede435a3c92c94ca44502acc393a2fe2d3d9fa3b677eb8c7e8217db68176d389",
+    "experiments/experiment_plan.py": "f38d4ce276d5b5aa6544bf77c315f464baf18d1bfffc0db628ecb372352734bf"
+  },
+  "artifacts": {
+    "method-stats.csv": "be8bada4966e2e0b91b27158ba94cb2463e86c4d55c2b8d8231acb0447c07d42",
+    "quality-summary.csv": "b6f3e477ec34addf38858ab06e3c55b3868a356c288eb48d5af8b1f5aa7dcd1a",
+    "quality-table.md": "fe311a1a4c4ddd2d58bdca733ef2ba76fcf85cd8065e717a9ff847d9a4d2f0cf",
+    "quality-table.tex": "fb9596cfebb215670eb622e4cdb35f4d11e051f22b5d5f061aa9e7a40b94effd",
+    "runs.csv": "f352fffd7fdd7e8481a14bf8e26775213c1cf349184b06524c0bc303a01a5047",
+    "speed-summary.csv": "dba583620e7b1ceb0611eaffef2a63bf32262baf244d65f6372b975d4d7eedcc",
+    "speed-table.md": "2712367fbd6814c69de919d8775e650a3c94b4c29883767811083c301bf98ca1",
+    "speed-table.tex": "4f18d5680ada90badb9d3903e8d552c60b8e1ec32887c0aa00715cd9aabff411",
+    "validation-report.json": "4f341688299985be7b509dc93023ccab7632c038c89f85a0f29fd1fa528c94f8"
+  },
+  "command": [
+    "python3",
+    "experiments/aggregate_results.py",
+    "--profile",
+    "validation",
+    "--experiment-dir",
+    "e0-bcsstk29"
+  ],
+  "experiment_ids": [
+    "e0-bcsstk29"
+  ],
+  "inputs": [
+    {
+      "environment_sha256": "9c61ea95e0cc2ce46a786ca9047bc95335f2bfcdcc28921b44cbed6af3f65b20",
+      "experiment_id": "e0-bcsstk29",
+      "manifest_sha256": "c10d2f071830a6bcebf2a17f432cd22e5de040fdc8ffadde7f31e673b2bb05d3",
+      "results_sha256": "4ea55bb4f3a3e60a4d4e791df4b1470f6aef527518b7d04402ae2fad7932dad9"
+    }
+  ],
+  "profile": "validation",
+  "record_schema_version": 1,
+  "source_commits": [
+    "052b080646ae7caef42bf63238e39e9a3d9438d6"
+  ]
+}
