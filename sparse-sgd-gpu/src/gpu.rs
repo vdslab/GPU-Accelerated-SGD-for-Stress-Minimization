@@ -2,12 +2,15 @@ use crate::graph::{center_inplace, SgdParams};
 use crate::schedule::Schedule;
 use anyhow::{ensure, Context, Result};
 use bytemuck::{Pod, Zeroable};
+use experiment_common::OutputFormat;
 use rand::{rngs::StdRng, seq::SliceRandom, Rng, SeedableRng};
 use std::num::NonZeroU64;
+use std::ops::Range;
 use std::time::{Duration, Instant};
 use wgpu::util::DeviceExt;
 
 const WORKGROUP_SIZE: u32 = 256;
+const MAX_PASSES_PER_SUBMISSION: usize = 256;
 const CANARY: [f32; 2] = [123_456.0, -654_321.0];
 
 #[repr(C)]
@@ -27,6 +30,7 @@ pub struct GpuContext {
     pub device: wgpu::Device,
     pub queue: wgpu::Queue,
     pub adapter_name: String,
+    pub backend: String,
     shader: wgpu::ShaderModule,
 }
 
@@ -37,7 +41,10 @@ pub struct GpuRunResult {
     pub upload_time: Duration,
     pub compute_time: Duration,
     pub readback_time: Duration,
+    pub postprocess_time: Duration,
+    pub gpu_device_time: Option<Duration>,
     pub dispatches_per_iteration: usize,
+    pub submissions_per_iteration: usize,
 }
 
 impl GpuContext {
@@ -60,7 +67,8 @@ impl GpuContext {
         Ok(Self {
             device,
             queue,
-            adapter_name: format!("{} ({:?})", info.name, info.backend),
+            adapter_name: info.name,
+            backend: format!("{:?}", info.backend),
             shader,
         })
     }
@@ -70,6 +78,8 @@ impl GpuContext {
         params: SgdParams,
         schedule: &Schedule,
         seed: u64,
+        verbose: bool,
+        output_format: OutputFormat,
     ) -> Result<GpuRunResult> {
         let upload_start = Instant::now();
         let n = params.positions.len();
@@ -128,6 +138,7 @@ impl GpuContext {
         let alignment = self.device.limits().min_uniform_buffer_offset_alignment as usize;
         let slot_size = std::mem::size_of::<Uniforms>().div_ceil(alignment) * alignment;
         let invocation_count = schedule.round_count() + 1;
+        let submission_ranges = submission_ranges(invocation_count);
         let uniform_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
             label: Some("dynamic iteration uniforms"),
             size: (slot_size * invocation_count.max(1)) as u64,
@@ -219,7 +230,13 @@ impl GpuContext {
         let mut pivot_permutation: Vec<u32> = (0..h as u32).collect();
         let mut round_order: Vec<usize> = (0..schedule.round_count()).collect();
         for (iteration, &eta) in params.etas.iter().enumerate() {
-            println!("{}", iteration_log(iteration));
+            if verbose {
+                let message = iteration_log(iteration);
+                match output_format {
+                    OutputFormat::Json => eprintln!("{message}"),
+                    OutputFormat::Human => println!("{message}"),
+                }
+            }
             pivot_permutation.shuffle(&mut rng);
             round_order.shuffle(&mut rng);
             self.queue.write_buffer(
@@ -261,36 +278,39 @@ impl GpuContext {
             }
             self.queue.write_buffer(&uniform_buffer, 0, &uniform_bytes);
 
-            let mut encoder = self
-                .device
-                .create_command_encoder(&wgpu::CommandEncoderDescriptor {
-                    label: Some("one Sparse SGD iteration"),
-                });
-            for (slot, round) in invocations.iter().enumerate() {
-                let count = round.map(|ri| schedule.round_range(ri).len()).unwrap_or(n);
-                if count == 0 {
-                    continue;
-                }
-                let mut pass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
-                    label: Some(if round.is_some() {
-                        "two-sided matching"
+            for batch_range in &submission_ranges {
+                let mut encoder =
+                    self.device
+                        .create_command_encoder(&wgpu::CommandEncoderDescriptor {
+                            label: Some("Sparse SGD invocation batch"),
+                        });
+                for slot in batch_range.clone() {
+                    let round = invocations[slot];
+                    let count = round.map(|ri| schedule.round_range(ri).len()).unwrap_or(n);
+                    if count == 0 {
+                        continue;
+                    }
+                    let mut pass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
+                        label: Some(if round.is_some() {
+                            "two-sided matching"
+                        } else {
+                            "one-sided owners"
+                        }),
+                        timestamp_writes: None,
+                    });
+                    pass.set_pipeline(if round.is_some() {
+                        &two_pipeline
                     } else {
-                        "one-sided owners"
-                    }),
-                    timestamp_writes: None,
-                });
-                pass.set_pipeline(if round.is_some() {
-                    &two_pipeline
-                } else {
-                    &one_pipeline
-                });
-                pass.set_bind_group(0, &bind_group, &[(slot * slot_size) as u32]);
-                pass.dispatch_workgroups((count as u32).div_ceil(WORKGROUP_SIZE), 1, 1);
+                        &one_pipeline
+                    });
+                    pass.set_bind_group(0, &bind_group, &[(slot * slot_size) as u32]);
+                    pass.dispatch_workgroups((count as u32).div_ceil(WORKGROUP_SIZE), 1, 1);
+                }
+                self.queue.submit([encoder.finish()]);
+                self.device
+                    .poll(wgpu::PollType::wait_indefinitely())
+                    .unwrap();
             }
-            self.queue.submit([encoder.finish()]);
-            self.device
-                .poll(wgpu::PollType::wait_indefinitely())
-                .unwrap();
         }
         let compute_time = compute_start.elapsed();
 
@@ -329,17 +349,22 @@ impl GpuContext {
             positions.iter().flatten().all(|v| v.is_finite()),
             "GPU結果にNaNまたはInfがあります"
         );
+        let readback_time = readback_start.elapsed();
+        let postprocess_start = Instant::now();
         if params.center {
             center_inplace(&mut positions);
         }
-        let readback_time = readback_start.elapsed();
+        let postprocess_time = postprocess_start.elapsed();
         Ok(GpuRunResult {
             initial_positions,
             positions,
             upload_time,
             compute_time,
             readback_time,
+            postprocess_time,
+            gpu_device_time: None,
             dispatches_per_iteration: invocation_count,
+            submissions_per_iteration: submission_ranges.len(),
         })
     }
 
@@ -358,6 +383,19 @@ impl GpuContext {
                 cache: None,
             })
     }
+}
+
+fn submission_ranges(invocation_count: usize) -> Vec<Range<usize>> {
+    let mut ranges = Vec::with_capacity(invocation_count.div_ceil(MAX_PASSES_PER_SUBMISSION));
+    let mut start = 0;
+    while start < invocation_count {
+        let end = start
+            .saturating_add(MAX_PASSES_PER_SUBMISSION)
+            .min(invocation_count);
+        ranges.push(start..end);
+        start = end;
+    }
+    ranges
 }
 
 fn iteration_log(iteration: usize) -> String {
@@ -398,6 +436,24 @@ mod tests {
     fn iteration_log_is_one_based() {
         assert_eq!(iteration_log(0), "Iteration: 1");
         assert_eq!(iteration_log(2), "Iteration: 3");
+    }
+
+    #[test]
+    fn submission_ranges_are_contiguous_and_bounded() {
+        for (invocations, expected_batches) in [(1, 1), (256, 1), (257, 2), (38_626, 151)] {
+            let ranges = submission_ranges(invocations);
+            assert_eq!(ranges.len(), expected_batches);
+            assert_eq!(ranges.first().unwrap().start, 0);
+            assert_eq!(ranges.last().unwrap().end, invocations);
+            for (index, range) in ranges.iter().enumerate() {
+                assert!(!range.is_empty());
+                assert!(range.len() <= MAX_PASSES_PER_SUBMISSION);
+                if index > 0 {
+                    assert_eq!(ranges[index - 1].end, range.start);
+                }
+            }
+        }
+        assert!(submission_ranges(0).is_empty());
     }
 
     #[test]
@@ -472,7 +528,10 @@ mod tests {
             };
             let cpu_positions = crate::cpu_reference::execute_sgd(cpu_params, &mut rng);
             let schedule = build_schedule(&graph, &params, seed).unwrap();
-            let gpu_positions = context.execute(params, &schedule, seed).unwrap().positions;
+            let gpu_positions = context
+                .execute(params, &schedule, seed, false, OutputFormat::Human)
+                .unwrap()
+                .positions;
             let cpu_stress = full_stress(&graph, &cpu_positions);
             let gpu_stress = full_stress(&graph, &gpu_positions);
             assert!(gpu_positions.iter().flatten().all(|v| v.is_finite()));

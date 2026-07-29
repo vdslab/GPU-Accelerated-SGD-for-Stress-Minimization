@@ -1,16 +1,16 @@
 mod reader;
 mod renderer;
-mod stress;
 
 use anyhow::{Context, Result};
+use experiment_common::stress;
 use image::{ImageBuffer, Rgba};
 use std::ffi::OsString;
 use std::io::Write as _;
 use std::path::{Path, PathBuf};
 use std::time::{Duration, Instant};
 
-const DEFAULT_WIDTH: u32 = 2048;
-const DEFAULT_HEIGHT: u32 = 2048;
+const DEFAULT_WIDTH: u32 = 8192;
+const DEFAULT_HEIGHT: u32 = 8192;
 
 #[derive(Debug)]
 struct Config {
@@ -66,7 +66,7 @@ fn main() -> Result<()> {
         eprintln!("Warning: {}頂点の厳密ストレスは非常に高コストです。中止する場合はCtrl-C、通常は --stress sampled を使用してください。", graph.node_count);
     }
     let started = Instant::now();
-    let stress_result = stress::evaluate(
+    let stress_result = stress::evaluate_f32(
         config.stress_mode,
         &graph.positions,
         &graph.edges,
@@ -170,6 +170,18 @@ where
             i += 1;
             continue;
         }
+        if let Some(size) = match option {
+            "-2" => Some(2048),
+            "-4" => Some(4096),
+            "-8" => Some(8192),
+            "-16" => Some(16384),
+            _ => None,
+        } {
+            config.width = size;
+            config.height = size;
+            i += 1;
+            continue;
+        }
         let value = args
             .get(i + 1)
             .with_context(|| format!("{option} に値が必要です"))?;
@@ -231,7 +243,7 @@ where
 }
 
 fn print_help() {
-    println!("gpu-visualizer [INPUT] [OUTPUT] [options]\n\n  --size WxH\n  --stress auto|exact|sampled|off\n  --stress-samples K\n  --stress-seed SEED\n  --node-radius PX\n  --max-edges N");
+    println!("gpu-visualizer [INPUT] [OUTPUT] [options]\n\n  -2 | -4 | -8 | -16\n  --size WxH\n  --stress auto|exact|sampled|off\n  --stress-samples K\n  --stress-seed SEED\n  --node-radius PX\n  --max-edges N");
 }
 
 fn print_stress(result: &stress::StressResult, elapsed: Duration, resolved: stress::StressMode) {
@@ -318,6 +330,20 @@ mod tests {
         assert_eq!(c.stress_samples, 10);
         assert_eq!(c.node_radius, Some(1.5));
         assert_eq!(c.max_edges, Some(20));
+    }
+
+    #[test]
+    fn defaults_to_8k_output() {
+        let c = parse(&[]).unwrap();
+        assert_eq!((c.width, c.height), (8192, 8192));
+    }
+
+    #[test]
+    fn parses_resolution_presets_without_values() {
+        for (option, expected) in [("-2", 2048), ("-4", 4096), ("-8", 8192), ("-16", 16384)] {
+            let c = parse(&["in.txt", option]).unwrap();
+            assert_eq!((c.width, c.height), (expected, expected));
+        }
     }
 
     #[test]
