@@ -145,6 +145,9 @@ impl Graph {
     }
 
     pub fn try_from_edges(node_size: usize, edges: &[(usize, usize)]) -> Result<Self> {
+        if node_size >= u32::MAX as usize {
+            bail!("頂点数が u32 距離表現を超えています");
+        }
         let mut unique_edges = HashSet::new();
         for &(u, v) in edges {
             if u >= node_size || v >= node_size {
@@ -197,9 +200,9 @@ impl Graph {
         self.adjacency[u].binary_search(&v).is_ok()
     }
 
-    pub fn shortest_path_distances(&self, start: usize) -> Vec<usize> {
+    pub fn shortest_path_distances(&self, start: usize) -> Vec<u32> {
         assert!(start < self.node_size, "始点が頂点数の範囲外です");
-        let mut distances = vec![usize::MAX; self.node_size];
+        let mut distances = vec![u32::MAX; self.node_size];
         let mut queue = VecDeque::new();
         distances[start] = 0;
         queue.push_back(start);
@@ -207,7 +210,7 @@ impl Graph {
         while let Some(u) = queue.pop_front() {
             let next_distance = distances[u] + 1;
             for &v in self.neighbors(u) {
-                if distances[v] == usize::MAX {
+                if distances[v] == u32::MAX {
                     distances[v] = next_distance;
                     queue.push_back(v);
                 }
@@ -223,7 +226,7 @@ impl Graph {
         let distances = self.shortest_path_distances(0);
         let reached = distances
             .iter()
-            .filter(|&&distance| distance != usize::MAX)
+            .filter(|&&distance| distance != u32::MAX)
             .count();
         if reached != self.node_size {
             bail!(
@@ -315,7 +318,18 @@ impl Graph {
         &self,
         h: usize,
         rng: &mut R,
-    ) -> Result<(Vec<usize>, Vec<Vec<usize>>)> {
+    ) -> Result<(Vec<usize>, Vec<Vec<u32>>)> {
+        self.select_pivots_using(h, rng, &mut |source| {
+            Ok(self.shortest_path_distances(source))
+        })
+    }
+
+    pub fn select_pivots_using<R: Rng + ?Sized, F: FnMut(usize) -> Result<Vec<u32>>>(
+        &self,
+        h: usize,
+        rng: &mut R,
+        bfs: &mut F,
+    ) -> Result<(Vec<usize>, Vec<Vec<u32>>)> {
         let target = h.min(self.node_size);
         if target == 0 {
             bail!("pivot 数は1以上である必要があります");
@@ -323,14 +337,14 @@ impl Graph {
 
         let first = rng.random_range(0..self.node_size);
         let mut pivots = vec![first];
-        let first_distances = self.shortest_path_distances(first);
+        let first_distances = bfs(first)?;
+        self.validate_distance_row(first, &first_distances)?;
         let mut nearest_distance = first_distances.clone();
         let mut pivot_distances = vec![first_distances];
 
         while pivots.len() < target {
             let total = nearest_distance.iter().try_fold(0_u64, |sum, &distance| {
-                let distance = u64::try_from(distance)
-                    .map_err(|_| anyhow!("最短路距離を u64 に変換できません"))?;
+                let distance = u64::from(distance);
                 sum.checked_add(distance)
                     .ok_or_else(|| anyhow!("pivot sampling の距離合計が大きすぎます"))
             })?;
@@ -351,7 +365,8 @@ impl Graph {
             let next = next.ok_or_else(|| anyhow!("pivot の weighted sampling に失敗しました"))?;
 
             pivots.push(next);
-            let distances = self.shortest_path_distances(next);
+            let distances = bfs(next)?;
+            self.validate_distance_row(next, &distances)?;
             for (nearest, &distance) in nearest_distance.iter_mut().zip(&distances) {
                 *nearest = (*nearest).min(distance);
             }
@@ -361,10 +376,17 @@ impl Graph {
         Ok((pivots, pivot_distances))
     }
 
-    fn build_sparse_constraints_from_distances(
+    fn validate_distance_row(&self, source: usize, row: &[u32]) -> Result<()> {
+        if row.len() != self.node_size || row[source] != 0 || row.contains(&u32::MAX) {
+            bail!("pivot BFS returned invalid distances for a connected graph");
+        }
+        Ok(())
+    }
+
+    pub fn build_sparse_constraints_from_distances(
         &self,
         pivots: &[usize],
-        pivot_distances: &[Vec<usize>],
+        pivot_distances: &[Vec<u32>],
     ) -> Result<Vec<EdgeInfo>> {
         if pivots.len() != pivot_distances.len() || pivots.is_empty() {
             bail!("pivot と距離配列の数が一致しません");
@@ -386,11 +408,11 @@ impl Graph {
                 if vertex == pivot || self.has_edge(vertex, pivot) {
                     continue;
                 }
-                if distance == usize::MAX || distance == 0 {
+                if distance == u32::MAX || distance == 0 {
                     bail!("連結グラフに有限でない pivot 距離があります");
                 }
 
-                let s_ip = prefix_counts[pivot_index][distance / 2];
+                let s_ip = prefix_counts[pivot_index][(distance / 2) as usize];
                 let dij = distance as f64;
                 let weight = s_ip as f64 / (dij * dij);
                 let (u, v) = canonical_pair(vertex, pivot);
@@ -454,13 +476,13 @@ impl Graph {
     }
 }
 
-fn assign_regions(pivot_distances: &[Vec<usize>], node_size: usize) -> Result<Vec<usize>> {
+fn assign_regions(pivot_distances: &[Vec<u32>], node_size: usize) -> Result<Vec<usize>> {
     if pivot_distances.is_empty() {
         bail!("領域割当に pivot が必要です");
     }
     let mut regions = vec![0; node_size];
     for vertex in 0..node_size {
-        let mut best_distance = usize::MAX;
+        let mut best_distance = u32::MAX;
         let mut best_pivot = 0;
         for (pivot_index, distances) in pivot_distances.iter().enumerate() {
             let distance = distances[vertex];
@@ -469,7 +491,7 @@ fn assign_regions(pivot_distances: &[Vec<usize>], node_size: usize) -> Result<Ve
                 best_pivot = pivot_index;
             }
         }
-        if best_distance == usize::MAX {
+        if best_distance == u32::MAX {
             bail!("どの pivot からも到達できない頂点があります: {vertex}");
         }
         regions[vertex] = best_pivot;
@@ -478,7 +500,7 @@ fn assign_regions(pivot_distances: &[Vec<usize>], node_size: usize) -> Result<Ve
 }
 
 fn region_distance_prefix_counts(
-    pivot_distances: &[Vec<usize>],
+    pivot_distances: &[Vec<u32>],
     regions: &[usize],
 ) -> Result<Vec<Vec<usize>>> {
     let mut prefix_counts = Vec::with_capacity(pivot_distances.len());
@@ -486,13 +508,13 @@ fn region_distance_prefix_counts(
         let max_distance = distances
             .iter()
             .copied()
-            .filter(|&distance| distance != usize::MAX)
+            .filter(|&distance| distance != u32::MAX)
             .max()
             .ok_or_else(|| anyhow!("pivot 距離が空です"))?;
-        let mut counts = vec![0_usize; max_distance + 1];
+        let mut counts = vec![0_usize; max_distance as usize + 1];
         for (vertex, &region) in regions.iter().enumerate() {
             if region == pivot_index {
-                counts[distances[vertex]] += 1;
+                counts[distances[vertex] as usize] += 1;
             }
         }
         for distance in 1..counts.len() {
@@ -628,7 +650,7 @@ mod tests {
         let graph = graph(5, &[(0, 1), (1, 2), (3, 4)]);
         assert_eq!(
             graph.shortest_path_distances(0),
-            vec![0, 1, 2, usize::MAX, usize::MAX]
+            vec![0, 1, 2, u32::MAX, u32::MAX]
         );
         assert!(graph.ensure_connected().is_err());
     }
