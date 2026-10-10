@@ -160,8 +160,8 @@ if __name__ == "__main__":
   graph_name = input().strip()
   
   if graph_name:
-    # Load from MTX file in data/ directory
-    mtx_path = f"data/{graph_name}.mtx"
+    # Load from MTX file in prod_data/ directory
+    mtx_path = f"prod_data/{graph_name}.mtx"
     print(f"Loading graph from {mtx_path}")
     H = load_graph_from_mtx(mtx_path)
   else:

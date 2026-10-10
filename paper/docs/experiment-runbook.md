@@ -63,7 +63,7 @@ E0で実装済み5手法をseed 0〜2に対して確認する例を示す。条�
   "datasets": [
     {
       "name": "USpowerGrid",
-      "path": "data/USpowerGrid.mtx",
+      "path": "prod_data/USpowerGrid.mtx",
       "sha256": "8fda7edfc1844d73d4f5be7d9a49963104349292aae64e73782c1a55c3b5f05f"
     }
   ],

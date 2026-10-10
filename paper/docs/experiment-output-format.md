@@ -179,7 +179,7 @@ CPU手法でGPU固有区間が存在しない場合、recordには`null`を保�
   "git_commit": "0123456789abcdef",
   "git_dirty": false,
   "dataset": "USPowerGrid",
-  "input_path": "data/USpowerGrid.mtx",
+  "input_path": "prod_data/USpowerGrid.mtx",
   "input_sha256": "sha256-value",
   "seed": 0,
   "initial_positions_sha256": "positions-sha256",

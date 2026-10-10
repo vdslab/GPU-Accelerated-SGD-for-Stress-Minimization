@@ -35,7 +35,7 @@ impl Default for Config {
     fn default() -> Self {
         Self {
             common: CommonExperimentArgs::human("../output"),
-            input: PathBuf::from("../data/luxembourg_osm.mtx"),
+            input: PathBuf::from("../prod_data/luxembourg_osm.mtx"),
             iterations: 15,
             pivot_count: 200,
             epsilon: 0.1,

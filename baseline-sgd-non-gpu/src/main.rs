@@ -28,7 +28,7 @@ impl Default for Config {
     fn default() -> Self {
         Self {
             common: CommonExperimentArgs::human("../output"),
-            input: PathBuf::from("../data/USpowerGrid.mtx"),
+            input: PathBuf::from("../prod_data/USpowerGrid.mtx"),
             iterations: 15,
             epsilon: 0.1,
             seed: 0,

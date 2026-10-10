@@ -4,7 +4,7 @@
 round-robinスケジュールでWGPU上の座標更新を実行します。
 
 ```sh
-cargo run --release -- ../data/USpowerGrid.mtx \
+cargo run --release -- ../prod_data/USpowerGrid.mtx \
   --pivots 200 --iterations 15 --epsilon 0.1 --seed 0
 ```
 
