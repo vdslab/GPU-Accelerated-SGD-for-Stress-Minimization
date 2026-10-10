@@ -2,6 +2,8 @@
 import csv
 import hashlib
 import json
+import subprocess
+from functools import lru_cache
 from collections import defaultdict
 from pathlib import Path
 
@@ -13,11 +15,11 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parent.parent
 BASE = ROOT / 'experiment_results/v1'
-METHODS = ['sgd', 'atomic_sgd', 'rr_sgd', 'sparse_sgd', 'rr_sparse_sgd']
+METHODS = ['sgd', 'atomic_sgd', 'rr_sgd', 'sparse_sgd', 'atomic_sparse_sgd', 'rr_sparse_sgd']
 LABELS = {'sgd': 'CPU SGD', 'atomic_sgd': 'Atomic SGD', 'rr_sgd': 'RR-SGD',
-          'sparse_sgd': 'CPU Sparse SGD', 'rr_sparse_sgd': 'RR-Sparse SGD'}
+          'sparse_sgd': 'CPU Sparse SGD', 'atomic_sparse_sgd': 'Atomic Sparse SGD', 'rr_sparse_sgd': 'RR-Sparse SGD'}
 COLORS = {'sgd': '#555555', 'atomic_sgd': '#d55e00', 'rr_sgd': '#0072b2',
-          'sparse_sgd': '#555555', 'rr_sparse_sgd': '#009e73'}
+          'sparse_sgd': '#555555', 'atomic_sparse_sgd': '#cc79a7', 'rr_sparse_sgd': '#009e73'}
 FAMILIES = {'full': METHODS[:3], 'sparse': METHODS[3:]}
 plt.rcParams.update({'font.family': 'DejaVu Sans', 'font.size': 9,
                      'axes.spines.top': False, 'axes.spines.right': False,
@@ -72,15 +74,50 @@ def load_data():
         for dataset in manifest['datasets']:
             for method in manifest['methods']:
                 expectations[(dataset['name'], method)] = len(manifest['seeds'])
-        sources.append({'path': str(path.relative_to(ROOT)), 'sha256': sha(path)})
+        sources.append({'path': str(path.relative_to(ROOT)), 'sha256': sha(path),
+                        'artifact_relocation_sha256': sha(folder/'artifact-relocation.json')
+                        if (folder/'artifact-relocation.json').exists() else None})
         # Keep retry history in raw; use only latest attempt for each run id.
         latest = {}
+        relocation_path = folder / 'artifact-relocation.json'
+        relocation = json.loads(relocation_path.read_text()) if relocation_path.exists() else None
         for line in path.read_text().splitlines():
             row = json.loads(line)
             row['experiment_id'] = folder.name
+            if relocation:
+                original = Path(relocation['original_root'])
+                stored = ROOT / relocation['stored_root']
+                for field in ['final_positions_path', 'vertex_map_path', 'stderr_log_path']:
+                    if row.get(field):
+                        relative = Path(row[field]).relative_to(original)
+                        row[field] = str(stored / relative)
             latest[row['run_id']] = row
         records.extend(latest.values())
     return records, sources, expectations
+
+
+# Only Atomic Sparse's additive run may reuse earlier baselines across commits.
+# Verify the actual Git trees; a changed existing implementation invalidates reuse.
+SHARED_SOURCE_PATHS = ('baseline-sgd-non-gpu', 'vram-lock-native', 'rr_gpu',
+                       'baseline-sparse-sgd-non-gpu', 'sparse-sgd-gpu', 'experiment-common')
+
+
+@lru_cache(maxsize=None)
+def source_extension_evidence(baseline_commit, added_commit):
+    def tree(commit, path):
+        return subprocess.check_output(
+            ['git', '-C', str(ROOT), 'rev-parse', '--verify', f'{commit}:{path}'],
+            text=True, stderr=subprocess.DEVNULL).strip()
+    try:
+        trees = {path: {'baseline_tree': tree(baseline_commit, path),
+                        'added_tree': tree(added_commit, path)} for path in SHARED_SOURCE_PATHS}
+        if any(v['baseline_tree'] != v['added_tree'] for v in trees.values()):
+            return None
+        atomic_tree = tree(added_commit, 'vram-lock-sparse')
+    except subprocess.CalledProcessError:
+        return None
+    return {'baseline_commit': baseline_commit, 'added_commit': added_commit,
+            'shared_source_trees': trees, 'atomic_sparse_tree': atomic_tree}
 
 
 def main():
@@ -99,22 +136,39 @@ def main():
     large = [item['name'] for item in datasets[10:] if item['name'] in names]
     dataset_info = {item['name']: item for item in datasets}
     paired = defaultdict(list)
-    validation = {'errors': [], 'warnings': [], 'formal_publication_ready': False}
+    validation = {'errors': [], 'warnings': [], 'formal_publication_ready': False,
+                  'source_extensions': []}
     for r in available.values():
         baseline = 'sgd' if r['family'] == 'full' else 'sparse_sgd'
         ref = available.get((r['dataset'], baseline, r['seed']))
         if ref is None:
             continue
         for key in ['input_sha256', 'initial_positions_sha256', 'nodes', 'edges', 'constraints',
-                    'iterations', 'epsilon', 'pivots', 'git_commit', 'cpu_model']:
+                    'iterations', 'epsilon', 'pivots', 'cpu_model']:
             if r[key] != ref[key]:
                 validation['errors'].append(f"{r['run_id']}: mismatched {key}")
+        if r['git_commit'] != ref['git_commit']:
+            evidence = (source_extension_evidence(ref['git_commit'], r['git_commit'])
+                        if r['method'] == 'atomic_sparse_sgd' else None)
+            if evidence is None:
+                validation['errors'].append(f"{r['run_id']}: mismatched git_commit without unchanged-source evidence")
+            elif evidence not in validation['source_extensions']:
+                validation['source_extensions'].append(evidence)
+        if r['method'] == 'atomic_sparse_sgd':
+            gpu_ref = available.get((r['dataset'], 'rr_sparse_sgd', r['seed']))
+            if gpu_ref and any(r[k] != gpu_ref[k] for k in ['gpu_name', 'gpu_backend']):
+                validation['errors'].append(f"{r['run_id']}: mismatched GPU environment")
         if r['family'] == 'sparse' and r['preprocess_sha256'] != ref['preprocess_sha256']:
             validation['errors'].append(f"{r['run_id']}: mismatched sparse preprocessing")
         if r['stress_kind'] != ref['stress_kind'] or r['stress_seed'] != ref['stress_seed'] or r['stress_samples'] != ref['stress_samples']:
             validation['errors'].append(f"{r['run_id']}: mismatched stress evaluator")
         if r['git_dirty']:
             validation['errors'].append(f"{r['run_id']}: dirty source tree")
+        if r['method'] in ['atomic_sgd', 'atomic_sparse_sgd']:
+            planned = r['constraints'] * r['iterations']
+            if (r['attempted_updates'] != planned or r['completed_updates'] != planned
+                    or r['retry_failures'] != 0):
+                validation['errors'].append(f"{r['run_id']}: atomic update counters do not match planned constraints")
         if r.get('retry_failures', 0):
             validation['errors'].append(f"{r['run_id']}: {r['retry_failures']} incomplete atomic updates")
         if not (np.isfinite(r['stress_value']) and r['iteration_time_ms'] > 0):
@@ -156,7 +210,8 @@ def main():
         if s['success'] < s['expected']:
             validation['warnings'].append(f"{s['dataset']} {s['method']}: {s['success']}/{s['expected']} successful")
     validation['warnings'].extend(['10-seed quality is exploratory; planned final quality requires 25 seeds.',
-                                   'Large graph timing has only 3 seeds.', 'Sparse atomic is not implemented.',
+                                   'Large graph timing has only 3 seeds.',
+                                   'Atomic Sparse was measured in an added batch; earlier methods reuse unchanged-source baseline runs.',
                                    'btree9 and block_2000 are unavailable in this collection.'])
     dump_csv(BASE/'tables/runs.csv',rows)
     dump_csv(BASE/'tables/summary.csv',summaries)
@@ -175,7 +230,7 @@ def main():
             qr=f"{s['stress_ratio_mean']:.3f}" if s['paired_seeds'] else 'N/A'
             quality=f"{s['stress_mean']:.2f} ({s['stress_kind']})"
             graph_label = s['dataset'].replace('_', '\\_')
-            latex.append(f"{graph_label} & {LABELS[s['method']]} & {s['success']} & {s['stress_mean']:.2f} & {s['iteration_median_ms']:.2f} & {sp} \\")
+            latex.append(f"{graph_label} & {LABELS[s['method']]} & {s['success']} & {s['stress_mean']:.2f} & {s['iteration_median_ms']:.2f} & {sp}" + ' \\\\')
         else:
             t=sp=qr=quality='N/A'
         table.append(f"| {s['dataset']} | {LABELS[s['method']]} | {s['nodes']} | {s['success']}/{s['expected']} | {quality} | {t} | {sp} | {qr} |")
@@ -196,7 +251,7 @@ def main():
                 for j,d in enumerate(small):
                     s=lookup.get((d,m))
                     if s and s[field] is not None:
-                        xpos.append(j+(mi-.5)*.18 if family=='full' else j)
+                        xpos.append(j+(mi-(len(methods[1:])-1)/2)*.18)
                         values.append(s[field]);lows.append(max(0,s[field]-s[lowfield]));highs.append(max(0,s[highfield]-s[field]))
                 ax.errorbar(xpos,values,yerr=[lows,highs],fmt='o' if mi==0 else 's',color=COLORS[m],
                             label=LABELS[m],capsize=3,markersize=4,linewidth=1)
@@ -229,7 +284,7 @@ def main():
             box=ax.boxplot([v for i,v in nonempty],positions=[i for i,v in nonempty],patch_artist=True,widths=.6,
                            showfliers=True,medianprops={'color':'black','linewidth':1})
             for artist,(i,v) in zip(box['boxes'],nonempty):artist.set_facecolor(COLORS[METHODS[i]]);artist.set_alpha(.6)
-        ax.set_title(d);ax.set_xticks(range(5),['CPU','AT','RR','S-CPU','S-RR'],rotation=45)
+        ax.set_title(d);ax.set_xticks(range(len(METHODS)),['CPU','AT','RR','S-CPU','S-AT','S-RR'],rotation=45)
         ax.ticklabel_format(axis='y',style='sci',scilimits=(0,0));ax.grid(axis='y',alpha=.15)
     axes[0,0].set_ylabel('Exact full stress');axes[1,0].set_ylabel('Exact full stress')
     fig.tight_layout();save_figure(fig,'04_final_stress_distribution')
@@ -242,7 +297,7 @@ def main():
                 if s and s['paired_seeds']:
                     ax.scatter(s['paired_iteration_speedup_median'],s['stress_ratio_mean'],c=COLORS[m],s=22)
                     if d in ['dwt_419', '1138_bus', 'EVA', '3elt', 'USpowerGrid']:
-                        offset = (-30, -12) if d == '3elt' else (4, 7)
+                        offset = (-30, -12) if d == '3elt' else (4, -13 if m == 'atomic_sparse_sgd' else 7)
                         ax.annotate(d,(s['paired_iteration_speedup_median'],s['stress_ratio_mean']),fontsize=6,xytext=offset,textcoords='offset points')
             ax.plot([],[],color=COLORS[m],marker='o',ls='',label=LABELS[m])
         ax.axvline(1,color='#666666',linestyle='--',linewidth=.8);ax.axhline(1.05,color='#999999',linestyle=':',linewidth=1)
@@ -257,18 +312,22 @@ def main():
             for j,d in enumerate(large):
                 s=lookup.get((d,m))
                 if s and s['success']:
-                    x.append(j+(mi-.5)*.24);y.append(s['iteration_median_ms'])
+                    x.append(j+(mi-(len(FAMILIES['sparse'])-1)/2)*.24);y.append(s['iteration_median_ms'])
                     lo.append(y[-1]-s['iteration_q1_ms']);hi.append(s['iteration_q3_ms']-y[-1])
             axes[0].bar(x,y,width=.22,color=COLORS[m],label=LABELS[m],yerr=[lo,hi],capsize=2)
         axes[0].set_xticks(range(len(large)),large,rotation=35,ha='right');axes[0].set_yscale('log')
         axes[0].set_ylabel('15-iteration host time (ms)');axes[0].legend(frameon=False);axes[0].grid(axis='y',alpha=.15)
-        for d in small+large:
-            s=lookup.get((d,'rr_sparse_sgd'))
-            if s and s['paired_seeds']:
-                axes[1].scatter(s['nodes'],s['paired_iteration_speedup_median'],color=COLORS['rr_sparse_sgd'],marker='s' if d in large else 'o',s=25)
-                if d in large:axes[1].annotate(d,(s['nodes'],s['paired_iteration_speedup_median']),fontsize=6,xytext=(3,3),textcoords='offset points')
+        for m in FAMILIES['sparse'][1:]:
+            for d in small+large:
+                item=lookup.get((d,m))
+                if item and item['paired_seeds']:
+                    axes[1].scatter(item['nodes'],item['paired_iteration_speedup_median'],color=COLORS[m],marker='s' if d in large else 'o',s=25)
+                    if d in large and (m == 'rr_sparse_sgd' or d in ['G65', 'web-NotreDame']):
+                        offset = ((-60, -16) if d == 'web-NotreDame' else (-10, -15)) if m == 'atomic_sparse_sgd' else ((-60, 6) if d == 'web-NotreDame' else (3, 3))
+                        axes[1].annotate(d,(item['nodes'],item['paired_iteration_speedup_median']),fontsize=6,xytext=offset,textcoords='offset points')
+            axes[1].plot([],[],color=COLORS[m],marker='o',ls='',label=LABELS[m])
         axes[1].set_xscale('log');axes[1].set_yscale('log');axes[1].axhline(1,color='#666666',linestyle='--',linewidth=.8)
-        axes[1].set_xlabel('Nodes in largest connected component');axes[1].set_ylabel('RR-Sparse iteration speedup');axes[1].grid(alpha=.15)
+        axes[1].set_xlabel('Nodes in largest connected component');axes[1].set_ylabel('Sparse iteration speedup (CPU / GPU)');axes[1].grid(alpha=.15);axes[1].legend(frameon=False)
         fig.suptitle('Sparse scaling: exploratory large-graph results (3 seeds)');fig.tight_layout();save_figure(fig,'06_sparse_scaling')
 
     fig, axes = plt.subplots(1, 2, figsize=(12, 4))
@@ -291,7 +350,7 @@ def main():
 
     # Same seed across all methods, picked using CPU full-SGD median stress only.
     layout_selections=[]
-    fig,axes=plt.subplots(3,5,figsize=(12,7))
+    fig,axes=plt.subplots(3,len(METHODS),figsize=(14.4,7))
     for ri,d in enumerate(['USpowerGrid','3elt','EVA']):
         refs=[r for r in groups[(d,'sgd')] if r['status']=='success']
         if not refs:continue
@@ -332,15 +391,23 @@ def main():
             '| Graph | Method | SGD speedup | Full-stress ratio | Paired seeds |',
             '|---|---|---:|---:|---:|']
     for s in summaries:
-        if s['method'] in ['atomic_sgd','rr_sgd','rr_sparse_sgd'] and s['paired_seeds']:
+        if s['method'] in ['atomic_sgd','rr_sgd','atomic_sparse_sgd','rr_sparse_sgd'] and s['paired_seeds']:
             report.append(f"| {s['dataset']} | {LABELS[s['method']]} | {s['paired_iteration_speedup_median']:.2f}x | {s['stress_ratio_mean']:.3f} | {s['paired_seeds']} |")
     report+=['','## 解釈と限界']
-    for m in ['atomic_sgd','rr_sgd','rr_sparse_sgd']:
+    for m in ['atomic_sgd','rr_sgd','atomic_sparse_sgd','rr_sparse_sgd']:
         subset=[s for s in summaries if s['method']==m and s['paired_seeds']]
         if subset:
             fast=sum(s['paired_iteration_speedup_median']>1 for s in subset)
             stable=sum(s['stress_ratio_ci_high']<=1.05 for s in subset)
             report.append(f'- {LABELS[m]}：対応比較可能な{len(subset)}グラフ中、中央値で高速化は{fast}グラフ。stress比の暫定95% CI上限が1.05以下は{stable}グラフ。')
+    atomic_summary = [lookup[(d, 'atomic_sparse_sgd')] for d in names
+                      if lookup.get((d, 'atomic_sparse_sgd'), {}).get('paired_seeds')]
+    if atomic_summary:
+        for cohort, description in [(small, '小・中規模'), (large, '大規模')]:
+            subset = [item for item in atomic_summary if item['dataset'] in cohort]
+            faster = sum(item['paired_iteration_speedup_median'] > 1 for item in subset)
+            report.append(f'- Atomic Sparseの{description}：CPU基準より速い中央値は{len(subset)}グラフ中{faster}グラフ。')
+        report.append('- Atomic SparseとRR-Sparseは同じ制約と方向別重みを使う。差には競合処理方式、更新順、GPU投入・同期の回数が含まれ、ロックのコストだけを独立に測った結果ではない。')
     report+=['- 全グラフをまとめた単一の速度向上率で代表させない。グラフの構造・規模に依存する。',
              '- GPU実装はf32、CPUはf64。差には精度と更新順の両方が含まれる。',
              '- 初期配置の一致はFull群・Sparse群のそれぞれの中で確認。両群は初期配置生成が異なるため、群をまたぐ対応seed比は使わない。',
@@ -348,14 +415,15 @@ def main():
              '- この結果はSGD部分の性能であり、初回レイアウト生成全体の高速化率ではない。',
              '- 大規模3 seedから信頼性の高い速度・品質の結論を出さない。',
              '- 同一seedの時間は1回ずつ。将来は固定seedの繰返しで機器の時間変動とseed差を分離する。',
-             '- Sparse atomicが未実装のためSparseの競合方式同士の比較は未完成。',
+             '- Atomic Sparseは別測定バッチで追加した。既存5手法と共通前処理のソースが不変であることをGit treeで検証し、過去のCPU・RR結果を再利用している。機器の時間変動や実行順の影響を完全には除けない。',
+             '- Atomic Sparseはロック失敗ペアを再投入するため、成功時の更新漏れは0だが、再投入・ホスト同期の時間を含む。',
              '- 欠測や失敗は図でゼロにせず、failures.csvおよび元stderrに理由を残す。',
              '', '## 検証', f'- 比較整合性エラー：{len(validation["errors"])}件。',
              '- 検証詳細：../tables/validation.json。正式掲載可否はfalse（標本数不足）。',
              '', '## 次に必要な実験',
              '1. 小・中規模を25 seedへ拡張し、品質の非劣性を判定する。',
              '2. 大規模を最低10 seedへ拡張し、特にweb-NotreDameの約17%のsampled stress悪化を詳しく確認する。',
-             '3. Sparse atomicを追加し、同じ制約でRRと比較する。',
+             '3. Atomic Sparseを含む6手法を同じ測定バッチで再実行し、実行順を回して追加バッチ間の時間変動を確認する。',
              '4. 代表3グラフのiterationごとのstress収束を別診断実行で記録する（固定15反復の学習率を維持）。',
              '', '## 図の読み方',
              '- 01：CPU基準のstress比。点は平均、誤差棒は対応seedのbootstrap 95% CI。',
@@ -364,7 +432,7 @@ def main():
              '- 04：最終exact full stressの分布。',
              '- 05：品質と速度の両立。右側ほど速く、下側ほどstressが低い。',
              '- 06：Sparseの規模拡大。丸は10 seed、四角は3 seed。',
-             '- 07：CPU full-SGDのstress中央値に近いseedを全5手法で共有した代表配置。',
+             '- 07：CPU full-SGDのstress中央値に近いseedを全6手法で共有した代表配置。',
              '- 08：RR-Sparseのラウンド数と速度向上率。構造によるラウンド増加を確認する。',
              '', '## 論文の体裁との対応',
              '- SGD論文Figure 7・14の品質分布、Figure 10の品質と時間を同時に示す考え方を参考にした。',
@@ -373,10 +441,16 @@ def main():
              '- PNGは確認用、SVGは論文で編集・拡大するための版。収束曲線は未取得。']
     (BASE/'report/RESULTS.md').write_text('\n'.join(report)+'\n')
     metadata={'sources':sources,'script_sha256':sha(Path(__file__)),
-              'config_sha256':sha(BASE/'config/datasets.json'),'bootstrap_resamples':10000,
+              'config_sha256':sha(BASE/'config/datasets.json'),
+              'manifest_sha256':{p.name:sha(p) for p in (BASE/'config').glob('*.json')},
+              'source_extensions':validation['source_extensions'],'bootstrap_resamples':10000,
               'bootstrap_seed':20261011,'publication_ready':False,
               'commits':sorted({r['git_commit'] for r in rows}),
               'dirty_runs':sum(bool(r['git_dirty']) for r in rows),
+              'discarded_measurements':[
+                  {'path':str(p.relative_to(ROOT)), 'sha256':sha(p),
+                   'records':len(p.read_text().splitlines())}
+                  for p in sorted((BASE/'raw').glob('v1-*/discarded-dirty-records.jsonl'))],
               'figures':{p.name:sha(p) for p in (BASE/'figures').glob('*') if p.is_file()}}
     (BASE/'tables/provenance.json').write_text(json.dumps(metadata,indent=2)+'\n')
     print(f'{len(rows)} runs; {len(available)} success; {len(failures)} failures; {len(validation["errors"])} validation errors')

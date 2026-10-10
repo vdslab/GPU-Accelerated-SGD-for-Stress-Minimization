@@ -1,6 +1,6 @@
 # 実験結果 v1（初回評価）
 
-正式実行：536件。成功 536件、失敗 0件。
+正式実行：654件。成功 654件、失敗 0件。
 
 ## 比較条件
 - 前処理を除いた15反復のhost実時間を主速度指標とする。同期・シャッフルは含む。
@@ -13,45 +13,65 @@
 |---|---|---:|---:|---:|
 | dwt_419 | Atomic SGD | 0.03x | 1.004 | 10 |
 | dwt_419 | RR-SGD | 0.53x | 1.010 | 10 |
+| dwt_419 | Atomic Sparse SGD | 0.19x | 0.999 | 10 |
 | dwt_419 | RR-Sparse SGD | 0.06x | 0.999 | 10 |
 | qh882 | Atomic SGD | 0.10x | 1.006 | 10 |
 | qh882 | RR-SGD | 2.34x | 1.004 | 10 |
+| qh882 | Atomic Sparse SGD | 0.40x | 1.000 | 10 |
 | qh882 | RR-Sparse SGD | 0.14x | 1.002 | 10 |
 | 1138_bus | Atomic SGD | 0.14x | 1.115 | 10 |
 | 1138_bus | RR-SGD | 1.71x | 1.028 | 10 |
+| 1138_bus | Atomic Sparse SGD | 0.43x | 1.008 | 10 |
 | 1138_bus | RR-Sparse SGD | 0.19x | 1.005 | 10 |
 | dwt_1005 | Atomic SGD | 0.10x | 1.012 | 10 |
 | dwt_1005 | RR-SGD | 3.23x | 1.001 | 10 |
+| dwt_1005 | Atomic Sparse SGD | 0.42x | 1.004 | 10 |
 | dwt_1005 | RR-Sparse SGD | 0.15x | 1.002 | 10 |
 | cage8 | Atomic SGD | 0.12x | 1.026 | 10 |
 | cage8 | RR-SGD | 2.96x | 1.000 | 10 |
+| cage8 | Atomic Sparse SGD | 0.42x | 1.001 | 10 |
 | cage8 | RR-Sparse SGD | 0.16x | 1.005 | 10 |
 | poli | Atomic SGD | 0.69x | 1.131 | 10 |
 | poli | RR-SGD | 4.66x | 1.039 | 10 |
+| poli | Atomic Sparse SGD | 0.66x | 1.006 | 10 |
 | poli | RR-Sparse SGD | 0.43x | 1.018 | 10 |
 | dwt_2680 | Atomic SGD | 0.79x | 1.006 | 10 |
 | dwt_2680 | RR-SGD | 5.89x | 0.955 | 10 |
+| dwt_2680 | Atomic Sparse SGD | 0.69x | 0.901 | 10 |
 | dwt_2680 | RR-Sparse SGD | 0.52x | 1.013 | 10 |
 | EVA | Atomic SGD | 2.40x | 1.186 | 10 |
 | EVA | RR-SGD | 9.76x | 1.160 | 10 |
+| EVA | Atomic Sparse SGD | 0.90x | 0.964 | 10 |
 | EVA | RR-Sparse SGD | 0.45x | 1.004 | 10 |
 | 3elt | Atomic SGD | 2.63x | 1.287 | 10 |
 | 3elt | RR-SGD | 11.46x | 1.012 | 10 |
+| 3elt | Atomic Sparse SGD | 0.95x | 1.000 | 10 |
 | 3elt | RR-Sparse SGD | 1.17x | 1.001 | 10 |
 | USpowerGrid | Atomic SGD | 2.81x | 1.037 | 10 |
 | USpowerGrid | RR-SGD | 12.36x | 1.019 | 10 |
+| USpowerGrid | Atomic Sparse SGD | 0.97x | 0.999 | 10 |
 | USpowerGrid | RR-Sparse SGD | 1.20x | 1.003 | 10 |
+| G65 | Atomic Sparse SGD | 1.18x | 1.000 | 3 |
 | G65 | RR-Sparse SGD | 2.54x | 1.012 | 3 |
+| fe_4elt2 | Atomic Sparse SGD | 1.36x | 1.005 | 3 |
 | fe_4elt2 | RR-Sparse SGD | 3.44x | 1.017 | 3 |
+| bcsstk31 | Atomic Sparse SGD | 1.65x | 1.005 | 3 |
 | bcsstk31 | RR-Sparse SGD | 7.73x | 1.005 | 3 |
+| venkat50 | Atomic Sparse SGD | 1.56x | 0.999 | 3 |
 | venkat50 | RR-Sparse SGD | 14.96x | 1.002 | 3 |
+| luxembourg_osm | Atomic Sparse SGD | 1.45x | 1.000 | 3 |
 | luxembourg_osm | RR-Sparse SGD | 19.84x | 1.002 | 3 |
+| web-NotreDame | Atomic Sparse SGD | 1.08x | 1.014 | 3 |
 | web-NotreDame | RR-Sparse SGD | 3.92x | 1.171 | 3 |
 
 ## 解釈と限界
 - Atomic SGD：対応比較可能な10グラフ中、中央値で高速化は3グラフ。stress比の暫定95% CI上限が1.05以下は5グラフ。
 - RR-SGD：対応比較可能な10グラフ中、中央値で高速化は9グラフ。stress比の暫定95% CI上限が1.05以下は8グラフ。
+- Atomic Sparse SGD：対応比較可能な16グラフ中、中央値で高速化は6グラフ。stress比の暫定95% CI上限が1.05以下は14グラフ。
 - RR-Sparse SGD：対応比較可能な16グラフ中、中央値で高速化は8グラフ。stress比の暫定95% CI上限が1.05以下は13グラフ。
+- Atomic Sparseの小・中規模：CPU基準より速い中央値は10グラフ中0グラフ。
+- Atomic Sparseの大規模：CPU基準より速い中央値は6グラフ中6グラフ。
+- Atomic SparseとRR-Sparseは同じ制約と方向別重みを使う。差には競合処理方式、更新順、GPU投入・同期の回数が含まれ、ロックのコストだけを独立に測った結果ではない。
 - 全グラフをまとめた単一の速度向上率で代表させない。グラフの構造・規模に依存する。
 - GPU実装はf32、CPUはf64。差には精度と更新順の両方が含まれる。
 - 初期配置の一致はFull群・Sparse群のそれぞれの中で確認。両群は初期配置生成が異なるため、群をまたぐ対応seed比は使わない。
@@ -59,7 +79,8 @@
 - この結果はSGD部分の性能であり、初回レイアウト生成全体の高速化率ではない。
 - 大規模3 seedから信頼性の高い速度・品質の結論を出さない。
 - 同一seedの時間は1回ずつ。将来は固定seedの繰返しで機器の時間変動とseed差を分離する。
-- Sparse atomicが未実装のためSparseの競合方式同士の比較は未完成。
+- Atomic Sparseは別測定バッチで追加した。既存5手法と共通前処理のソースが不変であることをGit treeで検証し、過去のCPU・RR結果を再利用している。機器の時間変動や実行順の影響を完全には除けない。
+- Atomic Sparseはロック失敗ペアを再投入するため、成功時の更新漏れは0だが、再投入・ホスト同期の時間を含む。
 - 欠測や失敗は図でゼロにせず、failures.csvおよび元stderrに理由を残す。
 
 ## 検証
@@ -69,7 +90,7 @@
 ## 次に必要な実験
 1. 小・中規模を25 seedへ拡張し、品質の非劣性を判定する。
 2. 大規模を最低10 seedへ拡張し、特にweb-NotreDameの約17%のsampled stress悪化を詳しく確認する。
-3. Sparse atomicを追加し、同じ制約でRRと比較する。
+3. Atomic Sparseを含む6手法を同じ測定バッチで再実行し、実行順を回して追加バッチ間の時間変動を確認する。
 4. 代表3グラフのiterationごとのstress収束を別診断実行で記録する（固定15反復の学習率を維持）。
 
 ## 図の読み方
@@ -79,7 +100,7 @@
 - 04：最終exact full stressの分布。
 - 05：品質と速度の両立。右側ほど速く、下側ほどstressが低い。
 - 06：Sparseの規模拡大。丸は10 seed、四角は3 seed。
-- 07：CPU full-SGDのstress中央値に近いseedを全5手法で共有した代表配置。
+- 07：CPU full-SGDのstress中央値に近いseedを全6手法で共有した代表配置。
 - 08：RR-Sparseのラウンド数と速度向上率。構造によるラウンド増加を確認する。
 
 ## 論文の体裁との対応

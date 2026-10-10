@@ -29,6 +29,13 @@
   },
   {
     "dataset": "USpowerGrid",
+    "method": "atomic_sparse_sgd",
+    "seed": 6,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-atomic-sparse-quality-timing/artifacts/v1-atomic-sparse-quality-timing-USpowerGrid-atomic_sparse_sgd-e35ba87f8ca5/atomic-sparse-sgd-USpowerGrid-v1-atomic-sparse-quality-timing-USpowerGrid-atomic_sparse_sgd-e35ba87f8ca5.final.txt",
+    "sha256": "39c61ffdbb42fe6a07a6df9c20c5c518748ad4bab8d20b7362b4c6d124057a7a"
+  },
+  {
+    "dataset": "USpowerGrid",
     "method": "rr_sparse_sgd",
     "seed": 6,
     "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-quality-timing/artifacts/v1-quality-timing-USpowerGrid-rr_sparse_sgd-b02f8d609c7b/rr-sparse-sgd-USpowerGrid-v1-quality-timing-USpowerGrid-rr_sparse_sgd-b02f8d609c7b.final.txt",
@@ -64,6 +71,13 @@
   },
   {
     "dataset": "3elt",
+    "method": "atomic_sparse_sgd",
+    "seed": 4,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-atomic-sparse-quality-timing/artifacts/v1-atomic-sparse-quality-timing-3elt-atomic_sparse_sgd-9e9bb2d96b0e/atomic-sparse-sgd-3elt-v1-atomic-sparse-quality-timing-3elt-atomic_sparse_sgd-9e9bb2d96b0e.final.txt",
+    "sha256": "69d69506d89dbe766cf1cbbf830a60e8fd08d8d72a291a22c08fe125eb2d20ad"
+  },
+  {
+    "dataset": "3elt",
     "method": "rr_sparse_sgd",
     "seed": 4,
     "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-quality-timing/artifacts/v1-quality-timing-3elt-rr_sparse_sgd-b02ae082967c/rr-sparse-sgd-3elt-v1-quality-timing-3elt-rr_sparse_sgd-b02ae082967c.final.txt",
@@ -96,6 +110,13 @@
     "seed": 5,
     "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-quality-timing/artifacts/v1-quality-timing-EVA-sparse_sgd-b9a2178b53f5/sparse-sgd-EVA-v1-quality-timing-EVA-sparse_sgd-b9a2178b53f5.final.txt",
     "sha256": "6ab644dc76e77a865807becaa175d8fa7ecb93b11a8d0d754d7a5fe018048e27"
+  },
+  {
+    "dataset": "EVA",
+    "method": "atomic_sparse_sgd",
+    "seed": 5,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-atomic-sparse-quality-timing/artifacts/v1-atomic-sparse-quality-timing-EVA-atomic_sparse_sgd-1ccda2f53c24/atomic-sparse-sgd-EVA-v1-atomic-sparse-quality-timing-EVA-atomic_sparse_sgd-1ccda2f53c24.final.txt",
+    "sha256": "ef53180c35e6f011090552533859fdcfc559658992f4c5f97b56610912298823"
   },
   {
     "dataset": "EVA",

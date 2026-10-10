@@ -3,8 +3,41 @@
   "warnings": [
     "10-seed quality is exploratory; planned final quality requires 25 seeds.",
     "Large graph timing has only 3 seeds.",
-    "Sparse atomic is not implemented.",
+    "Atomic Sparse was measured in an added batch; earlier methods reuse unchanged-source baseline runs.",
     "btree9 and block_2000 are unavailable in this collection."
   ],
-  "formal_publication_ready": false
+  "formal_publication_ready": false,
+  "source_extensions": [
+    {
+      "baseline_commit": "91c33ac09ae6e19b02034f57b126e0deb9cf1a6d",
+      "added_commit": "1a725bb8555aef09be52108da80a3df38c7ff9ea",
+      "shared_source_trees": {
+        "baseline-sgd-non-gpu": {
+          "baseline_tree": "4b55c5feb25ef674b0e3c241a0a2931f3b8657ea",
+          "added_tree": "4b55c5feb25ef674b0e3c241a0a2931f3b8657ea"
+        },
+        "vram-lock-native": {
+          "baseline_tree": "2793793166bdba3735191e4a049b839151a9fc2d",
+          "added_tree": "2793793166bdba3735191e4a049b839151a9fc2d"
+        },
+        "rr_gpu": {
+          "baseline_tree": "6b95c54a5da98ad0cf28719ad85c6835f0d4a382",
+          "added_tree": "6b95c54a5da98ad0cf28719ad85c6835f0d4a382"
+        },
+        "baseline-sparse-sgd-non-gpu": {
+          "baseline_tree": "e187f8f7a47f34623643b0a50da5e851a7caa0a1",
+          "added_tree": "e187f8f7a47f34623643b0a50da5e851a7caa0a1"
+        },
+        "sparse-sgd-gpu": {
+          "baseline_tree": "8c084fc23084fd3bda672bdded18eeafad9eceb5",
+          "added_tree": "8c084fc23084fd3bda672bdded18eeafad9eceb5"
+        },
+        "experiment-common": {
+          "baseline_tree": "da921b26949feb08be056d4df8f051f225de977e",
+          "added_tree": "da921b26949feb08be056d4df8f051f225de977e"
+        }
+      },
+      "atomic_sparse_tree": "1a6b5bdcdd9bf004993f5acad04111c1c71107aa"
+    }
+  ]
 }
