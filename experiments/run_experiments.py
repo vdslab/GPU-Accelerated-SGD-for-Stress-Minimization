@@ -503,8 +503,10 @@ def failure_record(
     }
 
 
-def write_stderr(path: Path, content: str) -> None:
+def write_stderr(path: Path, content: str | bytes) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    if isinstance(content, bytes):
+        content = content.decode("utf-8", errors="replace")
     path.write_text(content, encoding="utf-8")
 
 
