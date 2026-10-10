@@ -148,6 +148,18 @@ class RunnerTests(unittest.TestCase):
             all(run.pivots == 1 for run in first if run.method == "rr_sparse_sgd")
         )
 
+    def test_atomic_sparse_uses_sparse_arguments_and_runner_contract(self) -> None:
+        path = self.manifest(methods=["sparse_sgd", "atomic_sparse_sgd"])
+        manifest = runner.load_manifest(path)
+        runs = runner.expand_runs(manifest, path)
+        atomic = next(run for run in runs if run.method == "atomic_sparse_sgd")
+        self.assertEqual(atomic.family, "sparse")
+        self.assertEqual(atomic.pivots, 1)
+        self.assertEqual(atomic.paired_key, runs[0].paired_key)
+        self.assertEqual(runner.main([str(path), "--output-root", str(self.output_root)]), 0)
+        records = runner.load_existing_records(self.output_root / "fixture" / "results.jsonl")
+        self.assertEqual({r["method"] for r in records}, {"sparse_sgd", "atomic_sparse_sgd"})
+
     def test_e0_run_ids_and_commands_are_stable(self) -> None:
         path = MODULE_PATH.parent / "manifests/e0-uspowergrid.json"
         manifest = runner.load_manifest(path)

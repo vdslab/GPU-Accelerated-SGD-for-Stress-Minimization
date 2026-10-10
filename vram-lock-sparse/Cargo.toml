@@ -1,0 +1,16 @@
+[package]
+name = "vram-lock-sparse"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1"
+chrono = "0.4"
+env_logger = "0.11"
+experiment-common = { path = "../experiment-common" }
+metal = "0.30"
+rand = "0.9"
+
+[dev-dependencies]
+serde_json = "1"
+tempfile = "3"

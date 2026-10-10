@@ -34,6 +34,9 @@ METHODS: dict[str, MethodSpec] = {
         "sparse",
         True,
     ),
+    "atomic_sparse_sgd": MethodSpec(
+        "vram-lock-sparse/target/release/vram-lock-sparse", "sparse", True
+    ),
     "rr_sparse_sgd": MethodSpec(
         "sparse-sgd-gpu/target/release/sparse-sgd-gpu", "sparse", True
     ),

@@ -1113,6 +1113,7 @@ METHOD_LABELS = {
     "atomic_sgd": "AtomicSGD",
     "rr_sgd": "RR-SGD",
     "sparse_sgd": "SparseSGD",
+    "atomic_sparse_sgd": "AtomicSparseSGD",
     "rr_sparse_sgd": "RR-SparseSGD",
 }
 METRIC_LABELS = {
