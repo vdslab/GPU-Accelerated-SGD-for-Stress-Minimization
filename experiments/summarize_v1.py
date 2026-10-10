@@ -29,7 +29,7 @@ def dump_csv(path, records):
     if not records:
         return
     with path.open('w', newline='') as file:
-        writer = csv.DictWriter(file, fieldnames=list(records[0]))
+        writer = csv.DictWriter(file, fieldnames=list(records[0]), lineterminator='\n')
         writer.writeheader()
         writer.writerows(records)
 
@@ -56,6 +56,8 @@ def save_figure(fig, name):
     fig.savefig(BASE / 'figures' / (name + '.png'), bbox_inches='tight')
     fig.savefig(BASE / 'figures' / (name + '.svg'), bbox_inches='tight',
                 metadata={'Date': None, 'Creator': 'Stress SGD v1'})
+    svg = BASE / 'figures' / (name + '.svg')
+    svg.write_text('\n'.join(line.rstrip() for line in svg.read_text().splitlines()) + '\n')
     plt.close(fig)
 
 
