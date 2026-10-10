@@ -1,0 +1,107 @@
+[
+  {
+    "dataset": "USpowerGrid",
+    "method": "sgd",
+    "seed": 6,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-quality-timing/artifacts/v1-quality-timing-USpowerGrid-sgd-81945743614e/sgd-USpowerGrid-v1-quality-timing-USpowerGrid-sgd-81945743614e.final.txt",
+    "sha256": "2de2e95e4cfeaf4367e939a71f250ad9584c9a4305962619302fa800cea87b32"
+  },
+  {
+    "dataset": "USpowerGrid",
+    "method": "atomic_sgd",
+    "seed": 6,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-quality-timing/artifacts/v1-quality-timing-USpowerGrid-atomic_sgd-d3f9914a4cf3/atomic-sgd-USpowerGrid-v1-quality-timing-USpowerGrid-atomic_sgd-d3f9914a4cf3.final.txt",
+    "sha256": "9a961e3125a6fdb644e783a3edade988409516c5386514be57be242f306cd37c"
+  },
+  {
+    "dataset": "USpowerGrid",
+    "method": "rr_sgd",
+    "seed": 6,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-quality-timing/artifacts/v1-quality-timing-USpowerGrid-rr_sgd-b0266410afbe/rr-sgd-USpowerGrid-v1-quality-timing-USpowerGrid-rr_sgd-b0266410afbe.final.txt",
+    "sha256": "840bc995cae54008bcf4714541c1517845ba815f66f141953a95a658d841ca0c"
+  },
+  {
+    "dataset": "USpowerGrid",
+    "method": "sparse_sgd",
+    "seed": 6,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-quality-timing/artifacts/v1-quality-timing-USpowerGrid-sparse_sgd-712e769069b3/sparse-sgd-USpowerGrid-v1-quality-timing-USpowerGrid-sparse_sgd-712e769069b3.final.txt",
+    "sha256": "46f2e6ff59f79705ce9a3ef78b41d9189b3a2f2b0ea1add0539d9b5c6ccb67f4"
+  },
+  {
+    "dataset": "USpowerGrid",
+    "method": "rr_sparse_sgd",
+    "seed": 6,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-quality-timing/artifacts/v1-quality-timing-USpowerGrid-rr_sparse_sgd-b02f8d609c7b/rr-sparse-sgd-USpowerGrid-v1-quality-timing-USpowerGrid-rr_sparse_sgd-b02f8d609c7b.final.txt",
+    "sha256": "dbff7e37b75409672b0ad44c67b76dcbd5f37387924c8778283b98f34537fe60"
+  },
+  {
+    "dataset": "3elt",
+    "method": "sgd",
+    "seed": 4,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-quality-timing/artifacts/v1-quality-timing-3elt-sgd-1e7a651deae3/sgd-3elt-v1-quality-timing-3elt-sgd-1e7a651deae3.final.txt",
+    "sha256": "28286f42c0535ca5ab7c27880b57cbe0dbb68bb8a1a14367a482f41502a09f06"
+  },
+  {
+    "dataset": "3elt",
+    "method": "atomic_sgd",
+    "seed": 4,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-quality-timing/artifacts/v1-quality-timing-3elt-atomic_sgd-e17676fc4c5e/atomic-sgd-3elt-v1-quality-timing-3elt-atomic_sgd-e17676fc4c5e.final.txt",
+    "sha256": "5baae62ae805592b900eabca816b8f62312013b5db4c30a3b020a17f2e88b9fc"
+  },
+  {
+    "dataset": "3elt",
+    "method": "rr_sgd",
+    "seed": 4,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-quality-timing/artifacts/v1-quality-timing-3elt-rr_sgd-0016845f1b75/rr-sgd-3elt-v1-quality-timing-3elt-rr_sgd-0016845f1b75.final.txt",
+    "sha256": "995e7df12fa34127e916748d82a911fe3cd390616e27976e7b7a7e98d4be4849"
+  },
+  {
+    "dataset": "3elt",
+    "method": "sparse_sgd",
+    "seed": 4,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-quality-timing/artifacts/v1-quality-timing-3elt-sparse_sgd-dc9acff13e69/sparse-sgd-3elt-v1-quality-timing-3elt-sparse_sgd-dc9acff13e69.final.txt",
+    "sha256": "bcc45bc959322b1a5fb967572f0c7f2d1460115bcc925382d8d4066f739e1b4b"
+  },
+  {
+    "dataset": "3elt",
+    "method": "rr_sparse_sgd",
+    "seed": 4,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-quality-timing/artifacts/v1-quality-timing-3elt-rr_sparse_sgd-b02ae082967c/rr-sparse-sgd-3elt-v1-quality-timing-3elt-rr_sparse_sgd-b02ae082967c.final.txt",
+    "sha256": "d3d83e13621d88aa98310bf6f1ddfa8f6161ab18711ba0ca15370fd2741d8f91"
+  },
+  {
+    "dataset": "EVA",
+    "method": "sgd",
+    "seed": 5,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-quality-timing/artifacts/v1-quality-timing-EVA-sgd-b9177a178821/sgd-EVA-v1-quality-timing-EVA-sgd-b9177a178821.final.txt",
+    "sha256": "87e7fcce5416a6b86e8d4f1f698baa5fa9ad5affa9c3c3188835a6defc5b3ede"
+  },
+  {
+    "dataset": "EVA",
+    "method": "atomic_sgd",
+    "seed": 5,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-quality-timing/artifacts/v1-quality-timing-EVA-atomic_sgd-f9840340b528/atomic-sgd-EVA-v1-quality-timing-EVA-atomic_sgd-f9840340b528.final.txt",
+    "sha256": "63941db89591093fba61e0958b52a0ec9c9abcb2d44efd0108b80d6f827bb6a2"
+  },
+  {
+    "dataset": "EVA",
+    "method": "rr_sgd",
+    "seed": 5,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-quality-timing/artifacts/v1-quality-timing-EVA-rr_sgd-039db2fbfb42/rr-sgd-EVA-v1-quality-timing-EVA-rr_sgd-039db2fbfb42.final.txt",
+    "sha256": "80d13a836d9541a6fd8b4bb463059a6348dedcb5416ab2ca188d333bd02325b5"
+  },
+  {
+    "dataset": "EVA",
+    "method": "sparse_sgd",
+    "seed": 5,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-quality-timing/artifacts/v1-quality-timing-EVA-sparse_sgd-b9a2178b53f5/sparse-sgd-EVA-v1-quality-timing-EVA-sparse_sgd-b9a2178b53f5.final.txt",
+    "sha256": "6ab644dc76e77a865807becaa175d8fa7ecb93b11a8d0d754d7a5fe018048e27"
+  },
+  {
+    "dataset": "EVA",
+    "method": "rr_sparse_sgd",
+    "seed": 5,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v1/raw/v1-quality-timing/artifacts/v1-quality-timing-EVA-rr_sparse_sgd-c58775280f92/rr-sparse-sgd-EVA-v1-quality-timing-EVA-rr_sparse_sgd-c58775280f92.final.txt",
+    "sha256": "7cdd4c5c8c6d5ae1809f4fecee3ddf6a3473f93a8c6c1a9dadb20dc6fbecff52"
+  }
+]

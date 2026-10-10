@@ -1,0 +1,39 @@
+{
+  "sources": [
+    {
+      "path": "experiment_results/v1/raw/v1-large-sparse/results.jsonl",
+      "sha256": "8b1fdea25aa0c9086f64cf83208a62504bc8066a96b3a171bed0efd429c2ae75"
+    },
+    {
+      "path": "experiment_results/v1/raw/v1-quality-timing/results.jsonl",
+      "sha256": "1909327c25395fccc47f7cab5ab76ed9a275c8d19e51fe2f8558b41eb5f4ea15"
+    }
+  ],
+  "script_sha256": "ebf901491febc3893beae7c06449c8d253a36a358b52fe200eb3f16664191a7c",
+  "config_sha256": "299469272c11cb837085cda635a83c5f74edce4de3be2a4039e20f7be399388b",
+  "bootstrap_resamples": 10000,
+  "bootstrap_seed": 20261011,
+  "publication_ready": false,
+  "commits": [
+    "91c33ac09ae6e19b02034f57b126e0deb9cf1a6d"
+  ],
+  "dirty_runs": 0,
+  "figures": {
+    "05_quality_speed_tradeoff.svg": "c1e1ca2355e52272e8d77701f4cd7a0d284117cb0c39c49a57687c08bc3cae42",
+    "08_rr_sparse_rounds.svg": "782bc9811b8f28bf831db191c4cfb69916c5b4175fc92db47f10e0a7cb8b8ac5",
+    "04_final_stress_distribution.png": "46208d31a0b4a30d759dcce8754c60b2b64af5870c97d278637d88301282ea68",
+    "03_iteration_time.svg": "5cf8127f26395bff5c135f8af7fb441dc6f39d3aa1c3a4298a1d0f79bcea8c7b",
+    "01_stress_ratio.svg": "ffb95f33399a04957ae1fb945417fa0653581fe8f383a96ad4f12bdba7139356",
+    "07_representative_layouts.png": "18b37dd33df48d537e7e5da68d7528a8959ae8edaa833bae40d3b9d594ab7e48",
+    "07_representative_layouts.svg": "f69dacb95013c134e5a07e57e44b8167395b6e4d1d4ef16754ecc025421b0822",
+    "01_stress_ratio.png": "e3d4dc2f60a7e664abb2b907f4369dead68b0dd2bf4ffab774885301b233f882",
+    "03_iteration_time.png": "57ca65c5a3ca2e603039a0e84dfd6d8326570f8b95b32a4b1d2989f2598d4b66",
+    "04_final_stress_distribution.svg": "98ae5fc42b5b6f7de89bef4f1b4976411710efb487f3c7e64bdfa0b7436eee5b",
+    "08_rr_sparse_rounds.png": "10888878c3ca4169966e157655cc703626235477931fb2e289d34efe566bd944",
+    "05_quality_speed_tradeoff.png": "bf1cb174d19b3a4007f636968cdb566a17bd636f8557a4bc66fc602947425135",
+    "06_sparse_scaling.svg": "5e7fa2b6699b2adced84fae9fceee80ee816bcce1a325c1d17d3d78fa3e1ba5a",
+    "02_iteration_speedup.png": "ec1cd63b680b6a7cccc6617c5dde14768441bc76c3137917a66c3ca7a7e25145",
+    "02_iteration_speedup.svg": "eeeda9013759112298eb966acd6235bebb974e53209976a2aed876c3de5c7ad5",
+    "06_sparse_scaling.png": "65963d5d12675d06d816c8a6fea9ce832cad6868d557f9c66b42b4e1e36ad55b"
+  }
+}

@@ -22,7 +22,7 @@ FAMILIES = {'full': METHODS[:3], 'sparse': METHODS[3:]}
 plt.rcParams.update({'font.family': 'DejaVu Sans', 'font.size': 9,
                      'axes.spines.top': False, 'axes.spines.right': False,
                      'axes.labelsize': 10, 'legend.fontsize': 8, 'svg.fonttype': 'none',
-                     'savefig.dpi': 240})
+                     'savefig.dpi': 240, 'svg.hashsalt': 'stress-sgd-v1'})
 
 
 def dump_csv(path, records):
@@ -54,7 +54,8 @@ def interval(values, statistic='mean'):
 
 def save_figure(fig, name):
     fig.savefig(BASE / 'figures' / (name + '.png'), bbox_inches='tight')
-    fig.savefig(BASE / 'figures' / (name + '.svg'), bbox_inches='tight')
+    fig.savefig(BASE / 'figures' / (name + '.svg'), bbox_inches='tight',
+                metadata={'Date': None, 'Creator': 'Stress SGD v1'})
     plt.close(fig)
 
 
@@ -135,6 +136,9 @@ def main():
             summaries.append(dict(dataset=name, method=method, family='full' if method in METHODS[:3] else 'sparse',
                 nodes=dataset_info[name]['nodes'], edges=dataset_info[name]['edges'],
                 constraints=measured[0]['constraints'] if measured else None,
+                rounds_median=float(np.median([r['rounds'] for r in measured if r['rounds'] is not None])) if any(r['rounds'] is not None for r in measured) else None,
+                dispatches_median=float(np.median([r['dispatches'] for r in measured if r['dispatches'] is not None])) if any(r['dispatches'] is not None for r in measured) else None,
+                retry_failures_total=sum(r.get('retry_failures') or 0 for r in measured),
                 expected=expected, success=len(measured), failures=len(failed), missing=expected-len(measured)-len(failed),
                 stress_kind=measured[0]['stress_kind'] if measured else None,
                 iteration_median_ms=float(np.median(times)) if times else None,
@@ -235,7 +239,9 @@ def main():
                 s=lookup.get((d,m))
                 if s and s['paired_seeds']:
                     ax.scatter(s['paired_iteration_speedup_median'],s['stress_ratio_mean'],c=COLORS[m],s=22)
-                    ax.annotate(d,(s['paired_iteration_speedup_median'],s['stress_ratio_mean']),fontsize=6,xytext=(3,3),textcoords='offset points')
+                    if d in ['dwt_419', '1138_bus', 'EVA', '3elt', 'USpowerGrid']:
+                        offset = (-30, -12) if d == '3elt' else (4, 7)
+                        ax.annotate(d,(s['paired_iteration_speedup_median'],s['stress_ratio_mean']),fontsize=6,xytext=offset,textcoords='offset points')
             ax.plot([],[],color=COLORS[m],marker='o',ls='',label=LABELS[m])
         ax.axvline(1,color='#666666',linestyle='--',linewidth=.8);ax.axhline(1.05,color='#999999',linestyle=':',linewidth=1)
         ax.set_xscale('log');ax.set_xlabel('Iteration speedup (CPU / GPU)');ax.set_ylabel('Mean full-stress ratio')
@@ -263,6 +269,24 @@ def main():
         axes[1].set_xlabel('Nodes in largest connected component');axes[1].set_ylabel('RR-Sparse iteration speedup');axes[1].grid(alpha=.15)
         fig.suptitle('Sparse scaling: exploratory large-graph results (3 seeds)');fig.tight_layout();save_figure(fig,'06_sparse_scaling')
 
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+    names_with_rr = [d for d in names if lookup.get((d, 'rr_sparse_sgd'), {}).get('success')]
+    round_values = [lookup[(d, 'rr_sparse_sgd')]['rounds_median'] for d in names_with_rr]
+    axes[0].bar(range(len(names_with_rr)), round_values, color=COLORS['rr_sparse_sgd'])
+    axes[0].set_yscale('log'); axes[0].set_ylabel('RR-Sparse rounds per iteration (median)')
+    axes[0].set_xticks(range(len(names_with_rr)), names_with_rr, rotation=55, ha='right', fontsize=7)
+    for d in names_with_rr:
+        item = lookup[(d, 'rr_sparse_sgd')]
+        if item['paired_seeds']:
+            axes[1].scatter(item['rounds_median'], item['paired_iteration_speedup_median'], color=COLORS['rr_sparse_sgd'], marker='s' if d in large else 'o')
+            if d in ['web-NotreDame', 'venkat50', 'luxembourg_osm', 'bcsstk31', 'G65', 'EVA', 'dwt_419']:
+                axes[1].annotate(d, (item['rounds_median'], item['paired_iteration_speedup_median']), fontsize=6, xytext=(3, 3), textcoords='offset points')
+    axes[1].set_xscale('log'); axes[1].set_yscale('log')
+    axes[1].set_xlabel('RR-Sparse rounds per iteration (median)'); axes[1].set_ylabel('Iteration speedup (CPU / GPU)')
+    axes[1].axhline(1, color='#666666', ls='--', lw=.8)
+    for ax in axes: ax.grid(axis='y', alpha=.15)
+    fig.tight_layout(); save_figure(fig, '08_rr_sparse_rounds')
+
     # Same seed across all methods, picked using CPU full-SGD median stress only.
     layout_selections=[]
     fig,axes=plt.subplots(3,5,figsize=(12,7))
@@ -284,14 +308,17 @@ def main():
                     if section=='edges':edges.append([int(v) for v in line.split()[:2]])
                     elif section=='positions':positions.append([float(v) for v in line.split()[:2]])
             xy=np.asarray(positions);ed=np.asarray(edges)
-            ax.add_collection(LineCollection(xy[ed],colors='#333333',linewidths=.12,alpha=.45,rasterized=True));ax.autoscale()
-            ax.text(.02,.02,f'{d}; seed {seed}\nStress {r["stress_value"]:.0f}',transform=ax.transAxes,fontsize=7)
+            ax.add_collection(LineCollection(xy[ed],colors='#333333',linewidths=.18,alpha=.6,rasterized=True));ax.autoscale()
+            ax.text(.02,.02,f'{d}; seed {seed}\nStress {r["stress_value"]:.0f}',transform=ax.transAxes,fontsize=7,
+                    bbox={'facecolor': 'white', 'alpha': .9, 'edgecolor': 'none', 'pad': 1})
             layout_selections.append({'dataset':d,'method':m,'seed':seed,'path':r['final_positions_path'],'sha256':sha(Path(r['final_positions_path']))})
     fig.tight_layout();save_figure(fig,'07_representative_layouts')
     (BASE/'tables/layout-selection.json').write_text(json.dumps(layout_selections,indent=2)+'\n')
 
     failures=[r for r in rows if r['status']!='success']
     dump_csv(BASE/'tables/failures.csv',failures)
+    if not failures:
+        (BASE/'tables/failures.csv').write_text('run_id,dataset,method,error_stage,error_message\n')
     report=['# 実験結果 v1（初回評価）','',
             f'正式実行：{len(rows)}件。成功 {len(available)}件、失敗 {len(failures)}件。',
             '', '## 比較条件',
@@ -314,6 +341,8 @@ def main():
             report.append(f'- {LABELS[m]}：対応比較可能な{len(subset)}グラフ中、中央値で高速化は{fast}グラフ。stress比の暫定95% CI上限が1.05以下は{stable}グラフ。')
     report+=['- 全グラフをまとめた単一の速度向上率で代表させない。グラフの構造・規模に依存する。',
              '- GPU実装はf32、CPUはf64。差には精度と更新順の両方が含まれる。',
+             '- 初期配置の一致はFull群・Sparse群のそれぞれの中で確認。両群は初期配置生成が異なるため、群をまたぐ対応seed比は使わない。',
+             '- web-NotreDameではRR-Sparseが10,721ラウンド、15反復で160,830 dispatchを使う。他の大規模グラフは約200ラウンドである。同期・投入コストが性能を制限する可能性があるが、device時間の詳細測定なしには原因を断定しない。',
              '- この結果はSGD部分の性能であり、初回レイアウト生成全体の高速化率ではない。',
              '- 大規模3 seedから信頼性の高い速度・品質の結論を出さない。',
              '- 同一seedの時間は1回ずつ。将来は固定seedの繰返しで機器の時間変動とseed差を分離する。',
@@ -323,7 +352,7 @@ def main():
              '- 検証詳細：../tables/validation.json。正式掲載可否はfalse（標本数不足）。',
              '', '## 次に必要な実験',
              '1. 小・中規模を25 seedへ拡張し、品質の非劣性を判定する。',
-             '2. 大規模を最低10 seedへ拡張する。失敗したGPU入力はメモリ制約を解消してから再測定。',
+             '2. 大規模を最低10 seedへ拡張し、特にweb-NotreDameの約17%のsampled stress悪化を詳しく確認する。',
              '3. Sparse atomicを追加し、同じ制約でRRと比較する。',
              '4. 代表3グラフのiterationごとのstress収束を別診断実行で記録する（固定15反復の学習率を維持）。',
              '', '## 図の読み方',
@@ -334,11 +363,12 @@ def main():
              '- 05：品質と速度の両立。右側ほど速く、下側ほどstressが低い。',
              '- 06：Sparseの規模拡大。丸は10 seed、四角は3 seed。',
              '- 07：CPU full-SGDのstress中央値に近いseedを全5手法で共有した代表配置。',
+             '- 08：RR-Sparseのラウンド数と速度向上率。構造によるラウンド増加を確認する。',
              '', '## 論文の体裁との対応',
              '- SGD論文Figure 7・14の品質分布、Figure 10の品質と時間を同時に示す考え方を参考にした。',
              '- DRGraph Table 2・5のグラフ別比較とFigure 6の規模に応じた速度評価を参考にした。',
              '- DRGraphは尺度最適化したnormalized stressを使う。本結果のraw full stressと掲載数値は直接比較しない。',
-             '- PNGは確認用、SVGは論文で編集・拡大するための版。収束曲線は未取得であり図を捏造しない。']
+             '- PNGは確認用、SVGは論文で編集・拡大するための版。収束曲線は未取得。']
     (BASE/'report/RESULTS.md').write_text('\n'.join(report)+'\n')
     metadata={'sources':sources,'script_sha256':sha(Path(__file__)),
               'config_sha256':sha(BASE/'config/datasets.json'),'bootstrap_resamples':10000,

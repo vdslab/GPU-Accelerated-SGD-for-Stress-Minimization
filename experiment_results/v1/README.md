@@ -2,6 +2,19 @@
 
 2026-10-11開始。SGD更新部分の時間と、同じ条件で得たfull stressを比較する初回実験。
 
+**結果：16グラフ、536正式実行すべて成功。比較整合性エラー・atomic更新漏れは0件。**
+
+- [結果と考察](report/RESULTS.md)
+- [グラフ別の集計表](tables/results.md)
+- [CPU版に対するstress比](figures/01_stress_ratio.png)
+- [SGD部分の高速化率](figures/02_iteration_speedup.png)
+- [大規模Sparseの比較](figures/06_sparse_scaling.png)
+- [代表レイアウト](figures/07_representative_layouts.png)
+- [RRのラウンド数](figures/08_rr_sparse_rounds.png)
+
+正式な非劣性評価に必要な25 seedは未収集。これらはv1の暫定図表であり、
+標本数やSparse atomicの追加後に最終論文用の結果を確定する。
+
 | フォルダ | 内容 |
 |---|---|
 | `config/` | 実験条件・入力checksum・共通グラフの処理記録 |

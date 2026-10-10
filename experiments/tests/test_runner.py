@@ -286,6 +286,12 @@ class RunnerTests(unittest.TestCase):
         )
         self.assertEqual(len(list(self.root.glob("results.corrupt-*.jsonl"))), 1)
 
+    def test_timeout_stderr_bytes_can_be_saved(self) -> None:
+        # subprocess.TimeoutExpired can expose bytes even when text=True.
+        log = self.root / "timeout/stderr.log"
+        runner.write_stderr(log, b"partial output\n\xff")
+        self.assertEqual(log.read_text(encoding="utf-8"), "partial output\n\ufffd")
+
     def test_paired_preprocessing_rejects_hash_drift(self) -> None:
         base = {
             "status": "success",
