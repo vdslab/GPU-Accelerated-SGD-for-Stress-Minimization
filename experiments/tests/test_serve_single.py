@@ -140,6 +140,77 @@ class GraphCatalogTests(unittest.TestCase):
         self.assertEqual(serve_single.graph_catalog(self.root)[0]["edges"], 1)
 
 
+class GraphVersionTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temporary = tempfile.TemporaryDirectory(prefix="graph versions ")
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name).resolve()
+        for name in ("graph.mtx", "v1_lcc/graph.mtx", "unused.mtx"):
+            path = self.root / "data" / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("%%MatrixMarket matrix coordinate pattern symmetric\n2 2 1\n1 2\n")
+
+    def write_config(self, version: str, name: str, document) -> Path:
+        path = self.root / "experiment_results" / version / "config" / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(document))
+        return path
+
+    def test_relocated_manifest_paths_mark_exact_inputs_and_not_originals_or_unused_catalog_entries(self):
+        archive = self.root / "archive"
+        archive.mkdir()
+        (archive / "relocations.json").write_text(json.dumps({
+            "schema_version": 1, "repository_root": "/historical/repository",
+            "moves": [{"from": "prod_data", "to": "data"}],
+        }))
+        self.write_config("v1", "quality.json", {"datasets": [
+            {"path": "prod_data/v1_lcc/graph.mtx"},
+            {"path": "/historical/repository/prod_data/v1_lcc/graph.mtx"},
+        ]})
+        self.write_config("v1", "datasets.json", [
+            {"source_path": "prod_data/graph.mtx", "path": "prod_data/v1_lcc/graph.mtx"},
+            {"path": "data/unused.mtx"},
+        ])
+        config = serve_single.ExperimentService(self.root).config()
+        graphs = {graph["path"]: graph for graph in config["graphs"]}
+        self.assertEqual(config["versions"], ["v1", "v2", "v3"])
+        self.assertEqual(graphs["data/v1_lcc/graph.mtx"]["versions"], ["v1"])
+        self.assertEqual(graphs["data/graph.mtx"]["versions"], [])
+        self.assertEqual(graphs["data/unused.mtx"]["versions"], [])
+
+    def test_future_versions_sort_numerically_and_allow_multiple_memberships(self):
+        for version in ("v2", "v10", "v4"):
+            self.write_config(version, "run.json", {"datasets": [{"path": "data/graph.mtx"}]})
+        self.write_config("notes", "run.json", {"datasets": [{"path": "data/unused.mtx"}]})
+        self.write_config("v02", "run.json", {"datasets": [{"path": "data/unused.mtx"}]})
+        config = serve_single.ExperimentService(self.root).config()
+        self.assertEqual(config["versions"], ["v1", "v2", "v3", "v4", "v10"])
+        graph = next(graph for graph in config["graphs"] if graph["path"] == "data/graph.mtx")
+        self.assertEqual(graph["versions"], ["v2", "v4", "v10"])
+
+    def test_catalog_fallback_ignores_source_path_and_invalid_or_external_entries(self):
+        self.write_config("v1", "datasets.json", [
+            {"path": "data/v1_lcc/graph.mtx", "source_path": "data/graph.mtx"},
+            {"source_path": "data/unused.mtx"}, {"path": "missing.mtx"},
+            {"path": "../outside.mtx"}, {"path": 7}, "data/unused.mtx", None,
+        ])
+        self.write_config("v3", "invalid.json", {}).write_text("invalid json")
+        (self.root / "experiment_results/v5").mkdir()
+        config = serve_single.ExperimentService(self.root).config()
+        self.assertEqual(config["versions"], ["v1", "v2", "v3", "v5"])
+        marked = [graph["path"] for graph in config["graphs"] if graph["versions"]]
+        self.assertEqual(marked, ["data/v1_lcc/graph.mtx"])
+
+    def test_config_refreshes_new_manifest_membership_without_mutating_input_catalog(self):
+        service = serve_single.ExperimentService(self.root)
+        self.assertTrue(all(not graph["versions"] for graph in service.config()["graphs"]))
+        self.write_config("v2", "run.json", {"datasets": [{"path": "data/graph.mtx"}]})
+        config = service.config()
+        graph = next(graph for graph in config["graphs"] if graph["path"] == "data/graph.mtx")
+        self.assertEqual(graph["versions"], ["v2"])
+        self.assertTrue(all("versions" not in graph for graph in service.graphs))
+
+
 class ServeSingleTests(unittest.TestCase):
     def setUp(self) -> None:
         self.http_logging = patch.object(serve_single.RequestHandler, "log_message", return_value=None)
@@ -196,10 +267,11 @@ class ServeSingleTests(unittest.TestCase):
         status, _, config = self.request("GET", "/api/config")
         self.assertEqual(status, 200)
         self.assertEqual(len(config["graphs"]), 2)
-        self.assertEqual(config["graphs"][0], {"path": "data/graph.mtx", "name": "graph", "nodes": 2, "entries": 1, "edges": 1})
+        self.assertEqual(config["graphs"][0], {"path": "data/graph.mtx", "name": "graph", "nodes": 2, "entries": 1, "edges": 1, "versions": []})
         self.assertEqual(config["graphs"][1]["name"], "graph")
         self.assertEqual(config["graphs"][1]["path"], "data/v1_lcc/graph.mtx")
         self.assertEqual(config["defaults"]["graph"], "data/graph.mtx")
+        self.assertEqual(config["versions"], ["v1", "v2", "v3"])
         self.assertEqual(len(config["methods"]), 6)
         self.assertIsNone(config["active_run"])
         self.assertEqual(self.request("GET", "/")[2], b"<html>single-run page</html>")

@@ -53,7 +53,7 @@ function harness() {
   const timers = [];
   let response;
   const context = vm.createContext({
-    document: { getElementById: element, createElement: (tag) => new Element(tag) },
+    document: { getElementById: element, createElement: (tag) => new Element(tag), addEventListener() {} },
     location: new URL("http://localhost:5500/tools/single_run/index.html"),
     localStorage: { getItem: () => null, setItem() {}, removeItem() {} },
     navigator: { clipboard: { writeText: async () => {} } },

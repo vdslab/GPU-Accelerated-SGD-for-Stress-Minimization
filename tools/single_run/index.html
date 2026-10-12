@@ -16,13 +16,27 @@
     </header>
     <div class="app-layout">
       <aside class="settings-panel" aria-label="実験設定">
+        <div class="settings-heading">
+          <h2>実験設定</h2>
+          <button id="graph-list-toggle" type="button" aria-controls="graph-list-panel" aria-expanded="false" disabled>リスト</button>
+        </div>
         <form id="experiment-form">
           <fieldset id="settings" disabled>
-            <legend>実験設定</legend>
             <div class="fields">
-              <label>グラフ（ノード数 / エッジ数）
-                <select id="graph" name="graph" required><option value="">読み込み中…</option></select>
-              </label>
+              <div class="graph-field">
+                <label for="graph-search">グラフ（ノード数 / エッジ数）</label>
+                <div id="graph-picker" class="graph-picker">
+                  <div class="graph-search-row">
+                    <input id="graph-search" type="text" role="combobox" aria-autocomplete="list" aria-controls="graph-choices" aria-expanded="false" placeholder="グラフ名で検索…" autocomplete="off" spellcheck="false">
+                    <button id="graph-dropdown-toggle" type="button" aria-label="グラフの候補を開閉" tabindex="-1">▾</button>
+                  </div>
+                  <div id="graph-dropdown" class="graph-dropdown" hidden>
+                    <div id="graph-choices" role="listbox" aria-label="グラフの候補"></div>
+                    <p id="graph-no-match" class="muted" hidden>該当するグラフはありません</p>
+                  </div>
+                </div>
+                <select id="graph" name="graph" aria-label="選択中のグラフ" hidden><option value="">読み込み中…</option></select>
+              </div>
               <label>手法
                 <select id="method" name="method" required></select>
               </label>
@@ -76,7 +90,20 @@
         </details>
       </aside>
       <section class="work-area" aria-label="実験結果と画像">
-        <section class="results-panel">
+        <section id="graph-list-panel" class="graph-list-panel" aria-label="グラフリスト" hidden>
+          <div class="panel-heading">
+            <h2>グラフリスト <span id="graph-list-count" class="muted"></span></h2>
+            <button id="graph-list-close" type="button">閉じる</button>
+          </div>
+          <div class="graph-table-scroll">
+            <table id="graph-table">
+              <thead><tr id="graph-table-head"></tr></thead>
+              <tbody id="graph-table-body"></tbody>
+            </table>
+            <p id="graph-table-empty" class="muted" hidden>該当するグラフはありません</p>
+          </div>
+        </section>
+        <section id="results-panel" class="results-panel">
           <div class="panel-heading">
             <h2>結果</h2>
             <p id="run-status" role="status" aria-live="polite">未実行</p>

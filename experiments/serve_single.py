@@ -23,8 +23,10 @@ from typing import Any
 from urllib.parse import quote, unquote, urlsplit
 
 try:
+    from artifact_paths import resolve_artifact_path
     from experiment_plan import METHODS, REPO_ROOT
 except ModuleNotFoundError:
+    from experiments.artifact_paths import resolve_artifact_path
     from experiments.experiment_plan import METHODS, REPO_ROOT
 
 DEFAULTS = {
@@ -151,6 +153,49 @@ def graph_catalog(root: Path) -> list[dict[str, Any]]:
     return graphs
 
 
+def graph_version_membership(root: Path) -> tuple[list[str], dict[Path, set[str]]]:
+    """Read version input manifests without mistaking source graphs for inputs."""
+    root = root.resolve()
+    results_root = root / "experiment_results"
+    versions = {"v1", "v2", "v3"}
+    membership: dict[Path, set[str]] = {}
+    try:
+        folders = sorted(results_root.iterdir())
+    except OSError:
+        folders = []
+    for folder in folders:
+        if not re.fullmatch(r"v[1-9][0-9]*", folder.name) or not folder.is_dir():
+            continue
+        if not folder.resolve().is_relative_to(results_root.resolve()):
+            continue
+        version = folder.name
+        versions.add(version)
+        manifest_datasets = []
+        catalog_datasets = []
+        has_manifest = False
+        for config_path in sorted((folder / "config").glob("*.json")):
+            try:
+                document = json.loads(config_path.read_text(encoding="utf-8"))
+            except (OSError, UnicodeError, ValueError):
+                continue
+            if isinstance(document, dict) and isinstance(document.get("datasets"), list):
+                has_manifest = True
+                manifest_datasets.extend(document["datasets"])
+            elif config_path.name == "datasets.json" and isinstance(document, list):
+                catalog_datasets.extend(document)
+        # Prepared-but-unused catalog entries must not override an actual manifest.
+        for dataset in manifest_datasets if has_manifest else catalog_datasets:
+            if not isinstance(dataset, dict) or not isinstance(dataset.get("path"), str):
+                continue
+            try:
+                path = resolve_artifact_path(dataset["path"], root).resolve()
+                if path.is_relative_to(root / "data") and path.is_file():
+                    membership.setdefault(path, set()).add(version)
+            except (OSError, UnicodeError, ValueError, KeyError, TypeError):
+                continue
+    return sorted(versions, key=lambda version: int(version[1:])), membership
+
+
 def unsigned_integer(value: Any, name: str, *, minimum: int = 1) -> int:
     if isinstance(value, bool) or not isinstance(value, (int, str)):
         raise RequestError(f"{name}は整数で指定してください")
@@ -228,12 +273,17 @@ class ExperimentService:
 
     def config(self) -> dict[str, Any]:
         graphs = self.refresh_graphs()
+        versions, membership = graph_version_membership(self.root)
+        graphs = [{**graph, "versions": [version for version in versions
+                                        if version in membership.get((self.root / graph["path"]).resolve(), set())]}
+                  for graph in graphs]
         defaults = DEFAULTS.copy()
         if defaults["graph"] not in {graph["path"] for graph in graphs}:
             defaults["graph"] = graphs[0]["path"] if graphs else None
         with self.lock:
             return {
                 "graphs": graphs,
+                "versions": versions,
                 "methods": [{"id": name, "label": METHOD_LABELS[name], "sparse": spec.sparse} for name, spec in METHODS.items()],
                 "defaults": defaults,
                 "active_run": self.active_run,

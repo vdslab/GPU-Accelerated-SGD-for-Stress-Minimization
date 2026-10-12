@@ -5,8 +5,10 @@ body { margin: 0; background: #f5f5f5; color: #222; font: 13px system-ui, sans-s
 h1 { font-size: 19px; margin: 0; } h2 { font-size: 15px; margin: 0; }
 p { margin: 0; line-height: 1.5; }
 .app-layout { display: grid; grid-template-columns: 270px minmax(0, 1fr); gap: 12px; flex: 1; min-height: 0; }
-.settings-panel, .results-panel, figure { background: white; border: 1px solid #ccc; border-radius: 4px; }
+.settings-panel, .results-panel, .graph-list-panel, figure { background: white; border: 1px solid #ccc; border-radius: 4px; }
 .settings-panel { padding: 12px; overflow: auto; }
+.settings-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+.settings-heading button { padding: 4px 10px; }
 fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 legend { font-weight: 600; padding: 0; margin-bottom: 12px; }
 .fields { display: grid; gap: 10px; }
@@ -31,6 +33,24 @@ pre { font: 11px/1.5 ui-monospace, monospace; white-space: pre-wrap; overflow-wr
 .muted, #connection-status, #graph-info, .timing-note { font-size: 11px; color: #666; }
 #connection-status { white-space: nowrap; }
 #graph-info { margin-top: 10px; overflow-wrap: anywhere; }
+.graph-picker { position: relative; margin-top: 4px; }
+.graph-search-row { display: grid; grid-template-columns: minmax(0, 1fr) 28px; }
+#graph-search { min-width: 0; width: 100%; height: 32px; border-radius: 3px 0 0 3px; }
+#graph-dropdown-toggle { padding: 0; border-left: 0; border-radius: 0 3px 3px 0; }
+.graph-dropdown { position: absolute; top: 100%; left: 0; right: 0; z-index: 2; max-height: 240px; overflow: auto; background: white; border: 1px solid #999; border-radius: 3px; box-shadow: 0 3px 8px rgb(0 0 0 / .15); }
+.graph-option { display: block; width: 100%; padding: 7px 8px; border: 0; border-radius: 0; background: white; text-align: left; white-space: normal; overflow-wrap: anywhere; font-size: 12px; }
+.graph-option[aria-selected="true"] { font-weight: 600; }
+.graph-option.is-active { background: #e6edf6; }
+#graph-no-match, #graph-table-empty { padding: 10px 8px; }
+.graph-list-panel { padding: 12px; display: flex; flex-direction: column; gap: 10px; min-height: 0; min-width: 0; }
+.graph-table-scroll { overflow: auto; min-height: 0; flex: 1; }
+#graph-table th { width: auto; font-weight: 600; white-space: nowrap; position: sticky; top: 0; background: white; }
+#graph-table th:first-child { width: 100%; }
+#graph-table td:not(:first-child), #graph-table th:not(:first-child) { text-align: right; }
+#graph-table .version-cell { text-align: center; min-width: 38px; }
+#graph-table tr.is-selected { background: #edf3fa; }
+.graph-table-name { border: 0; background: transparent; padding: 0; text-align: left; }
+.graph-table-name:hover:enabled { background: transparent; text-decoration: underline; }
 .work-area { display: grid; grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; min-height: 0; min-width: 0; }
 .results-panel { padding: 12px; display: flex; flex-direction: column; gap: 10px; overflow: auto; min-height: 0; }
 #run-status { color: #666; font-size: 12px; }
@@ -64,4 +84,4 @@ dialog::backdrop { background: rgb(0 0 0 / .55); }
 [hidden] { display: none !important; }
 @media (max-height: 700px) and (min-width: 721px) { .fields { gap: 6px; } select { height: 29px; margin-top: 2px; } }
 @media (max-width: 1000px) and (min-width: 721px) { .app-layout { grid-template-columns: 250px minmax(0, 1fr); } .result-grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 10px; } th, td { padding: 5px 4px; } }
-@media (max-width: 720px) { .app-shell { height: auto; min-height: 100dvh; overflow: visible; } .app-header { align-items: flex-start; } h1 { font-size: 16px; } .app-layout { grid-template-columns: 1fr; } .fields { grid-template-columns: 1fr 1fr; } .fields label:first-child, .fields label:nth-child(2) { grid-column: 1 / -1; } .settings-panel { overflow: visible; } .work-area { grid-template-rows: auto 240px; } .result-grid { min-height: 240px; } .measurements { overflow: visible; } }
+@media (max-width: 720px) { .app-shell { height: auto; min-height: 100dvh; overflow: visible; } .app-header { align-items: flex-start; } h1 { font-size: 16px; } .app-layout { grid-template-columns: 1fr; } .fields { grid-template-columns: 1fr 1fr; } .graph-field, .fields > label:first-of-type { grid-column: 1 / -1; } .settings-panel { overflow: visible; } .work-area { grid-template-rows: auto 240px; } .graph-list-panel { height: 320px; } .result-grid { min-height: 240px; } .measurements { overflow: visible; } }

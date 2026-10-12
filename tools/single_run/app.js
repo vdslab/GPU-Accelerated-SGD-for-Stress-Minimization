@@ -13,6 +13,13 @@ let lastJob = null;
 let jobApiUrl = null;
 let pollTimer = null;
 let pollGeneration = 0;
+let graphQuery = "";
+let graphChoicesOpen = false;
+let graphListOpen = false;
+let activeGraphChoice = -1;
+let graphOptionButtons = [];
+let graphRowButtons = [];
+let graphTableRows = [];
 
 function stored(key) {
   try { return localStorage.getItem(key); } catch { return null; }
@@ -54,6 +61,9 @@ function setError(message = "") {
 
 function updateControls() {
   $("settings").disabled = !connected || connecting || busy || submitting || !config?.graphs.length;
+  $("graph-list-toggle").disabled = !config?.graphs.length;
+  for (const button of graphRowButtons) button.disabled = $("settings").disabled;
+  if ($("settings").disabled && graphChoicesOpen) closeGraphChoices();
   $("connect").disabled = connecting || submitting;
   $("api-url").disabled = connecting || busy || submitting;
   const label = submitting ? "実行を開始中…" : busy ? "実行中…" : "実験を実行";
@@ -63,7 +73,151 @@ function updateControls() {
 
 function describeGraph() {
   const graph = config?.graphs.find((item) => item.path === $("graph").value);
-  $("graph-info").textContent = graph ? `ノード: ${graph.nodes?.toLocaleString() ?? "?"} / エッジ: ${graph.edges?.toLocaleString() ?? "?"}` : "";
+  $("graph-info").textContent = graph ? `選択: ${graph.name}${graph.versions?.length ? ` (${graph.versions.join(", ")})` : ""} / ノード: ${graph.nodes?.toLocaleString() ?? "?"} / エッジ: ${graph.edges?.toLocaleString() ?? "?"}` : "";
+}
+
+function graphLabel(graph) {
+  return `${graph.name}（${graph.nodes?.toLocaleString() ?? "?"} / ${graph.edges?.toLocaleString() ?? "?"}）${graph.versions?.length ? ` ${graph.versions.join(" ")}` : ""}`;
+}
+
+function uniqueGraphs(graphs) {
+  const groups = new Map();
+  for (const graph of graphs) {
+    if (!groups.has(graph.name)) groups.set(graph.name, []);
+    groups.get(graph.name).push(graph);
+  }
+  const priority = (graph) => graph.versions?.includes("v1") ? 0 : graph.versions?.length ? 1 : 2;
+  return [...groups.values()].map((members) => {
+    // Keep the experiment input and its counts together when hiding source copies.
+    const selected = [...members].sort((a, b) => priority(a) - priority(b) || a.path.localeCompare(b.path))[0];
+    return {
+      ...selected,
+      versions: [...new Set(members.flatMap((graph) => graph.versions || []))].sort((a, b) => a.localeCompare(b, undefined, { numeric: true })),
+      input_paths: [...new Set(members.flatMap((graph) => graph.input_paths || [graph.path]))],
+    };
+  });
+}
+
+function matchingGraphs() {
+  const words = graphQuery.normalize("NFKC").toLowerCase().trim().split(/\s+/).filter(Boolean);
+  return (config?.graphs || []).filter((graph) => {
+    const text = `${graph.name} ${(graph.versions || []).join(" ")}`.normalize("NFKC").toLowerCase();
+    return words.every((word) => text.includes(word));
+  });
+}
+
+function graphVersions() {
+  return [...new Set(["v1", "v2", "v3", ...(config?.versions || []), ...(config?.graphs || []).flatMap((graph) => graph.versions || [])])]
+    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+}
+
+function closeGraphChoices() {
+  graphChoicesOpen = false;
+  $("graph-dropdown").hidden = true;
+  $("graph-search").setAttribute("aria-expanded", "false");
+  $("graph-search").removeAttribute("aria-activedescendant");
+  const selected = config?.graphs.find((graph) => graph.path === $("graph").value);
+  const label = graphListOpen ? graphQuery : selected ? graphLabel(selected) : "";
+  if ($("graph-search").value !== label) $("graph-search").value = label;
+}
+
+function highlightGraphChoice() {
+  graphOptionButtons.forEach((button, index) => button.classList.toggle("is-active", index === activeGraphChoice));
+  const button = graphOptionButtons[activeGraphChoice];
+  if (button) {
+    $("graph-search").setAttribute("aria-activedescendant", button.id);
+    button.scrollIntoView({ block: "nearest" });
+  } else $("graph-search").removeAttribute("aria-activedescendant");
+}
+
+function renderGraphChoices() {
+  graphOptionButtons = matchingGraphs().map((graph, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "graph-option";
+    button.id = `graph-option-${index}`;
+    button.tabIndex = -1;
+    button.setAttribute("role", "option");
+    button.setAttribute("aria-selected", String(graph.path === $("graph").value));
+    button.textContent = graphLabel(graph);
+    button.addEventListener("click", () => chooseGraph(graph.path));
+    return button;
+  });
+  $("graph-choices").replaceChildren(...graphOptionButtons);
+  $("graph-no-match").hidden = graphOptionButtons.length > 0;
+  activeGraphChoice = -1;
+  highlightGraphChoice();
+}
+
+function openGraphChoices() {
+  if ($("settings").disabled) return;
+  graphChoicesOpen = true;
+  $("graph-search").value = graphQuery;
+  $("graph-dropdown").hidden = false;
+  $("graph-search").setAttribute("aria-expanded", "true");
+  renderGraphChoices();
+}
+
+function renderGraphTable() {
+  if (!graphListOpen) return;
+  const versions = graphVersions();
+  $("graph-table-head").replaceChildren(...["グラフ", "ノード", "エッジ", ...versions].map((label, index) => {
+    const heading = document.createElement("th");
+    heading.scope = "col";
+    heading.textContent = label;
+    if (index >= 3) heading.className = "version-cell";
+    return heading;
+  }));
+  graphRowButtons = [];
+  graphTableRows = [];
+  const graphs = matchingGraphs();
+  $("graph-table-body").replaceChildren(...graphs.map((graph) => {
+    const row = document.createElement("tr");
+    row.classList.toggle("is-selected", graph.path === $("graph").value);
+    graphTableRows.push({ path: graph.path, row });
+    const name = document.createElement("td");
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "graph-table-name";
+    button.textContent = graph.name;
+    button.setAttribute("aria-label", graphLabel(graph));
+    button.disabled = $("settings").disabled;
+    button.addEventListener("click", () => chooseGraph(graph.path));
+    graphRowButtons.push(button);
+    name.append(button);
+    row.append(name);
+    for (const value of [graph.nodes, graph.edges]) {
+      const cell = document.createElement("td");
+      cell.textContent = value?.toLocaleString() ?? "?";
+      row.append(cell);
+    }
+    for (const version of versions) {
+      const cell = document.createElement("td");
+      cell.className = "version-cell";
+      cell.textContent = graph.versions?.includes(version) ? "◯" : "";
+      row.append(cell);
+    }
+    return row;
+  }));
+  $("graph-list-count").textContent = `${graphs.length} / ${config?.graphs.length || 0}件`;
+  $("graph-table-empty").hidden = graphs.length > 0;
+}
+
+function setGraphListOpen(open) {
+  graphListOpen = open;
+  $("graph-list-panel").hidden = !open;
+  $("results-panel").hidden = open;
+  $("graph-list-toggle").setAttribute("aria-expanded", String(open));
+  closeGraphChoices();
+  renderGraphTable();
+}
+
+function chooseGraph(path) {
+  if ($("settings").disabled || !config?.graphs.some((graph) => graph.path === path)) return;
+  $("graph").value = path;
+  describeGraph();
+  closeGraphChoices();
+  for (const item of graphTableRows) item.row.classList.toggle("is-selected", item.path === path);
 }
 
 function populateConfig(data) {
@@ -72,16 +226,18 @@ function populateConfig(data) {
   }
   const names = ["graph", "method", "iterations", "epsilon", "pivots", "seed", "image_size"];
   const previous = config ? Object.fromEntries(names.map((name) => [name, $("experiment-form").elements.namedItem(name).value])) : null;
-  config = data;
-  $("graph").replaceChildren(...data.graphs.map((graph) => new Option(`${graph.name}（${graph.nodes.toLocaleString()} / ${graph.edges?.toLocaleString() ?? "?"}）`, graph.path)));
+  config = { ...data, graphs: uniqueGraphs(data.graphs) };
+  $("graph").replaceChildren(...config.graphs.map((graph) => new Option(graphLabel(graph), graph.path)));
   $("method").replaceChildren(...data.methods.map((method) => new Option(method.label, method.id)));
   const settings = previous || data.defaults;
   for (const name of names) {
     const control = $("experiment-form").elements.namedItem(name);
-    const value = String(settings[name]);
+    const value = name === "graph" ? config.graphs.find((graph) => graph.input_paths.includes(String(settings[name])))?.path || String(settings[name]) : String(settings[name]);
     if ([...control.options].some((option) => option.value === value)) control.value = value;
   }
   describeGraph();
+  closeGraphChoices();
+  renderGraphTable();
 }
 
 function savedJobKey() { return `sgd-single-last:${apiUrl}`; }
@@ -89,7 +245,7 @@ function savedJobKey() { return `sgd-single-last:${apiUrl}`; }
 function restoreSettings(job) {
   const settings = job.result?.config;
   if (!settings) return;
-  const graph = config.graphs.find((item) => settings.input?.endsWith(`/${item.path}`));
+  const graph = config.graphs.find((item) => item.input_paths.some((path) => settings.input === path || settings.input?.endsWith(`/${path}`)));
   if (graph) $("graph").value = graph.path;
   for (const name of ["method", "iterations", "epsilon", "pivots", "seed", "image_size"]) {
     const control = $("experiment-form").elements.namedItem(name);
@@ -97,6 +253,8 @@ function restoreSettings(job) {
     if ([...control.options].some((option) => option.value === value)) control.value = value;
   }
   describeGraph();
+  closeGraphChoices();
+  renderGraphTable();
 }
 
 function clearJob() {
@@ -282,6 +440,7 @@ $("experiment-form").addEventListener("submit", async (event) => {
   fields.pivots = Number($("pivots").value);
   fields.iterations = Number(fields.iterations);
   fields.epsilon = Number(fields.epsilon);
+  setGraphListOpen(false);
   submitting = true;
   updateControls();
   setError();
@@ -327,6 +486,56 @@ $("copy-json").addEventListener("click", async () => {
 $("connect").addEventListener("click", () => connect());
 $("method").addEventListener("change", updateControls);
 $("graph").addEventListener("change", describeGraph);
+$("graph-list-toggle").addEventListener("click", () => setGraphListOpen(!graphListOpen));
+$("graph-list-close").addEventListener("click", () => {
+  setGraphListOpen(false);
+  $("graph-list-toggle").focus();
+});
+$("graph-search").addEventListener("focus", openGraphChoices);
+$("graph-search").addEventListener("click", () => {
+  if (!graphChoicesOpen) openGraphChoices();
+});
+$("graph-search").addEventListener("input", () => {
+  graphQuery = $("graph-search").value;
+  graphChoicesOpen = true;
+  $("graph-dropdown").hidden = false;
+  $("graph-search").setAttribute("aria-expanded", "true");
+  renderGraphChoices();
+  renderGraphTable();
+});
+$("graph-search").addEventListener("keydown", (event) => {
+  if (["ArrowDown", "ArrowUp"].includes(event.key)) {
+    event.preventDefault();
+    if (!graphChoicesOpen) openGraphChoices();
+    const count = graphOptionButtons.length;
+    if (count) {
+      activeGraphChoice = activeGraphChoice < 0 ? (event.key === "ArrowDown" ? 0 : count - 1) : (activeGraphChoice + (event.key === "ArrowDown" ? 1 : -1) + count) % count;
+      highlightGraphChoice();
+    }
+  } else if (event.key === "Enter") {
+    event.preventDefault();
+    if (graphChoicesOpen) {
+      const index = activeGraphChoice >= 0 ? activeGraphChoice : graphOptionButtons.length === 1 ? 0 : -1;
+      if (index >= 0) chooseGraph(matchingGraphs()[index].path);
+    }
+  } else if (event.key === "Escape" || event.key === "Tab") {
+    if (event.key === "Escape" && graphChoicesOpen) event.preventDefault();
+    closeGraphChoices();
+  }
+});
+$("graph-dropdown-toggle").addEventListener("mousedown", (event) => event.preventDefault());
+$("graph-dropdown-toggle").addEventListener("click", () => {
+  if (graphChoicesOpen) closeGraphChoices();
+  else {
+    $("graph-search").focus();
+    openGraphChoices();
+  }
+});
+$("graph-choices").addEventListener("mousedown", (event) => event.preventDefault());
+$("graph-search").addEventListener("blur", closeGraphChoices);
+document.addEventListener("pointerdown", (event) => {
+  if (graphChoicesOpen && !$("graph-picker").contains(event.target)) closeGraphChoices();
+});
 
 $("copy-command").addEventListener("click", async () => {
   const command = $("server-command").textContent;
