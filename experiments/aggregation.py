@@ -16,8 +16,10 @@ from pathlib import Path
 from typing import Any, Iterable, Sequence
 
 try:
+    from artifact_paths import resolve_artifact_path
     from experiment_plan import METHODS, REPO_ROOT, RunDefinition, expand_runs, load_manifest
 except ModuleNotFoundError:
+    from experiments.artifact_paths import resolve_artifact_path
     from experiments.experiment_plan import (
         METHODS,
         REPO_ROOT,
@@ -179,7 +181,7 @@ def assert_close(record: dict[str, Any], field: str, expected: float) -> None:
         )
 
 
-def validate_record_shape(record: dict[str, Any]) -> None:
+def validate_record_shape(record: dict[str, Any], *, prefer_relocated: bool = False) -> None:
     required, properties = load_schema_contract()
     public_keys = set(record) - {"_source_line"}
     missing = sorted(required - public_keys)
@@ -298,10 +300,10 @@ def validate_record_shape(record: dict[str, Any]) -> None:
     ):
         require_finite_nonnegative(record, field)
     if record["status"] == "success":
-        validate_success_record(record)
+        validate_success_record(record, prefer_relocated=prefer_relocated)
 
 
-def validate_success_record(record: dict[str, Any]) -> None:
+def validate_success_record(record: dict[str, Any], *, prefer_relocated: bool = False) -> None:
     for field in (
         "input_time_ms",
         "common_preprocess_time_ms",
@@ -362,13 +364,13 @@ def validate_success_record(record: dict[str, Any]) -> None:
         raise AggregationError(
             f"line {record['_source_line']} のsampled stress情報が不正です"
         )
-    final_path = resolve_record_path(record["final_positions_path"])
+    final_path = resolve_record_path(record["final_positions_path"], prefer_relocated=prefer_relocated)
     if final_path is None or not final_path.is_file():
         raise AggregationError(
             f"line {record['_source_line']} のfinal_positions_pathが存在しません"
         )
     if record["family"] == "sparse":
-        vertex_map = resolve_record_path(record["vertex_map_path"])
+        vertex_map = resolve_record_path(record["vertex_map_path"], prefer_relocated=prefer_relocated)
         if vertex_map is None or not vertex_map.is_file():
             raise AggregationError(
                 f"line {record['_source_line']} のSparse vertex_map_pathが存在しません"
@@ -383,11 +385,10 @@ def validate_success_record(record: dict[str, Any]) -> None:
         )
 
 
-def resolve_record_path(value: Any) -> Path | None:
+def resolve_record_path(value: Any, *, prefer_relocated: bool = False) -> Path | None:
     if not isinstance(value, str) or not value:
         return None
-    path = Path(value)
-    return path if path.is_absolute() else REPO_ROOT / path
+    return resolve_artifact_path(value, REPO_ROOT, prefer_relocated=prefer_relocated)
 
 
 def validate_record_against_plan(
@@ -451,11 +452,15 @@ def normalize_row(
             "_paired_key": run.paired_key,
         }
     )
+    archived = experiment.directory.is_relative_to(REPO_ROOT.resolve() / "archive")
+    for field in ("input_path", "final_positions_path", "vertex_map_path", "stderr_log_path"):
+        if row.get(field):
+            row[field] = str(resolve_record_path(row[field], prefer_relocated=archived))
     return row
 
 
 def load_experiment(directory: Path) -> LoadedExperiment:
-    directory = directory.resolve()
+    directory = resolve_artifact_path(directory, REPO_ROOT).resolve()
     manifest_path = directory / "manifest.json"
     environment_path = directory / "environment.json"
     results_path = directory / "results.jsonl"
@@ -470,8 +475,9 @@ def load_experiment(directory: Path) -> LoadedExperiment:
     planned = expand_runs(manifest, manifest_path)
     plan_by_id = {run.run_id: run for run in planned}
     histories: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    archived = directory.is_relative_to(REPO_ROOT.resolve() / "archive")
     for record in records:
-        validate_record_shape(record)
+        validate_record_shape(record, prefer_relocated=archived)
         run_id = record["run_id"]
         if run_id not in plan_by_id:
             raise AggregationError(
@@ -1347,8 +1353,11 @@ def metadata_for(
                 "experiments/aggregate_results.py",
                 "experiments/aggregation.py",
                 "experiments/experiment_plan.py",
+                "experiments/artifact_paths.py",
             )
         },
+        "relocation_journal_sha256": file_sha256(REPO_ROOT / "archive/relocations.json")
+        if (REPO_ROOT / "archive/relocations.json").is_file() else None,
         "artifacts": dict(sorted(artifact_hashes.items())),
     }
 

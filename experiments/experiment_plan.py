@@ -11,6 +11,11 @@ import re
 from pathlib import Path
 from typing import Any, Iterable
 
+try:
+    from artifact_paths import resolve_artifact_path
+except ModuleNotFoundError:
+    from experiments.artifact_paths import resolve_artifact_path
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 
@@ -23,22 +28,22 @@ class MethodSpec:
 
 METHODS: dict[str, MethodSpec] = {
     "sgd": MethodSpec(
-        "baseline-sgd-non-gpu/target/release/baseline-sgd-non-gpu", "full", False
+        "implementations/full/baseline-sgd-non-gpu/target/release/baseline-sgd-non-gpu", "full", False
     ),
     "atomic_sgd": MethodSpec(
-        "vram-lock-native/target/release/vram-lock-native", "full", False
+        "implementations/full/vram-lock-native/target/release/vram-lock-native", "full", False
     ),
-    "rr_sgd": MethodSpec("rr_gpu/target/release/rr-gpu", "full", False),
+    "rr_sgd": MethodSpec("implementations/full/rr_gpu/target/release/rr-gpu", "full", False),
     "sparse_sgd": MethodSpec(
-        "baseline-sparse-sgd-non-gpu/target/release/baseline-sparse-sgd-non-gpu",
+        "implementations/sparse/baseline-sparse-sgd-non-gpu/target/release/baseline-sparse-sgd-non-gpu",
         "sparse",
         True,
     ),
     "atomic_sparse_sgd": MethodSpec(
-        "vram-lock-sparse/target/release/vram-lock-sparse", "sparse", True
+        "implementations/sparse/vram-lock-sparse/target/release/vram-lock-sparse", "sparse", True
     ),
     "rr_sparse_sgd": MethodSpec(
-        "sparse-sgd-gpu/target/release/sparse-sgd-gpu", "sparse", True
+        "implementations/sparse/sparse-sgd-gpu/target/release/sparse-sgd-gpu", "sparse", True
     ),
 }
 
@@ -182,9 +187,10 @@ def require_nonempty_list(manifest: dict[str, Any], field: str) -> list[Any]:
 
 def resolve_path(value: str, manifest_path: Path) -> Path:
     path = Path(value)
+    archived = manifest_path.resolve().is_relative_to(REPO_ROOT.resolve() / "archive")
     if path.is_absolute():
-        return path.resolve()
-    repo_path = (REPO_ROOT / path).resolve()
+        return resolve_artifact_path(path, REPO_ROOT, prefer_relocated=archived).resolve()
+    repo_path = resolve_artifact_path(path, REPO_ROOT, prefer_relocated=archived).resolve()
     if repo_path.exists():
         return repo_path
     return (manifest_path.parent / path).resolve()
@@ -206,7 +212,8 @@ def expand_runs(
     for method in manifest["methods"]:
         method_spec = METHODS[method]
         binary_value = binary_overrides.get(method, method_spec.binary)
-        binary = resolve_path(binary_value, manifest_path)
+        binary = (resolve_path(binary_value, manifest_path) if method in binary_overrides
+                  else (REPO_ROOT / binary_value).resolve())
         pivot_values: Iterable[int | None] = (
             manifest["pivots"] if method_spec.sparse else [None]
         )

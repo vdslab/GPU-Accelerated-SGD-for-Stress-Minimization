@@ -9,6 +9,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from experiments import run_v1
+
 MODULE_PATH = Path(__file__).resolve().parents[1] / "run_experiments.py"
 SPEC = importlib.util.spec_from_file_location("run_experiments", MODULE_PATH)
 runner = importlib.util.module_from_spec(SPEC)
@@ -147,6 +149,16 @@ class RunnerTests(unittest.TestCase):
         self.assertTrue(
             all(run.pivots == 1 for run in first if run.method == "rr_sparse_sgd")
         )
+
+    def test_version_runner_writes_only_to_selected_results_directory(self) -> None:
+        manifest = self.manifest(methods=["sgd"], seeds=[0])
+        result_dir = self.root / "experiment_results/v2"
+        self.assertEqual(run_v1.main([str(manifest), "--results-dir", str(result_dir)]), 0)
+        stored = result_dir / "raw/fixture"
+        records = runner.load_existing_records(stored / "results.jsonl")
+        self.assertEqual(len(records), 1)
+        self.assertTrue(Path(records[0]["final_positions_path"]).is_relative_to(stored.resolve()))
+        self.assertEqual(json.loads((stored / "manifest.json").read_text()), json.loads(manifest.read_text()))
 
     def test_atomic_sparse_uses_sparse_arguments_and_runner_contract(self) -> None:
         path = self.manifest(methods=["sparse_sgd", "atomic_sparse_sgd"])

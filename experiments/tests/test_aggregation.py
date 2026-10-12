@@ -7,6 +7,7 @@ import json
 import math
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 from experiments import aggregate_results
@@ -236,6 +237,33 @@ class AggregationTests(unittest.TestCase):
         self.assertEqual(
             report["retry_history"][0]["statuses"], ["success", "failure"]
         )
+
+    def test_archived_experiment_keeps_raw_records_unchanged_and_readable(self) -> None:
+        directory, _ = self.make_experiment(methods=["sgd"], seeds=[0])
+        original_bytes = (directory / "results.jsonl").read_bytes()
+        archived = self.root / "archive/experiments/fixture"
+        archived.parent.mkdir(parents=True)
+        directory.rename(archived)
+        (self.root / "archive/relocations.json").write_text(json.dumps({
+            "schema_version": 1, "repository_root": str(self.root),
+            "moves": [{"from": "fixture", "to": "archive/experiments/fixture"}],
+        }))
+        with patch.object(aggregation, "REPO_ROOT", self.root):
+            loaded = aggregation.load_experiment(directory)
+        self.assertEqual(loaded.directory, archived.resolve())
+        self.assertEqual(loaded.normalized_rows[0]["status"], "success")
+        self.assertEqual((archived / "results.jsonl").read_bytes(), original_bytes)
+
+        # The old output directory may be reused by a future run. Historical
+        # normalized paths must still refer to the saved historical artifact.
+        old_final = Path(loaded.current[loaded.planned[0].run_id]["final_positions_path"])
+        old_final.parent.mkdir(parents=True)
+        old_final.write_text("new, unrelated run\n")
+        with patch.object(aggregation, "REPO_ROOT", self.root):
+            loaded = aggregation.load_experiment(archived)
+        final = Path(loaded.normalized_rows[0]["final_positions_path"])
+        self.assertTrue(final.is_relative_to(archived.resolve()))
+        self.assertEqual(final.read_text(), "positions\n")
 
     def test_malformed_unknown_and_mismatched_records_are_rejected(self) -> None:
         directory, records = self.make_experiment(methods=["sgd"], seeds=[0])

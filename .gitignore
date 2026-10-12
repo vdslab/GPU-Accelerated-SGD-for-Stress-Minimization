@@ -1,5 +1,12 @@
-/output
+# Local inputs and disposable run output
 /data/
-/target
+/output/
 
-/prod_data/
+# Historical local payloads are kept on disk; archive metadata is tracked.
+/archive/experiments/legacy-output/
+
+# Build and editor caches at any depth
+target/
+__pycache__/
+*.pyc
+.DS_Store

@@ -1,0 +1,378 @@
+{
+  "source": "https://sparse.tamu.edu/",
+  "retrieved_on": "2026-10-11",
+  "datasets": [
+    {
+      "requested_name": "btree9",
+      "role": "planned",
+      "status": "not_found",
+      "reason": "SuiteSparse全件一覧に該当名なし"
+    },
+    {
+      "requested_name": "qh882",
+      "role": "planned",
+      "page_url": "https://sparse.tamu.edu/Bai/qh882",
+      "archive_url": "https://suitesparse-collection-website.herokuapp.com/MM/Bai/qh882.tar.gz",
+      "resolved_archive_url": "http://sparse-files.engr.tamu.edu/MM/Bai/qh882.tar.gz",
+      "archive_member": "qh882/qh882.mtx",
+      "matrix_shape_and_entries": [
+        882,
+        882,
+        3354
+      ],
+      "status": "downloaded",
+      "path": "data/qh882.mtx",
+      "bytes": 51986,
+      "sha256": "ccd678e57956a34802638fa766fcb61fc80d8a7fc167dd932b9bebb114079464",
+      "matrix_market_header": "%%MatrixMarket matrix coordinate real general"
+    },
+    {
+      "requested_name": "1138_bus",
+      "role": "planned",
+      "page_url": "https://sparse.tamu.edu/HB/1138_bus",
+      "archive_url": "https://suitesparse-collection-website.herokuapp.com/MM/HB/1138_bus.tar.gz",
+      "resolved_archive_url": "http://sparse-files.engr.tamu.edu/MM/HB/1138_bus.tar.gz",
+      "archive_member": "1138_bus/1138_bus.mtx",
+      "matrix_shape_and_entries": [
+        1138,
+        1138,
+        2596
+      ],
+      "status": "downloaded",
+      "path": "data/1138_bus.mtx",
+      "bytes": 45522,
+      "sha256": "91af071985d646ea6f0b478db765444a232a7dd79cab55b1c264b292137207ae",
+      "matrix_market_header": "%%MatrixMarket matrix coordinate real symmetric"
+    },
+    {
+      "requested_name": "dwt_1005",
+      "role": "planned",
+      "page_url": "https://sparse.tamu.edu/HB/dwt_1005",
+      "archive_url": "https://suitesparse-collection-website.herokuapp.com/MM/HB/dwt_1005.tar.gz",
+      "resolved_archive_url": "http://sparse-files.engr.tamu.edu/MM/HB/dwt_1005.tar.gz",
+      "archive_member": "dwt_1005/dwt_1005.mtx",
+      "matrix_shape_and_entries": [
+        1005,
+        1005,
+        4813
+      ],
+      "status": "downloaded",
+      "path": "data/dwt_1005.mtx",
+      "bytes": 38164,
+      "sha256": "9e01e79c94b2a48518efd40ab899247785384e2dc3050ab514630d8ad93da962",
+      "matrix_market_header": "%%MatrixMarket matrix coordinate pattern symmetric"
+    },
+    {
+      "requested_name": "poli",
+      "role": "planned",
+      "page_url": "https://sparse.tamu.edu/Grund/poli",
+      "archive_url": "https://suitesparse-collection-website.herokuapp.com/MM/Grund/poli.tar.gz",
+      "resolved_archive_url": "http://sparse-files.engr.tamu.edu/MM/Grund/poli.tar.gz",
+      "archive_member": "poli/poli.mtx",
+      "matrix_shape_and_entries": [
+        4008,
+        4008,
+        8188
+      ],
+      "status": "downloaded",
+      "path": "data/poli.mtx",
+      "bytes": 102468,
+      "sha256": "23a62e377ffc1a0e8a3ed9e72b38e8615185c68876991757b8855964764cc93a",
+      "matrix_market_header": "%%MatrixMarket matrix coordinate real general"
+    },
+    {
+      "requested_name": "dwt_2680",
+      "role": "planned",
+      "page_url": "https://sparse.tamu.edu/HB/dwt_2680",
+      "archive_url": "https://suitesparse-collection-website.herokuapp.com/MM/HB/dwt_2680.tar.gz",
+      "resolved_archive_url": "http://sparse-files.engr.tamu.edu/MM/HB/dwt_2680.tar.gz",
+      "archive_member": "dwt_2680/dwt_2680.mtx",
+      "matrix_shape_and_entries": [
+        2680,
+        2680,
+        13853
+      ],
+      "status": "downloaded",
+      "path": "data/dwt_2680.mtx",
+      "bytes": 127688,
+      "sha256": "69f704979c07b0062eaa604c2c36f9c9e1d54d284ceb3b5810266210a743e977",
+      "matrix_market_header": "%%MatrixMarket matrix coordinate pattern symmetric"
+    },
+    {
+      "requested_name": "USPowerGrid",
+      "role": "planned",
+      "page_url": "https://sparse.tamu.edu/Pajek/USpowerGrid",
+      "archive_url": "https://suitesparse-collection-website.herokuapp.com/MM/Pajek/USpowerGrid.tar.gz",
+      "resolved_archive_url": "http://sparse-files.engr.tamu.edu/MM/Pajek/USpowerGrid.tar.gz",
+      "archive_member": "USpowerGrid/USpowerGrid.mtx",
+      "matrix_shape_and_entries": [
+        4941,
+        4941,
+        6594
+      ],
+      "status": "downloaded",
+      "path": "data/USpowerGrid.mtx",
+      "bytes": 64453,
+      "sha256": "8fda7edfc1844d73d4f5be7d9a49963104349292aae64e73782c1a55c3b5f05f",
+      "matrix_market_header": "%%MatrixMarket matrix coordinate pattern symmetric"
+    },
+    {
+      "requested_name": "3elt",
+      "role": "planned",
+      "page_url": "https://sparse.tamu.edu/AG-Monien/3elt",
+      "archive_url": "https://suitesparse-collection-website.herokuapp.com/MM/AG-Monien/3elt.tar.gz",
+      "resolved_archive_url": "http://sparse-files.engr.tamu.edu/MM/AG-Monien/3elt.tar.gz",
+      "archive_member": "3elt/3elt.mtx",
+      "matrix_shape_and_entries": [
+        4720,
+        4720,
+        13722
+      ],
+      "status": "downloaded",
+      "path": "data/3elt.mtx",
+      "bytes": 133705,
+      "sha256": "46ca66a3d1b4cf3fe67ee54ab8e442c9ede077046dec06fc4c7fe66ebb0af4e7",
+      "matrix_market_header": "%%MatrixMarket matrix coordinate pattern symmetric"
+    },
+    {
+      "requested_name": "dwt_419",
+      "role": "planned",
+      "page_url": "https://sparse.tamu.edu/HB/dwt_419",
+      "archive_url": "https://suitesparse-collection-website.herokuapp.com/MM/HB/dwt_419.tar.gz",
+      "resolved_archive_url": "http://sparse-files.engr.tamu.edu/MM/HB/dwt_419.tar.gz",
+      "archive_member": "dwt_419/dwt_419.mtx",
+      "matrix_shape_and_entries": [
+        419,
+        419,
+        1991
+      ],
+      "status": "downloaded",
+      "path": "data/dwt_419.mtx",
+      "bytes": 15460,
+      "sha256": "89417a132d3a8ed8f41a1a55c8971d6cf27c88cab303bfd29e881c1560ff4639",
+      "matrix_market_header": "%%MatrixMarket matrix coordinate pattern symmetric"
+    },
+    {
+      "requested_name": "cage8",
+      "role": "planned",
+      "page_url": "https://sparse.tamu.edu/vanHeukelum/cage8",
+      "archive_url": "https://suitesparse-collection-website.herokuapp.com/MM/vanHeukelum/cage8.tar.gz",
+      "resolved_archive_url": "http://sparse-files.engr.tamu.edu/MM/vanHeukelum/cage8.tar.gz",
+      "archive_member": "cage8/cage8.mtx",
+      "matrix_shape_and_entries": [
+        1015,
+        1015,
+        11003
+      ],
+      "status": "downloaded",
+      "path": "data/cage8.mtx",
+      "bytes": 283808,
+      "sha256": "6eff5636f6f83d1a500b15e9328fb1ef9d681498180ae3122be9afd9c2ac73cc",
+      "matrix_market_header": "%%MatrixMarket matrix coordinate real general"
+    },
+    {
+      "requested_name": "block_2000",
+      "role": "planned",
+      "status": "not_found",
+      "reason": "SuiteSparse全件一覧に該当名なし"
+    },
+    {
+      "requested_name": "EVA",
+      "role": "planned",
+      "page_url": "https://sparse.tamu.edu/Pajek/EVA",
+      "archive_url": "https://suitesparse-collection-website.herokuapp.com/MM/Pajek/EVA.tar.gz",
+      "resolved_archive_url": "http://sparse-files.engr.tamu.edu/MM/Pajek/EVA.tar.gz",
+      "archive_member": "EVA/EVA.mtx",
+      "matrix_shape_and_entries": [
+        8497,
+        8497,
+        6726
+      ],
+      "status": "downloaded",
+      "path": "data/EVA.mtx",
+      "bytes": 61885,
+      "sha256": "5f445fe1f0728933313d5acac41b43434705da4ea323842a4597500b7487d006",
+      "matrix_market_header": "%%MatrixMarket matrix coordinate pattern general"
+    },
+    {
+      "requested_name": "G65",
+      "role": "planned",
+      "page_url": "https://sparse.tamu.edu/Gset/G65",
+      "archive_url": "https://suitesparse-collection-website.herokuapp.com/MM/Gset/G65.tar.gz",
+      "resolved_archive_url": "http://sparse-files.engr.tamu.edu/MM/Gset/G65.tar.gz",
+      "archive_member": "G65/G65.mtx",
+      "matrix_shape_and_entries": [
+        8000,
+        8000,
+        16000
+      ],
+      "status": "downloaded",
+      "path": "data/G65.mtx",
+      "bytes": 196128,
+      "sha256": "2571e86909fe98b659a9494e7c72c8e483aaffdbd0d05c537ca6fc6a2cffd9dd",
+      "matrix_market_header": "%%MatrixMarket matrix coordinate integer symmetric"
+    },
+    {
+      "requested_name": "fe_4elt2",
+      "role": "planned",
+      "page_url": "https://sparse.tamu.edu/DIMACS10/fe_4elt2",
+      "archive_url": "https://suitesparse-collection-website.herokuapp.com/MM/DIMACS10/fe_4elt2.tar.gz",
+      "resolved_archive_url": "http://sparse-files.engr.tamu.edu/MM/DIMACS10/fe_4elt2.tar.gz",
+      "archive_member": "fe_4elt2/fe_4elt2.mtx",
+      "matrix_shape_and_entries": [
+        11143,
+        11143,
+        32818
+      ],
+      "status": "downloaded",
+      "path": "data/fe_4elt2.mtx",
+      "bytes": 342005,
+      "sha256": "6e83576d527a868f150c058311af647348ae19e25fdcc2615158d40cadab6921",
+      "matrix_market_header": "%%MatrixMarket matrix coordinate pattern symmetric"
+    },
+    {
+      "requested_name": "bcsstk31",
+      "role": "planned",
+      "page_url": "https://sparse.tamu.edu/HB/bcsstk31",
+      "archive_url": "https://suitesparse-collection-website.herokuapp.com/MM/HB/bcsstk31.tar.gz",
+      "resolved_archive_url": "http://sparse-files.engr.tamu.edu/MM/HB/bcsstk31.tar.gz",
+      "archive_member": "bcsstk31/bcsstk31.mtx",
+      "matrix_shape_and_entries": [
+        35588,
+        35588,
+        608502
+      ],
+      "status": "downloaded",
+      "path": "data/bcsstk31.mtx",
+      "bytes": 6916680,
+      "sha256": "3c56b4fc52bf6d1482362fedf72fa6d4acf5038d1f1e20ecdfab329a5f4a6bb9",
+      "matrix_market_header": "%%MatrixMarket matrix coordinate pattern symmetric"
+    },
+    {
+      "requested_name": "venkat50",
+      "role": "planned",
+      "page_url": "https://sparse.tamu.edu/Simon/venkat50",
+      "archive_url": "https://suitesparse-collection-website.herokuapp.com/MM/Simon/venkat50.tar.gz",
+      "resolved_archive_url": "http://sparse-files.engr.tamu.edu/MM/Simon/venkat50.tar.gz",
+      "archive_member": "venkat50/venkat50.mtx",
+      "matrix_shape_and_entries": [
+        62424,
+        62424,
+        1717792
+      ],
+      "status": "downloaded",
+      "path": "data/venkat50.mtx",
+      "bytes": 51127884,
+      "sha256": "130106a4a5d0b87e7aa688e4fcce3b810511d88214ab2143e77b86230a1da630",
+      "matrix_market_header": "%%MatrixMarket matrix coordinate real general"
+    },
+    {
+      "requested_name": "luxembourg_osm",
+      "role": "planned",
+      "page_url": "https://sparse.tamu.edu/DIMACS10/luxembourg_osm",
+      "archive_url": "https://suitesparse-collection-website.herokuapp.com/MM/DIMACS10/luxembourg_osm.tar.gz",
+      "resolved_archive_url": "http://sparse-files.engr.tamu.edu/MM/DIMACS10/luxembourg_osm.tar.gz",
+      "archive_member": "luxembourg_osm/luxembourg_osm.mtx",
+      "matrix_shape_and_entries": [
+        114599,
+        114599,
+        119666
+      ],
+      "status": "downloaded",
+      "path": "data/luxembourg_osm.mtx",
+      "bytes": 1451376,
+      "sha256": "3920e27dcdc7a4cfcf24b5e7c092584c54b7a71e8db042623d9c66741b2c0184",
+      "matrix_market_header": "%%MatrixMarket matrix coordinate pattern symmetric"
+    },
+    {
+      "requested_name": "web-NotreDame",
+      "role": "planned",
+      "page_url": "https://sparse.tamu.edu/SNAP/web-NotreDame",
+      "archive_url": "https://suitesparse-collection-website.herokuapp.com/MM/SNAP/web-NotreDame.tar.gz",
+      "resolved_archive_url": "http://sparse-files.engr.tamu.edu/MM/SNAP/web-NotreDame.tar.gz",
+      "archive_member": "web-NotreDame/web-NotreDame.mtx",
+      "matrix_shape_and_entries": [
+        325729,
+        325729,
+        1497134
+      ],
+      "status": "downloaded",
+      "path": "data/web-NotreDame.mtx",
+      "bytes": 20062432,
+      "sha256": "2a6b72192cd0f91a597e259055238f976ed2239234c06caf04a96a60e5d042c1",
+      "matrix_market_header": "%%MatrixMarket matrix coordinate pattern general"
+    },
+    {
+      "requested_name": "bcspwr08",
+      "role": "existing-default-or-manifest",
+      "page_url": "https://sparse.tamu.edu/HB/bcspwr08",
+      "archive_url": "https://suitesparse-collection-website.herokuapp.com/MM/HB/bcspwr08.tar.gz",
+      "resolved_archive_url": "http://sparse-files.engr.tamu.edu/MM/HB/bcspwr08.tar.gz",
+      "archive_member": "bcspwr08/bcspwr08.mtx",
+      "matrix_shape_and_entries": [
+        1624,
+        1624,
+        3837
+      ],
+      "status": "downloaded",
+      "path": "data/bcspwr08.mtx",
+      "bytes": 33751,
+      "sha256": "b2d2f25ec7ca3b85b987941e4ad553766ce0eba73525b1747a07ed30c58bcd92",
+      "matrix_market_header": "%%MatrixMarket matrix coordinate pattern symmetric"
+    },
+    {
+      "requested_name": "bcspwr10",
+      "role": "existing-default-or-manifest",
+      "page_url": "https://sparse.tamu.edu/HB/bcspwr10",
+      "archive_url": "https://suitesparse-collection-website.herokuapp.com/MM/HB/bcspwr10.tar.gz",
+      "resolved_archive_url": "http://sparse-files.engr.tamu.edu/MM/HB/bcspwr10.tar.gz",
+      "archive_member": "bcspwr10/bcspwr10.mtx",
+      "matrix_shape_and_entries": [
+        5300,
+        5300,
+        13571
+      ],
+      "status": "downloaded",
+      "path": "data/bcspwr10.mtx",
+      "bytes": 132168,
+      "sha256": "5011d5518a7d96ab054dadb8f0670fded73385548add1cfa75c43742523c3e33",
+      "matrix_market_header": "%%MatrixMarket matrix coordinate pattern symmetric"
+    },
+    {
+      "requested_name": "bcsstk29",
+      "role": "existing-default-or-manifest",
+      "page_url": "https://sparse.tamu.edu/HB/bcsstk29",
+      "archive_url": "https://suitesparse-collection-website.herokuapp.com/MM/HB/bcsstk29.tar.gz",
+      "resolved_archive_url": "http://sparse-files.engr.tamu.edu/MM/HB/bcsstk29.tar.gz",
+      "archive_member": "bcsstk29/bcsstk29.mtx",
+      "matrix_shape_and_entries": [
+        13992,
+        13992,
+        316740
+      ],
+      "status": "downloaded",
+      "path": "data/bcsstk29.mtx",
+      "bytes": 3293927,
+      "sha256": "49251de30c5a231009d60890fcbdf590412b9421818952ce67ebf8b8279c50ce",
+      "matrix_market_header": "%%MatrixMarket matrix coordinate pattern symmetric"
+    },
+    {
+      "requested_name": "bcspwr01",
+      "role": "existing-default-or-manifest",
+      "page_url": "https://sparse.tamu.edu/HB/bcspwr01",
+      "archive_url": "https://suitesparse-collection-website.herokuapp.com/MM/HB/bcspwr01.tar.gz",
+      "resolved_archive_url": "http://sparse-files.engr.tamu.edu/MM/HB/bcspwr01.tar.gz",
+      "archive_member": "bcspwr01/bcspwr01.mtx",
+      "matrix_shape_and_entries": [
+        39,
+        39,
+        85
+      ],
+      "status": "downloaded",
+      "path": "data/bcspwr01.mtx",
+      "bytes": 1044,
+      "sha256": "1a66044e50d1affbfa9c017c52546dac42bdccf3ab931490868c58d6a2bb0082",
+      "matrix_market_header": "%%MatrixMarket matrix coordinate pattern symmetric"
+    }
+  ]
+}

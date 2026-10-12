@@ -1,4 +1,5 @@
-"""Create reproducible v1 tables, static paper figures, and an evidence-based report."""
+"""Create study tables, static paper figures, and a report in a result version directory."""
+import argparse
 import csv
 import hashlib
 import json
@@ -12,6 +13,11 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
 import numpy as np
+
+try:
+    from artifact_paths import provenance_path, resolve_artifact_path
+except ModuleNotFoundError:
+    from experiments.artifact_paths import provenance_path, resolve_artifact_path
 
 ROOT = Path(__file__).resolve().parent.parent
 BASE = ROOT / 'experiment_results/v1'
@@ -54,27 +60,73 @@ def interval(values, statistic='mean'):
     return [center, float(low), float(high)]
 
 
-def save_figure(fig, name):
-    fig.savefig(BASE / 'figures' / (name + '.png'), bbox_inches='tight')
-    fig.savefig(BASE / 'figures' / (name + '.svg'), bbox_inches='tight',
-                metadata={'Date': None, 'Creator': 'Stress SGD v1'})
-    svg = BASE / 'figures' / (name + '.svg')
+def save_figure(fig, name, base=BASE):
+    fig.savefig(base / 'figures' / (name + '.png'), bbox_inches='tight')
+    fig.savefig(base / 'figures' / (name + '.svg'), bbox_inches='tight',
+                metadata={'Date': None, 'Creator': 'Stress SGD ' + base.name})
+    svg = base / 'figures' / (name + '.svg')
     svg.write_text('\n'.join(line.rstrip() for line in svg.read_text().splitlines()) + '\n')
     plt.close(fig)
 
 
-def load_data():
+def resolve_run_path(value, relocation, *, prefer_relocated=False):
+    path = Path(value)
+    if relocation:
+        original = Path(relocation['original_root'])
+        stored = Path(relocation['stored_root'])
+        try:
+            path = ROOT / stored / path.relative_to(original)
+        except ValueError:
+            # Inputs may live outside the raw directory in the original checkout.
+            if original.parts[-len(stored.parts):] == stored.parts:
+                original_checkout = original.parents[len(stored.parts) - 1]
+                try:
+                    path = ROOT / path.relative_to(original_checkout)
+                except ValueError:
+                    pass
+    return resolve_artifact_path(path, ROOT, prefer_relocated=prefer_relocated)
+
+
+def load_dataset_catalog(base=BASE):
+    datasets = json.loads((base / 'config/datasets.json').read_text())
+    archived = base.resolve().is_relative_to(ROOT / 'archive')
+    for item in datasets:
+        for field in ['source_path', 'path', 'vertex_map_path']:
+            if item.get(field):
+                item[field] = str(resolve_artifact_path(
+                    item[field], ROOT, prefer_relocated=archived))
+    return datasets
+
+
+def load_data(base=BASE):
     records, sources = [], []
     expectations = {}
-    for folder in sorted((BASE / 'raw').glob('v1-*')):
+    conditions = {}
+    for folder in sorted((base / 'raw').iterdir()) if (base / 'raw').is_dir() else []:
+        if not folder.is_dir() or not (folder / 'manifest.json').is_file():
+            continue
         path = folder / 'results.jsonl'
         if not path.exists():
             continue
         manifest = json.loads((folder / 'manifest.json').read_text())
+        if manifest['repetitions'] != 1 or any(len(manifest[field]) != 1
+                                               for field in ('iterations', 'epsilon', 'pivots')):
+            raise SystemExit('summarize_v1 supports one iteration/epsilon/pivot condition and '
+                             'repetitions=1; use aggregate_results.py for condition sweeps.')
+        for field in ('iterations', 'epsilon', 'pivots'):
+            value = manifest[field][0]
+            if field in conditions and conditions[field] != value:
+                raise SystemExit('summarize_v1 cannot combine different study conditions; '
+                                 'use aggregate_results.py instead.')
+            conditions[field] = value
         for dataset in manifest['datasets']:
             for method in manifest['methods']:
-                expectations[(dataset['name'], method)] = len(manifest['seeds'])
-        sources.append({'path': str(path.relative_to(ROOT)), 'sha256': sha(path),
+                key = (dataset['name'], method)
+                if key in expectations:
+                    raise SystemExit('Duplicate dataset/method across manifests; '
+                                     'use aggregate_results.py for independent experiments.')
+                expectations[key] = len(manifest['seeds'])
+        sources.append({'path': provenance_path(path, ROOT), 'sha256': sha(path),
                         'artifact_relocation_sha256': sha(folder/'artifact-relocation.json')
                         if (folder/'artifact-relocation.json').exists() else None})
         # Keep retry history in raw; use only latest attempt for each run id.
@@ -84,56 +136,95 @@ def load_data():
         for line in path.read_text().splitlines():
             row = json.loads(line)
             row['experiment_id'] = folder.name
-            if relocation:
-                original = Path(relocation['original_root'])
-                stored = ROOT / relocation['stored_root']
-                for field in ['final_positions_path', 'vertex_map_path', 'stderr_log_path']:
-                    if row.get(field):
-                        relative = Path(row[field]).relative_to(original)
-                        row[field] = str(stored / relative)
+            for field in ['input_path', 'final_positions_path', 'vertex_map_path', 'stderr_log_path']:
+                if row.get(field):
+                    row[field] = str(resolve_run_path(
+                        row[field], relocation,
+                        prefer_relocated=folder.resolve().is_relative_to(ROOT / 'archive')))
             latest[row['run_id']] = row
         records.extend(latest.values())
     return records, sources, expectations
+
+
+def seed_count_label(expectations, names):
+    values = sorted({count for (dataset, _), count in expectations.items() if dataset in names})
+    return '/'.join(str(value) for value in values) if values else '0'
 
 
 # Only Atomic Sparse's additive run may reuse earlier baselines across commits.
 # Verify the actual Git trees; a changed existing implementation invalidates reuse.
 SHARED_SOURCE_PATHS = ('baseline-sgd-non-gpu', 'vram-lock-native', 'rr_gpu',
                        'baseline-sparse-sgd-non-gpu', 'sparse-sgd-gpu', 'experiment-common')
+SOURCE_PATH_ALIASES = {
+    'baseline-sgd-non-gpu': 'implementations/full/baseline-sgd-non-gpu',
+    'vram-lock-native': 'implementations/full/vram-lock-native',
+    'rr_gpu': 'implementations/full/rr_gpu',
+    'baseline-sparse-sgd-non-gpu': 'implementations/sparse/baseline-sparse-sgd-non-gpu',
+    'sparse-sgd-gpu': 'implementations/sparse/sparse-sgd-gpu',
+    'experiment-common': 'shared/experiment-common',
+    'vram-lock-sparse': 'implementations/sparse/vram-lock-sparse',
+}
 
 
 @lru_cache(maxsize=None)
 def source_extension_evidence(baseline_commit, added_commit):
     def tree(commit, path):
-        return subprocess.check_output(
-            ['git', '-C', str(ROOT), 'rev-parse', '--verify', f'{commit}:{path}'],
-            text=True, stderr=subprocess.DEVNULL).strip()
+        for candidate in (path, SOURCE_PATH_ALIASES[path]):
+            try:
+                value = subprocess.check_output(
+                    ['git', '-C', str(ROOT), 'rev-parse', '--verify', f'{commit}:{candidate}'],
+                    text=True, stderr=subprocess.DEVNULL).strip()
+                return candidate, value
+            except subprocess.CalledProcessError:
+                pass
+        raise subprocess.CalledProcessError(1, ['git', 'rev-parse', f'{commit}:{path}'])
     try:
-        trees = {path: {'baseline_tree': tree(baseline_commit, path),
-                        'added_tree': tree(added_commit, path)} for path in SHARED_SOURCE_PATHS}
+        trees = {}
+        for path in SHARED_SOURCE_PATHS:
+            baseline_path, baseline_tree = tree(baseline_commit, path)
+            added_path, added_tree = tree(added_commit, path)
+            trees[path] = {'baseline_tree': baseline_tree, 'added_tree': added_tree,
+                           'baseline_path': baseline_path, 'added_path': added_path}
         if any(v['baseline_tree'] != v['added_tree'] for v in trees.values()):
             return None
-        atomic_tree = tree(added_commit, 'vram-lock-sparse')
+        atomic_path, atomic_tree = tree(added_commit, 'vram-lock-sparse')
     except subprocess.CalledProcessError:
         return None
     return {'baseline_commit': baseline_commit, 'added_commit': added_commit,
-            'shared_source_trees': trees, 'atomic_sparse_tree': atomic_tree}
+            'shared_source_trees': trees, 'atomic_sparse_tree': atomic_tree,
+            'atomic_sparse_path': atomic_path}
 
 
-def main():
+def parse_args(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--results-dir', type=Path, default=BASE,
+                        help='result version directory containing config/raw/tables/figures/report')
+    return parser.parse_args(argv)
+
+
+def main(argv=None):
+    base = parse_args(argv).results_dir.resolve()
     for name in ['tables', 'figures', 'report']:
-        (BASE / name).mkdir(exist_ok=True)
-    rows, sources, expectations = load_data()
+        (base / name).mkdir(parents=True, exist_ok=True)
+    rows, sources, expectations = load_data(base)
     if not rows:
-        raise SystemExit('No v1 results; run experiments first.')
+        raise SystemExit(f'No results in {base}; run experiments first.')
     groups = defaultdict(list)
     for row in rows:
         groups[(row['dataset'], row['method'])].append(row)
     available = {(r['dataset'], r['method'], r['seed']): r for r in rows if r['status'] == 'success'}
-    datasets = json.loads((BASE / 'config/datasets.json').read_text())
+    if len(available) != sum(r['status'] == 'success' for r in rows):
+        raise SystemExit('Duplicate dataset/method/seed measurements; use aggregate_results.py.')
+    iterations = {r['iterations'] for r in rows}
+    if len(iterations) != 1:
+        raise SystemExit('Multiple iteration conditions; use aggregate_results.py.')
+    iterations = next(iter(iterations))
+    datasets = load_dataset_catalog(base)
     names = [item['name'] for item in datasets if any((item['name'], m) in groups for m in METHODS)]
     small = [item['name'] for item in datasets[:10] if item['name'] in names]
     large = [item['name'] for item in datasets[10:] if item['name'] in names]
+    small_seeds = seed_count_label(expectations, small)
+    large_seeds = seed_count_label(expectations, large)
     dataset_info = {item['name']: item for item in datasets}
     paired = defaultdict(list)
     validation = {'errors': [], 'warnings': [], 'formal_publication_ready': False,
@@ -209,19 +300,21 @@ def main():
     for s in summaries:
         if s['success'] < s['expected']:
             validation['warnings'].append(f"{s['dataset']} {s['method']}: {s['success']}/{s['expected']} successful")
-    validation['warnings'].extend(['10-seed quality is exploratory; planned final quality requires 25 seeds.',
-                                   'Large graph timing has only 3 seeds.',
-                                   'Atomic Sparse was measured in an added batch; earlier methods reuse unchanged-source baseline runs.',
-                                   'btree9 and block_2000 are unavailable in this collection.'])
-    dump_csv(BASE/'tables/runs.csv',rows)
-    dump_csv(BASE/'tables/summary.csv',summaries)
+    validation['warnings'].extend([f'Small-graph planned seeds: {small_seeds}; planned final quality requires 25 seeds.',
+                                   f'Large-graph planned seeds: {large_seeds}; planned final timing requires at least 10 seeds.',
+                                   'Publication readiness is not certified by this exploratory study summary.'])
+    if validation['source_extensions']:
+        validation['warnings'].append('Atomic Sparse was measured in an added batch; '
+                                      'earlier methods reuse unchanged-source baseline runs.')
+    dump_csv(base/'tables/runs.csv',rows)
+    dump_csv(base/'tables/summary.csv',summaries)
     flat_pairs=[dict(dataset=d,method=m,**item) for (d,m),items in paired.items() for item in items]
-    dump_csv(BASE/'tables/paired-ratios.csv',flat_pairs)
-    (BASE/'tables/validation.json').write_text(json.dumps(validation,ensure_ascii=False,indent=2)+'\n')
-    (BASE/'tables/summary.json').write_text(json.dumps(summaries,ensure_ascii=False,indent=2)+'\n')
+    dump_csv(base/'tables/paired-ratios.csv',flat_pairs)
+    (base/'tables/validation.json').write_text(json.dumps(validation,ensure_ascii=False,indent=2)+'\n')
+    (base/'tables/summary.json').write_text(json.dumps(summaries,ensure_ascii=False,indent=2)+'\n')
     table=['| Graph | Method | n | Success | Stress | SGD time, ms (median [Q1, Q3]) | Speedup | Stress ratio |',
            '|---|---|---:|---:|---|---|---|---|']
-    latex=['% v1 exploratory results: 10 seeds for small graphs, 3 for large graphs',
+    latex=[f'% {base.name} exploratory results: planned {small_seeds} small-graph seeds, {large_seeds} large-graph seeds',
            r'\begin{tabular}{llrrrr}',r'\hline',r'Graph & Method & Runs & Stress & SGD time (ms) & Speedup \\',r'\hline']
     for s in summaries:
         if s['success']:
@@ -235,8 +328,8 @@ def main():
             t=sp=qr=quality='N/A'
         table.append(f"| {s['dataset']} | {LABELS[s['method']]} | {s['nodes']} | {s['success']}/{s['expected']} | {quality} | {t} | {sp} | {qr} |")
     latex.extend([r'\hline',r'\end{tabular}'])
-    (BASE/'tables/results.md').write_text('\n'.join(table)+'\n')
-    (BASE/'tables/results.tex').write_text('\n'.join(latex)+'\n')
+    (base/'tables/results.md').write_text('\n'.join(table)+'\n')
+    (base/'tables/results.tex').write_text('\n'.join(latex)+'\n')
 
     # Paired means/medians with seeded bootstrap confidence intervals; no pooled graph averages.
     for kind, field, lowfield, highfield, ylabel, filename in [
@@ -255,11 +348,11 @@ def main():
                         values.append(s[field]);lows.append(max(0,s[field]-s[lowfield]));highs.append(max(0,s[highfield]-s[field]))
                 ax.errorbar(xpos,values,yerr=[lows,highs],fmt='o' if mi==0 else 's',color=COLORS[m],
                             label=LABELS[m],capsize=3,markersize=4,linewidth=1)
-            ax.set_ylabel(ylabel);ax.set_title(('(a) Full SGD' if family=='full' else '(b) Sparse SGD')+'; 10 seeds',loc='left')
+            ax.set_ylabel(ylabel);ax.set_title(('(a) Full SGD' if family=='full' else '(b) Sparse SGD')+f'; planned {small_seeds} seeds',loc='left')
             if kind=='speed':ax.set_yscale('log')
             ax.grid(axis='y',alpha=.18);ax.legend(frameon=False,loc='best')
         axes[-1].set_xticks(range(len(small)),small,rotation=30,ha='right')
-        fig.tight_layout();save_figure(fig,filename)
+        fig.tight_layout();save_figure(fig, filename, base)
 
     fig,axes=plt.subplots(2,1,figsize=(11,6.4),sharex=True)
     for ax,(family,methods) in zip(axes,FAMILIES.items()):
@@ -271,10 +364,10 @@ def main():
                     x.append(j+(mi-(len(methods)-1)/2)*.22);y.append(s['iteration_median_ms'])
                     lo.append(y[-1]-s['iteration_q1_ms']);hi.append(s['iteration_q3_ms']-y[-1])
             ax.bar(x,y,width=.2,color=COLORS[m],label=LABELS[m],yerr=[lo,hi],capsize=2)
-        ax.set_yscale('log');ax.set_ylabel('15-iteration host time (ms)')
+        ax.set_yscale('log');ax.set_ylabel(f'{iterations}-iteration host time (ms)')
         ax.set_title(f'{family.capitalize()} SGD: median and IQR',loc='left');ax.legend(frameon=False);ax.grid(axis='y',alpha=.18)
     axes[-1].set_xticks(range(len(small)),small,rotation=30,ha='right')
-    fig.tight_layout();save_figure(fig,'03_iteration_time')
+    fig.tight_layout();save_figure(fig, '03_iteration_time', base)
 
     fig,axes=plt.subplots(2,5,figsize=(13,5.6))
     for ax,d in zip(axes.flat,small):
@@ -287,7 +380,7 @@ def main():
         ax.set_title(d);ax.set_xticks(range(len(METHODS)),['CPU','AT','RR','S-CPU','S-AT','S-RR'],rotation=45)
         ax.ticklabel_format(axis='y',style='sci',scilimits=(0,0));ax.grid(axis='y',alpha=.15)
     axes[0,0].set_ylabel('Exact full stress');axes[1,0].set_ylabel('Exact full stress')
-    fig.tight_layout();save_figure(fig,'04_final_stress_distribution')
+    fig.tight_layout();save_figure(fig, '04_final_stress_distribution', base)
 
     fig,axes=plt.subplots(1,2,figsize=(10,4))
     for ax,(family,methods) in zip(axes,FAMILIES.items()):
@@ -303,7 +396,7 @@ def main():
         ax.axvline(1,color='#666666',linestyle='--',linewidth=.8);ax.axhline(1.05,color='#999999',linestyle=':',linewidth=1)
         ax.set_xscale('log');ax.set_xlabel('Iteration speedup (CPU / GPU)');ax.set_ylabel('Mean full-stress ratio')
         ax.set_title(family.capitalize()+' SGD');ax.legend(frameon=False);ax.grid(alpha=.15)
-    fig.tight_layout();save_figure(fig,'05_quality_speed_tradeoff')
+    fig.tight_layout();save_figure(fig, '05_quality_speed_tradeoff', base)
 
     if large:
         fig,axes=plt.subplots(1,2,figsize=(11,4))
@@ -316,7 +409,7 @@ def main():
                     lo.append(y[-1]-s['iteration_q1_ms']);hi.append(s['iteration_q3_ms']-y[-1])
             axes[0].bar(x,y,width=.22,color=COLORS[m],label=LABELS[m],yerr=[lo,hi],capsize=2)
         axes[0].set_xticks(range(len(large)),large,rotation=35,ha='right');axes[0].set_yscale('log')
-        axes[0].set_ylabel('15-iteration host time (ms)');axes[0].legend(frameon=False);axes[0].grid(axis='y',alpha=.15)
+        axes[0].set_ylabel(f'{iterations}-iteration host time (ms)');axes[0].legend(frameon=False);axes[0].grid(axis='y',alpha=.15)
         for m in FAMILIES['sparse'][1:]:
             for d in small+large:
                 item=lookup.get((d,m))
@@ -328,7 +421,7 @@ def main():
             axes[1].plot([],[],color=COLORS[m],marker='o',ls='',label=LABELS[m])
         axes[1].set_xscale('log');axes[1].set_yscale('log');axes[1].axhline(1,color='#666666',linestyle='--',linewidth=.8)
         axes[1].set_xlabel('Nodes in largest connected component');axes[1].set_ylabel('Sparse iteration speedup (CPU / GPU)');axes[1].grid(alpha=.15);axes[1].legend(frameon=False)
-        fig.suptitle('Sparse scaling: exploratory large-graph results (3 seeds)');fig.tight_layout();save_figure(fig,'06_sparse_scaling')
+        fig.suptitle(f'Sparse scaling: exploratory large-graph results (planned {large_seeds} seeds)');fig.tight_layout();save_figure(fig, '06_sparse_scaling', base)
 
     fig, axes = plt.subplots(1, 2, figsize=(12, 4))
     names_with_rr = [d for d in names if lookup.get((d, 'rr_sparse_sgd'), {}).get('success')]
@@ -346,7 +439,7 @@ def main():
     axes[1].set_xlabel('RR-Sparse rounds per iteration (median)'); axes[1].set_ylabel('Iteration speedup (CPU / GPU)')
     axes[1].axhline(1, color='#666666', ls='--', lw=.8)
     for ax in axes: ax.grid(axis='y', alpha=.15)
-    fig.tight_layout(); save_figure(fig, '08_rr_sparse_rounds')
+    fig.tight_layout(); save_figure(fig, '08_rr_sparse_rounds', base)
 
     # Same seed across all methods, picked using CPU full-SGD median stress only.
     layout_selections=[]
@@ -373,19 +466,19 @@ def main():
             ax.text(.02,.02,f'{d}; seed {seed}\nStress {r["stress_value"]:.0f}',transform=ax.transAxes,fontsize=7,
                     bbox={'facecolor': 'white', 'alpha': .9, 'edgecolor': 'none', 'pad': 1})
             layout_selections.append({'dataset':d,'method':m,'seed':seed,'path':r['final_positions_path'],'sha256':sha(Path(r['final_positions_path']))})
-    fig.tight_layout();save_figure(fig,'07_representative_layouts')
-    (BASE/'tables/layout-selection.json').write_text(json.dumps(layout_selections,indent=2)+'\n')
+    fig.tight_layout();save_figure(fig, '07_representative_layouts', base)
+    (base/'tables/layout-selection.json').write_text(json.dumps(layout_selections,indent=2)+'\n')
 
     failures=[r for r in rows if r['status']!='success']
-    dump_csv(BASE/'tables/failures.csv',failures)
+    dump_csv(base/'tables/failures.csv',failures)
     if not failures:
-        (BASE/'tables/failures.csv').write_text('run_id,dataset,method,error_stage,error_message\n')
-    report=['# 実験結果 v1（初回評価）','',
+        (base/'tables/failures.csv').write_text('run_id,dataset,method,error_stage,error_message\n')
+    report=[f'# 実験結果 {base.name}（暫定評価）','',
             f'正式実行：{len(rows)}件。成功 {len(available)}件、失敗 {len(failures)}件。',
             '', '## 比較条件',
-            '- 前処理を除いた15反復のhost実時間を主速度指標とする。同期・シャッフルは含む。',
-            '- 小・中規模10 seed、大規模3 seed。品質25 seedの正式判定に先立つ暫定結果。',
-            '- exact full stressと64始点のsampled stressを混ぜず、各グラフ内の対応seedで比較。',
+            f'- 前処理を除いた{iterations}反復のhost実時間を主速度指標とする。同期・シャッフルは含む。',
+            f'- 計画標本数：小・中規模{small_seeds} seed、大規模{large_seeds} seed。成功数は表で確認する。',
+            '- exact full stressとsampled stressを混ぜず、評価条件を確認して各グラフ内の対応seedで比較。',
             '- 全手法へ同じ無向・自己ループなし・最大連結成分の入力を渡す。',
             '', '## グラフ別の結果',
             '| Graph | Method | SGD speedup | Full-stress ratio | Paired seeds |',
@@ -411,27 +504,26 @@ def main():
     report+=['- 全グラフをまとめた単一の速度向上率で代表させない。グラフの構造・規模に依存する。',
              '- GPU実装はf32、CPUはf64。差には精度と更新順の両方が含まれる。',
              '- 初期配置の一致はFull群・Sparse群のそれぞれの中で確認。両群は初期配置生成が異なるため、群をまたぐ対応seed比は使わない。',
-             '- web-NotreDameではRR-Sparseが10,721ラウンド、15反復で160,830 dispatchを使う。他の大規模グラフは約200ラウンドである。同期・投入コストが性能を制限する可能性があるが、device時間の詳細測定なしには原因を断定しない。',
+             '- ラウンド数とdispatch数はグラフごとの表で確認する。同期・投入コストが性能を制限する可能性があるが、device時間の詳細測定なしには原因を断定しない。',
              '- この結果はSGD部分の性能であり、初回レイアウト生成全体の高速化率ではない。',
-             '- 大規模3 seedから信頼性の高い速度・品質の結論を出さない。',
+             '- 少数seedから信頼性の高い速度・品質の結論を出さない。',
              '- 同一seedの時間は1回ずつ。将来は固定seedの繰返しで機器の時間変動とseed差を分離する。',
-             '- Atomic Sparseは別測定バッチで追加した。既存5手法と共通前処理のソースが不変であることをGit treeで検証し、過去のCPU・RR結果を再利用している。機器の時間変動や実行順の影響を完全には除けない。',
              '- Atomic Sparseはロック失敗ペアを再投入するため、成功時の更新漏れは0だが、再投入・ホスト同期の時間を含む。',
              '- 欠測や失敗は図でゼロにせず、failures.csvおよび元stderrに理由を残す。',
              '', '## 検証', f'- 比較整合性エラー：{len(validation["errors"])}件。',
-             '- 検証詳細：../tables/validation.json。正式掲載可否はfalse（標本数不足）。',
+             '- 検証詳細：../tables/validation.json。本集計では正式掲載可否を認定しない。',
              '', '## 次に必要な実験',
-             '1. 小・中規模を25 seedへ拡張し、品質の非劣性を判定する。',
-             '2. 大規模を最低10 seedへ拡張し、特にweb-NotreDameの約17%のsampled stress悪化を詳しく確認する。',
-             '3. Atomic Sparseを含む6手法を同じ測定バッチで再実行し、実行順を回して追加バッチ間の時間変動を確認する。',
-             '4. 代表3グラフのiterationごとのstress収束を別診断実行で記録する（固定15反復の学習率を維持）。',
+             '1. 小・中規模で25 seedを確保し、品質の非劣性を判定する。',
+             '2. 大規模で最低10 seedを確保し、stress比が悪化したグラフを詳しく確認する。',
+             '3. Atomic Sparseを含む6手法で実行順を回し、バッチ間の時間変動を確認する。',
+             f'4. 代表3グラフのiterationごとのstress収束を別診断実行で記録する（固定{iterations}反復の学習率を維持）。',
              '', '## 図の読み方',
              '- 01：CPU基準のstress比。点は平均、誤差棒は対応seedのbootstrap 95% CI。',
              '- 02：SGD部分の速度向上率。点は対応比の中央値、誤差棒はbootstrap 95% CI。',
              '- 03：SGD時間。棒は中央値、誤差棒はIQR。',
              '- 04：最終exact full stressの分布。',
              '- 05：品質と速度の両立。右側ほど速く、下側ほどstressが低い。',
-             '- 06：Sparseの規模拡大。丸は10 seed、四角は3 seed。',
+             f'- 06：Sparseの規模拡大。丸は小・中規模（計画{small_seeds} seed）、四角は大規模（計画{large_seeds} seed）。',
              '- 07：CPU full-SGDのstress中央値に近いseedを全6手法で共有した代表配置。',
              '- 08：RR-Sparseのラウンド数と速度向上率。構造によるラウンド増加を確認する。',
              '', '## 論文の体裁との対応',
@@ -439,20 +531,25 @@ def main():
              '- DRGraph Table 2・5のグラフ別比較とFigure 6の規模に応じた速度評価を参考にした。',
              '- DRGraphは尺度最適化したnormalized stressを使う。本結果のraw full stressと掲載数値は直接比較しない。',
              '- PNGは確認用、SVGは論文で編集・拡大するための版。収束曲線は未取得。']
-    (BASE/'report/RESULTS.md').write_text('\n'.join(report)+'\n')
+    if validation['source_extensions']:
+        report += ['', '## 追加バッチの出所',
+                   '- Atomic Sparseは別測定バッチで追加した。既存手法と共通前処理のソースが不変であることをGit treeで検証し、過去のCPU・RR結果を再利用している。機器の時間変動や実行順の影響を完全には除けない。']
+    (base/'report/RESULTS.md').write_text('\n'.join(report)+'\n')
     metadata={'sources':sources,'script_sha256':sha(Path(__file__)),
-              'config_sha256':sha(BASE/'config/datasets.json'),
-              'manifest_sha256':{p.name:sha(p) for p in (BASE/'config').glob('*.json')},
+              'relocation_journal_sha256':sha(ROOT/'archive/relocations.json')
+                  if (ROOT/'archive/relocations.json').is_file() else None,
+              'config_sha256':sha(base/'config/datasets.json'),
+              'manifest_sha256':{p.name:sha(p) for p in (base/'config').glob('*.json')},
               'source_extensions':validation['source_extensions'],'bootstrap_resamples':10000,
               'bootstrap_seed':20261011,'publication_ready':False,
               'commits':sorted({r['git_commit'] for r in rows}),
               'dirty_runs':sum(bool(r['git_dirty']) for r in rows),
               'discarded_measurements':[
-                  {'path':str(p.relative_to(ROOT)), 'sha256':sha(p),
+                  {'path':provenance_path(p, ROOT), 'sha256':sha(p),
                    'records':len(p.read_text().splitlines())}
-                  for p in sorted((BASE/'raw').glob('v1-*/discarded-dirty-records.jsonl'))],
-              'figures':{p.name:sha(p) for p in (BASE/'figures').glob('*') if p.is_file()}}
-    (BASE/'tables/provenance.json').write_text(json.dumps(metadata,indent=2)+'\n')
+                  for p in sorted((base/'raw').glob('*/discarded-dirty-records.jsonl'))],
+              'figures':{p.name:sha(p) for p in (base/'figures').glob('*') if p.is_file()}}
+    (base/'tables/provenance.json').write_text(json.dumps(metadata,indent=2)+'\n')
     print(f'{len(rows)} runs; {len(available)} success; {len(failures)} failures; {len(validation["errors"])} validation errors')
     if validation['errors']:
         raise SystemExit('Comparison validation failed; figures are drafts, inspect validation.json.')

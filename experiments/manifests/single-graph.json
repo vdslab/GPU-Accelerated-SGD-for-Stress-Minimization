@@ -1,0 +1,20 @@
+{
+  "experiment_id": "single-graph",
+  "run_mode": "benchmark",
+  "methods": ["sparse_sgd", "atomic_sparse_sgd", "rr_sparse_sgd"],
+  "datasets": [
+    {
+      "name": "USpowerGrid",
+      "path": "data/USpowerGrid.mtx",
+      "sha256": "8fda7edfc1844d73d4f5be7d9a49963104349292aae64e73782c1a55c3b5f05f"
+    }
+  ],
+  "seeds": [0],
+  "iterations": [15],
+  "epsilon": [0.1],
+  "pivots": [200],
+  "repetitions": 1,
+  "warmups": 1,
+  "timeout_seconds": 120,
+  "fail_fast": true
+}

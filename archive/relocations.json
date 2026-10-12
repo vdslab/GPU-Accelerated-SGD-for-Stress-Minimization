@@ -1,0 +1,331 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-13",
+  "repository_root": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization",
+  "base_commit": "328b7403ad14110e80327cdc7084396219b1d6de",
+  "hash_policy": "SHA256 of sorted relative filename + NUL + file SHA256 + newline; target, __pycache__, .DS_Store excluded",
+  "moves": [
+    {
+      "from": "baseline-sgd-non-gpu",
+      "to": "implementations/full/baseline-sgd-non-gpu",
+      "preserved_content": {
+        "files": 7,
+        "bytes": 78017,
+        "tree_sha256": "6522fefe022d630199794391c971b8c6eef79a9c6ccd62819fa6181d71a43100"
+      }
+    },
+    {
+      "from": "vram-lock-native",
+      "to": "implementations/full/vram-lock-native",
+      "preserved_content": {
+        "files": 8,
+        "bytes": 92988,
+        "tree_sha256": "9f22f47a0d6556df499fe4cfe3f2871acd932cfa997117cdc1646803bc0ae7b2"
+      }
+    },
+    {
+      "from": "rr_gpu",
+      "to": "implementations/full/rr_gpu",
+      "preserved_content": {
+        "files": 8,
+        "bytes": 97033,
+        "tree_sha256": "b9173450cb491e24039fde0a7606bbd0837027dc073b3a87a2f565216c08bcdc"
+      }
+    },
+    {
+      "from": "baseline-sparse-sgd-non-gpu",
+      "to": "implementations/sparse/baseline-sparse-sgd-non-gpu",
+      "preserved_content": {
+        "files": 7,
+        "bytes": 72309,
+        "tree_sha256": "a3fcbe29bd37fde4cb31333d061445de417506ad541847c6f6e8aa0ef2d3a60d"
+      }
+    },
+    {
+      "from": "vram-lock-sparse",
+      "to": "implementations/sparse/vram-lock-sparse",
+      "preserved_content": {
+        "files": 9,
+        "bytes": 64485,
+        "tree_sha256": "3d30054774f9fe8bdc37427e6371c3019208f9a262dce9b74d04b2dc87613c2e"
+      }
+    },
+    {
+      "from": "sparse-sgd-gpu",
+      "to": "implementations/sparse/sparse-sgd-gpu",
+      "preserved_content": {
+        "files": 11,
+        "bytes": 113955,
+        "tree_sha256": "34a738f901a96898555afc5b5d8e7c12f62ffcfd21ca88ff2aa6ab34ee27e32b"
+      }
+    },
+    {
+      "from": "experiment-common",
+      "to": "shared/experiment-common",
+      "preserved_content": {
+        "files": 9,
+        "bytes": 45248,
+        "tree_sha256": "68c94506e9b62ff7288376366dc9a751440a1ed19062e79d2528fb9cb53cd532"
+      }
+    },
+    {
+      "from": "gpu_visualizer",
+      "to": "tools/gpu_visualizer",
+      "preserved_content": {
+        "files": 10,
+        "bytes": 94576,
+        "tree_sha256": "27166827496a4b9c1e42ad52b232c0b44446c309c9a21850875ff0d2db9fc6d3"
+      }
+    },
+    {
+      "from": "mtx-import-test",
+      "to": "tools/diagnostics/mtx-import-test",
+      "preserved_content": {
+        "files": 4,
+        "bytes": 6142,
+        "tree_sha256": "95b87acec5d804ef16477b5af01c5849f1cb6389c270a27571b2fc46784b93aa"
+      }
+    },
+    {
+      "from": "vram-lock",
+      "to": "archive/implementations/vram-lock",
+      "preserved_content": {
+        "files": 7,
+        "bytes": 91333,
+        "tree_sha256": "0343dbe0b7096d34163c897992f6853e7313c2848c7b8f48dc0dac90601f7950"
+      }
+    },
+    {
+      "from": "sgd_stress_nongpu.py",
+      "to": "archive/implementations/python-sgd/sgd_stress_nongpu.py",
+      "preserved_content": {
+        "files": 1,
+        "bytes": 7217,
+        "tree_sha256": "3b13543700284ef17ffb9893e7f9a29efedef7d843f89a109a63b2e472f2e585"
+      }
+    },
+    {
+      "from": "visualize_result.py",
+      "to": "archive/tools/visualize_result.py",
+      "preserved_content": {
+        "files": 1,
+        "bytes": 4232,
+        "tree_sha256": "70604cb9089e7072c920ab6c6595f43ed9e5a4121729aa2fc3239e0aba04387d"
+      }
+    },
+    {
+      "from": "measure-m4-memory-capacity",
+      "to": "archive/tools/measure-m4-memory-capacity",
+      "preserved_content": {
+        "files": 1,
+        "bytes": 7,
+        "tree_sha256": "88beceedd4a5dbed5daa9b09a48267448d1e330361bd8c9f25035582722f181d"
+      }
+    },
+    {
+      "from": "output",
+      "to": "archive/experiments/legacy-output",
+      "preserved_content": {
+        "files": 1973,
+        "bytes": 1029093545,
+        "tree_sha256": "271a6518888aab5103b62cd8b3c4292a6d899590d0109c2f9e376f943794b124"
+      }
+    },
+    {
+      "from": "paper/tables/e0-bcspwr10-validation",
+      "to": "archive/experiments/e0-tables/e0-bcspwr10-validation",
+      "preserved_content": {
+        "files": 10,
+        "bytes": 30177,
+        "tree_sha256": "eefb040515aeb79cba303f180b6e98ad53807e922101487b5af6df3de02c1a77"
+      }
+    },
+    {
+      "from": "paper/tables/e0-bcsstk29-validation",
+      "to": "archive/experiments/e0-tables/e0-bcsstk29-validation",
+      "preserved_content": {
+        "files": 10,
+        "bytes": 30698,
+        "tree_sha256": "b86f7c8873a2b0547d1f0a0ab5d6a1e9b187fa1d01a20b3dc84958998e0834a0"
+      }
+    },
+    {
+      "from": "paper/tables/e0-rerun-validation",
+      "to": "archive/experiments/e0-tables/e0-rerun-validation",
+      "preserved_content": {
+        "files": 10,
+        "bytes": 29789,
+        "tree_sha256": "047fda99e86089e553f37fbda2fd49c1b9138c8887585f0defaffb9fdec62382"
+      }
+    },
+    {
+      "from": "paper/tables/e0-validation",
+      "to": "archive/experiments/e0-tables/e0-validation",
+      "preserved_content": {
+        "files": 10,
+        "bytes": 32125,
+        "tree_sha256": "96dd2ea5a91a9515a5f1cf4d00f6343568f0c05d766f402677cc9ce205405bc9"
+      }
+    },
+    {
+      "from": "prod_data",
+      "to": "data"
+    },
+    {
+      "from": "archive/datasets/data",
+      "to": "data"
+    }
+  ],
+  "protected_results": {
+    "path": "experiment_results/v1",
+    "before": {
+      "files": 2372,
+      "bytes": 1226473923,
+      "tree_sha256": "c7d0cf8e4a0dc1688c7fddc425ad19d77770c4a1da9e7ac7caf685551385e677"
+    },
+    "verification": {
+      "date": "2026-10-13",
+      "unchanged_payload": [
+        "config",
+        "raw",
+        "tables",
+        "figures",
+        "report"
+      ],
+      "only_documentation_updated": [
+        "README.md"
+      ],
+      "verified_original_tree": {
+        "files": 2372,
+        "bytes": 1226473923,
+        "tree_sha256": "c7d0cf8e4a0dc1688c7fddc425ad19d77770c4a1da9e7ac7caf685551385e677"
+      },
+      "method": "Recompute original tree with README restored virtually from base_commit; all other bytes read from current files."
+    }
+  },
+  "cache_cleanup": {
+    "removed_bytes": 3305495328,
+    "removed_paths": [
+      "archive/implementations/vram-lock/target",
+      "archive/tools/measure-m4-memory-capacity/target"
+    ],
+    "retained_binary": "archive/tools/measure-m4-memory-capacity/target/release/measure-m4-memory-capacity",
+    "retained_binary_sha256": "ca0bbab92ade380095292021d979afc56e72e690aea5166476ec3d03b7dc11b9",
+    "note": "Only reproducible historical build caches removed; active build caches retained."
+  },
+  "source_recovery": {
+    "path": "archive/tools/measure-m4-memory-capacity",
+    "commit": "b197786118fea8bfaa980d326cca2d6b471f695f",
+    "files": {
+      "Cargo.toml": "481f8cf8509022adb19b7d498ade17f6cae0f8b7c42af36726c9c3c18b906750",
+      "Cargo.lock": "5a809e309e040819ce57e5598ad59979895ba0a63afb68ec00b3bed36cb974c1",
+      "src/main.rs": "d7f6cdde778a66a3f710f4207a2f3f9c0ee10feb79237f74b59a77f0fb760016"
+    }
+  },
+  "data_consolidation": {
+    "date": "2026-10-13",
+    "previous_moves": [
+      {
+        "from": "data",
+        "to": "archive/datasets/data",
+        "preserved_content": {
+          "files": 9,
+          "bytes": 40622624,
+          "tree_sha256": "a9511b85ddaab8a4f7b9872b4bddd82625161f389bd4aeae5be2ffb300d694f5"
+        }
+      }
+    ],
+    "source_files_verified": 52,
+    "legacy_files_verified": 9,
+    "unique_legacy_files_merged": [
+      "bcsstm35.mtx",
+      "bcsstm36.mtx",
+      "bcsstm38.mtx",
+      "web-Stanford.mtx"
+    ],
+    "identical_duplicate_files_removed": [
+      "USpowerGrid.mtx",
+      "bcspwr08.mtx",
+      "bcspwr10.mtx",
+      "bcsstk29.mtx",
+      "luxembourg_osm.mtx"
+    ],
+    "current_files_sha256": {
+      "1138_bus.mtx": "91af071985d646ea6f0b478db765444a232a7dd79cab55b1c264b292137207ae",
+      "3elt.mtx": "46ca66a3d1b4cf3fe67ee54ab8e442c9ede077046dec06fc4c7fe66ebb0af4e7",
+      "EVA.mtx": "5f445fe1f0728933313d5acac41b43434705da4ea323842a4597500b7487d006",
+      "G65.mtx": "2571e86909fe98b659a9494e7c72c8e483aaffdbd0d05c537ca6fc6a2cffd9dd",
+      "USpowerGrid.mtx": "8fda7edfc1844d73d4f5be7d9a49963104349292aae64e73782c1a55c3b5f05f",
+      "bcspwr01.mtx": "1a66044e50d1affbfa9c017c52546dac42bdccf3ab931490868c58d6a2bb0082",
+      "bcspwr08.mtx": "b2d2f25ec7ca3b85b987941e4ad553766ce0eba73525b1747a07ed30c58bcd92",
+      "bcspwr10.mtx": "5011d5518a7d96ab054dadb8f0670fded73385548add1cfa75c43742523c3e33",
+      "bcsstk29.mtx": "49251de30c5a231009d60890fcbdf590412b9421818952ce67ebf8b8279c50ce",
+      "bcsstk31.mtx": "3c56b4fc52bf6d1482362fedf72fa6d4acf5038d1f1e20ecdfab329a5f4a6bb9",
+      "bcsstm35.mtx": "b45082d58a6ba450020f77d963a3bc58710ea5a095446671cf567a87e80487eb",
+      "bcsstm36.mtx": "0e347dd8591d44eb58363929ff529c9c99cdeba9656b9d71fbde5b4c067fb98f",
+      "bcsstm38.mtx": "82c824db31e8a3d063e97acccff5e4b5c8c3928571679ff3e1937f390762dab9",
+      "cage8.mtx": "6eff5636f6f83d1a500b15e9328fb1ef9d681498180ae3122be9afd9c2ac73cc",
+      "dwt_1005.mtx": "9e01e79c94b2a48518efd40ab899247785384e2dc3050ab514630d8ad93da962",
+      "dwt_2680.mtx": "69f704979c07b0062eaa604c2c36f9c9e1d54d284ceb3b5810266210a743e977",
+      "dwt_419.mtx": "89417a132d3a8ed8f41a1a55c8971d6cf27c88cab303bfd29e881c1560ff4639",
+      "fe_4elt2.mtx": "6e83576d527a868f150c058311af647348ae19e25fdcc2615158d40cadab6921",
+      "luxembourg_osm.mtx": "3920e27dcdc7a4cfcf24b5e7c092584c54b7a71e8db042623d9c66741b2c0184",
+      "poli.mtx": "23a62e377ffc1a0e8a3ed9e72b38e8615185c68876991757b8855964764cc93a",
+      "qh882.mtx": "ccd678e57956a34802638fa766fcb61fc80d8a7fc167dd932b9bebb114079464",
+      "v1_lcc/1138_bus.mtx": "afcaf075fe4f259a66531455559b8056ee43a8aca039947a900d1b4e84c824eb",
+      "v1_lcc/1138_bus.vertex-map.txt": "46373ead53fbee25f2351715abaf0b44bcba288a0650949d4847f8fe527b338f",
+      "v1_lcc/3elt.mtx": "757dec71920b6cbf505b628b2d74034cf416fa037e3a269e653e8a146ffc4614",
+      "v1_lcc/3elt.vertex-map.txt": "5ae1cb34c1e39828b89abbf937ea0e0fad6dbb6397f3fa36e18774db7972d68e",
+      "v1_lcc/EVA.mtx": "c4d41f5347c24784d86bcea30f16dcc035f79120a95d37a2476a55686cb3ddde",
+      "v1_lcc/EVA.vertex-map.txt": "dd972b8ba35a108769d1c6d0b55daa3a0ad0c1409c6d67acd026954d05b623ee",
+      "v1_lcc/G65.mtx": "c15f6ed43a4b1c67c7f802c53401b8dab80085f18fd52486c59bd817f068dfb4",
+      "v1_lcc/G65.vertex-map.txt": "3408266601614b3ade67f68ae8a7c3c14c4fbaf1a255688fca6786c66cfdb576",
+      "v1_lcc/USpowerGrid.mtx": "aac4faffbc2edd14ed031aeea76d64946d846e6b16d61d94e5d5d6a0a7aea9c0",
+      "v1_lcc/USpowerGrid.vertex-map.txt": "05828734f17510677b21b09657209eb1df137af00d9c6bb73993f22a4fe02cfc",
+      "v1_lcc/bcsstk31.mtx": "f72131009a1a2c1c9fc425ee65f603622af03bc03f33474a94a510fd2fac2671",
+      "v1_lcc/bcsstk31.vertex-map.txt": "0d72af69047215d5bf08c06dd5a0128dea3f4cd40d25bf1a2805f8930ca26d94",
+      "v1_lcc/cage8.mtx": "6f476b079cc643acbe618f815cce6465bd16f88fd53a9f2825c3b19e52de7b36",
+      "v1_lcc/cage8.vertex-map.txt": "753d61788db42722e466fff86235df9788d9b9b64ad38d161357e10e45842294",
+      "v1_lcc/dwt_1005.mtx": "47fe4b089487e6db7c6aafca32d6c9a6dda0f2f74749b1e6eb3a84cb013ecdbc",
+      "v1_lcc/dwt_1005.vertex-map.txt": "1a4982e0bf43ce276dc6ad34195f9faf2a6607f150cbd1ee892de13b1e1c4bb8",
+      "v1_lcc/dwt_2680.mtx": "af33ffce433ad2462057f06c8de36a48cd0fd68819c938f0c2836334cb814fda",
+      "v1_lcc/dwt_2680.vertex-map.txt": "2b0ebbb32889d18bb029ad12dd3c9041cbc37e7b26b6305e953e2a56d43126ce",
+      "v1_lcc/dwt_419.mtx": "12c72b640bc1947a3b6f35b995ab565f2eb7915e74837c981cf459bdf8daec1e",
+      "v1_lcc/dwt_419.vertex-map.txt": "cd9199580e1d6155843f3896f94d8d2f6bfb3160e25ecd1d6e71c3b3dfe4f36a",
+      "v1_lcc/fe_4elt2.mtx": "e709478c366be98ce83aa46a5049e354dc6624c16a4076f53addc06cea41b189",
+      "v1_lcc/fe_4elt2.vertex-map.txt": "c3fbe6f009003300bbf6d9c9b6457d9c87334c97a962e15b52afc8d5e86e9a0f",
+      "v1_lcc/luxembourg_osm.mtx": "e4a84af2de64284a17e49907ef1b4c6aa20e749cab15b617cd2791b3f11ad526",
+      "v1_lcc/luxembourg_osm.vertex-map.txt": "b8c8e8cd06a7c0892644b17181ba5c189dae3affb28ee4f11b2b94ac96b36f05",
+      "v1_lcc/poli.mtx": "39aa40d05440a89f3c6489619e849353c363572b0a6dcd9a044035a6b880b1aa",
+      "v1_lcc/poli.vertex-map.txt": "9a48c1fde91736d3df39ec8eaa1577de2299a950ba9c5e17229002ff4d7ab204",
+      "v1_lcc/qh882.mtx": "7aab6b5fb5dc527bddb7550eb71b62ddf709b6c77696b97a483de40b6e86ad6a",
+      "v1_lcc/qh882.vertex-map.txt": "e9eda5d0d0eb121918aaab08a25becb7de354347bea3dfb04036a59a810a70d6",
+      "v1_lcc/venkat50.mtx": "b9cda847e8db0af38d12e73cd14e283b5ec0899f84d78a0b4fd9ac97c07d7078",
+      "v1_lcc/venkat50.vertex-map.txt": "7133f735e062ec46104c3f6216415f51170bfe1d2c94d4ad87b12a4714e9f611",
+      "v1_lcc/web-NotreDame.mtx": "0d03a817b6b6478aa24464335765719fe1b6595dc00c736d37840b2b9b3758a9",
+      "v1_lcc/web-NotreDame.vertex-map.txt": "bfabc35fa1ca1554935f787c8ae7c5944a21f9694bd8b1012bd4c13d4e522717",
+      "venkat50.mtx": "130106a4a5d0b87e7aa688e4fcce3b810511d88214ab2143e77b86230a1da630",
+      "web-NotreDame.mtx": "2a6b72192cd0f91a597e259055238f976ed2239234c06caf04a96a60e5d042c1",
+      "web-Stanford.mtx": "a514e9693666e9d063b3f0b3535f45706f31e524239194750785af737f8ad090"
+    }
+  },
+  "minimal_docs_revision": {
+    "date": "2026-10-13",
+    "experiment_docs": "experiments/docs",
+    "input_directory": "data",
+    "removed_provisional_paper_documents": true,
+    "v1_payload_verified": {
+      "files": 2372,
+      "bytes": 1226473923,
+      "tree_sha256": "c7d0cf8e4a0dc1688c7fddc425ad19d77770c4a1da9e7ac7caf685551385e677"
+    },
+    "verification": {
+      "python_tests_passed": 37,
+      "release_builds_passed": 6,
+      "single_run": "success",
+      "sparse_example_runs": 3,
+      "resume_skipped_successful_runs": 3,
+      "example_aggregation": "validation, publication_ready=false"
+    }
+  }
+}
