@@ -86,6 +86,14 @@ Full / Sparse SGDのGPU並列化と評価。CPU・Atomic・Round-robin方式の�
 
 ## 実行
 
+ブラウザでの単発実験: [ローカル実行ページ](tools/single_run/README.md)。
+
+```sh
+python3 experiments/serve_single.py --open
+```
+
+Live Serverで `tools/single_run/index.html` を開く場合は、別途 `python3 experiments/serve_single.py` を起動する。接続設定内のアイコンで起動コマンドをコピーできる。
+
 リポジトリ直下での単発実行:
 
 ```sh

@@ -4,6 +4,9 @@
 
 ## 単発実行
 
+ブラウザで設定を選ぶ場合は `python3 experiments/serve_single.py --open` を実行する。
+Live Serverにも対応する。手順は[ローカル実行ページ](../../tools/single_run/README.md)を参照。
+
 1グラフ・1手法を実行し、初期配置と最終配置の画像を保存する。warmupなし。
 
 ```sh
