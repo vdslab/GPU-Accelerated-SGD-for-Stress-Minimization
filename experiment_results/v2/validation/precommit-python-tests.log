@@ -1,0 +1,30 @@
+...............................[2/2] failure fixture-fixture-sgd-d8f01c191b01
+.Isolated incomplete final JSONL line: /var/folders/86/8xdk_pn54rl484431zjfs57m0000gn/T/tmpvmwwpwjo/results.corrupt-20261013T130932.jsonl
+....Experiment fixture: 2 formal runs, warmups=0
+[1/2] run fixture-fixture-sparse_sgd-2abb80e3bac5
+[1/2] success fixture-fixture-sparse_sgd-2abb80e3bac5
+[2/2] run fixture-fixture-atomic_sparse_sgd-012514b9e33d
+[2/2] success fixture-fixture-atomic_sparse_sgd-012514b9e33d
+Experiment fixture: 2 formal runs, warmups=0
+[1/2] fixture-fixture-sgd-727552ae9c60
+  /private/var/folders/86/8xdk_pn54rl484431zjfs57m0000gn/T/tmpn_a2zift/fake_method.py --run-id fixture-fixture-sgd-727552ae9c60 --input /private/var/folders/86/8xdk_pn54rl484431zjfs57m0000gn/T/tmpn_a2zift/fixture.mtx --iterations 2 --epsilon 0.10000000000000001 --seed 0 --output-format json --output-dir /private/var/folders/86/8xdk_pn54rl484431zjfs57m0000gn/T/tmpn_a2zift/output/fixture/artifacts/fixture-fixture-sgd-727552ae9c60 --run-mode benchmark
+[2/2] fixture-fixture-rr_sparse_sgd-3bd2a1e2bba6
+  /private/var/folders/86/8xdk_pn54rl484431zjfs57m0000gn/T/tmpn_a2zift/fake_method.py --run-id fixture-fixture-rr_sparse_sgd-3bd2a1e2bba6 --input /private/var/folders/86/8xdk_pn54rl484431zjfs57m0000gn/T/tmpn_a2zift/fixture.mtx --iterations 2 --epsilon 0.10000000000000001 --seed 0 --output-format json --output-dir /private/var/folders/86/8xdk_pn54rl484431zjfs57m0000gn/T/tmpn_a2zift/output/fixture/artifacts/fixture-fixture-rr_sparse_sgd-3bd2a1e2bba6 --run-mode benchmark --pivots 1
+Experiment fixture: 2 formal runs, warmups=0
+[1/2] run fixture-fixture-sgd-727552ae9c60
+[1/2] success fixture-fixture-sgd-727552ae9c60
+[2/2] run fixture-fixture-sgd-d8f01c191b01
+Experiment fixture: 2 formal runs, warmups=0
+[1/2] skip success fixture-fixture-sgd-727552ae9c60
+[2/2] run fixture-fixture-sgd-d8f01c191b01
+[2/2] success fixture-fixture-sgd-d8f01c191b01
+[1/1] fixture sgd seed=0
+success
+................................................................
+----------------------------------------------------------------------
+Ran 100 tests in 15.044s
+
+OK
+Experiment fixture: 1 formal runs, warmups=1
+[1/1] run fixture-fixture-sgd-727552ae9c60
+[1/1] success fixture-fixture-sgd-727552ae9c60

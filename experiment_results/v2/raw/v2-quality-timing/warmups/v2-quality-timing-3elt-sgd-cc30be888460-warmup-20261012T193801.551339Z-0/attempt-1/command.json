@@ -1,0 +1,19 @@
+[
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/baseline-sgd-non-gpu/target/release/baseline-sgd-non-gpu",
+  "--run-id",
+  "v2-quality-timing-3elt-sgd-cc30be888460-warmup-20261012T193801.551339Z-0",
+  "--input",
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v1_lcc/3elt.mtx",
+  "--iterations",
+  "15",
+  "--epsilon",
+  "0.10000000000000001",
+  "--seed",
+  "0",
+  "--output-format",
+  "json",
+  "--output-dir",
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v2/raw/v2-quality-timing/warmups/v2-quality-timing-3elt-sgd-cc30be888460-warmup-20261012T193801.551339Z-0/attempt-1",
+  "--run-mode",
+  "benchmark"
+]

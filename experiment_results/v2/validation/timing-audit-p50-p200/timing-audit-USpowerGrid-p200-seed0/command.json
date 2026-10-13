@@ -1,0 +1,19 @@
+[
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/sparse-sgd-gpu",
+  "--input",
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v1_lcc/USpowerGrid.mtx",
+  "--pivots",
+  "200",
+  "--iterations",
+  "15",
+  "--epsilon",
+  "0.1",
+  "--seed",
+  "0",
+  "--run-id",
+  "timing-audit-USpowerGrid-p200-seed0",
+  "--output-format",
+  "json",
+  "--output-dir",
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v2/validation/timing-audit-p50-p200/timing-audit-USpowerGrid-p200-seed0"
+]

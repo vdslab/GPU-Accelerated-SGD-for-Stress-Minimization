@@ -1,0 +1,76 @@
+{
+  "sources": [
+    {
+      "path": "experiment_results/v2/raw/v2-large-sparse/results.jsonl",
+      "sha256": "83b37bb6e5808b9d02fcc8d88d2e963741fca1118ac853140a18f6ac02ae2a10",
+      "manifest_sha256": "15052a2c341f0f3c01ff6689304fd96f21f7ed0d7c689555d84afd98358ddc61",
+      "execution_integrity_sha256": "4195bc6d7168b58c2875e577ec44cf49740fdca69a8a7a2c5230b7f7ca172efd",
+      "source_snapshot_verified": true
+    },
+    {
+      "path": "experiment_results/v2/raw/v2-quality-timing/results.jsonl",
+      "sha256": "7dbee9ae284fc24bdd91710a41e328352aa5179f4151fd98d5fac25bd6c9768e",
+      "manifest_sha256": "8dc87170c692e8eb82f535e4902e2ca9a3b3d79c127222099a443098d07e3854",
+      "execution_integrity_sha256": "c91b89d22be7e6cac38baf67cfb63396e7cdc6b241e44767570d82e616ea83c2",
+      "source_snapshot_verified": true
+    },
+    {
+      "path": "experiment_results/v2/raw/v2-rr-memory-tiling/results.jsonl",
+      "sha256": "03730ae7b45c989ce25a611728e36492b6471eb17159f58432248e3f554a52a4",
+      "manifest_sha256": "367f8acf8f3d8e1c1773d05aedc3c68ac2e5dd714b7c4bd8b8053603efdcb049",
+      "execution_integrity_sha256": "f81168adb0742d9198cc30791d15e73e9176aff575fb864f4a1e3a5eaa2d9dd1",
+      "source_snapshot_verified": true
+    },
+    {
+      "path": "experiment_results/v2/raw/v2-rr-workgroup/results.jsonl",
+      "sha256": "51278fe6434cf338cf50829f20286e32ce103f04df148295fdf379ff21e34a31",
+      "manifest_sha256": "fa916d2f2de8090a5a6a45a0501188c0862c29baa6133f7531c5598d8aa5d5ba",
+      "execution_integrity_sha256": "f81168adb0742d9198cc30791d15e73e9176aff575fb864f4a1e3a5eaa2d9dd1",
+      "source_snapshot_verified": true
+    }
+  ],
+  "script_sha256": "acd0394e531939ca223473a8bf95c25ba9aa726c2e9d234eddbf0ba01a421fb7",
+  "bootstrap_resamples": 10000,
+  "bootstrap_seed": 20261013,
+  "bootstrap_unit": "seed (median across repetitions)",
+  "commits": [
+    "3593d62dec471a08e91dabe42a0c84f942418866"
+  ],
+  "publication_ready": false,
+  "config_sha256": {
+    "datasets.json": "c76b88d8681def7b9960bc99f8459075032c52cf4ec7cd5fc879769d3917ecdf",
+    "large-sparse.json": "15052a2c341f0f3c01ff6689304fd96f21f7ed0d7c689555d84afd98358ddc61",
+    "quality-timing.json": "8dc87170c692e8eb82f535e4902e2ca9a3b3d79c127222099a443098d07e3854",
+    "rr-memory-tiling.json": "367f8acf8f3d8e1c1773d05aedc3c68ac2e5dd714b7c4bd8b8053603efdcb049",
+    "rr-workgroup.json": "fa916d2f2de8090a5a6a45a0501188c0862c29baa6133f7531c5598d8aa5d5ba"
+  },
+  "figures": {
+    "01_iteration_speedup.pdf": "22a487298642b254701e28f6b99f75cacb8dbf0933206437febc67ff9c46f60e",
+    "01_iteration_speedup.png": "df568bad34bcccb89e7a9ff149ee14acaa8505b9cc7ddcc8a66cc975933bb22d",
+    "01_iteration_speedup.svg": "2c5ff29f343af07243f4e801bb264e63f9f882f1d752d3517c15cdb4a2cd429a",
+    "02_final_stress_ratio.pdf": "ccfb03ea20a18c909d58e6d0ac6f92f5f47b306b6eaa575afc5150687943b5de",
+    "02_final_stress_ratio.png": "a2a2fa7fbc56ed4d4136f338b7d8bcf43977d1b521bc515d17b30264a6066669",
+    "02_final_stress_ratio.svg": "e773cfa78f8e0e4960a7a58084b43a4e3179d3ea19a450cdfce33c0b9fe5d029",
+    "03_stress_ratio_distributions.pdf": "cb1644f6cb46c5b009b767ffc4866f672d6e38212a0ca475fcf54e56e5b457a3",
+    "03_stress_ratio_distributions.png": "6f14c009a17a9e8655a4103581326d4efb5a127010e4b7a24dbbd243e605084b",
+    "03_stress_ratio_distributions.svg": "a66c51f0d5f8d8dbd7abe3d83ac59cec6d6ea06949f2ff166a00f044ada028ad",
+    "04_time_breakdown_full.pdf": "5e04af43baadf2f79d9bffc179cbecdfcc3b02c6a14465ed6ac9aeb07bf1d420",
+    "04_time_breakdown_full.png": "15f0b484b44fce145f054ef1e708046c6211963e84ef8e57bb415ce1c608cc88",
+    "04_time_breakdown_full.svg": "85f0fbf6c5e1be352cc4e82b01dc0cb8219e2e97c8541a72c8aa893c52d4828e",
+    "04_time_breakdown_sparse.pdf": "5a0b78b42aadbd6f70d71df9f74e6725e0958873d7549300a7f73fbe35b5fee6",
+    "04_time_breakdown_sparse.png": "b8889c54034dd411339a33b23848a6bcd8878611243c555847c094bab80df8be",
+    "04_time_breakdown_sparse.svg": "e9706513368711213e5348f2901c0f58f09c398013b905382a2c685f94f9df15",
+    "05_rr_tile_sensitivity.pdf": "b7673d1aa2c116446b834d5364b2b9ad1538ad923bc97a47dcd91a2e6752dbd0",
+    "05_rr_tile_sensitivity.png": "1cdc9291b17ae3b733a283e2d283a85860123c49b13c8df8c7faed6ce11ecce6",
+    "05_rr_tile_sensitivity.svg": "a2514fb8ee46e69efa856ac736aa7a7005dad0b47858c810cd42330bc60bd15c",
+    "06_shared_memory_ablation.pdf": "17ec2a8a92e46de56cbeb6c43bde01e0e0343983a091c08ebe3f974b07632a28",
+    "06_shared_memory_ablation.png": "9ab494ab1a329b69c31cd197928d4d72b7bcde0343d0edf2df731ae166988b9e",
+    "06_shared_memory_ablation.svg": "f6ff9a36eac0ed51490aa8911978e315051dd8aa076726763f28b4656f145c1e",
+    "07_representative_layouts.pdf": "90d1e1474650afa5c1a5a19d047df5857c408e488a78070a16f90d49403af314",
+    "07_representative_layouts.png": "7a46e8038ae10a048585d3055c9a4d0251bab8ccea8538d9940e72d7b1d1c25d",
+    "07_representative_layouts.svg": "3cff53ad686d1c99a72cf293d314cf97a007455afdbe8b5175df468decac8550",
+    "08_workgroup_sensitivity.pdf": "a00ee7df7ff37b7a29591e0ff4063b4d978519bb1c11a2a76b723d5aee75dc66",
+    "08_workgroup_sensitivity.png": "c652e4be0fbdf008f8c59a701d47509e4ffa06121cfce44988231bd6d4f0f430",
+    "08_workgroup_sensitivity.svg": "7cf4258243458887a26f4dd52889dc483a912bc9db8f3fbe5c0524de5a704592"
+  }
+}

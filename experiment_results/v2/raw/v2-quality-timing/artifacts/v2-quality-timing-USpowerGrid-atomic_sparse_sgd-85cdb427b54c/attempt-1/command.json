@@ -1,0 +1,21 @@
+[
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/vram-lock-sparse/target/release/vram-lock-sparse",
+  "--run-id",
+  "v2-quality-timing-USpowerGrid-atomic_sparse_sgd-85cdb427b54c",
+  "--input",
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v1_lcc/USpowerGrid.mtx",
+  "--iterations",
+  "15",
+  "--epsilon",
+  "0.10000000000000001",
+  "--seed",
+  "12",
+  "--output-format",
+  "json",
+  "--output-dir",
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v2/raw/v2-quality-timing/artifacts/v2-quality-timing-USpowerGrid-atomic_sparse_sgd-85cdb427b54c/attempt-1",
+  "--run-mode",
+  "benchmark",
+  "--pivots",
+  "200"
+]

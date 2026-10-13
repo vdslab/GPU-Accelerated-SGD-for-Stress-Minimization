@@ -16,9 +16,11 @@ from pathlib import Path
 from typing import Any, Iterable, Sequence
 
 try:
+    from record_metadata import validate_rr_metadata
     from artifact_paths import resolve_artifact_path
     from experiment_plan import METHODS, REPO_ROOT, RunDefinition, expand_runs, load_manifest
 except ModuleNotFoundError:
+    from experiments.record_metadata import validate_rr_metadata
     from experiments.artifact_paths import resolve_artifact_path
     from experiments.experiment_plan import (
         METHODS,
@@ -194,6 +196,10 @@ def validate_record_shape(record: dict[str, Any], *, prefer_relocated: bool = Fa
         raise AggregationError(
             f"line {record['_source_line']} に未知fieldがあります: {', '.join(unknown)}"
         )
+    try:
+        validate_rr_metadata(record)
+    except ValueError as error:
+        raise AggregationError(f"line {record['_source_line']}: {error}") from error
     if record["schema_version"] != 1:
         raise AggregationError(
             f"line {record['_source_line']} のschema_versionは1だけに対応します"

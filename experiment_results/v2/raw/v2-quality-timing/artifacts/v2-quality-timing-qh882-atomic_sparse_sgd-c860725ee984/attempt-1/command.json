@@ -1,0 +1,21 @@
+[
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/vram-lock-sparse/target/release/vram-lock-sparse",
+  "--run-id",
+  "v2-quality-timing-qh882-atomic_sparse_sgd-c860725ee984",
+  "--input",
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v1_lcc/qh882.mtx",
+  "--iterations",
+  "15",
+  "--epsilon",
+  "0.10000000000000001",
+  "--seed",
+  "3",
+  "--output-format",
+  "json",
+  "--output-dir",
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v2/raw/v2-quality-timing/artifacts/v2-quality-timing-qh882-atomic_sparse_sgd-c860725ee984/attempt-1",
+  "--run-mode",
+  "benchmark",
+  "--pivots",
+  "200"
+]

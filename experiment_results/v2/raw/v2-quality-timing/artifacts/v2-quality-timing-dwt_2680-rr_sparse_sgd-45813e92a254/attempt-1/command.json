@@ -1,0 +1,21 @@
+[
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/sparse-sgd-gpu",
+  "--run-id",
+  "v2-quality-timing-dwt_2680-rr_sparse_sgd-45813e92a254",
+  "--input",
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v1_lcc/dwt_2680.mtx",
+  "--iterations",
+  "15",
+  "--epsilon",
+  "0.10000000000000001",
+  "--seed",
+  "8",
+  "--output-format",
+  "json",
+  "--output-dir",
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v2/raw/v2-quality-timing/artifacts/v2-quality-timing-dwt_2680-rr_sparse_sgd-45813e92a254/attempt-1",
+  "--run-mode",
+  "benchmark",
+  "--pivots",
+  "200"
+]

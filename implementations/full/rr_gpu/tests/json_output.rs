@@ -43,4 +43,11 @@ fn json_mode_writes_one_record_and_no_progress_to_stdout() {
     assert_eq!(record["run_id"], "contract-rr");
     assert!(record["rounds"].as_u64().unwrap() > 0);
     assert!(record["dispatches"].as_u64().unwrap() > 0);
+    assert_eq!(record["rr_tile_size"], 1024);
+    assert_eq!(record["rr_workgroup_size"], 1024);
+    assert_eq!(record["rr_memory_mode"], "shared");
+    assert_eq!(record["rr_shared_bytes"], 16384);
+    assert_eq!(record["rr_outer_shuffle"], true);
+    assert_eq!(record["rr_inner_shuffle"], true);
+    assert_eq!(record["completed_updates"], 12);
 }

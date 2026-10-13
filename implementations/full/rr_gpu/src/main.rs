@@ -22,6 +22,7 @@ struct Config {
     epsilon: f64,
     seed: u64,
     center: bool,
+    kernel: gpu::KernelConfig,
 }
 
 impl Default for Config {
@@ -33,6 +34,7 @@ impl Default for Config {
             epsilon: 0.1,
             seed: 0,
             center: true,
+            kernel: gpu::KernelConfig::default(),
         }
     }
 }
@@ -71,6 +73,17 @@ impl Config {
                 }
                 "--verbose" => config.common.verbose = true,
                 "--no-center" => config.center = false,
+                "--tile-size" => {
+                    config.kernel.tile_size = next(&mut args, "--tile-size")?.parse()?
+                }
+                "--workgroup-size" => {
+                    config.kernel.workgroup_size = next(&mut args, "--workgroup-size")?.parse()?
+                }
+                "--memory-mode" | "--coordinate-memory" => {
+                    config.kernel.memory_mode = next(&mut args, &argument)?.parse()?
+                }
+                "--no-outer-shuffle" => config.kernel.outer_shuffle = false,
+                "--no-inner-shuffle" => config.kernel.inner_shuffle = false,
                 value if !value.starts_with('-') && !positional => {
                     config.input = value.into();
                     positional = true;
@@ -84,6 +97,7 @@ impl Config {
         if !(config.epsilon.is_finite() && config.epsilon > 0.0) {
             bail!("--epsilon は正の有限値である必要があります");
         }
+        config.kernel.validate()?;
         config.common.validate()?;
         Ok(config)
     }
@@ -108,7 +122,9 @@ fn print_help() {
     println!(
         "Usage: rr-gpu [INPUT] [--run-id ID] [--input PATH] [--iterations N] \
          [--epsilon F] [--seed N] [--output-format human|json] [--output-dir PATH] \
-         [--run-mode benchmark|diagnostic] [--verbose] [--no-center]"
+         [--run-mode benchmark|diagnostic] [--verbose] [--no-center] \
+         [--tile-size 1..1024] [--workgroup-size 1..1024] \
+         [--coordinate-memory shared|global] [--no-outer-shuffle] [--no-inner-shuffle]"
     );
 }
 
@@ -136,16 +152,21 @@ fn main() -> Result<()> {
     let common_preprocess_time = preprocess_started.elapsed();
 
     let setup_started = Instant::now();
-    let block_count = (graph.node_size as u32).div_ceil(gpu::T);
+    let block_count = (graph.node_size as u32).div_ceil(config.kernel.tile_size);
     let schedule = gpu::build_schedule(block_count);
     let method_setup_time = setup_started.elapsed();
 
     let runtime_started = Instant::now();
-    let context = gpu::GpuContext::new()?;
+    let context = gpu::GpuContext::new(config.kernel)?;
     let runtime_init_time = runtime_started.elapsed();
     config.log(format!(
-        "GPU: {} ({}) timestamp_query={}",
-        context.adapter_name, context.backend, context.timestamp_supported
+        "GPU: {} ({}) timestamp_query={}, T={}, W={}, memory={}",
+        context.adapter_name,
+        context.backend,
+        context.timestamp_supported,
+        config.kernel.tile_size,
+        config.kernel.workgroup_size,
+        config.kernel.memory_mode.as_str()
     ));
 
     let mut run = context.execute_sgd(
@@ -225,8 +246,8 @@ fn main() -> Result<()> {
         },
         stress,
         MethodStats {
-            attempted_updates: None,
-            completed_updates: None,
+            attempted_updates: Some((constraint_count * config.iterations) as u64),
+            completed_updates: Some((constraint_count * config.iterations) as u64),
             retry_failures: None,
             rounds: Some(schedule.len()),
             dispatches: Some(run.dispatches),
@@ -238,7 +259,21 @@ fn main() -> Result<()> {
     )?;
 
     match config.common.output_format {
-        OutputFormat::Json => println!("{}", record.to_json_line()?),
+        OutputFormat::Json => {
+            // Extend only this method's output; the shared v1 schema stays compatible.
+            let mut value = serde_json::to_value(&record)?;
+            value["rr_tile_size"] = config.kernel.tile_size.into();
+            value["rr_workgroup_size"] = config.kernel.workgroup_size.into();
+            value["rr_memory_mode"] = config.kernel.memory_mode.as_str().into();
+            value["rr_shared_bytes"] = match config.kernel.memory_mode {
+                gpu::MemoryMode::Shared => config.kernel.tile_size * 16,
+                gpu::MemoryMode::Global => 0,
+            }
+            .into();
+            value["rr_outer_shuffle"] = config.kernel.outer_shuffle.into();
+            value["rr_inner_shuffle"] = config.kernel.inner_shuffle.into();
+            println!("{}", serde_json::to_string(&value)?);
+        }
         OutputFormat::Human => {
             println!(
                 "Rounds={}, dispatches={}, Iteration={:.3} ms, Algorithm={:.3} ms, CLI total={:.3} ms",
@@ -322,6 +357,19 @@ fn save_result(
     writeln!(file, "# Iterations: {}", config.iterations)?;
     writeln!(file, "# Epsilon: {}", config.epsilon)?;
     writeln!(file, "# Seed: {}", config.seed)?;
+    writeln!(file, "# RR tile size: {}", config.kernel.tile_size)?;
+    writeln!(
+        file,
+        "# RR workgroup size: {}",
+        config.kernel.workgroup_size
+    )?;
+    writeln!(
+        file,
+        "# RR coordinate memory: {}",
+        config.kernel.memory_mode.as_str()
+    )?;
+    writeln!(file, "# RR outer shuffle: {}", config.kernel.outer_shuffle)?;
+    writeln!(file, "# RR inner shuffle: {}", config.kernel.inner_shuffle)?;
     writeln!(file)?;
     writeln!(file, "# Edges (source target)")?;
     for (&source, &target) in graph.edge_src.iter().zip(&graph.edge_dst) {
@@ -342,6 +390,31 @@ fn ms(duration: Duration) -> f64 {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn independent_tile_workgroup_memory_and_shuffle_arguments_are_parsed() {
+        let config = Config::from_iter(
+            [
+                "--tile-size",
+                "7",
+                "--workgroup-size",
+                "2",
+                "--coordinate-memory",
+                "global",
+                "--no-outer-shuffle",
+                "--no-inner-shuffle",
+            ]
+            .into_iter()
+            .map(str::to_owned),
+        )
+        .unwrap();
+        assert_eq!(config.kernel.tile_size, 7);
+        assert_eq!(config.kernel.workgroup_size, 2);
+        assert_eq!(config.kernel.memory_mode, gpu::MemoryMode::Global);
+        assert!(!config.kernel.outer_shuffle);
+        assert!(!config.kernel.inner_shuffle);
+        assert!(Config::from_iter(["--tile-size", "0"].into_iter().map(str::to_owned)).is_err());
+    }
 
     #[test]
     fn common_arguments_are_parsed() {

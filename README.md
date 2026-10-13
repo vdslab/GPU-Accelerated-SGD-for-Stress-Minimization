@@ -4,12 +4,14 @@ Full / Sparse SGDのGPU並列化と評価。CPU・Atomic・Round-robin方式の�
 
 ## 実験結果
 
-[v1](experiment_results/v1/README.md) — 16グラフ・6手法・654正式実行。
+現行の [v2](experiment_results/v2/README.md) — **14グラフ・6手法・2,260正式実行、全件成功**。
+小・中規模の主比較は25 seed、大規模・RR設定比較は10 seed。
+速度・stress・shared memory・タイルサイズ・workgroupサイズを比較し、9図をPNG / SVG / PDFで保存。
 
-暫定評価: 小・中規模10 seed、大規模3 seed。`publication_ready=false`。
-速度指標: Iteration time。
+[結果と考察](experiment_results/v2/report/RESULTS.md) · [集計表](experiment_results/v2/tables/summary.csv) · [図](experiment_results/v2/figures/) · [検証](experiment_results/v2/tables/validation.json)
 
-[考察](experiment_results/v1/report/RESULTS.md) · [集計表](experiment_results/v1/tables/results.md) · [図](experiment_results/v1/figures/) · [実験一覧](experiment_results/README.md)
+以前の [v1](experiment_results/v1/README.md) — 16グラフ・6手法・654正式実行の暫定評価（10 / 3 seed）。保存済み結果は維持。
+[実験一覧](experiment_results/README.md)
 
 ## 実装
 
@@ -46,16 +48,14 @@ Full / Sparse SGDのGPU並列化と評価。CPU・Atomic・Round-robin方式の�
 │   ├── schema/
 │   └── tests/
 ├── experiment_results/
-│   └── v1/
-│       ├── config/
-│       ├── raw/
-│       │   ├── v1-quality-timing/
-│       │   ├── v1-large-sparse/
-│       │   ├── v1-atomic-sparse-quality-timing/
-│       │   └── v1-atomic-sparse-large-sparse/
-│       ├── tables/
-│       ├── figures/
-│       └── report/
+│   ├── v2/
+│   │   ├── config/
+│   │   ├── raw/
+│   │   ├── tables/
+│   │   ├── figures/
+│   │   ├── report/
+│   │   └── validation/
+│   └── v1/                 以前の実験結果
 ├── data/
 │   └── v1_lcc/
 ├── paper/

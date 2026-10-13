@@ -1,0 +1,45 @@
+warning: field `center` is never read
+  --> src/graph.rs:20:9
+   |
+16 | pub struct SgdParams {
+   |            --------- field in this struct
+...
+20 |     pub center: bool,
+   |         ^^^^^^
+   |
+   = note: `SgdParams` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `wij` is never read
+  --> src/graph.rs:28:9
+   |
+24 | pub struct EdgeInfo {
+   |            -------- field in this struct
+...
+28 |     pub wij: f64,
+   |         ^^^
+   |
+   = note: `EdgeInfo` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+
+warning: `rr-gpu` (bin "rr-gpu" test) generated 2 warnings
+warning: `rr-gpu` (bin "rr-gpu") generated 2 warnings (2 duplicates)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.30s
+     Running unittests src/main.rs (implementations/full/rr_gpu/target/debug/deps/rr_gpu-67fc702cb7a278b7)
+
+running 6 tests
+test tests::common_arguments_are_parsed ... ok
+test gpu::tests::global_shader_allocates_no_shared_memory_and_barriers_match_memory_mode ... ok
+test tests::independent_tile_workgroup_memory_and_shuffle_arguments_are_parsed ... ok
+test gpu::tests::outer_rounds_are_disjoint_and_cover_odd_and_even_block_counts ... ok
+test gpu::tests::tiny_gpu_shared_and_global_agree_with_exact_rr_reference ... ok
+test gpu::tests::exact_permutations_cover_all_cross_and_self_pairs_without_races ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.13s
+
+     Running tests/json_output.rs (implementations/full/rr_gpu/target/debug/deps/json_output-c76b0834dd2a04d9)
+
+running 1 test
+test json_mode_writes_one_record_and_no_progress_to_stdout ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.45s
+

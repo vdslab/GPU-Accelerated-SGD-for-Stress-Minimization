@@ -1,23 +1,170 @@
 use crate::graph;
-use anyhow::Result;
+use anyhow::{Context, Result};
 use bytemuck::{Pod, Zeroable};
 use experiment_common::seed::{rng_for_stream, FULL_UPDATE_STREAM};
 use experiment_common::OutputFormat;
 use rand::seq::SliceRandom;
+use rand::Rng;
 use std::num::NonZeroU64;
 use std::time::{Duration, Instant};
 use wgpu::util::DeviceExt;
 
-pub const T: u32 = 1024; // ブロックサイズ
+pub const DEFAULT_TILE_SIZE: u32 = 1024;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum MemoryMode {
+    Shared,
+    Global,
+}
+
+impl MemoryMode {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Shared => "shared",
+            Self::Global => "global",
+        }
+    }
+}
+
+impl std::str::FromStr for MemoryMode {
+    type Err = anyhow::Error;
+
+    fn from_str(value: &str) -> Result<Self> {
+        match value {
+            "shared" => Ok(Self::Shared),
+            "global" => Ok(Self::Global),
+            _ => anyhow::bail!("--coordinate-memory (--memory-mode) は shared または global です"),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct KernelConfig {
+    pub tile_size: u32,
+    pub workgroup_size: u32,
+    pub memory_mode: MemoryMode,
+    pub outer_shuffle: bool,
+    pub inner_shuffle: bool,
+}
+
+impl Default for KernelConfig {
+    fn default() -> Self {
+        Self {
+            tile_size: DEFAULT_TILE_SIZE,
+            workgroup_size: 1024,
+            memory_mode: MemoryMode::Shared,
+            outer_shuffle: true,
+            inner_shuffle: true,
+        }
+    }
+}
+
+impl KernelConfig {
+    pub fn validate(self) -> Result<()> {
+        anyhow::ensure!(
+            (1..=1024).contains(&self.tile_size),
+            "--tile-size は1〜1024です"
+        );
+        anyhow::ensure!(
+            (1..=1024).contains(&self.workgroup_size),
+            "--workgroup-size は1〜1024です"
+        );
+        Ok(())
+    }
+}
+
+fn self_round_count(length: u32) -> u32 {
+    if length < 2 {
+        0
+    } else {
+        length + length % 2 - 1
+    }
+}
+
+// Each domain has its own exact permutation. Taking a shuffled prefix modulo
+// a smaller domain repeats some rounds and omits others.
+fn build_inner_permutation(
+    tile_size: u32,
+    last_block_len: u32,
+    shuffle: bool,
+    rng: &mut impl Rng,
+) -> Vec<u32> {
+    let mut permutation = Vec::new();
+    for count in [
+        tile_size,
+        self_round_count(tile_size),
+        self_round_count(last_block_len),
+    ] {
+        let start = permutation.len();
+        permutation.extend(0..count);
+        if shuffle {
+            permutation[start..].shuffle(rng);
+        }
+    }
+    permutation
+}
+
+fn shader_source(config: KernelConfig) -> String {
+    let (helpers, init_cross, init_self, flush_cross, flush_self, barrier) = match config
+        .memory_mode
+    {
+        MemoryMode::Shared => (
+            r#"var<workgroup> wg_pos_i: array<vec2<f32>, __BLOCK_T__>;
+var<workgroup> wg_pos_j: array<vec2<f32>, __BLOCK_T__>;
+fn read_i(block: u32, index: u32) -> vec2<f32> { return wg_pos_i[index]; }
+fn read_j(block: u32, index: u32) -> vec2<f32> { return wg_pos_j[index]; }
+fn write_i(block: u32, index: u32, value: vec2<f32>) { wg_pos_i[index] = value; }
+fn write_j(block: u32, index: u32, value: vec2<f32>) { wg_pos_j[index] = value; }"#,
+            r#"for (var local = tx; local < BLOCK_T; local += WORKGROUP_SIZE) {
+                if local < li { wg_pos_i[local] = positions[i * BLOCK_T + local]; }
+                if local < lj { wg_pos_j[local] = positions[j * BLOCK_T + local]; }
+            }
+            workgroupBarrier();"#,
+            r#"for (var local = tx; local < li; local += WORKGROUP_SIZE) {
+                wg_pos_i[local] = positions[i * BLOCK_T + local];
+            }
+            workgroupBarrier();"#,
+            r#"for (var local = tx; local < BLOCK_T; local += WORKGROUP_SIZE) {
+                if local < li { positions[i * BLOCK_T + local] = wg_pos_i[local]; }
+                if local < lj { positions[j * BLOCK_T + local] = wg_pos_j[local]; }
+            }"#,
+            r#"for (var local = tx; local < li; local += WORKGROUP_SIZE) {
+                positions[i * BLOCK_T + local] = wg_pos_i[local];
+            }"#,
+            "workgroupBarrier();",
+        ),
+        MemoryMode::Global => (
+            r#"fn read_i(block: u32, index: u32) -> vec2<f32> { return positions[block * BLOCK_T + index]; }
+fn read_j(block: u32, index: u32) -> vec2<f32> { return positions[block * BLOCK_T + index]; }
+fn write_i(block: u32, index: u32, value: vec2<f32>) { positions[block * BLOCK_T + index] = value; }
+fn write_j(block: u32, index: u32, value: vec2<f32>) { positions[block * BLOCK_T + index] = value; }"#,
+            "",
+            "",
+            "",
+            "",
+            "storageBarrier();",
+        ),
+    };
+    include_str!("shader.wgsl")
+        .replace("__MEMORY_HELPERS__", helpers)
+        .replace("__INIT_CROSS__", init_cross)
+        .replace("__INIT_SELF__", init_self)
+        .replace("__FLUSH_CROSS__", flush_cross)
+        .replace("__FLUSH_SELF__", flush_self)
+        .replace("__MEMORY_BARRIER__", barrier)
+        .replace("__BLOCK_T__", &config.tile_size.to_string())
+        .replace("__WORKGROUP_SIZE__", &config.workgroup_size.to_string())
+}
 
 /// カーネルに渡す uniform バッファ
-/// r_outer / big_b は廃止。タイル割り当ては tiles バッファで渡す。
+/// Self-tile permutation offsets select the exact full/partial domains.
 #[repr(C)]
 #[derive(Debug, Clone, Copy, Pod, Zeroable)]
 pub struct Uniforms {
     pub n: u32,
     pub eta: f32,
-    _pad: [u32; 2],
+    pub full_self_perm_offset: u32,
+    pub partial_self_perm_offset: u32,
 }
 
 pub struct GpuContext {
@@ -27,6 +174,7 @@ pub struct GpuContext {
     pub adapter_name: String,
     pub backend: String,
     pub timestamp_supported: bool,
+    pub kernel: KernelConfig,
 }
 
 #[derive(Debug)]
@@ -110,7 +258,8 @@ pub fn build_schedule(big_b: u32) -> Vec<Vec<(u32, u32)>> {
 // ── GPU コンテキスト ──────────────────────────────────────────────────────────
 
 impl GpuContext {
-    pub fn new() -> Result<Self> {
+    pub fn new(kernel: KernelConfig) -> Result<Self> {
+        kernel.validate()?;
         let instance = wgpu::Instance::new(&wgpu::InstanceDescriptor::default());
 
         let adapter =
@@ -136,7 +285,24 @@ impl GpuContext {
         }))
         .map_err(|e| anyhow::anyhow!("デバイス作成失敗: {}", e))?;
 
-        let module = device.create_shader_module(wgpu::include_wgsl!("shader.wgsl"));
+        anyhow::ensure!(
+            kernel.workgroup_size <= device.limits().max_compute_invocations_per_workgroup,
+            "workgroup size exceeds this GPU's invocation limit"
+        );
+        anyhow::ensure!(
+            kernel.workgroup_size <= device.limits().max_compute_workgroup_size_x,
+            "workgroup size exceeds this GPU's x-dimension limit"
+        );
+        if kernel.memory_mode == MemoryMode::Shared {
+            anyhow::ensure!(
+                kernel.tile_size * 16 <= device.limits().max_compute_workgroup_storage_size,
+                "tile size exceeds this GPU's shared memory limit"
+            );
+        }
+        let module = device.create_shader_module(wgpu::ShaderModuleDescriptor {
+            label: Some("race-free two-level RR SGD"),
+            source: wgpu::ShaderSource::Wgsl(shader_source(kernel).into()),
+        });
 
         Ok(GpuContext {
             device,
@@ -145,6 +311,7 @@ impl GpuContext {
             adapter_name: info.name,
             backend: format!("{:?}", info.backend),
             timestamp_supported,
+            kernel,
         })
     }
 
@@ -159,6 +326,7 @@ impl GpuContext {
     ) -> Result<GpuRunResult> {
         let upload_started = Instant::now();
         let n = params.positions.len() as u32;
+        let tile_size = self.kernel.tile_size;
 
         // ── f64 → f32 変換 ────────────────────────────────────────────────────
         let etas: Vec<f32> = params.etas.iter().map(|&e| e as f32).collect();
@@ -179,8 +347,13 @@ impl GpuContext {
         }
 
         // ── ブロック長配列 ─────────────────────────────────────────────────────
-        let big_b = n.div_ceil(T);
-        let block_lens: Vec<u32> = (0..big_b).map(|bi| T.min(n - bi * T)).collect();
+        let big_b = n.div_ceil(tile_size);
+        let block_lens: Vec<u32> = (0..big_b)
+            .map(|bi| tile_size.min(n - bi * tile_size))
+            .collect();
+        let last_block_len = *block_lens.last().context("no vertices")?;
+        let full_self_perm_offset = tile_size;
+        let partial_self_perm_offset = tile_size + self_round_count(tile_size);
 
         let max_tiles_per_round = schedule.iter().map(|r| r.len()).max().unwrap_or(1);
 
@@ -216,7 +389,8 @@ impl GpuContext {
         let uniforms_init = Uniforms {
             n,
             eta: etas[0],
-            _pad: [0; 2],
+            full_self_perm_offset,
+            partial_self_perm_offset,
         };
         let uniforms_buffer = self
             .device
@@ -235,9 +409,13 @@ impl GpuContext {
             mapped_at_creation: false,
         });
 
-        // inner_perm バッファ: ケースAの内側ループオフセット列（長さ T、u32 × T = 4KB）
-        // ラウンドごとに CPU でシャッフルして write_buffer で更新する
-        let perm_init: Vec<u32> = (0..T).collect();
+        // Packed independent permutations for cross/full-self/partial-self matching rounds.
+        let perm_init = build_inner_permutation(
+            tile_size,
+            last_block_len,
+            false,
+            &mut rng_for_stream(seed, FULL_UPDATE_STREAM),
+        );
         let perm_buffer = self
             .device
             .create_buffer_init(&wgpu::util::BufferInitDescriptor {
@@ -419,13 +597,16 @@ impl GpuContext {
             let uni = Uniforms {
                 n,
                 eta,
-                _pad: [0; 2],
+                full_self_perm_offset,
+                partial_self_perm_offset,
             };
             self.queue
                 .write_buffer(&uniforms_buffer, 0, bytemuck::bytes_of(&uni));
 
             // 外側ランダム: ラウンドの処理順をイテレーションごとにシャッフル
-            round_order.shuffle(&mut rng);
+            if self.kernel.outer_shuffle {
+                round_order.shuffle(&mut rng);
+            }
 
             for (round_position, &ri) in round_order.iter().enumerate() {
                 let round = &schedule[ri];
@@ -435,10 +616,13 @@ impl GpuContext {
                 self.queue
                     .write_buffer(&tiles_buffer, 0, bytemuck::cast_slice(&tiles_flat));
 
-                // 内側ランダム: ケースAの内側ループオフセット列をラウンドごとにシャッフル
-                // inner_perm は [0..T) の順列。シェーダーで r_inner の代わりに使う。
-                let mut inner_perm: Vec<u32> = (0..T).collect();
-                inner_perm.shuffle(&mut rng);
+                // Shuffle exact matching-round domains independently; never reduce modulo.
+                let inner_perm = build_inner_permutation(
+                    tile_size,
+                    last_block_len,
+                    self.kernel.inner_shuffle,
+                    &mut rng,
+                );
                 self.queue
                     .write_buffer(&perm_buffer, 0, bytemuck::cast_slice(&inner_perm));
 
@@ -556,5 +740,277 @@ impl GpuContext {
             readback_time,
             dispatches: (schedule.len() * num_iterations) as u64,
         })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::collections::{BTreeMap, BTreeSet};
+
+    // CPU image of the shader's matchings, including strided invocation work.
+    fn tile_matchings(
+        li: u32,
+        lj: u32,
+        same_block: bool,
+        config: KernelConfig,
+        permutation: &[u32],
+    ) -> Vec<Vec<(u32, u32)>> {
+        let mut matchings = Vec::new();
+        let rounds = if same_block {
+            self_round_count(li)
+        } else {
+            config.tile_size
+        };
+        for &r in &permutation[..rounds as usize] {
+            let mut matching = Vec::new();
+            for thread in 0..config.workgroup_size {
+                let limit = if same_block { (li + li % 2) / 2 } else { li };
+                let mut slot = thread;
+                while slot < limit {
+                    let (u, v) = if same_block {
+                        if slot == 0 {
+                            (rounds, r)
+                        } else {
+                            ((r + slot) % rounds, (r + rounds - slot) % rounds)
+                        }
+                    } else {
+                        (slot, (slot + r) % config.tile_size)
+                    };
+                    if u < li && v < lj {
+                        matching.push((u, v));
+                    }
+                    slot += config.workgroup_size;
+                }
+            }
+            matchings.push(matching);
+        }
+        matchings
+    }
+
+    fn assert_matching_is_disjoint(matching: &[(u32, u32)], same_block: bool) {
+        let mut occupied = BTreeSet::new();
+        for &(u, v) in matching {
+            assert!(occupied.insert((0, u)), "overlapping first endpoint");
+            assert!(
+                occupied.insert((if same_block { 0 } else { 1 }, v)),
+                "overlapping second endpoint"
+            );
+        }
+    }
+
+    #[test]
+    fn exact_permutations_cover_all_cross_and_self_pairs_without_races() {
+        let mut rng = rng_for_stream(17, FULL_UPDATE_STREAM);
+        for tile_size in [1, 2, 3, 7, 8, 32] {
+            for workgroup_size in [1, 2, 4, 64] {
+                let config = KernelConfig {
+                    tile_size,
+                    workgroup_size,
+                    ..KernelConfig::default()
+                };
+                for li in 1..=tile_size {
+                    for lj in 1..=tile_size {
+                        let permutation = build_inner_permutation(tile_size, li, true, &mut rng);
+                        let cross = tile_matchings(li, lj, false, config, &permutation);
+                        let mut counts = BTreeMap::new();
+                        for matching in &cross {
+                            assert_matching_is_disjoint(matching, false);
+                            for &pair in matching {
+                                *counts.entry(pair).or_insert(0) += 1;
+                            }
+                        }
+                        assert_eq!(counts.len(), (li * lj) as usize);
+                        assert!(counts.values().all(|&count| count == 1));
+                    }
+                    let permutation = build_inner_permutation(tile_size, li, true, &mut rng);
+                    let offset = if li == tile_size {
+                        tile_size
+                    } else {
+                        tile_size + self_round_count(tile_size)
+                    };
+                    let self_tiles =
+                        tile_matchings(li, li, true, config, &permutation[offset as usize..]);
+                    let mut counts = BTreeMap::new();
+                    for matching in &self_tiles {
+                        assert_matching_is_disjoint(matching, true);
+                        for &(u, v) in matching {
+                            *counts.entry((u.min(v), u.max(v))).or_insert(0) += 1;
+                        }
+                    }
+                    assert_eq!(counts.len(), (li * (li - 1) / 2) as usize);
+                    assert!(counts.values().all(|&count| count == 1));
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn outer_rounds_are_disjoint_and_cover_odd_and_even_block_counts() {
+        for blocks in 0..=31 {
+            let mut counts = BTreeMap::new();
+            for round in build_schedule(blocks) {
+                let mut occupied = BTreeSet::new();
+                for (u, v) in round {
+                    assert!(occupied.insert(u));
+                    if u != v {
+                        assert!(occupied.insert(v));
+                    }
+                    *counts.entry((u.min(v), u.max(v))).or_insert(0) += 1;
+                }
+            }
+            assert_eq!(counts.len(), (blocks * (blocks + 1) / 2) as usize);
+            assert!(counts.values().all(|&count| count == 1));
+        }
+    }
+
+    #[test]
+    fn global_shader_allocates_no_shared_memory_and_barriers_match_memory_mode() {
+        let shared = shader_source(KernelConfig::default());
+        assert!(shared.contains("var<workgroup>"));
+        assert!(shared.contains("workgroupBarrier();"));
+        let global = shader_source(KernelConfig {
+            memory_mode: MemoryMode::Global,
+            ..KernelConfig::default()
+        });
+        assert!(!global.contains("var<workgroup>"));
+        assert!(!global.contains("workgroupBarrier();"));
+        assert!(global.contains("storageBarrier();"));
+        assert!(!global.contains("__"));
+    }
+
+    fn fixture(n: u32) -> graph::SgdParams {
+        graph::SgdParams {
+            etas: vec![0.2, 0.05],
+            positions: (0..n)
+                .map(|u| [u as f64 * 0.3, ((u * u + 1) % 11) as f64 * 0.4])
+                .collect(),
+            pairs: (0..n)
+                .flat_map(|u| {
+                    ((u + 1)..n).map(move |v| {
+                        let d = (1 + (u + v) % 5) as f64;
+                        graph::EdgeInfo {
+                            u: u as usize,
+                            v: v as usize,
+                            dij: d,
+                            wij: 1.0 / (d * d),
+                        }
+                    })
+                })
+                .collect(),
+            center: false,
+        }
+    }
+
+    fn reference_sgd(params: &graph::SgdParams, config: KernelConfig, seed: u64) -> Vec<[f32; 2]> {
+        let n = params.positions.len() as u32;
+        let blocks = n.div_ceil(config.tile_size);
+        let block_len = |b| config.tile_size.min(n - b * config.tile_size);
+        let last_len = block_len(blocks - 1);
+        let schedule = build_schedule(blocks);
+        let mut round_order: Vec<_> = (0..schedule.len()).collect();
+        let mut rng = rng_for_stream(seed, FULL_UPDATE_STREAM);
+        let mut positions: Vec<[f32; 2]> = params
+            .positions
+            .iter()
+            .map(|p| [p[0] as f32, p[1] as f32])
+            .collect();
+        let mut distances = vec![0.0_f32; n as usize * n as usize];
+        for pair in &params.pairs {
+            distances[pair.u * n as usize + pair.v] = pair.dij as f32;
+            distances[pair.v * n as usize + pair.u] = pair.dij as f32;
+        }
+        for &eta in &params.etas {
+            if config.outer_shuffle {
+                round_order.shuffle(&mut rng);
+            }
+            for &round in &round_order {
+                let permutation = build_inner_permutation(
+                    config.tile_size,
+                    last_len,
+                    config.inner_shuffle,
+                    &mut rng,
+                );
+                for &(i, j) in &schedule[round] {
+                    let offset = if i != j {
+                        0
+                    } else if block_len(i) == config.tile_size {
+                        config.tile_size
+                    } else {
+                        config.tile_size + self_round_count(config.tile_size)
+                    };
+                    let matchings = tile_matchings(
+                        block_len(i),
+                        block_len(j),
+                        i == j,
+                        config,
+                        &permutation[offset as usize..],
+                    );
+                    for matching in matchings {
+                        for (u, v) in matching {
+                            let gu = (i * config.tile_size + u) as usize;
+                            let gv = (j * config.tile_size + v) as usize;
+                            let d = distances[gu * n as usize + gv];
+                            if d < 0.5 {
+                                continue;
+                            }
+                            let dx = positions[gv][0] - positions[gu][0];
+                            let dy = positions[gv][1] - positions[gu][1];
+                            let current = (dx * dx + dy * dy).sqrt().max(1e-12);
+                            let mu = ((1.0 / (d * d)) * eta as f32).min(1.0);
+                            let delta = [
+                                mu * ((current - d) / 2.0) * (dx / current),
+                                mu * ((current - d) / 2.0) * (dy / current),
+                            ];
+                            for axis in 0..2 {
+                                positions[gu][axis] += delta[axis];
+                                positions[gv][axis] -= delta[axis];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        positions
+    }
+
+    #[test]
+    fn tiny_gpu_shared_and_global_agree_with_exact_rr_reference() {
+        // Odd and partial blocks, T<W and T>W exercise the corrected paths.
+        for (tile_size, workgroup_size, n) in [(1, 32, 5), (7, 2, 19), (8, 2, 19), (32, 256, 35)] {
+            let mut outcomes = Vec::new();
+            for memory_mode in [MemoryMode::Shared, MemoryMode::Global] {
+                let config = KernelConfig {
+                    tile_size,
+                    workgroup_size,
+                    memory_mode,
+                    ..KernelConfig::default()
+                };
+                let params = fixture(n);
+                let expected = reference_sgd(&params, config, 13);
+                let context =
+                    GpuContext::new(config).expect("GPU required for RR kernel smoke test");
+                let result = context
+                    .execute_sgd(
+                        params,
+                        &build_schedule(n.div_ceil(tile_size)),
+                        13,
+                        false,
+                        OutputFormat::Json,
+                    )
+                    .unwrap();
+                for (index, (got, want)) in result.positions.iter().zip(&expected).enumerate() {
+                    for axis in 0..2 {
+                        assert!((got[axis] - want[axis]).abs() < 2e-5, "T={tile_size} W={workgroup_size} mode={memory_mode:?} vertex={index}: {got:?} vs {want:?}");
+                    }
+                }
+                outcomes.push(result.positions);
+            }
+            for (a, b) in outcomes[0].iter().zip(&outcomes[1]) {
+                for axis in 0..2 {
+                    assert!((a[axis] - b[axis]).abs() < 2e-5);
+                }
+            }
+        }
     }
 }

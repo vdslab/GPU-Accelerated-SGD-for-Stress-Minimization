@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "experiment-record-v1.json",
+  "title": "Stress SGD experiment record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "run_id", "run_mode", "status", "method", "family",
+    "binary", "git_commit", "git_dirty", "dataset", "input_path",
+    "input_sha256", "seed", "initial_positions_sha256", "preprocess_sha256",
+    "nodes", "edges", "constraints", "pivots", "iterations", "epsilon",
+    "cpu_model", "gpu_name", "gpu_backend", "input_time_ms",
+    "common_preprocess_time_ms", "method_setup_time_ms",
+    "runtime_init_time_ms", "upload_time_ms", "iteration_time_ms",
+    "gpu_device_time_ms", "readback_time_ms", "postprocess_time_ms",
+    "algorithm_time_cold_ms", "algorithm_time_warm_ms",
+    "cli_total_time_cold_ms", "stress_kind", "stress_value",
+    "stress_eval_time_ms", "stress_samples", "stress_seed",
+    "attempted_updates", "completed_updates", "retry_failures", "rounds",
+    "dispatches", "final_positions_path", "vertex_map_path", "error_stage",
+    "error_message", "exit_code", "stderr_log_path"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "run_id": { "type": "string", "minLength": 1 },
+    "run_mode": { "enum": ["benchmark", "diagnostic"] },
+    "status": { "enum": ["success", "failure"] },
+    "method": {
+      "enum": [
+        "sgd", "atomic_sgd", "rr_sgd", "sparse_sgd",
+        "atomic_sparse_sgd", "rr_sparse_sgd"
+      ]
+    },
+    "family": { "enum": ["full", "sparse"] },
+    "binary": { "type": "string", "minLength": 1 },
+    "git_commit": { "type": "string", "minLength": 1 },
+    "git_dirty": { "type": "boolean" },
+    "dataset": { "type": "string", "minLength": 1 },
+    "input_path": { "type": "string", "minLength": 1 },
+    "input_sha256": { "type": "string", "minLength": 1 },
+    "seed": { "type": "integer", "minimum": 0 },
+    "initial_positions_sha256": { "type": ["string", "null"], "minLength": 1 },
+    "preprocess_sha256": { "type": ["string", "null"] },
+    "nodes": { "type": ["integer", "null"], "minimum": 0 },
+    "edges": { "type": ["integer", "null"], "minimum": 0 },
+    "constraints": { "type": ["integer", "null"], "minimum": 0 },
+    "pivots": { "type": ["integer", "null"], "minimum": 1 },
+    "iterations": { "type": "integer", "minimum": 1 },
+    "epsilon": { "type": "number", "exclusiveMinimum": 0 },
+    "cpu_model": { "type": "string", "minLength": 1 },
+    "gpu_name": { "type": ["string", "null"] },
+    "gpu_backend": { "type": ["string", "null"] },
+    "input_time_ms": { "$ref": "#/$defs/timeOrNull" },
+    "common_preprocess_time_ms": { "$ref": "#/$defs/timeOrNull" },
+    "method_setup_time_ms": { "$ref": "#/$defs/timeOrNull" },
+    "runtime_init_time_ms": { "$ref": "#/$defs/timeOrNull" },
+    "upload_time_ms": { "$ref": "#/$defs/timeOrNull" },
+    "iteration_time_ms": { "$ref": "#/$defs/timeOrNull" },
+    "gpu_device_time_ms": { "$ref": "#/$defs/timeOrNull" },
+    "readback_time_ms": { "$ref": "#/$defs/timeOrNull" },
+    "postprocess_time_ms": { "$ref": "#/$defs/timeOrNull" },
+    "algorithm_time_cold_ms": { "$ref": "#/$defs/timeOrNull" },
+    "algorithm_time_warm_ms": { "$ref": "#/$defs/timeOrNull" },
+    "cli_total_time_cold_ms": { "$ref": "#/$defs/timeOrNull" },
+    "stress_kind": { "type": ["string", "null"], "enum": ["exact", "sampled", null] },
+    "stress_value": { "type": ["number", "null"], "minimum": 0 },
+    "stress_eval_time_ms": { "$ref": "#/$defs/timeOrNull" },
+    "stress_samples": { "type": ["integer", "null"], "minimum": 1 },
+    "stress_seed": { "type": ["integer", "null"], "minimum": 0 },
+    "attempted_updates": { "$ref": "#/$defs/countOrNull" },
+    "completed_updates": { "$ref": "#/$defs/countOrNull" },
+    "retry_failures": { "$ref": "#/$defs/countOrNull" },
+    "rounds": { "$ref": "#/$defs/countOrNull" },
+    "dispatches": { "$ref": "#/$defs/countOrNull" },
+    "final_positions_path": { "type": ["string", "null"] },
+    "vertex_map_path": { "type": ["string", "null"] },
+    "error_stage": { "type": ["string", "null"] },
+    "error_message": { "type": ["string", "null"] },
+    "exit_code": { "type": ["integer", "null"] },
+    "stderr_log_path": { "type": ["string", "null"] }
+  },
+  "$defs": {
+    "timeOrNull": {
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "countOrNull": {
+      "type": ["integer", "null"],
+      "minimum": 0
+    }
+  }
+}

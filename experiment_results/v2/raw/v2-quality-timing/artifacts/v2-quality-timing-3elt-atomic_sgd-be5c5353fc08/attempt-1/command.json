@@ -1,0 +1,19 @@
+[
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/vram-lock-native/target/release/vram-lock-native",
+  "--run-id",
+  "v2-quality-timing-3elt-atomic_sgd-be5c5353fc08",
+  "--input",
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v1_lcc/3elt.mtx",
+  "--iterations",
+  "15",
+  "--epsilon",
+  "0.10000000000000001",
+  "--seed",
+  "1",
+  "--output-format",
+  "json",
+  "--output-dir",
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v2/raw/v2-quality-timing/artifacts/v2-quality-timing-3elt-atomic_sgd-be5c5353fc08/attempt-1",
+  "--run-mode",
+  "benchmark"
+]

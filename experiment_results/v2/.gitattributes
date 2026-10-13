@@ -1,0 +1,4 @@
+# 自動生成SVGと実行証跡は生成時の内容を保ち、通常のソース整形対象から外す。
+figures/*.svg -whitespace
+raw/** -whitespace -text
+validation/** -whitespace -text

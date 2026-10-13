@@ -1,0 +1,1027 @@
+diff --git a/implementations/full/rr_gpu/Cargo.toml b/implementations/full/rr_gpu/Cargo.toml
+index bf969aa..78e0dc7 100644
+--- a/implementations/full/rr_gpu/Cargo.toml
++++ b/implementations/full/rr_gpu/Cargo.toml
+@@ -12,8 +12,8 @@ experiment-common = { path = "../../../shared/experiment-common" }
+ pollster = "0.4.0"
+ rand = "0.9.2"
+ sprs = "0.11.4"
++serde_json = "1"
+ wgpu = "27.0.1"
+ 
+ [dev-dependencies]
+-serde_json = "1"
+ tempfile = "3"
+diff --git a/implementations/full/rr_gpu/src/gpu.rs b/implementations/full/rr_gpu/src/gpu.rs
+index 1cde667..0c50b76 100644
+--- a/implementations/full/rr_gpu/src/gpu.rs
++++ b/implementations/full/rr_gpu/src/gpu.rs
+@@ -1,23 +1,170 @@
+ use crate::graph;
+-use anyhow::Result;
++use anyhow::{Context, Result};
+ use bytemuck::{Pod, Zeroable};
+ use experiment_common::seed::{rng_for_stream, FULL_UPDATE_STREAM};
+ use experiment_common::OutputFormat;
+ use rand::seq::SliceRandom;
++use rand::Rng;
+ use std::num::NonZeroU64;
+ use std::time::{Duration, Instant};
+ use wgpu::util::DeviceExt;
+ 
+-pub const T: u32 = 1024; // ブロックサイズ
++pub const DEFAULT_TILE_SIZE: u32 = 1024;
++
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum MemoryMode {
++    Shared,
++    Global,
++}
++
++impl MemoryMode {
++    pub fn as_str(self) -> &'static str {
++        match self {
++            Self::Shared => "shared",
++            Self::Global => "global",
++        }
++    }
++}
++
++impl std::str::FromStr for MemoryMode {
++    type Err = anyhow::Error;
++
++    fn from_str(value: &str) -> Result<Self> {
++        match value {
++            "shared" => Ok(Self::Shared),
++            "global" => Ok(Self::Global),
++            _ => anyhow::bail!("--coordinate-memory (--memory-mode) は shared または global です"),
++        }
++    }
++}
++
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub struct KernelConfig {
++    pub tile_size: u32,
++    pub workgroup_size: u32,
++    pub memory_mode: MemoryMode,
++    pub outer_shuffle: bool,
++    pub inner_shuffle: bool,
++}
++
++impl Default for KernelConfig {
++    fn default() -> Self {
++        Self {
++            tile_size: DEFAULT_TILE_SIZE,
++            workgroup_size: 1024,
++            memory_mode: MemoryMode::Shared,
++            outer_shuffle: true,
++            inner_shuffle: true,
++        }
++    }
++}
++
++impl KernelConfig {
++    pub fn validate(self) -> Result<()> {
++        anyhow::ensure!(
++            (1..=1024).contains(&self.tile_size),
++            "--tile-size は1〜1024です"
++        );
++        anyhow::ensure!(
++            (1..=1024).contains(&self.workgroup_size),
++            "--workgroup-size は1〜1024です"
++        );
++        Ok(())
++    }
++}
++
++fn self_round_count(length: u32) -> u32 {
++    if length < 2 {
++        0
++    } else {
++        length + length % 2 - 1
++    }
++}
++
++// Each domain has its own exact permutation. Taking a shuffled prefix modulo
++// a smaller domain repeats some rounds and omits others.
++fn build_inner_permutation(
++    tile_size: u32,
++    last_block_len: u32,
++    shuffle: bool,
++    rng: &mut impl Rng,
++) -> Vec<u32> {
++    let mut permutation = Vec::new();
++    for count in [
++        tile_size,
++        self_round_count(tile_size),
++        self_round_count(last_block_len),
++    ] {
++        let start = permutation.len();
++        permutation.extend(0..count);
++        if shuffle {
++            permutation[start..].shuffle(rng);
++        }
++    }
++    permutation
++}
++
++fn shader_source(config: KernelConfig) -> String {
++    let (helpers, init_cross, init_self, flush_cross, flush_self, barrier) = match config
++        .memory_mode
++    {
++        MemoryMode::Shared => (
++            r#"var<workgroup> wg_pos_i: array<vec2<f32>, __BLOCK_T__>;
++var<workgroup> wg_pos_j: array<vec2<f32>, __BLOCK_T__>;
++fn read_i(block: u32, index: u32) -> vec2<f32> { return wg_pos_i[index]; }
++fn read_j(block: u32, index: u32) -> vec2<f32> { return wg_pos_j[index]; }
++fn write_i(block: u32, index: u32, value: vec2<f32>) { wg_pos_i[index] = value; }
++fn write_j(block: u32, index: u32, value: vec2<f32>) { wg_pos_j[index] = value; }"#,
++            r#"for (var local = tx; local < BLOCK_T; local += WORKGROUP_SIZE) {
++                if local < li { wg_pos_i[local] = positions[i * BLOCK_T + local]; }
++                if local < lj { wg_pos_j[local] = positions[j * BLOCK_T + local]; }
++            }
++            workgroupBarrier();"#,
++            r#"for (var local = tx; local < li; local += WORKGROUP_SIZE) {
++                wg_pos_i[local] = positions[i * BLOCK_T + local];
++            }
++            workgroupBarrier();"#,
++            r#"for (var local = tx; local < BLOCK_T; local += WORKGROUP_SIZE) {
++                if local < li { positions[i * BLOCK_T + local] = wg_pos_i[local]; }
++                if local < lj { positions[j * BLOCK_T + local] = wg_pos_j[local]; }
++            }"#,
++            r#"for (var local = tx; local < li; local += WORKGROUP_SIZE) {
++                positions[i * BLOCK_T + local] = wg_pos_i[local];
++            }"#,
++            "workgroupBarrier();",
++        ),
++        MemoryMode::Global => (
++            r#"fn read_i(block: u32, index: u32) -> vec2<f32> { return positions[block * BLOCK_T + index]; }
++fn read_j(block: u32, index: u32) -> vec2<f32> { return positions[block * BLOCK_T + index]; }
++fn write_i(block: u32, index: u32, value: vec2<f32>) { positions[block * BLOCK_T + index] = value; }
++fn write_j(block: u32, index: u32, value: vec2<f32>) { positions[block * BLOCK_T + index] = value; }"#,
++            "",
++            "",
++            "",
++            "",
++            "storageBarrier();",
++        ),
++    };
++    include_str!("shader.wgsl")
++        .replace("__MEMORY_HELPERS__", helpers)
++        .replace("__INIT_CROSS__", init_cross)
++        .replace("__INIT_SELF__", init_self)
++        .replace("__FLUSH_CROSS__", flush_cross)
++        .replace("__FLUSH_SELF__", flush_self)
++        .replace("__MEMORY_BARRIER__", barrier)
++        .replace("__BLOCK_T__", &config.tile_size.to_string())
++        .replace("__WORKGROUP_SIZE__", &config.workgroup_size.to_string())
++}
+ 
+ /// カーネルに渡す uniform バッファ
+-/// r_outer / big_b は廃止。タイル割り当ては tiles バッファで渡す。
++/// Self-tile permutation offsets select the exact full/partial domains.
+ #[repr(C)]
+ #[derive(Debug, Clone, Copy, Pod, Zeroable)]
+ pub struct Uniforms {
+     pub n: u32,
+     pub eta: f32,
+-    _pad: [u32; 2],
++    pub full_self_perm_offset: u32,
++    pub partial_self_perm_offset: u32,
+ }
+ 
+ pub struct GpuContext {
+@@ -27,6 +174,7 @@ pub struct GpuContext {
+     pub adapter_name: String,
+     pub backend: String,
+     pub timestamp_supported: bool,
++    pub kernel: KernelConfig,
+ }
+ 
+ #[derive(Debug)]
+@@ -110,7 +258,8 @@ pub fn build_schedule(big_b: u32) -> Vec<Vec<(u32, u32)>> {
+ // ── GPU コンテキスト ──────────────────────────────────────────────────────────
+ 
+ impl GpuContext {
+-    pub fn new() -> Result<Self> {
++    pub fn new(kernel: KernelConfig) -> Result<Self> {
++        kernel.validate()?;
+         let instance = wgpu::Instance::new(&wgpu::InstanceDescriptor::default());
+ 
+         let adapter =
+@@ -136,7 +285,24 @@ impl GpuContext {
+         }))
+         .map_err(|e| anyhow::anyhow!("デバイス作成失敗: {}", e))?;
+ 
+-        let module = device.create_shader_module(wgpu::include_wgsl!("shader.wgsl"));
++        anyhow::ensure!(
++            kernel.workgroup_size <= device.limits().max_compute_invocations_per_workgroup,
++            "workgroup size exceeds this GPU's invocation limit"
++        );
++        anyhow::ensure!(
++            kernel.workgroup_size <= device.limits().max_compute_workgroup_size_x,
++            "workgroup size exceeds this GPU's x-dimension limit"
++        );
++        if kernel.memory_mode == MemoryMode::Shared {
++            anyhow::ensure!(
++                kernel.tile_size * 16 <= device.limits().max_compute_workgroup_storage_size,
++                "tile size exceeds this GPU's shared memory limit"
++            );
++        }
++        let module = device.create_shader_module(wgpu::ShaderModuleDescriptor {
++            label: Some("race-free two-level RR SGD"),
++            source: wgpu::ShaderSource::Wgsl(shader_source(kernel).into()),
++        });
+ 
+         Ok(GpuContext {
+             device,
+@@ -145,6 +311,7 @@ impl GpuContext {
+             adapter_name: info.name,
+             backend: format!("{:?}", info.backend),
+             timestamp_supported,
++            kernel,
+         })
+     }
+ 
+@@ -159,6 +326,7 @@ impl GpuContext {
+     ) -> Result<GpuRunResult> {
+         let upload_started = Instant::now();
+         let n = params.positions.len() as u32;
++        let tile_size = self.kernel.tile_size;
+ 
+         // ── f64 → f32 変換 ────────────────────────────────────────────────────
+         let etas: Vec<f32> = params.etas.iter().map(|&e| e as f32).collect();
+@@ -179,8 +347,13 @@ impl GpuContext {
+         }
+ 
+         // ── ブロック長配列 ─────────────────────────────────────────────────────
+-        let big_b = n.div_ceil(T);
+-        let block_lens: Vec<u32> = (0..big_b).map(|bi| T.min(n - bi * T)).collect();
++        let big_b = n.div_ceil(tile_size);
++        let block_lens: Vec<u32> = (0..big_b)
++            .map(|bi| tile_size.min(n - bi * tile_size))
++            .collect();
++        let last_block_len = *block_lens.last().context("no vertices")?;
++        let full_self_perm_offset = tile_size;
++        let partial_self_perm_offset = tile_size + self_round_count(tile_size);
+ 
+         let max_tiles_per_round = schedule.iter().map(|r| r.len()).max().unwrap_or(1);
+ 
+@@ -216,7 +389,8 @@ impl GpuContext {
+         let uniforms_init = Uniforms {
+             n,
+             eta: etas[0],
+-            _pad: [0; 2],
++            full_self_perm_offset,
++            partial_self_perm_offset,
+         };
+         let uniforms_buffer = self
+             .device
+@@ -235,9 +409,13 @@ impl GpuContext {
+             mapped_at_creation: false,
+         });
+ 
+-        // inner_perm バッファ: ケースAの内側ループオフセット列（長さ T、u32 × T = 4KB）
+-        // ラウンドごとに CPU でシャッフルして write_buffer で更新する
+-        let perm_init: Vec<u32> = (0..T).collect();
++        // Packed independent permutations for cross/full-self/partial-self matching rounds.
++        let perm_init = build_inner_permutation(
++            tile_size,
++            last_block_len,
++            false,
++            &mut rng_for_stream(seed, FULL_UPDATE_STREAM),
++        );
+         let perm_buffer = self
+             .device
+             .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+@@ -419,13 +597,16 @@ impl GpuContext {
+             let uni = Uniforms {
+                 n,
+                 eta,
+-                _pad: [0; 2],
++                full_self_perm_offset,
++                partial_self_perm_offset,
+             };
+             self.queue
+                 .write_buffer(&uniforms_buffer, 0, bytemuck::bytes_of(&uni));
+ 
+             // 外側ランダム: ラウンドの処理順をイテレーションごとにシャッフル
+-            round_order.shuffle(&mut rng);
++            if self.kernel.outer_shuffle {
++                round_order.shuffle(&mut rng);
++            }
+ 
+             for (round_position, &ri) in round_order.iter().enumerate() {
+                 let round = &schedule[ri];
+@@ -435,10 +616,13 @@ impl GpuContext {
+                 self.queue
+                     .write_buffer(&tiles_buffer, 0, bytemuck::cast_slice(&tiles_flat));
+ 
+-                // 内側ランダム: ケースAの内側ループオフセット列をラウンドごとにシャッフル
+-                // inner_perm は [0..T) の順列。シェーダーで r_inner の代わりに使う。
+-                let mut inner_perm: Vec<u32> = (0..T).collect();
+-                inner_perm.shuffle(&mut rng);
++                // Shuffle exact matching-round domains independently; never reduce modulo.
++                let inner_perm = build_inner_permutation(
++                    tile_size,
++                    last_block_len,
++                    self.kernel.inner_shuffle,
++                    &mut rng,
++                );
+                 self.queue
+                     .write_buffer(&perm_buffer, 0, bytemuck::cast_slice(&inner_perm));
+ 
+@@ -558,3 +742,275 @@ impl GpuContext {
+         })
+     }
+ }
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++    use std::collections::{BTreeMap, BTreeSet};
++
++    // CPU image of the shader's matchings, including strided invocation work.
++    fn tile_matchings(
++        li: u32,
++        lj: u32,
++        same_block: bool,
++        config: KernelConfig,
++        permutation: &[u32],
++    ) -> Vec<Vec<(u32, u32)>> {
++        let mut matchings = Vec::new();
++        let rounds = if same_block {
++            self_round_count(li)
++        } else {
++            config.tile_size
++        };
++        for &r in &permutation[..rounds as usize] {
++            let mut matching = Vec::new();
++            for thread in 0..config.workgroup_size {
++                let limit = if same_block { (li + li % 2) / 2 } else { li };
++                let mut slot = thread;
++                while slot < limit {
++                    let (u, v) = if same_block {
++                        if slot == 0 {
++                            (rounds, r)
++                        } else {
++                            ((r + slot) % rounds, (r + rounds - slot) % rounds)
++                        }
++                    } else {
++                        (slot, (slot + r) % config.tile_size)
++                    };
++                    if u < li && v < lj {
++                        matching.push((u, v));
++                    }
++                    slot += config.workgroup_size;
++                }
++            }
++            matchings.push(matching);
++        }
++        matchings
++    }
++
++    fn assert_matching_is_disjoint(matching: &[(u32, u32)], same_block: bool) {
++        let mut occupied = BTreeSet::new();
++        for &(u, v) in matching {
++            assert!(occupied.insert((0, u)), "overlapping first endpoint");
++            assert!(
++                occupied.insert((if same_block { 0 } else { 1 }, v)),
++                "overlapping second endpoint"
++            );
++        }
++    }
++
++    #[test]
++    fn exact_permutations_cover_all_cross_and_self_pairs_without_races() {
++        let mut rng = rng_for_stream(17, FULL_UPDATE_STREAM);
++        for tile_size in [1, 2, 3, 7, 8, 32] {
++            for workgroup_size in [1, 2, 4, 64] {
++                let config = KernelConfig {
++                    tile_size,
++                    workgroup_size,
++                    ..KernelConfig::default()
++                };
++                for li in 1..=tile_size {
++                    for lj in 1..=tile_size {
++                        let permutation = build_inner_permutation(tile_size, li, true, &mut rng);
++                        let cross = tile_matchings(li, lj, false, config, &permutation);
++                        let mut counts = BTreeMap::new();
++                        for matching in &cross {
++                            assert_matching_is_disjoint(matching, false);
++                            for &pair in matching {
++                                *counts.entry(pair).or_insert(0) += 1;
++                            }
++                        }
++                        assert_eq!(counts.len(), (li * lj) as usize);
++                        assert!(counts.values().all(|&count| count == 1));
++                    }
++                    let permutation = build_inner_permutation(tile_size, li, true, &mut rng);
++                    let offset = if li == tile_size {
++                        tile_size
++                    } else {
++                        tile_size + self_round_count(tile_size)
++                    };
++                    let self_tiles =
++                        tile_matchings(li, li, true, config, &permutation[offset as usize..]);
++                    let mut counts = BTreeMap::new();
++                    for matching in &self_tiles {
++                        assert_matching_is_disjoint(matching, true);
++                        for &(u, v) in matching {
++                            *counts.entry((u.min(v), u.max(v))).or_insert(0) += 1;
++                        }
++                    }
++                    assert_eq!(counts.len(), (li * (li - 1) / 2) as usize);
++                    assert!(counts.values().all(|&count| count == 1));
++                }
++            }
++        }
++    }
++
++    #[test]
++    fn outer_rounds_are_disjoint_and_cover_odd_and_even_block_counts() {
++        for blocks in 0..=31 {
++            let mut counts = BTreeMap::new();
++            for round in build_schedule(blocks) {
++                let mut occupied = BTreeSet::new();
++                for (u, v) in round {
++                    assert!(occupied.insert(u));
++                    if u != v {
++                        assert!(occupied.insert(v));
++                    }
++                    *counts.entry((u.min(v), u.max(v))).or_insert(0) += 1;
++                }
++            }
++            assert_eq!(counts.len(), (blocks * (blocks + 1) / 2) as usize);
++            assert!(counts.values().all(|&count| count == 1));
++        }
++    }
++
++    #[test]
++    fn global_shader_allocates_no_shared_memory_and_barriers_match_memory_mode() {
++        let shared = shader_source(KernelConfig::default());
++        assert!(shared.contains("var<workgroup>"));
++        assert!(shared.contains("workgroupBarrier();"));
++        let global = shader_source(KernelConfig {
++            memory_mode: MemoryMode::Global,
++            ..KernelConfig::default()
++        });
++        assert!(!global.contains("var<workgroup>"));
++        assert!(!global.contains("workgroupBarrier();"));
++        assert!(global.contains("storageBarrier();"));
++        assert!(!global.contains("__"));
++    }
++
++    fn fixture(n: u32) -> graph::SgdParams {
++        graph::SgdParams {
++            etas: vec![0.2, 0.05],
++            positions: (0..n)
++                .map(|u| [u as f64 * 0.3, ((u * u + 1) % 11) as f64 * 0.4])
++                .collect(),
++            pairs: (0..n)
++                .flat_map(|u| {
++                    ((u + 1)..n).map(move |v| {
++                        let d = (1 + (u + v) % 5) as f64;
++                        graph::EdgeInfo {
++                            u: u as usize,
++                            v: v as usize,
++                            dij: d,
++                            wij: 1.0 / (d * d),
++                        }
++                    })
++                })
++                .collect(),
++            center: false,
++        }
++    }
++
++    fn reference_sgd(params: &graph::SgdParams, config: KernelConfig, seed: u64) -> Vec<[f32; 2]> {
++        let n = params.positions.len() as u32;
++        let blocks = n.div_ceil(config.tile_size);
++        let block_len = |b| config.tile_size.min(n - b * config.tile_size);
++        let last_len = block_len(blocks - 1);
++        let schedule = build_schedule(blocks);
++        let mut round_order: Vec<_> = (0..schedule.len()).collect();
++        let mut rng = rng_for_stream(seed, FULL_UPDATE_STREAM);
++        let mut positions: Vec<[f32; 2]> = params
++            .positions
++            .iter()
++            .map(|p| [p[0] as f32, p[1] as f32])
++            .collect();
++        let mut distances = vec![0.0_f32; n as usize * n as usize];
++        for pair in &params.pairs {
++            distances[pair.u * n as usize + pair.v] = pair.dij as f32;
++            distances[pair.v * n as usize + pair.u] = pair.dij as f32;
++        }
++        for &eta in &params.etas {
++            if config.outer_shuffle {
++                round_order.shuffle(&mut rng);
++            }
++            for &round in &round_order {
++                let permutation = build_inner_permutation(
++                    config.tile_size,
++                    last_len,
++                    config.inner_shuffle,
++                    &mut rng,
++                );
++                for &(i, j) in &schedule[round] {
++                    let offset = if i != j {
++                        0
++                    } else if block_len(i) == config.tile_size {
++                        config.tile_size
++                    } else {
++                        config.tile_size + self_round_count(config.tile_size)
++                    };
++                    let matchings = tile_matchings(
++                        block_len(i),
++                        block_len(j),
++                        i == j,
++                        config,
++                        &permutation[offset as usize..],
++                    );
++                    for matching in matchings {
++                        for (u, v) in matching {
++                            let gu = (i * config.tile_size + u) as usize;
++                            let gv = (j * config.tile_size + v) as usize;
++                            let d = distances[gu * n as usize + gv];
++                            if d < 0.5 {
++                                continue;
++                            }
++                            let dx = positions[gv][0] - positions[gu][0];
++                            let dy = positions[gv][1] - positions[gu][1];
++                            let current = (dx * dx + dy * dy).sqrt().max(1e-12);
++                            let mu = ((1.0 / (d * d)) * eta as f32).min(1.0);
++                            let delta = [
++                                mu * ((current - d) / 2.0) * (dx / current),
++                                mu * ((current - d) / 2.0) * (dy / current),
++                            ];
++                            for axis in 0..2 {
++                                positions[gu][axis] += delta[axis];
++                                positions[gv][axis] -= delta[axis];
++                            }
++                        }
++                    }
++                }
++            }
++        }
++        positions
++    }
++
++    #[test]
++    fn tiny_gpu_shared_and_global_agree_with_exact_rr_reference() {
++        // Odd and partial blocks, T<W and T>W exercise the corrected paths.
++        for (tile_size, workgroup_size, n) in [(1, 32, 5), (7, 2, 19), (8, 2, 19), (32, 256, 35)] {
++            let mut outcomes = Vec::new();
++            for memory_mode in [MemoryMode::Shared, MemoryMode::Global] {
++                let config = KernelConfig {
++                    tile_size,
++                    workgroup_size,
++                    memory_mode,
++                    ..KernelConfig::default()
++                };
++                let params = fixture(n);
++                let expected = reference_sgd(&params, config, 13);
++                let context =
++                    GpuContext::new(config).expect("GPU required for RR kernel smoke test");
++                let result = context
++                    .execute_sgd(
++                        params,
++                        &build_schedule(n.div_ceil(tile_size)),
++                        13,
++                        false,
++                        OutputFormat::Json,
++                    )
++                    .unwrap();
++                for (index, (got, want)) in result.positions.iter().zip(&expected).enumerate() {
++                    for axis in 0..2 {
++                        assert!((got[axis] - want[axis]).abs() < 2e-5, "T={tile_size} W={workgroup_size} mode={memory_mode:?} vertex={index}: {got:?} vs {want:?}");
++                    }
++                }
++                outcomes.push(result.positions);
++            }
++            for (a, b) in outcomes[0].iter().zip(&outcomes[1]) {
++                for axis in 0..2 {
++                    assert!((a[axis] - b[axis]).abs() < 2e-5);
++                }
++            }
++        }
++    }
++}
+diff --git a/implementations/full/rr_gpu/src/main.rs b/implementations/full/rr_gpu/src/main.rs
+index 939a5c8..bcdb272 100644
+--- a/implementations/full/rr_gpu/src/main.rs
++++ b/implementations/full/rr_gpu/src/main.rs
+@@ -22,6 +22,7 @@ struct Config {
+     epsilon: f64,
+     seed: u64,
+     center: bool,
++    kernel: gpu::KernelConfig,
+ }
+ 
+ impl Default for Config {
+@@ -33,6 +34,7 @@ impl Default for Config {
+             epsilon: 0.1,
+             seed: 0,
+             center: true,
++            kernel: gpu::KernelConfig::default(),
+         }
+     }
+ }
+@@ -71,6 +73,17 @@ impl Config {
+                 }
+                 "--verbose" => config.common.verbose = true,
+                 "--no-center" => config.center = false,
++                "--tile-size" => {
++                    config.kernel.tile_size = next(&mut args, "--tile-size")?.parse()?
++                }
++                "--workgroup-size" => {
++                    config.kernel.workgroup_size = next(&mut args, "--workgroup-size")?.parse()?
++                }
++                "--memory-mode" | "--coordinate-memory" => {
++                    config.kernel.memory_mode = next(&mut args, &argument)?.parse()?
++                }
++                "--no-outer-shuffle" => config.kernel.outer_shuffle = false,
++                "--no-inner-shuffle" => config.kernel.inner_shuffle = false,
+                 value if !value.starts_with('-') && !positional => {
+                     config.input = value.into();
+                     positional = true;
+@@ -84,6 +97,7 @@ impl Config {
+         if !(config.epsilon.is_finite() && config.epsilon > 0.0) {
+             bail!("--epsilon は正の有限値である必要があります");
+         }
++        config.kernel.validate()?;
+         config.common.validate()?;
+         Ok(config)
+     }
+@@ -108,7 +122,9 @@ fn print_help() {
+     println!(
+         "Usage: rr-gpu [INPUT] [--run-id ID] [--input PATH] [--iterations N] \
+          [--epsilon F] [--seed N] [--output-format human|json] [--output-dir PATH] \
+-         [--run-mode benchmark|diagnostic] [--verbose] [--no-center]"
++         [--run-mode benchmark|diagnostic] [--verbose] [--no-center] \
++         [--tile-size 1..1024] [--workgroup-size 1..1024] \
++         [--coordinate-memory shared|global] [--no-outer-shuffle] [--no-inner-shuffle]"
+     );
+ }
+ 
+@@ -136,16 +152,21 @@ fn main() -> Result<()> {
+     let common_preprocess_time = preprocess_started.elapsed();
+ 
+     let setup_started = Instant::now();
+-    let block_count = (graph.node_size as u32).div_ceil(gpu::T);
++    let block_count = (graph.node_size as u32).div_ceil(config.kernel.tile_size);
+     let schedule = gpu::build_schedule(block_count);
+     let method_setup_time = setup_started.elapsed();
+ 
+     let runtime_started = Instant::now();
+-    let context = gpu::GpuContext::new()?;
++    let context = gpu::GpuContext::new(config.kernel)?;
+     let runtime_init_time = runtime_started.elapsed();
+     config.log(format!(
+-        "GPU: {} ({}) timestamp_query={}",
+-        context.adapter_name, context.backend, context.timestamp_supported
++        "GPU: {} ({}) timestamp_query={}, T={}, W={}, memory={}",
++        context.adapter_name,
++        context.backend,
++        context.timestamp_supported,
++        config.kernel.tile_size,
++        config.kernel.workgroup_size,
++        config.kernel.memory_mode.as_str()
+     ));
+ 
+     let mut run = context.execute_sgd(
+@@ -225,8 +246,8 @@ fn main() -> Result<()> {
+         },
+         stress,
+         MethodStats {
+-            attempted_updates: None,
+-            completed_updates: None,
++            attempted_updates: Some((constraint_count * config.iterations) as u64),
++            completed_updates: Some((constraint_count * config.iterations) as u64),
+             retry_failures: None,
+             rounds: Some(schedule.len()),
+             dispatches: Some(run.dispatches),
+@@ -238,7 +259,21 @@ fn main() -> Result<()> {
+     )?;
+ 
+     match config.common.output_format {
+-        OutputFormat::Json => println!("{}", record.to_json_line()?),
++        OutputFormat::Json => {
++            // Extend only this method's output; the shared v1 schema stays compatible.
++            let mut value = serde_json::to_value(&record)?;
++            value["rr_tile_size"] = config.kernel.tile_size.into();
++            value["rr_workgroup_size"] = config.kernel.workgroup_size.into();
++            value["rr_memory_mode"] = config.kernel.memory_mode.as_str().into();
++            value["rr_shared_bytes"] = match config.kernel.memory_mode {
++                gpu::MemoryMode::Shared => config.kernel.tile_size * 16,
++                gpu::MemoryMode::Global => 0,
++            }
++            .into();
++            value["rr_outer_shuffle"] = config.kernel.outer_shuffle.into();
++            value["rr_inner_shuffle"] = config.kernel.inner_shuffle.into();
++            println!("{}", serde_json::to_string(&value)?);
++        }
+         OutputFormat::Human => {
+             println!(
+                 "Rounds={}, dispatches={}, Iteration={:.3} ms, Algorithm={:.3} ms, CLI total={:.3} ms",
+@@ -322,6 +357,19 @@ fn save_result(
+     writeln!(file, "# Iterations: {}", config.iterations)?;
+     writeln!(file, "# Epsilon: {}", config.epsilon)?;
+     writeln!(file, "# Seed: {}", config.seed)?;
++    writeln!(file, "# RR tile size: {}", config.kernel.tile_size)?;
++    writeln!(
++        file,
++        "# RR workgroup size: {}",
++        config.kernel.workgroup_size
++    )?;
++    writeln!(
++        file,
++        "# RR coordinate memory: {}",
++        config.kernel.memory_mode.as_str()
++    )?;
++    writeln!(file, "# RR outer shuffle: {}", config.kernel.outer_shuffle)?;
++    writeln!(file, "# RR inner shuffle: {}", config.kernel.inner_shuffle)?;
+     writeln!(file)?;
+     writeln!(file, "# Edges (source target)")?;
+     for (&source, &target) in graph.edge_src.iter().zip(&graph.edge_dst) {
+@@ -343,6 +391,31 @@ fn ms(duration: Duration) -> f64 {
+ mod tests {
+     use super::*;
+ 
++    #[test]
++    fn independent_tile_workgroup_memory_and_shuffle_arguments_are_parsed() {
++        let config = Config::from_iter(
++            [
++                "--tile-size",
++                "7",
++                "--workgroup-size",
++                "2",
++                "--coordinate-memory",
++                "global",
++                "--no-outer-shuffle",
++                "--no-inner-shuffle",
++            ]
++            .into_iter()
++            .map(str::to_owned),
++        )
++        .unwrap();
++        assert_eq!(config.kernel.tile_size, 7);
++        assert_eq!(config.kernel.workgroup_size, 2);
++        assert_eq!(config.kernel.memory_mode, gpu::MemoryMode::Global);
++        assert!(!config.kernel.outer_shuffle);
++        assert!(!config.kernel.inner_shuffle);
++        assert!(Config::from_iter(["--tile-size", "0"].into_iter().map(str::to_owned)).is_err());
++    }
++
+     #[test]
+     fn common_arguments_are_parsed() {
+         let config = Config::from_iter(
+diff --git a/implementations/full/rr_gpu/src/shader.wgsl b/implementations/full/rr_gpu/src/shader.wgsl
+index 967e76a..cb34c7a 100644
+--- a/implementations/full/rr_gpu/src/shader.wgsl
++++ b/implementations/full/rr_gpu/src/shader.wgsl
+@@ -1,149 +1,106 @@
+-// Bidirectional Round-Robin GPU SGD カーネル
+-//
+-// 外側RR・内側RRは同じ構造:
+-//   「全サブラウンドを inner_perm でランダム化した順に処理する」
+-//
+-//   外側RR (CPU): round_order.shuffle() → ラウンド（タイル）の処理順をイテレーションごとにシャッフル
+-//   内側RR (GPU): inner_perm[s] % count → サブラウンドの処理順をラウンドごとにシャッフル
+-//
+-// ケースA (i != j): 異なるブロック間（両側更新）
+-//   wg_pos_i に i側、wg_pos_j に j側を並列ロード
+-//   内側RR: s=0..lj-1、r_inner = inner_perm[s] % lj の順でサブラウンドを処理
+-//     thread tx: pair (wg_pos_i[tx], wg_pos_j[(tx+r_inner)%lj])
+-//     b=(tx+r_inner)%lj は tx の全単射 → j スロット b への書き込みは1スレッドのみ → 競合なし
+-//   最後に両バッファを positions に書き戻し
+-//
+-// ケースB (i == j): 同一ブロック内（サイクルアルゴリズム・対称更新）
+-//   内側RR: s=0..rounds-1、r = inner_perm[s] % rounds の順でサブラウンドを処理
+-//   ケースAと同じ構造、違いは lu==lv のペアをスキップするだけ
+-
+-const BLOCK_T: u32 = 1024u;
++// Two-level round robin: one workgroup owns a tile, one matching at a time.
++// Host substitutes T, W and the shared/global coordinate helpers.
++const BLOCK_T: u32 = __BLOCK_T__u;
++const WORKGROUP_SIZE: u32 = __WORKGROUP_SIZE__u;
+ 
+ struct Uniforms {
+-    n   : u32,
+-    eta : f32,
+-    // r_outer / big_b は廃止。tiles バッファから (i,j) を受け取る。
+-    pad0: u32,
+-    pad1: u32,
++    n: u32,
++    eta: f32,
++    full_self_perm_offset: u32,
++    partial_self_perm_offset: u32,
+ }
+ 
+-@group(0) @binding(0) var<uniform>            uniforms   : Uniforms;
+-@group(0) @binding(1) var<storage, read_write> positions  : array<vec2<f32>>;
+-@group(0) @binding(2) var<storage, read>       dist_flat  : array<f32>;
+-@group(0) @binding(3) var<storage, read>       block_lens : array<u32>;
+-// binding 4: ラウンドごとのタイル割り当て。tiles[g] = vec2<u32>(i, j)
+-@group(0) @binding(4) var<storage, read>       tiles      : array<vec2<u32>>;
+-// binding 5: 内側RRのサブラウンド処理順列（長さ T、ラウンドごとにシャッフル、ケースA・B共用）
+-@group(0) @binding(5) var<storage, read>       inner_perm : array<u32>;
++@group(0) @binding(0) var<uniform> uniforms: Uniforms;
++@group(0) @binding(1) var<storage, read_write> positions: array<vec2<f32>>;
++@group(0) @binding(2) var<storage, read> dist_flat: array<f32>;
++@group(0) @binding(3) var<storage, read> block_lens: array<u32>;
++@group(0) @binding(4) var<storage, read> tiles: array<vec2<u32>>;
++// Packed exact permutations: cross T offsets, full self rounds, partial self rounds.
++@group(0) @binding(5) var<storage, read> inner_perm: array<u32>;
+ 
+-// ワークグループキャッシュ（各 1024×8 = 8KB, 合計 16KB < Metal 上限 32KB）
+-var<workgroup> wg_pos_i : array<vec2<f32>, 1024>; // i側
+-var<workgroup> wg_pos_j : array<vec2<f32>, 1024>; // j側
++__MEMORY_HELPERS__
+ 
+ fn sgd_delta(pos_u: vec2<f32>, pos_v: vec2<f32>, d: f32, eta: f32) -> vec2<f32> {
+-    let diff     = pos_v - pos_u;
++    let diff = pos_v - pos_u;
+     let dist_cur = max(length(diff), 1e-12);
+-    let r        = ((dist_cur - d) / 2.0) * (diff / dist_cur);
+-    let w        = 1.0 / (d * d);
+-    let mu       = min(w * eta, 1.0);
++    let r = ((dist_cur - d) / 2.0) * (diff / dist_cur);
++    let w = 1.0 / (d * d);
++    let mu = min(w * eta, 1.0);
+     return mu * r;
+ }
+ 
+-@compute @workgroup_size(1024, 1, 1)
++@compute @workgroup_size(__WORKGROUP_SIZE__, 1, 1)
+ fn sgd_rr(
+-    @builtin(workgroup_id)        wg  : vec3<u32>,
+-    @builtin(local_invocation_id) lid : vec3<u32>,
++    @builtin(workgroup_id) wg: vec3<u32>,
++    @builtin(local_invocation_id) lid: vec3<u32>,
+ ) {
+-    let g  = wg.x;
+-    // タイル割り当てを tiles バッファから読む
+-    let tile = tiles[g];
+-    let i  = tile.x;
+-    let j  = tile.y;
++    let tile = tiles[wg.x];
++    let i = tile.x;
++    let j = tile.y;
+     let li = block_lens[i];
+     let lj = block_lens[j];
++    let tx = lid.x;
+ 
+-    let tx = lid.x; // 0..1023
+-
+-    // =========================================================
+-    // ケースA: 異なるブロック間（両側更新）
+-    // =========================================================
+     if i != j {
+-        // 両側を並列ロード
+-        if tx < li { wg_pos_i[tx] = positions[i * BLOCK_T + tx]; }
+-        if tx < lj { wg_pos_j[tx] = positions[j * BLOCK_T + tx]; }
+-        workgroupBarrier();
+-
+-        // 内側RR: s=0..lj-1 を inner_perm でランダム化した順にサブラウンドを処理
+-        //   r_inner = inner_perm[s] % lj （処理するサブラウンドのインデックス）
+-        //   thread tx: pair (wg_pos_i[tx], wg_pos_j[(tx+r_inner)%lj])
+-        //   tx ↦ b は lj 上の全単射 → 同一サブラウンド内に b への書き込みは1スレッドのみ。
+-        for (var s = 0u; s < lj; s++) {
+-            if tx < li {
+-                let r_inner = inner_perm[s] % lj;
+-                let b   = (tx + r_inner) % lj;
+-                let gu  = i * BLOCK_T + tx;
+-                let gv  = j * BLOCK_T + b;
+-                let d   = dist_flat[gu * uniforms.n + gv];
+-                if d >= 0.5 {
+-                    let delta = sgd_delta(wg_pos_i[tx], wg_pos_j[b], d, uniforms.eta);
+-                    wg_pos_i[tx] += delta; // i側更新
+-                    wg_pos_j[b]  -= delta; // j側更新（競合なし）
++        __INIT_CROSS__
++        // Both sides are padded to T. The cyclic offset is a bijection on T,
++        // so every subround is a disjoint matching even for a partial last tile.
++        // Skipping dummies still visits every real cross pair exactly once.
++        for (var s = 0u; s < BLOCK_T; s++) {
++            let offset = inner_perm[s];
++            for (var local = tx; local < li; local += WORKGROUP_SIZE) {
++                let other = (local + offset) % BLOCK_T;
++                if other < lj {
++                    let gu = i * BLOCK_T + local;
++                    let gv = j * BLOCK_T + other;
++                    let d = dist_flat[gu * uniforms.n + gv];
++                    if d >= 0.5 {
++                        let pos_u = read_i(i, local);
++                        let pos_v = read_j(j, other);
++                        let delta = sgd_delta(pos_u, pos_v, d, uniforms.eta);
++                        write_i(i, local, pos_u + delta);
++                        write_j(j, other, pos_v - delta);
++                    }
+                 }
+             }
+-            workgroupBarrier();
++            __MEMORY_BARRIER__
+         }
+-
+-        // 両側書き戻し
+-        if tx < li { positions[i * BLOCK_T + tx] = wg_pos_i[tx]; }
+-        if tx < lj { positions[j * BLOCK_T + tx] = wg_pos_j[tx]; }
+-
++        __FLUSH_CROSS__
+         return;
+     }
+ 
+-    // =========================================================
+-    // ケースB: 同一ブロック内（サイクルアルゴリズム・対称更新）
+-    // サブラウンド順を inner_perm でランダム化（ケースAと対称）
+-    // =========================================================
+-
+-    if tx < li {
+-        wg_pos_i[tx] = positions[i * BLOCK_T + tx];
+-    }
+-    workgroupBarrier();
+-
+-    let L     = li;
+-    let L_eff : u32 = L + (L % 2u); // 奇数のときダミーを追加して偶数化
+-    let rounds: u32 = L_eff - 1u;
+-
+-    for (var s = 0u; s < rounds; s++) {
+-        let r = inner_perm[s] % rounds;
+-        var lu: u32 = 0u;
+-        var lv: u32 = 0u;
+-        var do_work: bool = false;
+-
+-        if tx == 0u {
+-            lu = L_eff - 1u;
+-            lv = r;
+-            do_work = true;
+-        } else if tx < L_eff / 2u {
+-            lu = (r + tx) % (L_eff - 1u);
+-            lv = (r + L_eff - 1u - tx) % (L_eff - 1u);
+-            do_work = true;
+-        }
+-
+-        if do_work && lu < L && lv < L {
+-            let gu    = i * BLOCK_T + lu;
+-            let gv    = i * BLOCK_T + lv;
+-            let d     = dist_flat[gu * uniforms.n + gv];
+-            if d >= 0.5 {
+-                let delta = sgd_delta(wg_pos_i[lu], wg_pos_i[lv], d, uniforms.eta);
+-                wg_pos_i[lu] += delta;
+-                wg_pos_i[lv] -= delta;
++    __INIT_SELF__
++    // Circle method for each actual block length, adding one dummy if odd.
++    // Its own exact permutation avoids the old prefix-modulo repeats/omissions.
++    if li > 1u {
++        let effective_len = li + li % 2u;
++        let rounds = effective_len - 1u;
++        let perm_offset = select(uniforms.full_self_perm_offset,
++                                 uniforms.partial_self_perm_offset, li < BLOCK_T);
++        for (var s = 0u; s < rounds; s++) {
++            let r = inner_perm[perm_offset + s];
++            for (var slot = tx; slot < effective_len / 2u; slot += WORKGROUP_SIZE) {
++                var lu = effective_len - 1u;
++                var lv = r;
++                if slot > 0u {
++                    lu = (r + slot) % rounds;
++                    lv = (r + rounds - slot) % rounds;
++                }
++                if lu < li && lv < li {
++                    let gu = i * BLOCK_T + lu;
++                    let gv = i * BLOCK_T + lv;
++                    let d = dist_flat[gu * uniforms.n + gv];
++                    if d >= 0.5 {
++                        let pos_u = read_i(i, lu);
++                        let pos_v = read_i(i, lv);
++                        let delta = sgd_delta(pos_u, pos_v, d, uniforms.eta);
++                        write_i(i, lu, pos_u + delta);
++                        write_i(i, lv, pos_v - delta);
++                    }
++                }
+             }
++            __MEMORY_BARRIER__
+         }
+-        workgroupBarrier();
+-    }
+-
+-    if tx < li {
+-        positions[i * BLOCK_T + tx] = wg_pos_i[tx];
+     }
++    __FLUSH_SELF__
+ }
+diff --git a/implementations/full/rr_gpu/tests/json_output.rs b/implementations/full/rr_gpu/tests/json_output.rs
+index 44b086c..2c4f7a6 100644
+--- a/implementations/full/rr_gpu/tests/json_output.rs
++++ b/implementations/full/rr_gpu/tests/json_output.rs
+@@ -43,4 +43,11 @@ fn json_mode_writes_one_record_and_no_progress_to_stdout() {
+     assert_eq!(record["run_id"], "contract-rr");
+     assert!(record["rounds"].as_u64().unwrap() > 0);
+     assert!(record["dispatches"].as_u64().unwrap() > 0);
++    assert_eq!(record["rr_tile_size"], 1024);
++    assert_eq!(record["rr_workgroup_size"], 1024);
++    assert_eq!(record["rr_memory_mode"], "shared");
++    assert_eq!(record["rr_shared_bytes"], 16384);
++    assert_eq!(record["rr_outer_shuffle"], true);
++    assert_eq!(record["rr_inner_shuffle"], true);
++    assert_eq!(record["completed_updates"], 12);
+ }

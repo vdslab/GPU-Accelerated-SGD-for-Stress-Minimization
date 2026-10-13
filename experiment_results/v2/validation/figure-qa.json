@@ -1,0 +1,193 @@
+{
+  "checked_on": "2026-10-13 Asia/Tokyo",
+  "formal_runs": 2260,
+  "comparison_validation_errors": 0,
+  "figures": {
+    "01_iteration_speedup.pdf": {
+      "sha256": "22a487298642b254701e28f6b99f75cacb8dbf0933206437febc67ff9c46f60e",
+      "format_checked": true
+    },
+    "01_iteration_speedup.png": {
+      "sha256": "df568bad34bcccb89e7a9ff149ee14acaa8505b9cc7ddcc8a66cc975933bb22d",
+      "format_checked": true,
+      "pixels": [
+        2739,
+        1709
+      ]
+    },
+    "01_iteration_speedup.svg": {
+      "sha256": "2c5ff29f343af07243f4e801bb264e63f9f882f1d752d3517c15cdb4a2cd429a",
+      "format_checked": true
+    },
+    "02_final_stress_ratio.pdf": {
+      "sha256": "ccfb03ea20a18c909d58e6d0ac6f92f5f47b306b6eaa575afc5150687943b5de",
+      "format_checked": true
+    },
+    "02_final_stress_ratio.png": {
+      "sha256": "a2a2fa7fbc56ed4d4136f338b7d8bcf43977d1b521bc515d17b30264a6066669",
+      "format_checked": true,
+      "pixels": [
+        2742,
+        1708
+      ]
+    },
+    "02_final_stress_ratio.svg": {
+      "sha256": "e773cfa78f8e0e4960a7a58084b43a4e3179d3ea19a450cdfce33c0b9fe5d029",
+      "format_checked": true
+    },
+    "03_stress_ratio_distributions.pdf": {
+      "sha256": "cb1644f6cb46c5b009b767ffc4866f672d6e38212a0ca475fcf54e56e5b457a3",
+      "format_checked": true
+    },
+    "03_stress_ratio_distributions.png": {
+      "sha256": "6f14c009a17a9e8655a4103581326d4efb5a127010e4b7a24dbbd243e605084b",
+      "format_checked": true,
+      "pixels": [
+        2933,
+        2318
+      ]
+    },
+    "03_stress_ratio_distributions.svg": {
+      "sha256": "a66c51f0d5f8d8dbd7abe3d83ac59cec6d6ea06949f2ff166a00f044ada028ad",
+      "format_checked": true
+    },
+    "04_time_breakdown_full.pdf": {
+      "sha256": "5e04af43baadf2f79d9bffc179cbecdfcc3b02c6a14465ed6ac9aeb07bf1d420",
+      "format_checked": true
+    },
+    "04_time_breakdown_full.png": {
+      "sha256": "15f0b484b44fce145f054ef1e708046c6211963e84ef8e57bb415ce1c608cc88",
+      "format_checked": true,
+      "pixels": [
+        2739,
+        1538
+      ]
+    },
+    "04_time_breakdown_full.svg": {
+      "sha256": "85f0fbf6c5e1be352cc4e82b01dc0cb8219e2e97c8541a72c8aa893c52d4828e",
+      "format_checked": true
+    },
+    "04_time_breakdown_sparse.pdf": {
+      "sha256": "5a0b78b42aadbd6f70d71df9f74e6725e0958873d7549300a7f73fbe35b5fee6",
+      "format_checked": true
+    },
+    "04_time_breakdown_sparse.png": {
+      "sha256": "b8889c54034dd411339a33b23848a6bcd8878611243c555847c094bab80df8be",
+      "format_checked": true,
+      "pixels": [
+        2740,
+        1539
+      ]
+    },
+    "04_time_breakdown_sparse.svg": {
+      "sha256": "e9706513368711213e5348f2901c0f58f09c398013b905382a2c685f94f9df15",
+      "format_checked": true
+    },
+    "05_rr_tile_sensitivity.pdf": {
+      "sha256": "b7673d1aa2c116446b834d5364b2b9ad1538ad923bc97a47dcd91a2e6752dbd0",
+      "format_checked": true
+    },
+    "05_rr_tile_sensitivity.png": {
+      "sha256": "1cdc9291b17ae3b733a283e2d283a85860123c49b13c8df8c7faed6ce11ecce6",
+      "format_checked": true,
+      "pixels": [
+        3628,
+        1442
+      ]
+    },
+    "05_rr_tile_sensitivity.svg": {
+      "sha256": "a2514fb8ee46e69efa856ac736aa7a7005dad0b47858c810cd42330bc60bd15c",
+      "format_checked": true
+    },
+    "06_shared_memory_ablation.pdf": {
+      "sha256": "17ec2a8a92e46de56cbeb6c43bde01e0e0343983a091c08ebe3f974b07632a28",
+      "format_checked": true
+    },
+    "06_shared_memory_ablation.png": {
+      "sha256": "9ab494ab1a329b69c31cd197928d4d72b7bcde0343d0edf2df731ae166988b9e",
+      "format_checked": true,
+      "pixels": [
+        3625,
+        842
+      ]
+    },
+    "06_shared_memory_ablation.svg": {
+      "sha256": "f6ff9a36eac0ed51490aa8911978e315051dd8aa076726763f28b4656f145c1e",
+      "format_checked": true
+    },
+    "07_representative_layouts.pdf": {
+      "sha256": "90d1e1474650afa5c1a5a19d047df5857c408e488a78070a16f90d49403af314",
+      "format_checked": true
+    },
+    "07_representative_layouts.png": {
+      "sha256": "7a46e8038ae10a048585d3055c9a4d0251bab8ccea8538d9940e72d7b1d1c25d",
+      "format_checked": true,
+      "pixels": [
+        3223,
+        1926
+      ]
+    },
+    "07_representative_layouts.svg": {
+      "sha256": "3cff53ad686d1c99a72cf293d314cf97a007455afdbe8b5175df468decac8550",
+      "format_checked": true
+    },
+    "08_workgroup_sensitivity.pdf": {
+      "sha256": "a00ee7df7ff37b7a29591e0ff4063b4d978519bb1c11a2a76b723d5aee75dc66",
+      "format_checked": true
+    },
+    "08_workgroup_sensitivity.png": {
+      "sha256": "c652e4be0fbdf008f8c59a701d47509e4ffa06121cfce44988231bd6d4f0f430",
+      "format_checked": true,
+      "pixels": [
+        3628,
+        1370
+      ]
+    },
+    "08_workgroup_sensitivity.svg": {
+      "sha256": "7cf4258243458887a26f4dd52889dc483a912bc9db8f3fbe5c0524de5a704592",
+      "format_checked": true
+    }
+  },
+  "visually_inspected_by_v2_figures": [
+    "01_iteration_speedup",
+    "02_final_stress_ratio",
+    "03_stress_ratio_distributions",
+    "04_time_breakdown_full",
+    "04_time_breakdown_sparse",
+    "07_representative_layouts"
+  ],
+  "visually_inspected_by_root": [
+    "02_final_stress_ratio",
+    "05_rr_tile_sensitivity",
+    "06_shared_memory_ablation",
+    "07_representative_layouts",
+    "08_workgroup_sensitivity"
+  ],
+  "final_visual_status": "pass: readable labels/units/legends; captions outside layouts; no detected overlaps",
+  "fixes": [
+    "Shortened ratio axes and made mean/median explicit",
+    "Family-specific x axes remove unmeasured Full positions",
+    "Distribution panels use four rows and explicitly mark unmeasured conditions",
+    "Time legends outside bars",
+    "Equal-aspect layouts share fixed axes boxes and captions below drawings"
+  ],
+  "interpretation_checks": [
+    "Sampled stress marked on all four large graphs",
+    "Per-seed ratio distributions have independent y-axis ranges, explicitly stated",
+    "Full RR maximum10.12x, Sparse RR maximum30.15x are graph-specific, not pooled",
+    "EVA T32-to1024 speed/quality tradeoff retained",
+    "21/24 shared-memory condition intervals include1;240/240 coordinates exact",
+    "120/120 WG coordinate comparisons exact",
+    "74 geometry conditions match measured rounds/dispatches; derived geometry is not occupancy profiling",
+    "Cold timing includes preprocessing/init; warm timing subtracts init only",
+    "Full RR GPU timestamp intervals retained, not described as pure kernel timing"
+  ],
+  "report_sha256": "9ce3d5dad4f8787dddbf623201ff4ab399811038e607ee2d39fdd835dc8b865f",
+  "remaining_scope_limits": [
+    "Single Apple M4 Pro platform",
+    "One timing per seed",
+    "CPU f64/GPU f32",
+    "No convergence histories or pure-kernel/cache/occupancy profiles",
+    "Representative14graphs rather than exhaustive243graph study"
+  ]
+}

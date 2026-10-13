@@ -1,0 +1,67 @@
+{
+  "kind": "post_measurement_compatibility_fix",
+  "applied_after_all_formal_measurements_completed": true,
+  "recorded_at_utc": "2026-10-12T21:06:09.112371+00:00",
+  "scope": "Backward-compatible optional Full RR JSON metadata and strict record validation; no algorithm or SGD binary changes.",
+  "files_changed": [
+    "experiments/record_metadata.py",
+    "experiments/schema/experiment-record-v1.json",
+    "experiments/run_experiments.py",
+    "experiments/aggregation.py",
+    "experiments/run_v2.py",
+    "experiments/tests/test_rr_metadata.py"
+  ],
+  "patch_path": "experiment_results/v2/validation/post-run-compat.patch",
+  "patch_sha256": "8691c120800a8e51a79660e4479771e3887fb6e9ec8a0bc51c6622cb3a7a1675",
+  "tests": {
+    "command": "python3 -m unittest discover -s experiments/tests -v",
+    "count": 100,
+    "elapsed_seconds": 12.077,
+    "exit_code": 0,
+    "log_path": "experiment_results/v2/validation/python-tests.log",
+    "log_sha256": "726bef039173165b2b5f8ed58473f47fe6fba8df380d11b33b9b3e13f75f99d6"
+  },
+  "git_diff_check_exit_code": 0,
+  "formal_success_records": 2260,
+  "sgd_binaries_verified_unchanged": true,
+  "sgd_binary_sha256": {
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/baseline-sgd-non-gpu/target/release/baseline-sgd-non-gpu": "42059d6153d32f91297142bf6a17e766fab30ad9fdc1207b503647ed280fbbac",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/rr_gpu/target/release/rr-gpu": "df6d13e1a82b71f26d3e944d0b1b688bb14cb424978112956eeb4b4ee46b8e36",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/vram-lock-native/target/release/vram-lock-native": "7ab788a531f78768b73ce138ca0eb8225695096568c0f1c72d3634db39bd558b",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/baseline-sparse-sgd-non-gpu/target/release/baseline-sparse-sgd-non-gpu": "91a492d21549c181e1bc33082082ad3a088cdcb2907e438cae5698081dd00d22",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/sparse-sgd-gpu": "6437a788babc4667069980afdaaf7624fe211e25004c46f64d76ce290ac4db77",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/vram-lock-sparse/target/release/vram-lock-sparse": "0f5b2019a011be35b9384047acdb5f078152f0bdf1c19cbb3e2bfd63f9f9f0cc"
+  },
+  "original_executed_source_snapshots": [
+    {
+      "experiment_id": "v2-quality-timing",
+      "executed_source_tree_sha256": "25b87c418a7ad4373dd3ed0ed3bd2bffc8adb6da27d309be53a7015196de3708",
+      "execution_integrity_sha256": "c91b89d22be7e6cac38baf67cfb63396e7cdc6b241e44767570d82e616ea83c2",
+      "source_snapshot_verified_unchanged": true,
+      "formal_success_records": 1500
+    },
+    {
+      "experiment_id": "v2-large-sparse",
+      "executed_source_tree_sha256": "25b87c418a7ad4373dd3ed0ed3bd2bffc8adb6da27d309be53a7015196de3708",
+      "execution_integrity_sha256": "4195bc6d7168b58c2875e577ec44cf49740fdca69a8a7a2c5230b7f7ca172efd",
+      "source_snapshot_verified_unchanged": true,
+      "formal_success_records": 120
+    },
+    {
+      "experiment_id": "v2-rr-memory-tiling",
+      "executed_source_tree_sha256": "25b87c418a7ad4373dd3ed0ed3bd2bffc8adb6da27d309be53a7015196de3708",
+      "execution_integrity_sha256": "f81168adb0742d9198cc30791d15e73e9176aff575fb864f4a1e3a5eaa2d9dd1",
+      "source_snapshot_verified_unchanged": true,
+      "formal_success_records": 480
+    },
+    {
+      "experiment_id": "v2-rr-workgroup",
+      "executed_source_tree_sha256": "25b87c418a7ad4373dd3ed0ed3bd2bffc8adb6da27d309be53a7015196de3708",
+      "execution_integrity_sha256": "f81168adb0742d9198cc30791d15e73e9176aff575fb864f4a1e3a5eaa2d9dd1",
+      "source_snapshot_verified_unchanged": true,
+      "formal_success_records": 160
+    }
+  ],
+  "post_fix_working_source_tree_sha256": "093949a759ce4e5ff073133b52faa0de9abc0ef497683c025570d62186e0899a",
+  "source_note": "The raw source-snapshot and execution-integrity.json files retain the exact sources actually measured. The working tree now includes this post-measurement validation change; future snapshots additionally include the schema and metadata helper."
+}

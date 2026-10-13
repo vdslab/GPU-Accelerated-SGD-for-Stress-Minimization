@@ -77,8 +77,106 @@
     "error_stage": { "type": ["string", "null"] },
     "error_message": { "type": ["string", "null"] },
     "exit_code": { "type": ["integer", "null"] },
-    "stderr_log_path": { "type": ["string", "null"] }
+    "stderr_log_path": { "type": ["string", "null"] },
+    "rr_tile_size": {"type": "integer", "minimum": 1, "maximum": 1024},
+    "rr_workgroup_size": {"type": "integer", "minimum": 1, "maximum": 1024},
+    "rr_memory_mode": {"enum": ["shared", "global"]},
+    "rr_shared_bytes": {"type": "integer", "minimum": 0, "maximum": 16384},
+    "rr_outer_shuffle": {"type": "boolean"},
+    "rr_inner_shuffle": {"type": "boolean"}
   },
+  "allOf": [
+    {
+      "if": {
+        "anyOf": [
+          {
+            "required": [
+              "rr_tile_size"
+            ]
+          },
+          {
+            "required": [
+              "rr_workgroup_size"
+            ]
+          },
+          {
+            "required": [
+              "rr_memory_mode"
+            ]
+          },
+          {
+            "required": [
+              "rr_shared_bytes"
+            ]
+          },
+          {
+            "required": [
+              "rr_outer_shuffle"
+            ]
+          },
+          {
+            "required": [
+              "rr_inner_shuffle"
+            ]
+          }
+        ]
+      },
+      "then": {
+        "required": [
+          "rr_tile_size",
+          "rr_workgroup_size",
+          "rr_memory_mode",
+          "rr_shared_bytes",
+          "rr_outer_shuffle",
+          "rr_inner_shuffle"
+        ],
+        "properties": {
+          "method": {
+            "const": "rr_sgd"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "rr_memory_mode"
+        ],
+        "properties": {
+          "rr_memory_mode": {
+            "const": "global"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "rr_shared_bytes": {
+            "const": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "rr_memory_mode"
+        ],
+        "properties": {
+          "rr_memory_mode": {
+            "const": "shared"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "rr_shared_bytes": {
+            "minimum": 16,
+            "multipleOf": 16
+          }
+        }
+      }
+    }
+  ],
   "$defs": {
     "timeOrNull": {
       "type": ["number", "null"],

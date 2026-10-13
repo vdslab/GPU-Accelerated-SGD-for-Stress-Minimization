@@ -1,0 +1,2882 @@
+[
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-3413a70809c9",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 0,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-1a6758fda90a",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 0,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-a279d295a087",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 0,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-4d165b3d4659",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 0,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-2ae43434af6e",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 1,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-1e5efdf3505a",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 1,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-91cdd67f8303",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 1,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-cba849dffc15",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 1,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-84ff41e0ed6e",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 2,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-9c70d261d0ce",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 2,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-0974f76ca2f0",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 2,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-fd307245c607",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 2,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-98443375a7f5",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 3,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-1929bd0e4933",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 3,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-29f9f478d320",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 3,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-c306e22f7f16",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 3,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-ed1e4ae25118",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 4,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-1c3cb8c831ae",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 4,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-d0d5d18d4197",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 4,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-13601e49ed8a",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 4,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-90dc339e7f76",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 5,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-48f106f71fd4",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 5,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-7634e5a8a56a",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 5,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-f530e64dcc50",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 5,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-ce86dd127a5c",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 6,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-83cd3ac35d02",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 6,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-ce157e6dadea",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 6,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-fce13e8fa378",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 6,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-6ff0aef8e0f2",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 7,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-3a2886c6d2bd",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 7,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-f73cda3869ec",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 7,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-e3e1cbd34d34",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 7,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-dd928476caec",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 8,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-f8526fd5b77c",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 8,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-9281df95b506",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 8,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-859ce9138f1d",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 8,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-ecf989f72635",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 9,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-36ffdf041057",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 9,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-ae87bccb7425",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 9,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-dwt_2680-rr_sgd-8f4249391f8a",
+    "method": "rr_sgd",
+    "dataset": "dwt_2680",
+    "seed": 9,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-638df48dc8e9",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 0,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-5fee25943dab",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 0,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-b7c7e19d5364",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 0,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-0325342682ff",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 0,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-34391d0df5bd",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 1,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-e0c5b9c51639",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 1,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-8b84122bc13b",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 1,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-4fec1a8f2e02",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 1,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-caa101b47fca",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 2,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-66e25637e5ac",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 2,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-532d400c558c",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 2,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-519b1eb0efe6",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 2,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-70f23f2ce7ec",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 3,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-53ade6cdb3fd",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 3,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-b9c55d6761be",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 3,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-619108eb761a",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 3,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-246f9ed06dab",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 4,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-950035d61f13",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 4,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-0bd0cb93cf32",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 4,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-a2807f0941cc",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 4,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-07828396c222",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 5,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-2290cd338c90",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 5,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-c04475f51edd",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 5,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-b35ac9413600",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 5,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-d26c43f76c7a",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 6,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-d52996a9d050",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 6,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-929b5421e3c9",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 6,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-6fe0819159e5",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 6,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-eb1256fb7a90",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 7,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-f0ffdb4b34d6",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 7,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-6331579a7d82",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 7,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-493fa20d4260",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 7,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-f7cebd776772",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 8,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-510c41618440",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 8,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-f673e3386979",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 8,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-a36155a57516",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 8,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-eee542bb424a",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 9,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-bd3b11dad1e5",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 9,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-e7cbf5a9ee21",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 9,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-EVA-rr_sgd-498a556dfa63",
+    "method": "rr_sgd",
+    "dataset": "EVA",
+    "seed": 9,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-b4e922178b4a",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 0,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-0420220e26f3",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 0,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-4ab37e4485b5",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 0,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-24d7f2bb795a",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 0,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-1cfda2f253fd",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 1,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-36401afacf0f",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 1,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-a131458d3cdd",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 1,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-7e63816aded8",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 1,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-86c75bee58f4",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 2,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-795d1a173384",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 2,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-692e26b0d26c",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 2,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-6a8f27bf8cbe",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 2,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-6e75a23fdd8c",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 3,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-f6883c3abc25",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 3,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-fd58436a7ebf",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 3,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-57594deb5f64",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 3,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-f1dd0ce64f18",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 4,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-92662d7ba8f9",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 4,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-3a99b438bd1b",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 4,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-8c83201429cc",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 4,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-bbe166ef3cbe",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 5,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-7be270ad277d",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 5,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-388f62484a3a",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 5,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-0fc6e26089e7",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 5,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-c7afd183818f",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 6,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-2e8c9a6cf627",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 6,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-1608b383aaf2",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 6,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-c39578e7eb9e",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 6,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-c6d0779d171a",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 7,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-48a9bce6c9f1",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 7,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-1d7bcf6ef350",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 7,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-ac9a53a95cbd",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 7,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-8e59f58ba6c3",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 8,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-e688fa8db701",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 8,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-5a63c085b27d",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 8,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-070b0b014279",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 8,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-0bacccc94625",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 9,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-6c284954b534",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 9,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-c5725906125d",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 9,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-3elt-rr_sgd-7a8dd115d016",
+    "method": "rr_sgd",
+    "dataset": "3elt",
+    "seed": 9,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-cf5826573db9",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 0,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-dbca33c48f8f",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 0,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-d7eac5708f7e",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 0,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-9a0d3d7c26af",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 0,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-9f6dc98d608a",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 1,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-c3f30b5d0180",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 1,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-981e80f998aa",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 1,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-b238dc6137c8",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 1,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-e722183dbd69",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 2,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-ee296b065ede",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 2,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-f27767174a4c",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 2,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-8fe6a81c78a1",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 2,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-a805752cc7f0",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 3,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-3c101cb4d98c",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 3,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-3b4a69f1eb58",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 3,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-00658eb14805",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 3,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-d9d49e57c2e1",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 4,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-7d69ab600e0b",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 4,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-0473ce5cee58",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 4,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-a1050ebef94a",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 4,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-4906097f8a6d",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 5,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-5de272d3a00e",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 5,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-bd01e0a1e431",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 5,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-eb03f5600671",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 5,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-121bc77df289",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 6,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-63dcab5cea8b",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 6,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-441d82e15715",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 6,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-649d9710533a",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 6,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-7e2ba1a63d1e",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 7,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-af14e054caac",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 7,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-496d1b1da7ef",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 7,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-1463b12713ee",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 7,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-42b869613dcf",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 8,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-8d0971b36ce0",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 8,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-922827ab79e0",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 8,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-b51d40feeb64",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 8,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-ab2e4602f26b",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 9,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W256-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 256,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-e245e53a583f",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 9,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W512-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 512,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-56c9b4288836",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 9,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W1024-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 1024,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  },
+  {
+    "run_id": "v2-rr-workgroup-USpowerGrid-rr_sgd-47559da7a430",
+    "method": "rr_sgd",
+    "dataset": "USpowerGrid",
+    "seed": 9,
+    "iterations": 15,
+    "epsilon": 0.1,
+    "pivots": null,
+    "repetition": 0,
+    "variant_id": "T1024-W128-shared",
+    "variant": {
+      "tile_size": 1024,
+      "workgroup_size": 128,
+      "coordinate_memory": "shared",
+      "outer_shuffle": true,
+      "inner_shuffle": true
+    }
+  }
+]

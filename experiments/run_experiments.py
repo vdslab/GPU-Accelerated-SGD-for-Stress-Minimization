@@ -18,6 +18,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 try:
+    from record_metadata import validate_rr_metadata
     from experiment_plan import (
         METHODS,
         REPO_ROOT,
@@ -27,6 +28,7 @@ try:
         load_manifest,
     )
 except ModuleNotFoundError:
+    from experiments.record_metadata import validate_rr_metadata
     from experiments.experiment_plan import (
         METHODS,
         REPO_ROOT,
@@ -251,6 +253,10 @@ def parse_and_validate_success(
         raise RunnerError(f"recordの必須fieldがありません: {', '.join(missing)}")
     if unknown:
         raise RunnerError(f"recordに未知のfieldがあります: {', '.join(unknown)}")
+    try:
+        validate_rr_metadata(record)
+    except ValueError as error:
+        raise RunnerError(str(error)) from error
     expected = {
         "schema_version": 1,
         "run_id": run.run_id,

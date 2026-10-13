@@ -1,0 +1,91 @@
+{
+  "experiment_id": "v2-rr-workgroup",
+  "study_group": "rr-workgroup",
+  "run_mode": "benchmark",
+  "methods": [
+    "rr_sgd"
+  ],
+  "datasets": [
+    {
+      "name": "dwt_2680",
+      "path": "data/v1_lcc/dwt_2680.mtx",
+      "sha256": "af33ffce433ad2462057f06c8de36a48cd0fd68819c938f0c2836334cb814fda"
+    },
+    {
+      "name": "EVA",
+      "path": "data/v1_lcc/EVA.mtx",
+      "sha256": "c4d41f5347c24784d86bcea30f16dcc035f79120a95d37a2476a55686cb3ddde"
+    },
+    {
+      "name": "3elt",
+      "path": "data/v1_lcc/3elt.mtx",
+      "sha256": "757dec71920b6cbf505b628b2d74034cf416fa037e3a269e653e8a146ffc4614"
+    },
+    {
+      "name": "USpowerGrid",
+      "path": "data/v1_lcc/USpowerGrid.mtx",
+      "sha256": "aac4faffbc2edd14ed031aeea76d64946d846e6b16d61d94e5d5d6a0a7aea9c0"
+    }
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "iterations": [
+    15
+  ],
+  "epsilon": [
+    0.1
+  ],
+  "pivots": [
+    200
+  ],
+  "repetitions": 1,
+  "warmups": 1,
+  "timeout_seconds": 180,
+  "fail_fast": false,
+  "variants": {
+    "rr_sgd": [
+      {
+        "id": "T1024-W128-shared",
+        "tile_size": 1024,
+        "workgroup_size": 128,
+        "coordinate_memory": "shared",
+        "outer_shuffle": true,
+        "inner_shuffle": true
+      },
+      {
+        "id": "T1024-W256-shared",
+        "tile_size": 1024,
+        "workgroup_size": 256,
+        "coordinate_memory": "shared",
+        "outer_shuffle": true,
+        "inner_shuffle": true
+      },
+      {
+        "id": "T1024-W512-shared",
+        "tile_size": 1024,
+        "workgroup_size": 512,
+        "coordinate_memory": "shared",
+        "outer_shuffle": true,
+        "inner_shuffle": true
+      },
+      {
+        "id": "T1024-W1024-shared",
+        "tile_size": 1024,
+        "workgroup_size": 1024,
+        "coordinate_memory": "shared",
+        "outer_shuffle": true,
+        "inner_shuffle": true
+      }
+    ]
+  }
+}

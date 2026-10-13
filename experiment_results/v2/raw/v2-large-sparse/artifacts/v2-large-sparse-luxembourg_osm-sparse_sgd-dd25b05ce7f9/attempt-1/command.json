@@ -1,0 +1,21 @@
+[
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/baseline-sparse-sgd-non-gpu/target/release/baseline-sparse-sgd-non-gpu",
+  "--run-id",
+  "v2-large-sparse-luxembourg_osm-sparse_sgd-dd25b05ce7f9",
+  "--input",
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v1_lcc/luxembourg_osm.mtx",
+  "--iterations",
+  "15",
+  "--epsilon",
+  "0.10000000000000001",
+  "--seed",
+  "5",
+  "--output-format",
+  "json",
+  "--output-dir",
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v2/raw/v2-large-sparse/artifacts/v2-large-sparse-luxembourg_osm-sparse_sgd-dd25b05ce7f9/attempt-1",
+  "--run-mode",
+  "benchmark",
+  "--pivots",
+  "200"
+]

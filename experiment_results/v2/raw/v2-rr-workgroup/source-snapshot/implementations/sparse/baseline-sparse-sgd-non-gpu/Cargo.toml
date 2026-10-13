@@ -1,0 +1,15 @@
+[package]
+name = "baseline-sparse-sgd-non-gpu"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0"
+chrono = "0.4"
+env_logger = "0.11"
+experiment-common = { path = "../../../shared/experiment-common" }
+rand = "0.9"
+
+[dev-dependencies]
+serde_json = "1"
+tempfile = "3"
