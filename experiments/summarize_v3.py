@@ -328,37 +328,44 @@ def structural_category(name):
 
 
 def structure(base,datasets,pairs,figures):
-    catalog = {r['name']:r for r in datasets}
+    catalog={r['name']:r for r in datasets}
     markers=dict(zip(['Road','Geometry / mesh','Web','Social / collaboration','Synthetic','Other / engineering'],['o','s','^','D','P','X']))
     dump_csv(base/'tables/graph-structure.csv',[dict(graph=r['name'],source_group=r.get('category'),
         structural_category=structural_category(r['name']),category_basis='heuristic from graph name, not verified domain metadata',
         nodes=r.get('nodes'),edges=r.get('edges'),mean_degree=r.get('mean_degree'),max_degree=r.get('max_degree'),degree_cv=r.get('degree_cv')) for r in datasets])
-    fig, axes = plt.subplots(2,3,figsize=(14,8),squeeze=False)
-    correlations=[]
-    for i,kind in enumerate(['full','sparse']):
-        for j,field in enumerate(['mean_degree','max_degree','degree_cv']):
-            ax=axes[i,j]
-            for method in (METHODS[1:3] if kind=='full' else METHODS[4:]):
-                xx,yy=[],[]
-                for graph in sorted({r['graph'] for r in pairs if r['study']=='basic' and r['method']==method and catalog.get(r['graph'],{}).get('family')==('small' if kind=='full' else 'large')}):
-                    vals=[r['speedup'] for r in pairs if r['study']=='basic' and r['graph']==graph and r['method']==method]
-                    value=catalog.get(graph,{}).get(field)
-                    if finite(value,positive=True) and vals:
-                        xx.append(value); yy.append(np.median(vals))
-                        ax.scatter([value],[np.median(vals)],color=COLOR[method],marker=markers[structural_category(graph)],s=30,alpha=.7)
-                ax.plot([],[],ls='',marker='o',color=COLOR[method],label=LABEL[method])
-                if len(xx)>2 and np.std(xx)>0 and np.std(yy)>0:
-                    from scipy.stats import spearmanr
-                    rho,p=spearmanr(xx,yy)
-                    correlations.append(dict(family=kind,method=method,feature=field,n=len(xx),spearman_rho=float(rho),p_value=float(p)))
-            if not np.isfinite(ax.dataLim.x0) or ax.dataLim.x1 <= 0:
-                ax.set_xlim(.1,10); ax.set_ylim(.1,10)
-            ax.set(xscale='log',yscale='log',xlabel=field,ylabel=f'{kind.title()} speedup')
-            ax.axhline(1,color='#bbbbbb',ls='--'); ax.legend()
-    handles=[plt.Line2D([0],[0],ls='',marker=marker,color='#555555',label=category) for category,marker in markers.items()]
-    fig.legend(handles=handles,loc='lower center',ncol=3,title='Graph category inferred from name (heuristic)',bbox_to_anchor=(.5,-.06))
-    fig.tight_layout(); save(fig,'04_structure',base,figures)
+    correlations=[]; points=[]
+    fields=['nodes','edges','mean_degree','max_degree','degree_cv']
+    for metric,name in [('speedup','04_structure'),('stress_ratio','04_structure_quality')]:
+        fig,axes=plt.subplots(2,5,figsize=(23,8),squeeze=False)
+        for i,kind in enumerate(['full','sparse']):
+            for j,field in enumerate(fields):
+                ax=axes[i,j]
+                for method in METHODS[1:3] if kind=='full' else METHODS[4:]:
+                    xx=[]; yy=[]
+                    for graph in sorted({r['graph'] for r in pairs if r['study']=='basic' and r['method']==method and catalog.get(r['graph'],{}).get('family')==('small' if kind=='full' else 'large')}):
+                        vals=[r[metric] for r in pairs if r['study']=='basic' and r['graph']==graph and r['method']==method]
+                        value=catalog.get(graph,{}).get(field)
+                        if not finite(value,positive=field!='degree_cv') or not vals: continue
+                        median=float(np.median(vals)); xx.append(value); yy.append(median)
+                        ax.scatter([value],[median],color=COLOR[method],marker=markers[structural_category(graph)],s=30,alpha=.7)
+                        points.append(dict(graph=graph,family=kind,method=method,metric=metric,feature=field,feature_value=value,paired_seed_median=median,paired_seeds=len(vals)))
+                    ax.plot([],[],ls='',marker='o',color=COLOR[method],label=LABEL[method])
+                    if len(xx)>2 and np.std(xx)>0 and np.std(yy)>0:
+                        from scipy.stats import spearmanr
+                        rho,p=spearmanr(xx,yy)
+                        correlations.append(dict(family=kind,method=method,metric=metric,feature=field,n=len(xx),spearman_rho=float(rho),p_value=float(p)))
+                if not np.isfinite(ax.dataLim.x0):
+                    ax.set_xlim(.1,10); ax.set_ylim(.1,10)
+                if field=='degree_cv': ax.set_xscale('symlog',linthresh=.01)
+                else: ax.set_xscale('log')
+                if metric=='speedup': ax.set_yscale('log')
+                ax.set(xlabel=field,ylabel=f'{kind.title()} '+('speedup' if metric=='speedup' else 'stress / CPU stress'))
+                ax.axhline(1,color='#bbbbbb',ls='--'); ax.legend()
+        handles=[plt.Line2D([0],[0],ls='',marker=marker,color='#555555',label=category) for category,marker in markers.items()]
+        fig.legend(handles=handles,loc='lower center',ncol=6,title='Graph category inferred from name (heuristic)',bbox_to_anchor=(.5,-.04))
+        fig.tight_layout(); save(fig,name,base,figures)
     dump_csv(base/'tables/structure-correlations.csv',correlations)
+    dump_csv(base/'tables/structure-points.csv',points)
 
 
 def structure_supplement(base,datasets,rows,pairs,figures):
@@ -547,25 +554,58 @@ def convergence(base,datasets,rows,figures,incidents,skip=False):
                 ax.scatter(np.median([r['elapsed_ms'] for r in chosen])/1000,np.median([r['stress'] for r in chosen]),color=COLOR[method],s=10)
             medians=[(np.median([r['elapsed_ms'] for r in points if r['epoch']==e])/1000,np.median([r['stress'] for r in points if r['epoch']==e])) for e in sorted({r['epoch'] for r in points})]
             if medians: ax.plot(*zip(*medians),color=COLOR[method],label=LABEL[method])
-            for seed in sorted({r['seed'] for r in points}):
-                seq=sorted([r for r in points if r['seed']==seed],key=lambda r:r['epoch'])
-                for factor in [1.05,1.01]:
-                    target=targets.get(seed)
-                    target=target*factor/1.05 if target is not None else None
-                    hit=next((r for r in seq if target is not None and r['stress']<=target),None)
-                    previous=seq[max(0,seq.index(hit)-1)] if hit else None
-                    arrivals.append(dict(graph=graph,family=kind,method=method,seed=seed,target_factor=factor,target_stress=target,
-                                         first_observed_epoch=hit['epoch'] if hit else None,first_observed_ms=hit['elapsed_ms'] if hit else None,
-                                         interval_lower_epoch=previous['epoch'] if previous else None,interval_lower_ms=previous['elapsed_ms'] if previous else None,
-                                         interval_upper_epoch=hit['epoch'] if hit else None,interval_upper_ms=hit['elapsed_ms'] if hit else None,
-                                         reached=(hit is not None) if target is not None else None,
-                                         status='reference_unavailable' if target is None else 'reached' if hit else 'not_observed',
-                                         observed_epochs=[r['epoch'] for r in seq]))
         ax.set(title=f'{graph} / {kind}',xlabel='Cumulative SGD time (s)',ylabel='Full stress',yscale='log'); ax.legend()
     if not panels: empty(axes[0,0],'No convergence snapshots evaluated'); axes[0,0].set_visible(True)
     fig.tight_layout(); save(fig,'05_convergence',base,figures)
+    arrivals=build_arrivals(base,rows,output)
     dump_csv(base/'tables/target-arrival.csv',arrivals)
     return output,arrivals
+
+
+def build_arrivals(base,rows,checkpoints):
+    """Retain every planned seed, including trials that produced no snapshot."""
+    planpath=base/'config/plan.json'
+    plan=json.loads(planpath.read_text()) if planpath.exists() else rows
+    if isinstance(plan,dict): plan=plan.get('jobs',plan.get('tasks',[]))
+    conditions={(r['graph'],r['method'],r['seed']):r for r in plan if r.get('study')=='convergence'}
+    actual={(r['graph'],r['method'],r['seed']):r for r in rows if r['study']=='convergence'}
+    traces=defaultdict(list)
+    for r in checkpoints:
+        if finite(r.get('elapsed_ms')): traces[(r['graph'],r['method'],r['seed'])].append(r)
+    required={0,1,2,3,5,8,10,15}; arrivals=[]
+    for key,condition in sorted(conditions.items()):
+        graph,method,seed=key; kind=family(condition)
+        seq=sorted(traces[key],key=lambda r:r['epoch'])
+        observed={r['epoch'] for r in seq}; complete=required<=observed
+        cpu_method='sgd' if kind=='full' else 'sparse_sgd'
+        cpu_final=next((r for r in traces[(graph,cpu_method,seed)] if r['epoch']==15),None)
+        own_status=actual.get(key,{}).get('status','not_run')
+        for factor in [1.05,1.01]:
+            target=cpu_final['stress']*factor if cpu_final else None
+            hit=next((r for r in seq if target is not None and r['stress']<=target),None)
+            previous=seq[max(0,seq.index(hit)-1)] if hit else None
+            evaluable=own_status=='success' and complete and target is not None
+            if not seq or own_status!='success': state='measurement_unavailable'; reached=None
+            elif target is None: state='reference_unavailable'; reached=None
+            elif not complete: state='partial_observation'; reached=True if hit else None
+            else: state='reached' if hit else 'not_observed'; reached=hit is not None
+            arrivals.append(dict(graph=graph,family=kind,method=method,seed=seed,target_factor=factor,target_stress=target,
+                                 first_observed_epoch=hit['epoch'] if hit else None,first_observed_ms=hit['elapsed_ms'] if hit else None,
+                                 interval_lower_epoch=previous['epoch'] if previous else None,interval_lower_ms=previous['elapsed_ms'] if previous else None,
+                                 interval_upper_epoch=hit['epoch'] if hit else None,interval_upper_ms=hit['elapsed_ms'] if hit else None,
+                                 reached=reached,evaluable=evaluable,status=state,run_status=own_status,
+                                 observed_epochs=sorted(observed),missing_epochs=sorted(required-observed)))
+    coverage=[]
+    for key in sorted({(r['graph'],r['family'],r['method']) for r in arrivals}):
+        graph,kind,method=key
+        a=[r for r in arrivals if (r['graph'],r['family'],r['method'])==key and r['target_factor']==1.05]
+        b=[r for r in arrivals if (r['graph'],r['family'],r['method'])==key and r['target_factor']==1.01]
+        coverage.append(dict(graph=graph,family=kind,method=method,planned_seeds=len(a),evaluable_seeds=sum(r['evaluable'] for r in a),
+                             reached_1_05=sum(r['evaluable'] and r['reached'] is True for r in a),reached_1_01=sum(r['evaluable'] and r['reached'] is True for r in b),
+                             missing_seeds=sum(not r['evaluable'] for r in a),measurement_unavailable=sum(r['status']=='measurement_unavailable' for r in a),
+                             reference_unavailable=sum(r['status']=='reference_unavailable' for r in a),partial_observation=sum(r['status']=='partial_observation' for r in a)))
+    dump_csv(base/'tables/target-arrival-coverage.csv',coverage)
+    return arrivals
 
 
 def iteration_timings(base,rows,figures):
@@ -722,15 +762,21 @@ def report(base,datasets,rows,summary,pairs,figures,arrivals,incidents,excluded)
             if number==3: text += ['', 'Sparse80 overviewにはRR GPUの代表描画4件を添える。seedは実験1と同じCPU stress中央値に近いものを選び、接続線は対応するグラフのRR速度比中央値を指す。描画seed単独の速度比を指す線ではない。取得・成功していない描画は表示しない。小規模20グラフのSparse補助比較も別図で表示する。大規模80グラフの集計とは混ぜない。時間内訳図の積み上げは計測できた成分の平均で、cold総時間との差には区間外の準備処理が含まれる。']
             text += ['', '上下2段は全グラフの共通x軸。背景は名前から推定したカテゴリで、分類内を頂点数順に並べる。graph-order.csvにID・名前を、counts.csvに対応seed数を保存。下端の×と数は欠測・CPU基準欠如による未対応seed数（5件中）で、0や1の測定値ではない。比は対応する成功seedのみで計算する。','']
         elif number==4:
-            text += ['次数の平均・最大値・変動係数と速度比を比較。次数だけで実行時間は決まらず、頂点数・制約数・タイル数との交絡がある。相関係数はstructure-correlations.csvに保存し、因果関係として扱わない。点形状の構造カテゴリはグラフ名からの推定であり、確認済みの用途分類ではない。元のSuiteSparseグループはsource_groupとしてgraph-structure.csvに保存する。平均次数4/16とCV0.5/2で分けた図はグラフごとの速度比中央値を再集計し、グラフを等重みにする。同系列のサイズ曲線もグラフ名prefixからの推定系列で、規模以外の構造差を制御した実験ではない。','']
+            text += ['頂点数V・辺数E・次数の平均・最大値・変動係数の5指標を、Full/Sparseの上下2段で速度比と比較する。品質比も同じ2×5構成の補助図で示す。各グラフは対応seed比の中央値1点とし、Spearman CSVはmetric列で速度と品質を区別する。CV=0はsymlog軸で保持する。次数だけで実行時間は決まらず、頂点数・制約数・タイル数との交絡がある。相関係数はstructure-correlations.csvに保存し、因果関係として扱わない。点形状の構造カテゴリはグラフ名からの推定であり、確認済みの用途分類ではない。元のSuiteSparseグループはsource_groupとしてgraph-structure.csvに保存する。平均次数4/16とCV0.5/2で分けた図はグラフごとの速度比中央値を再集計し、グラフを等重みにする。同系列のサイズ曲線もグラフ名prefixからの推定系列で、規模以外の構造差を制御した実験ではない。','']
         elif number==5:
             text += ['座標保存を伴う診断実行から、反復0・1・2・3・5・8・10・15のstressを後計算する。GPUとCPUで同じ起点を使う。曲線はcheckpointごとの各手法の成功seed中央値であり、実際の単一実行の軌跡ではない。失敗により手法間の成功seed集合が異なる場合がある。',
                      '目標は同じseed・familyのCPU 15反復後stressの1.05倍と1.01倍。直前の未達checkpoint〜最初に到達を観測したcheckpointの時間幅を記録する。stressは非単調になり得るため、以前の観測点間で一度到達して再悪化した可能性までは除外できない。正確な初到達時刻や未到達条件の外挿は行わない。診断の同期・保存による影響があるため、図2・3の通常実行時間とは分けて読む。','']
             for factor in [1.05,1.01]:
                 for method in METHODS:
-                    a=[r for r in arrivals if r['method']==method and r['target_factor']==factor and r['status']!='reference_unavailable']
-                    unavailable=sum(r['method']==method and r['target_factor']==factor and r['status']=='reference_unavailable' for r in arrivals)
-                    if a or unavailable: text += [f'- {method} / {factor:.2f}倍目標：対応CPUがある {len(a)} 実行中 {sum(r["reached"] for r in a)} 実行で到達を観測。CPU基準欠測 {unavailable} 実行は到達率の分母から除外。']
+                    a=[r for r in arrivals if r['method']==method and r['target_factor']==factor and r['evaluable']]
+                    unavailable=sum(r['method']==method and r['target_factor']==factor and not r['evaluable'] for r in arrivals)
+                    if a or unavailable: text += [f'- {method} / {factor:.2f}倍目標：必要checkpointとCPU基準が揃った {len(a)} 実行中 {sum(r["reached"] for r in a)} 実行で到達を観測。観測またはCPU基準の欠測 {unavailable} 実行は到達率の分母から除外。']
+            text += ['', '計画上の全10seedを残し、観測なし・CPU基準なし・checkpoint不完全を未達と区別する。下表の欠測は到達率の分母に含めない。', '', '| Graph | Family | Method | 計画seed | 評価可能 | 1.05倍到達 | 1.01倍到達 | 欠測 |', '|---|---|---|---:|---:|---:|---:|---:|']
+            coverage_file=base/'tables/target-arrival-coverage.csv'
+            if coverage_file.exists():
+                with coverage_file.open() as stream:
+                    for r in csv.DictReader(stream):
+                        text += [f'| {r["graph"]} | {r["family"]} | {r["method"]} | {r["planned_seeds"]} | {r["evaluable_seeds"]} | {r["reached_1_05"]} | {r["reached_1_01"]} | {r["missing_seeds"]} |']
             text += ['']
         else:
             study='tiling' if number==6 else 'pivots'; param='tile_size' if number==6 else 'pivots'
