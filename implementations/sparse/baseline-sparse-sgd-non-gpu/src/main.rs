@@ -13,7 +13,7 @@ use graph::{Graph, SgdParams};
 use rand::rngs::StdRng;
 use rand::SeedableRng;
 use std::fs::{create_dir_all, File};
-use std::io::Write;
+use std::io::{BufWriter, Write};
 use std::path::{Path, PathBuf};
 use std::time::{Duration, Instant};
 
@@ -323,7 +323,7 @@ fn save_result(
     constraint_count: usize,
     vertex_map_path: &Path,
 ) -> Result<()> {
-    let mut file = File::create(path)?;
+    let mut file = BufWriter::with_capacity(1024 * 1024, File::create(path)?);
     writeln!(
         file,
         "# Rust CPU Result (baseline-sparse-sgd-non-gpu) - {stage}"
@@ -364,14 +364,16 @@ fn save_result(
     for position in positions {
         writeln!(file, "{} {}", position[0], position[1])?;
     }
+    file.flush()?;
     Ok(())
 }
 
 fn save_vertex_map(path: &Path, graph: &Graph) -> Result<()> {
-    let mut file = File::create(path)?;
+    let mut file = BufWriter::with_capacity(1024 * 1024, File::create(path)?);
     for (local_id, &original_id) in graph.component_info.original_vertex_ids.iter().enumerate() {
         writeln!(file, "{local_id} {original_id}")?;
     }
+    file.flush()?;
     Ok(())
 }
 

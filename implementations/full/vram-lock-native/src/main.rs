@@ -10,7 +10,7 @@ use experiment_common::{
     TimingBreakdown,
 };
 use std::fs::{create_dir_all, File};
-use std::io::Write;
+use std::io::{BufWriter, Write};
 use std::path::{Path, PathBuf};
 use std::time::{Duration, Instant};
 
@@ -300,7 +300,7 @@ fn save_result(
     positions: impl IntoIterator<Item = [f64; 2]>,
     config: &Config,
 ) -> Result<()> {
-    let mut file = File::create(path)?;
+    let mut file = BufWriter::with_capacity(1024 * 1024, File::create(path)?);
     writeln!(file, "# Rust GPU Result (vram-lock-native) - {stage}")?;
     writeln!(file, "# Dataset: {}", config.input.display())?;
     writeln!(file, "# Node count: {}", graph.node_size)?;
@@ -318,6 +318,7 @@ fn save_result(
     for position in positions {
         writeln!(file, "{} {}", position[0], position[1])?;
     }
+    file.flush()?;
     Ok(())
 }
 

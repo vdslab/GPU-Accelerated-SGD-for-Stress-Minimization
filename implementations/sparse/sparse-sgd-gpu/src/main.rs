@@ -13,7 +13,7 @@ use sparse_sgd_gpu::{
     schedule::build_schedule,
 };
 use std::fs::{create_dir_all, File};
-use std::io::Write;
+use std::io::{BufWriter, Write};
 use std::path::{Path, PathBuf};
 use std::time::{Duration, Instant};
 
@@ -328,7 +328,7 @@ fn save_result(
     constraint_count: usize,
     vertex_map_path: &Path,
 ) -> Result<()> {
-    let mut file = File::create(path)?;
+    let mut file = BufWriter::with_capacity(1024 * 1024, File::create(path)?);
     writeln!(file, "# Rust GPU Result (sparse-sgd-gpu) - {stage}")?;
     writeln!(file, "# Dataset: {}", config.input.display())?;
     writeln!(file, "# Node count: {}", graph.node_size)?;
@@ -366,14 +366,16 @@ fn save_result(
     for position in positions {
         writeln!(file, "{} {}", position[0], position[1])?;
     }
+    file.flush()?;
     Ok(())
 }
 
 fn save_vertex_map(path: &Path, graph: &Graph) -> Result<()> {
-    let mut file = File::create(path)?;
+    let mut file = BufWriter::with_capacity(1024 * 1024, File::create(path)?);
     for (local_id, &original_id) in graph.component_info.original_vertex_ids.iter().enumerate() {
         writeln!(file, "{local_id} {original_id}")?;
     }
+    file.flush()?;
     Ok(())
 }
 
