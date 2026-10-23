@@ -1,0 +1,21 @@
+v3-basic-web-Stanford-rr_sparse_sgd-s0-p200-tNone success 63.53575212499709 6485835776
+Traceback (most recent call last):
+  File "/Users/kose/master/atomic-scheduling-investigation/experiments/run_v3.py", line 63, in execute
+    stop_process_group(proc);break
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kose/master/atomic-scheduling-investigation/experiments/run_v3.py", line 88, in stop_process_group
+    try:os.killpg(proc.pid,0)
+        ^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 1] Operation not permitted
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<stdin>", line 10, in <module>
+  File "/Users/kose/master/atomic-scheduling-investigation/experiments/run_v3.py", line 66, in execute
+    stop_process_group(proc);raise
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kose/master/atomic-scheduling-investigation/experiments/run_v3.py", line 83, in stop_process_group
+    try:os.killpg(proc.pid,signal.SIGTERM)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 1] Operation not permitted

@@ -1,0 +1,9 @@
+{
+  "status": "monitor_error",
+  "graph": "delaunay_n20",
+  "method": "sparse_sgd",
+  "seed": 0,
+  "summary": "Resource-stop branch sent SIGTERM, then group-existence signal 0 raised EPERM after group disappeared. No record was completed. Resource trigger and peak RSS were not persisted; do not infer them from missing values.",
+  "fix": "Independent psutil process-group scan; ignore EPERM only when no live or inaccessible member exists.",
+  "included_in_formal": false
+}
