@@ -60,10 +60,13 @@ def execute(base,j,g,limits,warmup=False):
     elif peak>limits['max_rss_bytes']:reason='memory_limit'
     elif shutil.disk_usage(base).free<limits.get('min_free_disk_bytes',8*1024**3):reason='disk_limit'
     if reason:
-     stop_process_group(proc);break
+     stop_process_group(proc,folder/'termination-error.json');break
     time.sleep(.2)
   except BaseException:
-   stop_process_group(proc);raise
+   # A termination failure already has its own evidence; do not mask it with
+   # a second attempt against a group that may have disappeared.
+   if reason is None:stop_process_group(proc,folder/'termination-error.json')
+   raise
  wall=time.monotonic()-start;stderr=(folder/'stderr.log').read_text(errors='replace');match=re.search(r'(\d+)\s+maximum resident set size',stderr)
  if match:peak=max(peak,int(match[1]))
  row.update(status=reason or 'error',process_wall_seconds=wall,peak_rss_bytes=peak,peak_rss_source='macOS time -l + polling' if match else 'process-tree RSS polling (observed peak)',returncode=proc.returncode)
@@ -78,21 +81,60 @@ def execute(base,j,g,limits,warmup=False):
  if row['status']!='success':row.setdefault('error',stderr[-2500:])
  save(dest,row);return row
 
-def stop_process_group(proc):
- """Stop the entire session, even when the time wrapper exits before its child."""
- try:os.killpg(proc.pid,signal.SIGTERM)
- except ProcessLookupError:pass
- deadline=time.monotonic()+5
- while time.monotonic()<deadline:
-  proc.poll()  # Reap the wrapper when it has already exited.
-  try:os.killpg(proc.pid,0)
-  except ProcessLookupError:break
-  time.sleep(.05)
- # The wrapper may have exited while a child ignored SIGTERM. Always address
- # the original process group rather than relying on the wrapper's exit code.
- try:os.killpg(proc.pid,signal.SIGKILL)
- except ProcessLookupError:pass
- proc.wait()
+def process_group_state(pgid):
+ """Inspect actual processes; killpg(pgid, 0) can return EPERM after macOS exit."""
+ members=[];inaccessible=[]
+ for process in psutil.process_iter(['pid','name','status','create_time'],ad_value=None):
+  try:
+   if os.getpgid(process.pid)!=pgid:continue
+   info=process.info
+   # Zombies have stopped execution and cannot consume GPU/CPU resources.
+   if info.get('status')!=psutil.STATUS_ZOMBIE:members.append(info)
+  except (ProcessLookupError,psutil.NoSuchProcess):continue
+  except (PermissionError,psutil.AccessDenied):inaccessible.append(process.pid)
+ return dict(pgid=pgid,members=members,inaccessible_pids=inaccessible)
+
+def stop_process_group(proc,incident_path=None):
+ """Reap the wrapper and prove its process group has no live members."""
+ def state():
+  proc.poll()
+  return process_group_state(proc.pid)
+ def report(message,snapshot,error=None):
+  evidence=dict(stage='process_group_termination',message=message,
+                process_group=snapshot,wrapper_returncode=proc.returncode)
+  if error is not None:evidence['error']=repr(error)
+  if incident_path is not None:save(incident_path,evidence)
+  print(json.dumps(evidence,ensure_ascii=False),file=sys.stderr,flush=True)
+ def empty(snapshot):
+  return not snapshot['members'] and not snapshot['inaccessible_pids']
+ def send(sig):
+  try:os.killpg(proc.pid,sig)
+  except ProcessLookupError:pass
+  except PermissionError as error:
+   snapshot=state()
+   # A disappearing macOS group can produce EPERM rather than ESRCH.
+   # Ignore it only after an independent process scan establishes absence.
+   if not empty(snapshot):
+    report(f'Permission denied sending signal {sig} to an extant or unverified process group',snapshot,error)
+    raise
+ def wait_empty(seconds):
+  deadline=time.monotonic()+seconds
+  while True:
+   snapshot=state()
+   if empty(snapshot) or time.monotonic()>=deadline:return snapshot
+   time.sleep(.05)
+ snapshot=state()
+ if not empty(snapshot):
+  send(signal.SIGTERM)
+  snapshot=wait_empty(5)
+  if not empty(snapshot):
+   send(signal.SIGKILL)
+   snapshot=wait_empty(5)
+  if not empty(snapshot):
+   message='Process group still has live or inaccessible members after SIGKILL'
+   report(message,snapshot)
+   raise RuntimeError(message)
+ proc.wait(timeout=5)
 
 def main():
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--results-dir',type=Path,default=BASE);p.add_argument('--pilot',action='store_true');p.add_argument('--timeout-seconds',type=float,default=60);p.add_argument('--max-rss-gib',type=float,default=8);p.add_argument('--study',choices=['basic','convergence','tiling','pivots']);args=p.parse_args();base=args.results_dir.resolve();dataset_path=base/'config/datasets.json';rows=json.loads(dataset_path.read_text());graphs={g['name']:g for g in rows};jobs=plan(rows)
