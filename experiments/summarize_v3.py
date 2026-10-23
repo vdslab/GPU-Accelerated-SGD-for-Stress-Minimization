@@ -475,11 +475,30 @@ def load_trace(row,base):
         if not value:
             e['snapshot']=None; continue
         p=Path(value)
-        e['snapshot']=str(p if p.is_absolute() else directory/p)
+        resolved=p if p.is_absolute() else directory/p
+        if not resolved.exists() and Path(str(resolved)+'.gz').exists():
+            resolved=Path(str(resolved)+'.gz')
+        e['snapshot']=str(resolved)
     if not entries and directory.exists():
-        for file in sorted(directory.glob('positions-*.f64le')):
-            entries.append(dict(epoch=int(file.stem.split('-')[-1]),elapsed_ms=None,snapshot=str(file)))
+        candidates={}
+        for file in sorted(directory.glob('positions-*.f64le*')):
+            if not (file.name.endswith('.f64le') or file.name.endswith('.f64le.gz')): continue
+            epoch=int(file.name.removeprefix('positions-').split('.')[0])
+            if epoch not in candidates or file.suffix!='.gz': candidates[epoch]=file
+        for epoch,file in sorted(candidates.items()):
+            entries.append(dict(epoch=epoch,elapsed_ms=None,snapshot=str(file)))
     return entries
+
+
+def read_snapshot(path):
+    """Return interleaved little-endian f64 coordinates from plain or gzip bytes."""
+    path=Path(path)
+    if path.suffix=='.gz':
+        with gzip.open(path,'rb') as source:
+            values=np.frombuffer(source.read(),dtype='<f8')
+    else:
+        values=np.fromfile(path,dtype='<f8')
+    return values.reshape(-1,2)
 
 
 def convergence(base,datasets,rows,figures,incidents,skip=False):
@@ -507,6 +526,9 @@ def convergence(base,datasets,rows,figures,incidents,skip=False):
                     p=Path(e['snapshot'])
                     if not p.exists():
                         incidents.append(dict(graph=graph,stage='trace',error=f'Missing snapshot {p}')); continue
+                    # Key the resolved storage file. Archiving a previously plain
+                    # snapshot invalidates its old cache entry safely; stable gzip
+                    # paths then reuse their evaluated values on later summaries.
                     key=hashlib.sha256((str(p)+str(p.stat().st_size)+str(p.stat().st_mtime_ns)).encode()).hexdigest()
                     if key in cached:
                         output.append({k:float(v) if k in ['stress','elapsed_ms'] and v else int(v) if k in ['seed','epoch','stress_samples'] and v else v for k,v in cached[key].items()})
@@ -533,7 +555,7 @@ def convergence(base,datasets,rows,figures,incidents,skip=False):
                 complete.write_text(signature)
             dist=np.memmap(distpath,mode='r',dtype='<u4',shape=(count,n))
             for row,e,key in snaps:
-                xy=np.fromfile(e['snapshot'],dtype='<f8').reshape(-1,2)
+                xy=read_snapshot(e['snapshot'])
                 if len(xy)!=n or not np.isfinite(xy).all():
                     incidents.append(dict(graph=graph,stage='trace',error=f'Invalid coordinates {e["snapshot"]}')); continue
                 stress=checkpoint_stress(xy,dist,sources,exact)

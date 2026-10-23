@@ -9,3 +9,5 @@ commit `a5910d9`で1MiBのBufWriterと明示flushへ変更。数値・行順・�
 修正後の同じCPU条件は全体22.10秒、SGD7.96秒、stress 1,041,858,608.7586834。修正前とCPU stressが一致した。小規模dwt_1005では6手法すべて正常完了し、決定的なCPU2種・RR2種の最終座標が修正前と完全一致した。Atomicは実行順が変わり得るため座標一致を要求せず、予定更新全件完了を確認した。
 
 座標と辺の重複保存で容量も増えるため、正式実行ではnative process終了後にテキストをgzip level1で可逆圧縮する。CRCと解凍SHA256一致を確認し、対応manifestを保存した後に元ファイルを置換する。圧縮時間archive_secondsは測定外で、SGD/cold total/native process wallには含めない。保存済みの座標データ自体は変えない。
+
+9件の実出力でCRC・解凍SHA検証に成功。kron CPUの131,779,623 bytesは44,211,472 bytes、計測外圧縮0.838秒となった。checkpointのf64 binaryも同方式で保管し、trace JSONは原文保持する。

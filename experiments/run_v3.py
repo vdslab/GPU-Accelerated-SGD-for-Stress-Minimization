@@ -84,7 +84,7 @@ def execute(base,j,g,limits,warmup=False):
 
 
 def archive_text_artifacts(folder,row):
- """Losslessly archive completed child outputs, outside every measurement."""
+ """Losslessly archive text layouts and binary checkpoints after measurement."""
  started=time.monotonic();manifest_path=folder/'artifact-archive.json'
  manifest=dict(format='gzip',compresslevel=1,measurement_excluded=True,files=[],errors=[])
  row['archive_manifest_path']=str(manifest_path)
@@ -92,7 +92,8 @@ def archive_text_artifacts(folder,row):
   row.update(archive_seconds=time.monotonic()-started,archive_status='partial_error',
              archive_error=f'Archive manifest already exists; originals and existing evidence retained: {manifest_path}')
   return
- for source in sorted(folder.glob('*.txt')):
+ sources=sorted([*folder.glob('*.txt'),*(folder/'trace').glob('positions-*.f64le')])
+ for source in sources:
   target=source.with_name(source.name+'.gz');temporary=None;created_target=False
   try:
    if source.is_symlink():raise ValueError(f'Refusing to archive symlink: {source}')
