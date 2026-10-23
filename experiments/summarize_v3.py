@@ -227,8 +227,23 @@ def comparisons(base, datasets, pairs, figures):
         save(fig,name,base,figures)
 
 
+def structural_category(name):
+    """Names provide a visual grouping only, not verified domain metadata."""
+    lower=name.lower()
+    if any(token in lower for token in ['_osm','roadnet','usroads']): return 'Road'
+    if lower.startswith(('delaunay','rgg','fe_','naca','m6','333sp')): return 'Geometry / mesh'
+    if lower.startswith(('web','cnr','in-2004','eu-2005','it-2004')): return 'Web'
+    if lower.startswith(('coauthors','copapers','com-','soc-','loc-','wiki','ca-grqc','ca-hepth','eva','p2p')): return 'Social / collaboration'
+    if lower.startswith(('kron','preferentialattachment','smallworld')): return 'Synthetic'
+    return 'Other / engineering'
+
+
 def structure(base,datasets,pairs,figures):
     catalog = {r['name']:r for r in datasets}
+    markers=dict(zip(['Road','Geometry / mesh','Web','Social / collaboration','Synthetic','Other / engineering'],['o','s','^','D','P','X']))
+    dump_csv(base/'tables/graph-structure.csv',[dict(graph=r['name'],source_group=r.get('category'),
+        structural_category=structural_category(r['name']),category_basis='heuristic from graph name, not verified domain metadata',
+        nodes=r.get('nodes'),edges=r.get('edges'),mean_degree=r.get('mean_degree'),max_degree=r.get('max_degree'),degree_cv=r.get('degree_cv')) for r in datasets])
     fig, axes = plt.subplots(2,3,figsize=(14,8),squeeze=False)
     correlations=[]
     for i,kind in enumerate(['full','sparse']):
@@ -241,7 +256,8 @@ def structure(base,datasets,pairs,figures):
                     value=catalog.get(graph,{}).get(field)
                     if finite(value,positive=True) and vals:
                         xx.append(value); yy.append(np.median(vals))
-                ax.scatter(xx,yy,color=COLOR[method],label=LABEL[method],s=25,alpha=.7)
+                        ax.scatter([value],[np.median(vals)],color=COLOR[method],marker=markers[structural_category(graph)],s=30,alpha=.7)
+                ax.plot([],[],ls='',marker='o',color=COLOR[method],label=LABEL[method])
                 if len(xx)>2 and np.std(xx)>0 and np.std(yy)>0:
                     from scipy.stats import spearmanr
                     rho,p=spearmanr(xx,yy)
@@ -250,6 +266,8 @@ def structure(base,datasets,pairs,figures):
                 ax.set_xlim(.1,10); ax.set_ylim(.1,10)
             ax.set(xscale='log',yscale='log',xlabel=field,ylabel=f'{kind.title()} speedup')
             ax.axhline(1,color='#bbbbbb',ls='--'); ax.legend()
+    handles=[plt.Line2D([0],[0],ls='',marker=marker,color='#555555',label=category) for category,marker in markers.items()]
+    fig.legend(handles=handles,loc='lower center',ncol=3,title='Graph category inferred from name (heuristic)',bbox_to_anchor=(.5,-.06))
     fig.tight_layout(); save(fig,'04_structure',base,figures)
     dump_csv(base/'tables/structure-correlations.csv',correlations)
 
@@ -488,6 +506,17 @@ def fmt(value,digits=3):
 def report(base,datasets,rows,summary,pairs,figures,arrivals,incidents,excluded):
     status=Counter(r.get('status','unknown') for r in rows)
     counts=Counter(r.get('status','unknown') for r in datasets)
+    actual=[r for r in rows if not r.get('reused_from') and finite(r.get('process_wall_seconds')) and r.get('executed',True)]
+    actual_status=Counter(r.get('status','unknown') for r in actual)
+    reused=[r for r in rows if r.get('reused_from')]
+    blocked=[r for r in rows if r.get('status')=='warmup_failed']
+    warmups=[]
+    for p in sorted((base/'warmups').glob('*/record.json')):
+        try: warmups.append(json.loads(p.read_text()))
+        except (OSError,json.JSONDecodeError): pass
+    warmup_actual=[r for r in warmups if finite(r.get('process_wall_seconds'))]
+    warmup_failures=[r for r in warmup_actual if r.get('status')!='success']
+    warmup_status=Counter(r.get('status','unknown') for r in warmup_actual)
     planpath=base/'config/plan.json'
     planned=None
     if planpath.exists():
@@ -495,7 +524,9 @@ def report(base,datasets,rows,summary,pairs,figures,arrivals,incidents,excluded)
         if isinstance(jobs,list): planned=len(jobs)
     catalog={r['name']:r for r in datasets}
     text=['# v3 実験結果','',f'データ {len(datasets)} グラフ（'+ '、'.join(f'{k}: {v}' for k,v in counts.items())+'）。',
-          f'実行記録 {len(rows):,} 件：'+ '、'.join(f'{k}: {v:,}' for k,v in status.items())+'。'+(f' 計画 {planned:,} 件。' if planned is not None else ''),'',
+          f'計画条件の記録 {len(rows):,} 件：'+ '、'.join(f'{k}: {v:,}' for k,v in status.items())+'。'+(f' 計画 {planned:,} 件。' if planned is not None else ''),'',
+          f'本測定で実際に起動した実行 {len(actual):,} 件（'+ '、'.join(f'{k}: {v:,}' for k,v in actual_status.items())+f'）。既存結果の再利用 {len(reused):,} 条件、warmup失敗による未起動 {len(blocked):,} 条件。',
+          f'別枠のwarmupは実起動 {len(warmup_actual):,} 件（'+ '、'.join(f'{k}: {v:,}' for k,v in warmup_status.items())+'）。warmupは性能・stressの本集計に混ぜない。','',
           '速度は前処理を除いたSGD反復の実時間。速度比は同じグラフ・seed・family・pivot数のCPU時間÷各手法時間。stress比は各手法÷同じCPU。点はseedの中央値、範囲は最小〜最大。失敗・未取得の条件は0に置き換えない。',
           'FullとSparseの絶対stressは同じ評価定義を用いる。大規模グラフは固定256起点による推定値で、全点対の厳密値とは区別する。',
           '以下は現在保存されている記録の集計。実行中の再集計では未完了条件が欠ける。','']
@@ -518,7 +549,7 @@ def report(base,datasets,rows,summary,pairs,figures,arrivals,incidents,excluded)
                     text += [f'- {LABEL[method]}：対応比較できた {len(grouped)} グラフ中 {sum(s>1 for s in speeds)} グラフでCPUより高速。グラフ別速度比 {min(speeds):.2f}〜{max(speeds):.2f}倍、stress比 {min(quality):.3f}〜{max(quality):.3f}。']
             text += ['', '欠測があるグラフでは対応する成功seedのみを比較する。seedの実行回数と失敗の詳細はCSVに保存。','']
         elif number==4:
-            text += ['次数の平均・最大値・変動係数と速度比を比較。次数だけで実行時間は決まらず、頂点数・制約数・タイル数との交絡がある。相関係数はstructure-correlations.csvに保存し、因果関係として扱わない。','']
+            text += ['次数の平均・最大値・変動係数と速度比を比較。次数だけで実行時間は決まらず、頂点数・制約数・タイル数との交絡がある。相関係数はstructure-correlations.csvに保存し、因果関係として扱わない。点形状の構造カテゴリはグラフ名からの推定であり、確認済みの用途分類ではない。元のSuiteSparseグループはsource_groupとしてgraph-structure.csvに保存する。','']
         elif number==5:
             text += ['座標保存を伴う診断実行から、反復0・1・2・3・5・8・10・15のstressを後計算する。GPUとCPUで同じ起点を使う。曲線はcheckpointごとのseed中央値であり、実際の単一実行の軌跡ではない。',
                      '目標は同じseedのCPU 15反復後stressの1.05倍。最初に観測できた到達checkpointを記録する。checkpoint間の正確な到達時刻や、未到達条件の外挿は行わない。診断の同期・保存による影響があるため、図2・3の通常実行時間とは分けて読む。','']
@@ -536,10 +567,23 @@ def report(base,datasets,rows,summary,pairs,figures,arrivals,incidents,excluded)
             text += ['', '時間だけで選ぶと品質を落とす可能性があるため、同じ条件のstressも併記する。最短条件は今回の測定範囲での値。' if number==6 else 'pivot増加は制約数・前処理・メモリと品質の交換になる。主図のSGD時間に加え、summary.csvには前処理・cold総時間・process wall・peak RSSを保存。Peak RSSはGPU専用VRAM量ではない。','']
     text += ['## 事故・欠測と調査','']
     failures=[r for r in rows if r.get('status')!='success']
-    if failures:
-        causes=Counter((r.get('status','unknown'),str(r.get('error_message') or r.get('error') or r.get('reason') or '記録参照')) for r in failures)
+    dump_csv(base/'tables/actual-attempts.csv',actual)
+    dump_csv(base/'tables/warmup-attempts.csv',warmup_actual)
+    dump_csv(base/'tables/warmup-failures.csv',warmup_failures)
+    if failures or warmup_failures:
+        actual_failures=[r for r in actual if r.get('status')!='success']
+        causes=Counter((r.get('status','unknown'),str(r.get('error_message') or r.get('error') or r.get('reason') or '記録参照')) for r in actual_failures)
         for (state,why),count in causes.most_common(20):
             text += [f'- {state} {count} 件：{why[:600]}']
+        if warmup_failures:
+            text += [f'- warmupの実失敗 {len(warmup_failures)} 件：'+ '、'.join(f'{state} {count}' for state,count in Counter(r.get('status') for r in warmup_failures).items())+'。']
+            for r in warmup_failures[:15]:
+                text += [f'- warmup {r.get("graph",r.get("dataset",""))} / {r.get("method")}：{r.get("status")}、{str(r.get("error","記録参照"))[:400]}']
+        if blocked:
+            text += [f'- 未起動の原因別条件数：'+ '、'.join(f'{state} {count}' for state,count in Counter(r.get('failure_reason','unknown') for r in blocked).items())+f'。対応するwarmup_run_idは {len({r.get("warmup_run_id") for r in blocked if r.get("warmup_run_id")})} 件。']
+            text += [f'- warmup_failed {len(blocked)} 条件はwarmupの失敗を受けて起動しなかった条件。warmup_run_idで失敗した実行に対応する。同じwarmupが5seedを止めても、実事故は1件として数える。']
+        unavailable=sum(r.get('status')=='unavailable' for r in rows)
+        if unavailable: text += [f'- 入力データ未取得による未起動 {unavailable} 条件。']
         text += ['', 'timeoutは計画した時間上限で停止した実行で、完了時間の実測値ではない。memory_limitは資源制限であり、そのグラフに対する性能やstressを0とみなさない。取得不能データの類似グラフへの差し替えは行わない。','']
     else: text += ['現在の実行記録に失敗はない。','']
     if excluded: text += [f'- CPU対応比較から {len(excluded)} 記録を除外。理由はpair-exclusions.csv。','']
