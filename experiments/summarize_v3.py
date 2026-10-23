@@ -210,7 +210,7 @@ def layouts(base, rows, figures, incidents):
     dump_csv(base/'tables/layout-selection.csv',choices)
 
 
-def comparisons(base, datasets, pairs, figures):
+def comparisons(base, datasets, pairs, figures, rows=None):
     category_order=['Road','Geometry / mesh','Web','Social / collaboration','Synthetic','Other / engineering']
     backgrounds=dict(zip(category_order,['#e5f5e0','#deebf7','#fee6ce','#efedf5','#fff7bc','#eeeeee']))
     catalog={r['name']:r for r in datasets}
@@ -224,7 +224,8 @@ def comparisons(base, datasets, pairs, figures):
                       source_group=catalog.get(graph,{}).get('category'),nodes=catalog.get(graph,{}).get('nodes'),
                       source_nodes=catalog.get(graph,{}).get('source_nodes'),dataset_status=catalog.get(graph,{}).get('status')) for index,graph in enumerate(names)]
         dump_csv(base/'tables'/f'{name}-graph-order.csv',mapping)
-        fig, axes=plt.subplots(2,1,figsize=(max(13,len(names)*.30),9),sharex=True)
+        with_thumbnails=name=='03_sparse' and rows is not None
+        fig, axes=plt.subplots(2,1,figsize=(max(13,len(names)*.30),12 if with_thumbnails else 9),sharex=True)
         count_rows=[]
         for ax,metric in zip(axes,['speedup','stress_ratio']):
             for index,graph in enumerate(names):
@@ -257,9 +258,62 @@ def comparisons(base, datasets, pairs, figures):
         from matplotlib.patches import Patch
         fig.legend(handles=[Patch(facecolor=backgrounds[c],label=c) for c in category_order],loc='upper center',ncol=6,bbox_to_anchor=(.5,1),fontsize=8,title='Name-inferred categories (heuristic)')
         axes[0].set_title(f'{kind.title()}: paired-seed median and min–max; × + count = missing/unpaired seeds (of 5)',pad=14)
-        fig.tight_layout(rect=(0,0,1,.93))
+        fig.tight_layout(rect=(0,0,1,.69 if with_thumbnails else .93))
+        if with_thumbnails:
+            overview_thumbnails(fig,axes[0],names,rows,pairs,base)
         save(fig,name,base,figures)
         dump_csv(base/'tables'/f'{name}-counts.csv',count_rows)
+
+
+def overview_thumbnails(fig,axis,names,rows,pairs,base):
+    """Display RR layouts at the CPU-median seed, linked to graph summary points.
+
+    This runs only during the final rendering step; it does not execute methods or
+    touch measurement records. The small drawing samples edges for legibility.
+    """
+    from matplotlib.patches import ConnectionPatch
+    choices=[]
+    for slot,graph in enumerate(SPARSE_REPS):
+        thumb=fig.add_axes([.045+slot*.245,.76,.225,.15])
+        thumb.set_axis_off()
+        cpu=[r for r in rows if r['study']=='basic' and r['graph']==graph and r.get('method')=='sparse_sgd' and r.get('status')=='success' and finite(r.get('stress_value'))]
+        if not cpu:
+            thumb.text(.5,.5,f'{graph}\nCPU baseline unavailable',ha='center',va='center',transform=thumb.transAxes,fontsize=8)
+            choices.append(dict(graph=graph,status='cpu_unavailable')); continue
+        median=float(np.median([r['stress_value'] for r in cpu]))
+        ref=min(cpu,key=lambda r:(abs(r['stress_value']-median),r['seed']))
+        row=next((r for r in rows if r['study']=='basic' and r['graph']==graph and r.get('method')=='rr_sparse_sgd' and r.get('seed')==ref['seed']),None)
+        if not row or row.get('status')!='success' or not row.get('final_positions_path'):
+            thumb.text(.5,.5,f'{graph}\nRR seed {ref["seed"]} unavailable',ha='center',va='center',transform=thumb.transAxes,fontsize=8)
+            choices.append(dict(graph=graph,seed=ref['seed'],status='rr_unavailable')); continue
+        try:
+            xy,edges=read_layout(path_of(row['final_positions_path'],base))
+            if xy.ndim!=2 or xy.shape[1]!=2 or not len(xy) or not np.isfinite(xy).all():
+                raise ValueError('Invalid thumbnail coordinates')
+            total=len(edges)
+            if total>40000: edges=edges[np.linspace(0,total-1,40000,dtype=int)]
+            fraction=len(edges)/total if total else 1.
+            thumb.add_collection(LineCollection(xy[edges],colors='#222222',linewidths=.13,alpha=.35,rasterized=True))
+            thumb.autoscale(); thumb.set_aspect('equal'); thumb.set_axis_off()
+            graph_id=names.index(graph)+1 if graph in names else None
+            thumb.set_title(f'{graph_id or "?"}: {graph}\nRR GPU; seed {row["seed"]}; stress {row["stress_value"]:,.0f}',fontsize=8,pad=3)
+            speed=[r['speedup'] for r in pairs if r['study']=='basic' and r['graph']==graph and r['method']=='rr_sparse_sgd']
+            anchor=float(np.median(speed)) if speed and graph in names else None
+            if anchor is not None:
+                connector=ConnectionPatch(xyA=(.5,0),coordsA='axes fraction',axesA=thumb,
+                                          xyB=(names.index(graph)+.18,anchor),coordsB='data',axesB=axis,
+                                          color='#444444',lw=.65,alpha=.7,clip_on=False,zorder=2)
+                fig.add_artist(connector)
+            choices.append(dict(graph=graph,graph_id=graph_id,method='rr_sparse_sgd',seed=row['seed'],
+                                status='shown',stress=row['stress_value'],edges_shown_fraction=fraction,
+                                source_path=row['final_positions_path'],anchor_speedup_median=anchor,
+                                selection='same seed as CPU median-stress selection; connector anchors graph RR median over paired seeds'))
+        except (OSError,ValueError,IndexError) as error:
+            thumb.clear(); thumb.set_axis_off()
+            thumb.text(.5,.5,f'{graph}\nLayout unavailable',ha='center',va='center',transform=thumb.transAxes,fontsize=8)
+            choices.append(dict(graph=graph,status='layout_unavailable',error=str(error)))
+    fig.text(.5,.735,'Thumbnails: RR at CPU-median-stress seed; connectors identify graph-level RR speedup medians. Edges sampled for display.',ha='center',fontsize=8)
+    dump_csv(base/'tables/sparse-overview-thumbnails.csv',choices)
 
 
 def structural_category(name):
@@ -646,7 +700,7 @@ def report(base,datasets,rows,summary,pairs,figures,arrivals,incidents,excluded)
           '速度は前処理を除いたSGD反復の実時間。速度比は同じグラフ・seed・family・pivot数のCPU時間÷各手法時間。stress比は各手法÷同じCPU。点はseedの中央値、範囲は最小〜最大。失敗・未取得の条件は0に置き換えない。',
           'FullとSparseの絶対stressは同じ評価定義を用いる。大規模グラフは固定256起点による推定値で、全点対の厳密値とは区別する。',
           'SGD時間は各反復の処理区間の合計で、CPUのshuffle、GPUへの投入と完了待ちを含む。前後の初期化やcheckpoint座標取得・保存は含まない。CPUの反復前ペアclone等はこの区間の外。cold総時間は別に保存する。',
-          'esa計画との差：Sparse overviewの代表描画thumbnailと点への接続線は未実装。代表描画は実験1の別図で提示する。Sparseの頂点別書込集中度は未計測で、制約数/頂点数・RRラウンド・dispatch数のみsparse-schedule.csvに保存する。',
+          'esa計画との差：Sparseの頂点別書込集中度は未計測で、制約数/頂点数・RRラウンド・dispatch数のみsparse-schedule.csvに保存する。',
           '以下は現在保存されている記録の集計。実行中の再集計では未完了条件が欠ける。','']
     captions={1:'代表グラフの描画',2:'小規模20グラフ：Full SGD',3:'大規模80グラフ：Sparse SGD',4:'グラフ構造と速度',5:'収束曲線と目標stress到達',6:'タイルサイズ',7:'pivot数'}
     for number in range(1,8):
@@ -665,7 +719,7 @@ def report(base,datasets,rows,summary,pairs,figures,arrivals,incidents,excluded)
                     speeds=[np.median([r['speedup'] for r in group]) for group in grouped.values()]
                     quality=[np.median([r['stress_ratio'] for r in group]) for group in grouped.values()]
                     text += [f'- {LABEL[method]}：対応比較できた {len(grouped)} グラフ中 {sum(s>1 for s in speeds)} グラフでCPUより高速。グラフ別速度比 {min(speeds):.2f}〜{max(speeds):.2f}倍、stress比 {min(quality):.3f}〜{max(quality):.3f}。']
-            if number==3: text += ['', '小規模20グラフのSparse補助比較も別図で表示する。大規模80グラフの集計とは混ぜない。時間内訳図の積み上げは計測できた成分の平均で、cold総時間との差には区間外の準備処理が含まれる。']
+            if number==3: text += ['', 'Sparse80 overviewにはRR GPUの代表描画4件を添える。seedは実験1と同じCPU stress中央値に近いものを選び、接続線は対応するグラフのRR速度比中央値を指す。描画seed単独の速度比を指す線ではない。取得・成功していない描画は表示しない。小規模20グラフのSparse補助比較も別図で表示する。大規模80グラフの集計とは混ぜない。時間内訳図の積み上げは計測できた成分の平均で、cold総時間との差には区間外の準備処理が含まれる。']
             text += ['', '上下2段は全グラフの共通x軸。背景は名前から推定したカテゴリで、分類内を頂点数順に並べる。graph-order.csvにID・名前を、counts.csvに対応seed数を保存。下端の×と数は欠測・CPU基準欠如による未対応seed数（5件中）で、0や1の測定値ではない。比は対応する成功seedのみで計算する。','']
         elif number==4:
             text += ['次数の平均・最大値・変動係数と速度比を比較。次数だけで実行時間は決まらず、頂点数・制約数・タイル数との交絡がある。相関係数はstructure-correlations.csvに保存し、因果関係として扱わない。点形状の構造カテゴリはグラフ名からの推定であり、確認済みの用途分類ではない。元のSuiteSparseグループはsource_groupとしてgraph-structure.csvに保存する。平均次数4/16とCV0.5/2で分けた図はグラフごとの速度比中央値を再集計し、グラフを等重みにする。同系列のサイズ曲線もグラフ名prefixからの推定系列で、規模以外の構造差を制御した実験ではない。','']
@@ -730,7 +784,7 @@ def main(argv=None):
     for folder in ['figures','tables','report']: (base/folder).mkdir(parents=True,exist_ok=True)
     datasets,rows=load(base); summary=aggregate(rows); pairs,excluded=pair_rows(rows)
     incidents=[]; figures=[]
-    layouts(base,rows,figures,incidents); comparisons(base,datasets,pairs,figures); structure(base,datasets,pairs,figures)
+    layouts(base,rows,figures,incidents); comparisons(base,datasets,pairs,figures,rows); structure(base,datasets,pairs,figures)
     structure_supplement(base,datasets,rows,pairs,figures)
     checkpoints,arrivals=convergence(base,datasets,rows,figures,incidents,args.skip_convergence)
     sensitivity(base,rows,pairs,figures)
