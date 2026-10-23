@@ -51,20 +51,19 @@ def execute(base,j,g,limits,warmup=False):
  row.update(binary_sha256=sha(binary),input_sha256=g['sha256'],trace_dir=str(trace));start=time.monotonic();peak=0;reason=None
  with (folder/'stdout.json').open('w') as out,(folder/'stderr.log').open('w') as err:
   proc=subprocess.Popen(['/usr/bin/time','-l',*cmd],stdout=out,stderr=err,env=env,cwd=ROOT,start_new_session=True)
-  while proc.poll() is None:
-   try:
-    children=psutil.Process(proc.pid).children(recursive=True);rss=sum(p.memory_info().rss for p in children if p.is_running());peak=max(peak,rss)
-   except psutil.Error:pass
-   if time.monotonic()-start>limits['timeout_seconds']:reason='timeout'
-   elif peak>limits['max_rss_bytes']:reason='memory_limit'
-   elif shutil.disk_usage(base).free<limits.get('min_free_disk_bytes',8*1024**3):reason='disk_limit'
-   if reason:
-    try:os.killpg(proc.pid,signal.SIGTERM);proc.wait(timeout=5)
-    except (ProcessLookupError,subprocess.TimeoutExpired):
-     try:os.killpg(proc.pid,signal.SIGKILL)
-     except ProcessLookupError:pass
-    proc.wait();break
-   time.sleep(.2)
+  try:
+   while proc.poll() is None:
+    try:
+     children=psutil.Process(proc.pid).children(recursive=True);rss=sum(p.memory_info().rss for p in children if p.is_running());peak=max(peak,rss)
+    except psutil.Error:pass
+    if time.monotonic()-start>limits['timeout_seconds']:reason='timeout'
+    elif peak>limits['max_rss_bytes']:reason='memory_limit'
+    elif shutil.disk_usage(base).free<limits.get('min_free_disk_bytes',8*1024**3):reason='disk_limit'
+    if reason:
+     stop_process_group(proc);break
+    time.sleep(.2)
+  except BaseException:
+   stop_process_group(proc);raise
  wall=time.monotonic()-start;stderr=(folder/'stderr.log').read_text(errors='replace');match=re.search(r'(\d+)\s+maximum resident set size',stderr)
  if match:peak=max(peak,int(match[1]))
  row.update(status=reason or 'error',process_wall_seconds=wall,peak_rss_bytes=peak,peak_rss_source='macOS time -l + polling' if match else 'process-tree RSS polling (observed peak)',returncode=proc.returncode)
@@ -79,22 +78,43 @@ def execute(base,j,g,limits,warmup=False):
  if row['status']!='success':row.setdefault('error',stderr[-2500:])
  save(dest,row);return row
 
+def stop_process_group(proc):
+ """Stop the entire session, even when the time wrapper exits before its child."""
+ try:os.killpg(proc.pid,signal.SIGTERM)
+ except ProcessLookupError:pass
+ deadline=time.monotonic()+5
+ while time.monotonic()<deadline:
+  proc.poll()  # Reap the wrapper when it has already exited.
+  try:os.killpg(proc.pid,0)
+  except ProcessLookupError:break
+  time.sleep(.05)
+ # The wrapper may have exited while a child ignored SIGTERM. Always address
+ # the original process group rather than relying on the wrapper's exit code.
+ try:os.killpg(proc.pid,signal.SIGKILL)
+ except ProcessLookupError:pass
+ proc.wait()
+
 def main():
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('--results-dir',type=Path,default=BASE);p.add_argument('--pilot',action='store_true');p.add_argument('--timeout-seconds',type=float,default=60);p.add_argument('--max-rss-gib',type=float,default=8);p.add_argument('--study',choices=['basic','convergence','tiling','pivots']);args=p.parse_args();base=args.results_dir.resolve();rows=json.loads((base/'config/datasets.json').read_text());graphs={g['name']:g for g in rows};jobs=plan(rows)
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--results-dir',type=Path,default=BASE);p.add_argument('--pilot',action='store_true');p.add_argument('--timeout-seconds',type=float,default=60);p.add_argument('--max-rss-gib',type=float,default=8);p.add_argument('--study',choices=['basic','convergence','tiling','pivots']);args=p.parse_args();base=args.results_dir.resolve();dataset_path=base/'config/datasets.json';rows=json.loads(dataset_path.read_text());graphs={g['name']:g for g in rows};jobs=plan(rows)
  if args.pilot:
   chosen=['USpowerGrid','fe_4elt2','luxembourg_osm','web-Stanford','delaunay_n20'];jobs=[j for j in jobs if j['study']=='basic' and j['seed']==0 and j['graph'] in chosen and (j['method'] in list(METHODS)[:3] if graphs[j['graph']]['family']=='small' else True)]
   base=base/'pilot';base.mkdir(exist_ok=True);limits=dict(timeout_seconds=args.timeout_seconds,max_rss_bytes=int(args.max_rss_gib*1024**3))
  else:
-  limits=json.loads((base/'config/limits.json').read_text());save(base/'config/plan.json',jobs)
-  if args.study:jobs=[j for j in jobs if j['study']==args.study]
+  limits=json.loads((base/'config/limits.json').read_text())
+ full_plan=jobs
+ full_plan_sha256=hashlib.sha256(json.dumps(full_plan,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+ if args.study:jobs=[j for j in jobs if j['study']==args.study]
  raw=base/'raw';raw.mkdir(parents=True,exist_ok=True)
  # Verify binaries once and freeze source version before any measurements.
- binary_hashes={m:sha(ROOT/'target/v3-release/release'/b) for m,b in METHODS.items()};provenance={'git_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'binary_sha256':binary_hashes,'limits':limits}
+ binary_hashes={m:sha(ROOT/'target/v3-release/release'/b) for m,b in METHODS.items()};provenance={'git_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'binary_sha256':binary_hashes,'limits':limits,'runner_sha256':sha(__file__),'plan_sha256':full_plan_sha256,'datasets_sha256':sha(dataset_path)}
  evidence=base/'config/execution.json'
  if evidence.exists():
-  previous=json.loads(evidence.read_text());assert previous['binary_sha256']==binary_hashes and previous['limits']==limits,'Binary/limits changed; use a new experiment version'
+  previous=json.loads(evidence.read_text())
+  for field in ['binary_sha256','limits','runner_sha256','plan_sha256','datasets_sha256']:
+   assert previous.get(field)==provenance[field],f'{field} changed or missing; use a new experiment version'
  else:
   save(evidence,provenance)
+  if not args.pilot:save(base/'config/plan.json',full_plan)
   tracked=subprocess.check_output(['git','ls-files','experiments','implementations','shared'],cwd=ROOT,text=True).splitlines();source_hashes={}
   for name in tracked:
    source=ROOT/name
