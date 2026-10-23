@@ -116,17 +116,18 @@ def aggregate(rows):
 def pair_rows(rows):
     refs = {}
     for r in rows:
-        if r['study']=='basic' and r.get('status')=='success' and r.get('method') in ['sgd','sparse_sgd']:
-            refs[(r['graph'], family(r), r.get('seed'), r.get('pivots') if family(r)=='sparse' else None)] = r
+        if r.get('status')=='success' and r.get('method') in ['sgd','sparse_sgd']:
+            refs[(r['study'], r['graph'], family(r), r.get('seed'), r.get('pivots') if family(r)=='sparse' else None)] = r
     pairs, excluded = [], []
     for r in rows:
         if r.get('status')!='success':
             continue
-        ref = refs.get((r['graph'], family(r), r.get('seed'), r.get('pivots') if family(r)=='sparse' else None))
+        reference_study='basic' if r['study']=='tiling' else r['study']
+        ref = refs.get((reference_study, r['graph'], family(r), r.get('seed'), r.get('pivots') if family(r)=='sparse' else None))
         if not ref:
             excluded.append(dict(graph=r['graph'], method=r.get('method'), seed=r.get('seed'), study=r['study'], reason='No successful matching CPU baseline'))
             continue
-        mismatch = [f for f in ['input_sha256','initial_positions_sha256','iterations','epsilon','stress_kind','stress_samples','stress_seed']
+        mismatch = [f for f in ['input_sha256','initial_positions_sha256','preprocess_sha256','iterations','epsilon','stress_kind','stress_samples','stress_seed']
                     if r.get(f)!=ref.get(f)]
         if mismatch:
             excluded.append(dict(graph=r['graph'], method=r.get('method'), seed=r.get('seed'), study=r['study'], reason='Mismatch: '+','.join(mismatch)))
@@ -176,6 +177,7 @@ def layouts(base, rows, figures, incidents):
             eligible = [r for r in rows if r['study']=='basic' and r['graph']==graph and r.get('method')==methods[0] and r.get('status')=='success' and finite(r.get('stress_value'))]
             median = np.median([r['stress_value'] for r in eligible]) if eligible else 0
             ref = min(eligible,key=lambda r:(abs(r['stress_value']-median),r['seed'])) if eligible else None
+            bounds=[]
             for j, method in enumerate(methods):
                 ax = axes[i,j]
                 ax.set_title(f'{graph} / {LABEL[method]}')
@@ -185,46 +187,79 @@ def layouts(base, rows, figures, incidents):
                     empty(ax, row.get('status','Unavailable') if row else 'Unavailable'); continue
                 try:
                     xy, edges = read_layout(path_of(row['final_positions_path'],base))
+                    original_edges=len(edges)
                     sampled = len(edges)>250000
                     if sampled:
                         edges = edges[np.linspace(0,len(edges)-1,250000,dtype=int)]
                     ax.add_collection(LineCollection(xy[edges],colors='#222222',linewidths=.15,alpha=.35,rasterized=True))
+                    bounds.append((xy.min(axis=0),xy.max(axis=0)))
                     ax.autoscale(); ax.set_aspect('equal'); ax.set_axis_off()
-                    ax.text(0,-.04,f"seed {row['seed']}; stress {row['stress_value']:,.1f}"+ ('; edges sampled' if sampled else ''),transform=ax.transAxes,fontsize=8)
-                    choices.append(dict(graph=graph,method=method,seed=row['seed'],stress=row['stress_value'],edges_sampled=sampled,path=row['final_positions_path']))
+                    fraction=len(edges)/original_edges if original_edges else 1.0
+                    seconds=row['iteration_time_ms']/1000 if finite(row.get('iteration_time_ms')) else None
+                    ax.text(0,-.04,f"seed {row['seed']}; stress {row['stress_value']:,.1f}\nSGD {fmt(seconds)} s; edges shown {fraction:.1%}",transform=ax.transAxes,fontsize=8)
+                    choices.append(dict(graph=graph,method=method,seed=row['seed'],stress=row['stress_value'],edges_sampled=sampled,edges_shown_fraction=fraction,iteration_seconds=seconds,path=row['final_positions_path']))
                 except (OSError, ValueError, IndexError) as e:
                     empty(ax,'Layout unavailable'); incidents.append(dict(graph=graph,stage='layout',error=str(e)))
-        fig.tight_layout(h_pad=2)
+            if bounds:
+                lo=np.min([b[0] for b in bounds],axis=0); hi=np.max([b[1] for b in bounds],axis=0)
+                center=(hi+lo)/2; half=max(float(np.max(hi-lo))*.54,1e-9)
+                for ax in axes[i]:
+                    ax.set_xlim(center[0]-half,center[0]+half); ax.set_ylim(center[1]-half,center[1]+half)
+        fig.tight_layout(h_pad=2.8)
         save(fig,'01_layout_'+kind,base,figures)
     dump_csv(base/'tables/layout-selection.csv',choices)
 
 
 def comparisons(base, datasets, pairs, figures):
+    category_order=['Road','Geometry / mesh','Web','Social / collaboration','Synthetic','Other / engineering']
+    backgrounds=dict(zip(category_order,['#e5f5e0','#deebf7','#fee6ce','#efedf5','#fff7bc','#eeeeee']))
+    catalog={r['name']:r for r in datasets}
     for kind, names, methods, name in [('full',[r['name'] for r in datasets if r.get('family')=='small'],METHODS[:3],'02_full'),
-                                      ('sparse',[r['name'] for r in datasets if r.get('family')=='large'],METHODS[3:],'03_sparse')]:
+                                      ('sparse',[r['name'] for r in datasets if r.get('family')=='large'],METHODS[3:],'03_sparse'),
+                                      ('sparse',[r['name'] for r in datasets if r.get('family')=='small'],METHODS[3:],'03_sparse_small_aux')]:
         if not names:
             names = sorted({r['graph'] for r in pairs if r['study']=='basic' and r['family']==kind})
-        chunks = [names[i:i+20] for i in range(0,len(names),20)] or [[]]
-        fig, axes = plt.subplots(1,len(chunks)*2,figsize=(len(chunks)*7, max(6,min(20,len(names))*.36)),squeeze=False)
-        for ci, chunk in enumerate(chunks):
-            for metric,k in [('speedup',0),('stress_ratio',1)]:
-                ax = axes[0,ci*2+k]
+        names=sorted(names,key=lambda graph:(category_order.index(structural_category(graph)),catalog.get(graph,{}).get('nodes') or catalog.get(graph,{}).get('source_nodes') or math.inf,graph))
+        mapping=[dict(id=index+1,graph=graph,structural_category=structural_category(graph),category_basis='heuristic from graph name',
+                      source_group=catalog.get(graph,{}).get('category'),nodes=catalog.get(graph,{}).get('nodes'),
+                      source_nodes=catalog.get(graph,{}).get('source_nodes'),dataset_status=catalog.get(graph,{}).get('status')) for index,graph in enumerate(names)]
+        dump_csv(base/'tables'/f'{name}-graph-order.csv',mapping)
+        fig, axes=plt.subplots(2,1,figsize=(max(13,len(names)*.30),9),sharex=True)
+        count_rows=[]
+        for ax,metric in zip(axes,['speedup','stress_ratio']):
+            for index,graph in enumerate(names):
+                category=structural_category(graph)
+                ax.axvspan(index-.5,index+.5,color=backgrounds[category],alpha=.6,lw=0,zorder=0)
                 for mi,method in enumerate(methods):
-                    for gi,graph in enumerate(chunk):
-                        vals = [r[metric] for r in pairs if r['study']=='basic' and r['graph']==graph and r['method']==method]
-                        med,lo,hi = statistics(vals)
-                        if med is not None:
-                            ax.errorbar(med,gi+(mi-1)*.2,xerr=[[med-lo],[hi-med]],fmt='o',markersize=3,color=COLOR[method],capsize=2,label=LABEL[method] if gi==0 else None)
-                ax.axvline(1,color='#bbbbbb',ls='--',lw=.8)
-                ax.set_yticks(range(len(chunk)),chunk if k==0 else ['']*len(chunk)); ax.invert_yaxis()
-                ax.set_title('CPU time / method time' if k==0 else 'Method stress / CPU stress')
-                if k==0: ax.set_xscale('log')
-                if ci==0 and k==0:
-                    handles=[plt.Line2D([0],[0],marker='o',color=COLOR[m],ls='',label=LABEL[m]) for m in methods]
-                    ax.legend(handles=handles,loc='best')
-        fig.suptitle(f'{kind.title()}: paired seed median and min–max; missing points are unavailable',y=1.01)
-        fig.tight_layout()
+                    vals=[r[metric] for r in pairs if r['study']=='basic' and r['graph']==graph and r['method']==method]
+                    med,low,high=statistics(vals); xx=index+(mi-1)*.18
+                    if med is not None:
+                        ax.errorbar(xx,med,yerr=[[med-low],[high-med]],fmt='o',markersize=3,color=COLOR[method],capsize=2,zorder=3)
+                    missing=max(0,5-len(vals))
+                    if missing:
+                        # Axis-fraction placement communicates a missing observation,
+                        # without inventing a numeric speed or stress ratio for it.
+                        ax.plot([xx],[.035+mi*.055],marker='x',color=COLOR[method],markersize=4,ls='',transform=ax.get_xaxis_transform(),zorder=4)
+                        ax.text(xx,.065+mi*.055,str(missing),color=COLOR[method],fontsize=5.5,ha='center',transform=ax.get_xaxis_transform())
+                    if metric=='speedup': count_rows.append(dict(id=index+1,graph=graph,method=method,paired_successes=len(vals),expected_seeds=5,missing_or_unpaired=missing))
+            ax.axhline(1,color='#777777',ls='--',lw=.8,zorder=1)
+            ax.set_ylabel('CPU time / method time' if metric=='speedup' else 'Method stress / CPU stress')
+            if metric=='speedup': ax.set_yscale('log')
+            ax.grid(axis='y',alpha=.15)
+        if not names:
+            empty(axes[0]); empty(axes[1])
+        labels=[f'{index+1}: {graph}' if len(names)<=25 else str(index+1) for index,graph in enumerate(names)]
+        axes[1].set_xticks(range(len(names)),labels,rotation=60 if len(names)<=25 else 0,ha='right' if len(names)<=25 else 'center',fontsize=7)
+        axes[1].set_xlim(-.6,max(.6,len(names)-.4))
+        axes[1].set_xlabel('Graph ID (category, then vertices); see matching graph-order CSV')
+        handles=[plt.Line2D([0],[0],marker='o',color=COLOR[m],ls='',label=LABEL[m]) for m in methods]
+        axes[0].legend(handles=handles,loc='upper left',ncol=3)
+        from matplotlib.patches import Patch
+        fig.legend(handles=[Patch(facecolor=backgrounds[c],label=c) for c in category_order],loc='upper center',ncol=6,bbox_to_anchor=(.5,1),fontsize=8,title='Name-inferred categories (heuristic)')
+        axes[0].set_title(f'{kind.title()}: paired-seed median and min–max; × + count = missing/unpaired seeds (of 5)',pad=14)
+        fig.tight_layout(rect=(0,0,1,.93))
         save(fig,name,base,figures)
+        dump_csv(base/'tables'/f'{name}-counts.csv',count_rows)
 
 
 def structural_category(name):
@@ -270,6 +305,66 @@ def structure(base,datasets,pairs,figures):
     fig.legend(handles=handles,loc='lower center',ncol=3,title='Graph category inferred from name (heuristic)',bbox_to_anchor=(.5,-.06))
     fig.tight_layout(); save(fig,'04_structure',base,figures)
     dump_csv(base/'tables/structure-correlations.csv',correlations)
+
+
+def structure_supplement(base,datasets,rows,pairs,figures):
+    catalog={r['name']:r for r in datasets}
+    bins=[]
+    schemes=[('mean_degree',[4,16],['<4','4–16','>=16']),('degree_cv',[.5,2],['<0.5','0.5–2','>=2'])]
+    fig,axes=plt.subplots(2,2,figsize=(11,7),squeeze=False)
+    for i,kind in enumerate(['full','sparse']):
+        for j,(feature,bounds,labels) in enumerate(schemes):
+            ax=axes[i,j]
+            for mi,method in enumerate(METHODS[1:3] if kind=='full' else METHODS[4:]):
+                grouped=defaultdict(list)
+                for graph in sorted({r['graph'] for r in pairs if r['study']=='basic' and r['method']==method}):
+                    info=catalog.get(graph,{})
+                    if info.get('family')!=('small' if kind=='full' else 'large'): continue
+                    value=info.get(feature)
+                    if not finite(value): continue
+                    index=0 if value<bounds[0] else 1 if value<bounds[1] else 2
+                    vals=[r['speedup'] for r in pairs if r['study']=='basic' and r['graph']==graph and r['method']==method]
+                    if vals: grouped[index].append(float(np.median(vals)))
+                for index,values in grouped.items():
+                    med,low,high=statistics(values)
+                    ax.errorbar(index+(mi-.5)*.12,med,yerr=[[med-low],[high-med]],fmt='o',color=COLOR[method],capsize=3)
+                    bins.append(dict(family=kind,method=method,feature=feature,bin=labels[index],graphs=len(values),graph_speedup_median=med,graph_speedup_min=low,graph_speedup_max=high))
+                ax.plot([],[],color=COLOR[method],marker='o',ls='',label=LABEL[method])
+            ax.set_xticks(range(3),labels); ax.set(xlabel=feature,ylabel=f'{kind} speedup',yscale='log'); ax.axhline(1,color='#bbbbbb',ls='--'); ax.legend()
+    fig.tight_layout(); save(fig,'04_structure_bins',base,figures)
+    dump_csv(base/'tables/structure-bins.csv',bins)
+    def series(name):
+        lower=name.lower()
+        for prefix in ['delaunay','rgg','roadnet','usroads','kron','coauthors','copapers','web','fe_']:
+            if lower.startswith(prefix): return prefix
+        return None
+    size_rows=[]
+    for r in pairs:
+        if r['study']!='basic' or r['method'] in ['sgd','sparse_sgd']: continue
+        info=catalog.get(r['graph'],{}); group=series(r['graph'])
+        if group and finite(info.get('nodes'),positive=True):
+            size_rows.append(dict(series=group,graph=r['graph'],family=r['family'],method=r['method'],seed=r['seed'],nodes=info['nodes'],speedup=r['speedup']))
+    panels=sorted({(r['series'],r['family']) for r in size_rows if len({x['graph'] for x in size_rows if x['series']==r['series'] and x['family']==r['family']})>=2})
+    if panels:
+        fig,axes=plt.subplots(math.ceil(len(panels)/3),3,figsize=(14,math.ceil(len(panels)/3)*3.5),squeeze=False)
+        for ax in axes.flat: ax.set_visible(False)
+        for ax,(group,kind) in zip(axes.flat,panels):
+            ax.set_visible(True)
+            for method in METHODS[1:3] if kind=='full' else METHODS[4:]:
+                values=[]
+                for graph in sorted({r['graph'] for r in size_rows if r['series']==group and r['method']==method}):
+                    matches=[r for r in size_rows if r['series']==group and r['method']==method and r['graph']==graph]
+                    values.append((matches[0]['nodes'],np.median([r['speedup'] for r in matches])))
+                if values: ax.plot(*zip(*sorted(values)),marker='o',color=COLOR[method],label=LABEL[method])
+            ax.set(title=f'{group} / {kind}',xlabel='Vertices',ylabel='Speedup',xscale='log',yscale='log'); ax.legend()
+        fig.tight_layout(); save(fig,'04_size_series',base,figures)
+    dump_csv(base/'tables/size-series.csv',size_rows)
+    schedule=[dict(graph=r['graph'],method=r['method'],seed=r['seed'],pivots=r.get('pivots'),nodes=r.get('nodes'),constraints=r.get('constraints'),
+                   constraints_per_vertex=r['constraints']/r['nodes'] if finite(r.get('nodes'),positive=True) and finite(r.get('constraints')) else None,
+                   rr_rounds=r.get('rounds'),dispatches=r.get('dispatches'),
+                   dispatches_per_iteration=r['dispatches']/r['iterations'] if finite(r.get('iterations'),positive=True) and finite(r.get('dispatches')) else None)
+              for r in rows if r['study']=='basic' and r.get('status')=='success' and family(r)=='sparse']
+    dump_csv(base/'tables/sparse-schedule.csv',schedule)
 
 
 def sample_indices(n,count,seed=0):
@@ -400,10 +495,18 @@ def convergence(base,datasets,rows,figures,incidents,skip=False):
             if medians: ax.plot(*zip(*medians),color=COLOR[method],label=LABEL[method])
             for seed in sorted({r['seed'] for r in points}):
                 seq=sorted([r for r in points if r['seed']==seed],key=lambda r:r['epoch'])
-                target=targets.get(seed); hit=next((r for r in seq if target is not None and r['stress']<=target),None)
-                arrivals.append(dict(graph=graph,family=kind,method=method,seed=seed,target_stress=target,
-                                     first_observed_epoch=hit['epoch'] if hit else None,first_observed_ms=hit['elapsed_ms'] if hit else None,
-                                     reached=hit is not None,observed_epochs=[r['epoch'] for r in seq]))
+                for factor in [1.05,1.01]:
+                    target=targets.get(seed)
+                    target=target*factor/1.05 if target is not None else None
+                    hit=next((r for r in seq if target is not None and r['stress']<=target),None)
+                    previous=seq[max(0,seq.index(hit)-1)] if hit else None
+                    arrivals.append(dict(graph=graph,family=kind,method=method,seed=seed,target_factor=factor,target_stress=target,
+                                         first_observed_epoch=hit['epoch'] if hit else None,first_observed_ms=hit['elapsed_ms'] if hit else None,
+                                         interval_lower_epoch=previous['epoch'] if previous else None,interval_lower_ms=previous['elapsed_ms'] if previous else None,
+                                         interval_upper_epoch=hit['epoch'] if hit else None,interval_upper_ms=hit['elapsed_ms'] if hit else None,
+                                         reached=(hit is not None) if target is not None else None,
+                                         status='reference_unavailable' if target is None else 'reached' if hit else 'not_observed',
+                                         observed_epochs=[r['epoch'] for r in seq]))
         ax.set(title=f'{graph} / {kind}',xlabel='Cumulative SGD time (s)',ylabel='Full stress',yscale='log'); ax.legend()
     if not panels: empty(axes[0,0],'No convergence snapshots evaluated'); axes[0,0].set_visible(True)
     fig.tight_layout(); save(fig,'05_convergence',base,figures)
@@ -442,6 +545,19 @@ def iteration_timings(base,rows,figures):
             ax.fill_between(xx,lo,hi,color=COLOR[method],alpha=.15)
         ax.set(title=f'{graph} / {kind}',xlabel='Iteration',ylabel='SGD time (s)',yscale='log'); ax.legend()
     fig.tight_layout(); save(fig,'05_iteration_times',base,figures)
+    full_graphs=sorted({r['graph'] for r in records if r['family']=='full'})
+    fig,axes=plt.subplots(max(1,math.ceil(len(full_graphs)/4)),4,figsize=(18,max(3,math.ceil(len(full_graphs)/4)*3)),squeeze=False)
+    for ax in axes.flat: ax.set_visible(False)
+    for ax,graph in zip(axes.flat,full_graphs):
+        ax.set_visible(True)
+        for method in METHODS[:3]:
+            subset=[r for r in records if r['graph']==graph and r['method']==method]
+            if not subset: continue
+            epochs=sorted({r['iteration'] for r in subset})
+            yy=[np.median([r['algorithm_seconds'] for r in subset if r['iteration']==e]) for e in epochs]
+            ax.plot(epochs,yy,color=COLOR[method],label=LABEL[method])
+        ax.set(title=graph,xlabel='Iteration',ylabel='SGD time (s)',yscale='log'); ax.legend(fontsize=7)
+    fig.tight_layout(); save(fig,'02_full_iteration_times',base,figures)
 
 
 def sparse_components(base,datasets,rows,figures):
@@ -467,7 +583,7 @@ def sparse_components(base,datasets,rows,figures):
                 ax.barh(np.arange(len(chunk))+(mi-1)*.23,vals,height=.21,left=left,color=color,label=label if mi==0 else None)
                 left+=np.nan_to_num(vals)
         ax.set_yticks(range(len(chunk)),chunk); ax.invert_yaxis()
-        ax.set_xlabel('Mean cold algorithm time (s); each group: CPU / Atomic / RR')
+        ax.set_xlabel('Mean measured components (s); each group: CPU / Atomic / RR')
     axes[0,0].legend(loc='upper center',bbox_to_anchor=(.5,1.18),ncol=3,fontsize=7)
     fig.tight_layout(); save(fig,'03_sparse_components',base,figures)
 
@@ -481,17 +597,17 @@ def sensitivity(base,rows,pairs,figures):
         for gi,graph in enumerate(graphs):
             for method in sorted({r['method'] for r in selected if r['graph']==graph},key=METHODS.index):
                 group=[r for r in selected if r['graph']==graph and r['method']==method and r.get('status')=='success']
-                for col,field in enumerate(['iteration_time_ms','stress_value']+(['peak_rss_bytes'] if count==3 else [])):
+                for col,field in enumerate((['algorithm_time_cold_ms','stress_value','peak_rss_bytes'] if count==3 else ['iteration_time_ms','stress_value'])):
                     ax=axes[gi,col]; xx=[]; yy=[]; ll=[]; hh=[]
                     for value in sorted({r.get(param,r.get('rr_tile_size')) for r in group if r.get(param,r.get('rr_tile_size')) is not None}):
                         med,lo,hi=statistics([r.get(field) for r in group if r.get(param,r.get('rr_tile_size'))==value])
                         if med is not None:
-                            divisor=1000 if field=='iteration_time_ms' else 1024**3 if field=='peak_rss_bytes' else 1
+                            divisor=1000 if field in ['iteration_time_ms','algorithm_time_cold_ms'] else 1024**3 if field=='peak_rss_bytes' else 1
                             xx.append(value); yy.append(med/divisor); ll.append((med-lo)/divisor); hh.append((hi-med)/divisor)
                     if xx: ax.errorbar(xx,yy,yerr=[ll,hh],fmt='o-',color=COLOR[method],label=LABEL[method],markersize=3,capsize=2)
                     if not xx and (not np.isfinite(ax.dataLim.x0) or ax.dataLim.x1 <= 0):
                         ax.set_xlim(1,1024); ax.set_ylim(.1,10)
-                    ax.set(title=graph,xlabel=param,ylabel={'iteration_time_ms':'SGD time (s)','stress_value':'Full stress','peak_rss_bytes':'Peak process RSS (GiB)'}[field],xscale='log',yscale='log')
+                    ax.set(title=graph,xlabel=param,ylabel={'iteration_time_ms':'SGD time (s)','algorithm_time_cold_ms':'Cold algorithm total (s)','stress_value':'Full stress','peak_rss_bytes':'Peak process RSS (GiB)'}[field],xscale='log',yscale='log')
                     ax.legend()
         if not graphs:
             for ax in axes.flat: empty(ax)
@@ -529,6 +645,8 @@ def report(base,datasets,rows,summary,pairs,figures,arrivals,incidents,excluded)
           f'別枠のwarmupは実起動 {len(warmup_actual):,} 件（'+ '、'.join(f'{k}: {v:,}' for k,v in warmup_status.items())+'）。warmupは性能・stressの本集計に混ぜない。','',
           '速度は前処理を除いたSGD反復の実時間。速度比は同じグラフ・seed・family・pivot数のCPU時間÷各手法時間。stress比は各手法÷同じCPU。点はseedの中央値、範囲は最小〜最大。失敗・未取得の条件は0に置き換えない。',
           'FullとSparseの絶対stressは同じ評価定義を用いる。大規模グラフは固定256起点による推定値で、全点対の厳密値とは区別する。',
+          'SGD時間は各反復の処理区間の合計で、CPUのshuffle、GPUへの投入と完了待ちを含む。前後の初期化やcheckpoint座標取得・保存は含まない。CPUの反復前ペアclone等はこの区間の外。cold総時間は別に保存する。',
+          'esa計画との差：Sparse overviewの代表描画thumbnailと点への接続線は未実装。代表描画は実験1の別図で提示する。Sparseの頂点別書込集中度は未計測で、制約数/頂点数・RRラウンド・dispatch数のみsparse-schedule.csvに保存する。',
           '以下は現在保存されている記録の集計。実行中の再集計では未完了条件が欠ける。','']
     captions={1:'代表グラフの描画',2:'小規模20グラフ：Full SGD',3:'大規模80グラフ：Sparse SGD',4:'グラフ構造と速度',5:'収束曲線と目標stress到達',6:'タイルサイズ',7:'pivot数'}
     for number in range(1,8):
@@ -536,7 +654,7 @@ def report(base,datasets,rows,summary,pairs,figures,arrivals,incidents,excluded)
         names=[name for name in figures if name.startswith(f'{number:02}_')]
         for name in names: text += [f'![{captions[number]}](../figures/{name}.png)','']
         if number==1:
-            text += ['CPUの最終stress中央値に最も近いseedを選び、GPUも同じseedを表示する。良好なGPU実行だけを選抜していない。25万辺を超える描画は辺のみ等間隔で間引く。stressは間引く前の全グラフで評価する。','']
+            text += ['CPUの最終stress中央値に最も近いseedを選び、GPUも同じseedを表示する。良好なGPU実行だけを選抜していない。同じグラフの全手法は座標のunion範囲から同じx/y縮尺で描画する。25万辺を超える描画は辺のみ等間隔で間引き、表示割合とSGD秒を併記する。stressは間引く前の全グラフで評価する。','']
         elif number in [2,3]:
             kind='full' if number==2 else 'sparse'
             for method in (METHODS[1:3] if number==2 else METHODS[4:]):
@@ -547,24 +665,28 @@ def report(base,datasets,rows,summary,pairs,figures,arrivals,incidents,excluded)
                     speeds=[np.median([r['speedup'] for r in group]) for group in grouped.values()]
                     quality=[np.median([r['stress_ratio'] for r in group]) for group in grouped.values()]
                     text += [f'- {LABEL[method]}：対応比較できた {len(grouped)} グラフ中 {sum(s>1 for s in speeds)} グラフでCPUより高速。グラフ別速度比 {min(speeds):.2f}〜{max(speeds):.2f}倍、stress比 {min(quality):.3f}〜{max(quality):.3f}。']
-            text += ['', '欠測があるグラフでは対応する成功seedのみを比較する。seedの実行回数と失敗の詳細はCSVに保存。','']
+            if number==3: text += ['', '小規模20グラフのSparse補助比較も別図で表示する。大規模80グラフの集計とは混ぜない。時間内訳図の積み上げは計測できた成分の平均で、cold総時間との差には区間外の準備処理が含まれる。']
+            text += ['', '上下2段は全グラフの共通x軸。背景は名前から推定したカテゴリで、分類内を頂点数順に並べる。graph-order.csvにID・名前を、counts.csvに対応seed数を保存。下端の×と数は欠測・CPU基準欠如による未対応seed数（5件中）で、0や1の測定値ではない。比は対応する成功seedのみで計算する。','']
         elif number==4:
-            text += ['次数の平均・最大値・変動係数と速度比を比較。次数だけで実行時間は決まらず、頂点数・制約数・タイル数との交絡がある。相関係数はstructure-correlations.csvに保存し、因果関係として扱わない。点形状の構造カテゴリはグラフ名からの推定であり、確認済みの用途分類ではない。元のSuiteSparseグループはsource_groupとしてgraph-structure.csvに保存する。','']
+            text += ['次数の平均・最大値・変動係数と速度比を比較。次数だけで実行時間は決まらず、頂点数・制約数・タイル数との交絡がある。相関係数はstructure-correlations.csvに保存し、因果関係として扱わない。点形状の構造カテゴリはグラフ名からの推定であり、確認済みの用途分類ではない。元のSuiteSparseグループはsource_groupとしてgraph-structure.csvに保存する。平均次数4/16とCV0.5/2で分けた図はグラフごとの速度比中央値を再集計し、グラフを等重みにする。同系列のサイズ曲線もグラフ名prefixからの推定系列で、規模以外の構造差を制御した実験ではない。','']
         elif number==5:
-            text += ['座標保存を伴う診断実行から、反復0・1・2・3・5・8・10・15のstressを後計算する。GPUとCPUで同じ起点を使う。曲線はcheckpointごとのseed中央値であり、実際の単一実行の軌跡ではない。',
-                     '目標は同じseedのCPU 15反復後stressの1.05倍。最初に観測できた到達checkpointを記録する。checkpoint間の正確な到達時刻や、未到達条件の外挿は行わない。診断の同期・保存による影響があるため、図2・3の通常実行時間とは分けて読む。','']
-            for method in METHODS:
-                a=[r for r in arrivals if r['method']==method]
-                if a: text += [f'- {method}：{sum(r["reached"] for r in a)}/{len(a)} 実行で目標到達を観測。']
+            text += ['座標保存を伴う診断実行から、反復0・1・2・3・5・8・10・15のstressを後計算する。GPUとCPUで同じ起点を使う。曲線はcheckpointごとの各手法の成功seed中央値であり、実際の単一実行の軌跡ではない。失敗により手法間の成功seed集合が異なる場合がある。',
+                     '目標は同じseed・familyのCPU 15反復後stressの1.05倍と1.01倍。直前の未達checkpoint〜最初に到達を観測したcheckpointの時間幅を記録する。stressは非単調になり得るため、以前の観測点間で一度到達して再悪化した可能性までは除外できない。正確な初到達時刻や未到達条件の外挿は行わない。診断の同期・保存による影響があるため、図2・3の通常実行時間とは分けて読む。','']
+            for factor in [1.05,1.01]:
+                for method in METHODS:
+                    a=[r for r in arrivals if r['method']==method and r['target_factor']==factor and r['status']!='reference_unavailable']
+                    unavailable=sum(r['method']==method and r['target_factor']==factor and r['status']=='reference_unavailable' for r in arrivals)
+                    if a or unavailable: text += [f'- {method} / {factor:.2f}倍目標：対応CPUがある {len(a)} 実行中 {sum(r["reached"] for r in a)} 実行で到達を観測。CPU基準欠測 {unavailable} 実行は到達率の分母から除外。']
             text += ['']
         else:
             study='tiling' if number==6 else 'pivots'; param='tile_size' if number==6 else 'pivots'
             for graph in sorted({r['graph'] for r in summary if r['study']==study}):
-                entries=[r for r in summary if r['study']==study and r['graph']==graph and finite(r.get('iteration_time_ms_median'),positive=True)]
+                timing='iteration_time_ms_median' if number==6 else 'algorithm_time_cold_ms_median'
+                entries=[r for r in summary if r['study']==study and r['graph']==graph and finite(r.get(timing),positive=True)]
                 if entries:
-                    best=min(entries,key=lambda r:r['iteration_time_ms_median'])
-                    text += [f'- {graph}：今回測れた最短条件は {best["method"]}、{param}={best[param]}、SGD {best["iteration_time_ms_median"]/1000:.3f} 秒、stress {fmt(best["stress_value_median"],1)}。']
-            text += ['', '時間だけで選ぶと品質を落とす可能性があるため、同じ条件のstressも併記する。最短条件は今回の測定範囲での値。' if number==6 else 'pivot増加は制約数・前処理・メモリと品質の交換になる。主図のSGD時間に加え、summary.csvには前処理・cold総時間・process wall・peak RSSを保存。Peak RSSはGPU専用VRAM量ではない。','']
+                    best=min(entries,key=lambda r:r[timing])
+                    text += [f'- {graph}：今回測れた最短条件は {best["method"]}、{param}={best[param]}、SGD {best["iteration_time_ms_median"]/1000:.3f} 秒、stress {fmt(best["stress_value_median"],1)}。'+(f' cold総時間 {best[timing]/1000:.3f} 秒。' if number==7 else '')]
+            text += ['', '時間だけで選ぶと品質を落とす可能性があるため、同じ条件のstressも併記する。最短条件は今回の測定範囲での値。' if number==6 else 'pivot増加は制約数・前処理・メモリと品質の交換になる。主図の時間は前処理・GPU初期化・SGD・readbackを含むcoldアルゴリズム総時間で、入力読込・stress評価・描画ファイル保存を含まない。summary.csvにはSGD単独・前処理・process wall・peak RSSも保存。Peak RSSはGPU専用VRAM量ではない。','']
     text += ['## 事故・欠測と調査','']
     failures=[r for r in rows if r.get('status')!='success']
     dump_csv(base/'tables/actual-attempts.csv',actual)
@@ -609,6 +731,7 @@ def main(argv=None):
     datasets,rows=load(base); summary=aggregate(rows); pairs,excluded=pair_rows(rows)
     incidents=[]; figures=[]
     layouts(base,rows,figures,incidents); comparisons(base,datasets,pairs,figures); structure(base,datasets,pairs,figures)
+    structure_supplement(base,datasets,rows,pairs,figures)
     checkpoints,arrivals=convergence(base,datasets,rows,figures,incidents,args.skip_convergence)
     sensitivity(base,rows,pairs,figures)
     iteration_timings(base,rows,figures); sparse_components(base,datasets,rows,figures)
