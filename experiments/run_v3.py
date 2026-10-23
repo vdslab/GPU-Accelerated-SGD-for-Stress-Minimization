@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Frozen v3 seven-study plan; sequential resource-monitored runs and resumable evidence."""
 from pathlib import Path
-import argparse,datetime,hashlib,json,os,re,signal,subprocess,sys,time,shutil
+import argparse,datetime,gzip,hashlib,json,os,re,signal,subprocess,sys,time,shutil,tempfile
 import psutil
 ROOT=Path(__file__).resolve().parents[1];BASE=ROOT/'experiment_results/v3'
 METHODS={'sgd':'baseline-sgd-non-gpu','atomic_sgd':'vram-lock-native','rr_sgd':'rr-gpu','sparse_sgd':'baseline-sparse-sgd-non-gpu','atomic_sparse_sgd':'vram-lock-sparse','rr_sparse_sgd':'sparse-sgd-gpu'}
@@ -79,7 +79,77 @@ def execute(base,j,g,limits,warmup=False):
    row['timing_definition']='sum of per-iteration algorithm intervals; trace IO/copy excluded; native record timing preserved in reported_iteration_time_ms'
   except Exception as e:row['status']='error';row['error']=repr(e)
  if row['status']!='success':row.setdefault('error',stderr[-2500:])
+ archive_text_artifacts(folder,row)
  save(dest,row);return row
+
+
+def archive_text_artifacts(folder,row):
+ """Losslessly archive completed child outputs, outside every measurement."""
+ started=time.monotonic();manifest_path=folder/'artifact-archive.json'
+ manifest=dict(format='gzip',compresslevel=1,measurement_excluded=True,files=[],errors=[])
+ row['archive_manifest_path']=str(manifest_path)
+ if manifest_path.exists():
+  row.update(archive_seconds=time.monotonic()-started,archive_status='partial_error',
+             archive_error=f'Archive manifest already exists; originals and existing evidence retained: {manifest_path}')
+  return
+ for source in sorted(folder.glob('*.txt')):
+  target=source.with_name(source.name+'.gz');temporary=None;created_target=False
+  try:
+   if source.is_symlink():raise ValueError(f'Refusing to archive symlink: {source}')
+   if target.exists():raise FileExistsError(f'Archive already exists; original retained: {target}')
+   before=source.stat();original_hash=hashlib.sha256();original_bytes=0
+   with tempfile.NamedTemporaryFile(prefix=target.name+'.',suffix='.tmp',dir=folder,delete=False) as output:
+    temporary=Path(output.name)
+    with source.open('rb') as original,gzip.GzipFile(filename='',mode='wb',compresslevel=1,fileobj=output,mtime=0) as compressed:
+     for chunk in iter(lambda:original.read(1024*1024),b''):
+      original_hash.update(chunk);original_bytes+=len(chunk);compressed.write(chunk)
+   # Reading through EOF validates gzip's CRC32 and uncompressed-size trailer.
+   decoded_hash=hashlib.sha256();decoded_bytes=0
+   with gzip.open(temporary,'rb') as decoded:
+    for chunk in iter(lambda:decoded.read(1024*1024),b''):
+     decoded_hash.update(chunk);decoded_bytes+=len(chunk)
+   if decoded_bytes!=original_bytes or decoded_hash.digest()!=original_hash.digest():
+    raise ValueError(f'Archive decompressed SHA256/length mismatch: {source}')
+   after=source.stat()
+   if original_bytes!=before.st_size or (before.st_size,before.st_mtime_ns,before.st_ino)!=(after.st_size,after.st_mtime_ns,after.st_ino):
+    raise ValueError(f'Original changed while archiving; original retained: {source}')
+   entry=dict(original_path=str(source),compressed_path=str(target),
+              original_sha256=original_hash.hexdigest(),decompressed_sha256=decoded_hash.hexdigest(),
+              compressed_sha256=sha(temporary),original_bytes=original_bytes,
+              compressed_bytes=temporary.stat().st_size,gzip_crc_validated=True)
+   # Atomic no-overwrite publication on the same filesystem.
+   os.link(temporary,target);created_target=True;temporary.unlink();temporary=None
+   manifest['files'].append(entry)
+  except Exception as error:
+   if temporary is not None:
+    try:temporary.unlink(missing_ok=True)
+    except OSError:pass
+   if created_target:
+    try:target.unlink(missing_ok=True)
+    except OSError:pass
+   manifest['errors'].append(dict(original_path=str(source),error=repr(error)))
+ # Persist every verified archive and its hashes before removing any original.
+ # A compression or manifest failure never changes the native measurement status.
+ try:save(manifest_path,manifest)
+ except Exception as error:
+  manifest['errors'].append(dict(original_path=None,error=f'manifest write: {error!r}'))
+ else:
+  for entry in manifest['files']:
+   source=Path(entry['original_path']);target=Path(entry['compressed_path'])
+   try:
+    redirects=[field for field in ['final_positions_path','initial_positions_path','vertex_map_path']
+               if row.get(field) and Path(row[field]).resolve()==source.resolve()]
+    source.unlink()
+   except Exception as error:
+    manifest['errors'].append(dict(original_path=str(source),error=repr(error)))
+   else:
+    for field in redirects:
+     row['native_'+field]=row[field];row[field]=str(target)
+ # No filesystem writes follow deletion: the verified manifest already exists.
+ row['archive_seconds']=time.monotonic()-started
+ row['archive_status']='partial_error' if manifest['errors'] else 'success'
+ if manifest['errors']:row['archive_error']='; '.join(error['error'] for error in manifest['errors'])
+
 
 def process_group_state(pgid):
  """Inspect actual processes; killpg(pgid, 0) can return EPERM after macOS exit."""

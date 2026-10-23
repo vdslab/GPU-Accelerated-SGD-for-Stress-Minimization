@@ -8,6 +8,7 @@ quality. Large graph stress uses the same SplitMix64 sampled sources as Rust.
 from __future__ import annotations
 import argparse
 import csv
+import gzip
 import hashlib
 import json
 import math
@@ -106,7 +107,7 @@ def aggregate(rows):
         row.update(family=family(group[0]), records=len(group), success=len(valid), failures=len(group)-len(valid),
                    seeds=len({r.get('seed') for r in valid}))
         for field in ['iteration_time_ms', 'stress_value', 'algorithm_time_cold_ms', 'algorithm_time_warm_ms',
-                      'common_preprocess_time_ms', 'method_setup_time_ms', 'process_wall_seconds', 'peak_rss_bytes']:
+                      'common_preprocess_time_ms', 'method_setup_time_ms', 'process_wall_seconds', 'peak_rss_bytes', 'archive_seconds']:
             med, low, high = statistics([r.get(field) for r in valid])
             row.update({field+'_median': med, field+'_min': low, field+'_max': high})
         output.append(row)
@@ -153,9 +154,15 @@ def empty(ax, message='No successful measurement'):
     ax.set_xticks([]); ax.set_yticks([])
 
 
+def open_layout_text(path):
+    """Stream the exact saved text, whether stored plain or losslessly gzipped."""
+    path=Path(path)
+    return gzip.open(path,'rt',encoding='utf-8') if path.suffix=='.gz' else path.open('r',encoding='utf-8')
+
+
 def read_layout(path):
     positions, edges, section = [], [], None
-    with path.open() as f:
+    with open_layout_text(path) as f:
         for line in f:
             if line.startswith('# Edges'):
                 section = 'edges'
@@ -739,6 +746,7 @@ def report(base,datasets,rows,summary,pairs,figures,arrivals,incidents,excluded)
           f'別枠のwarmupは実起動 {len(warmup_actual):,} 件（'+ '、'.join(f'{k}: {v:,}' for k,v in warmup_status.items())+'）。warmupは性能・stressの本集計に混ぜない。','',
           '速度は前処理を除いたSGD反復の実時間。速度比は同じグラフ・seed・family・pivot数のCPU時間÷各手法時間。stress比は各手法÷同じCPU。点はseedの中央値、範囲は最小〜最大。失敗・未取得の条件は0に置き換えない。',
           'FullとSparseの絶対stressは同じ評価定義を用いる。大規模グラフは固定256起点による推定値で、全点対の厳密値とは区別する。',
+          '座標等のテキストはlossless gzipで保管する。圧縮時間はnative process_wall_seconds・SGD・cold総時間の計測外で、archive_secondsとして別記録する。圧縮の有無で座標値やstressは変化しない。',
           'SGD時間は各反復の処理区間の合計で、CPUのshuffle、GPUへの投入と完了待ちを含む。前後の初期化やcheckpoint座標取得・保存は含まない。CPUの反復前ペアclone等はこの区間の外。cold総時間は別に保存する。',
           'esa計画との差：Sparseの頂点別書込集中度は未計測で、制約数/頂点数・RRラウンド・dispatch数のみsparse-schedule.csvに保存する。',
           '以下は現在保存されている記録の集計。実行中の再集計では未完了条件が欠ける。','']

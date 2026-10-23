@@ -16,9 +16,9 @@ from pathlib import Path
 import numpy as np
 
 try:
-    from summarize_v3 import BASE, dump_csv, load, path_of, sample_indices
+    from summarize_v3 import BASE, dump_csv, load, path_of, sample_indices, open_layout_text
 except ModuleNotFoundError:
-    from experiments.summarize_v3 import BASE, dump_csv, load, path_of, sample_indices
+    from experiments.summarize_v3 import BASE, dump_csv, load, path_of, sample_indices, open_layout_text
 
 METHODS = ('sparse_sgd', 'atomic_sparse_sgd', 'rr_sparse_sgd')
 COUNTS = (64, 256, 1024)
@@ -35,7 +35,7 @@ def coordinates(path: Path, n: int) -> np.ndarray:
     xy = np.empty((n, 2), dtype=np.float64)
     section = False
     count = 0
-    with path.open() as source:
+    with open_layout_text(path) as source:
         for line in source:
             if line.startswith('#'):
                 section = line.startswith('# Positions')
