@@ -1,5 +1,5 @@
 use crate::graph;
-use anyhow::Result;
+use anyhow::{ensure, Result};
 use experiment_common::OutputFormat;
 use metal::*;
 use std::mem;
@@ -36,6 +36,10 @@ pub struct MetalRunResult {
 
 impl MetalContext {
     pub fn new() -> Result<Self> {
+        Self::with_shader(include_str!("shader.metal"))
+    }
+
+    fn with_shader(shader_source: &str) -> Result<Self> {
         let device =
             Device::system_default().ok_or_else(|| anyhow::anyhow!("No Metal device found"))?;
 
@@ -43,7 +47,6 @@ impl MetalContext {
         let command_queue = device.new_command_queue();
 
         // Load and compile shader
-        let shader_source = include_str!("shader.metal");
         let compile_options = CompileOptions::new();
         let library = device
             .new_library_with_source(shader_source, &compile_options)
@@ -72,6 +75,18 @@ impl MetalContext {
         output_format: OutputFormat,
     ) -> Result<MetalRunResult> {
         let method_setup_started = Instant::now();
+        ensure!(
+            !params.pairs.is_empty() && !params.etas.is_empty(),
+            "Empty Full workload"
+        );
+        ensure!(
+            params.pairs.len() <= u32::MAX as usize,
+            "Too many constraints"
+        );
+        ensure!(
+            params.positions.len() <= u32::MAX as usize / 2,
+            "Too many vertices"
+        );
         let initial_positions = params.positions.clone();
         let gpu_etas: Vec<f32> = params.etas.into_iter().map(|e| e as f32).collect();
         let gpu_positions: Vec<[f32; 2]> = params
@@ -204,11 +219,23 @@ impl MetalContext {
             command_buffer.commit();
             command_buffer.wait_until_completed();
 
-            // Read back updated count for every iteration
+            ensure!(
+                command_buffer.status() == MTLCommandBufferStatus::Completed,
+                "Metal command failed at iteration {}: {:?} (no successful result emitted)",
+                iteration + 1,
+                command_buffer.status()
+            );
+
+            // Only a successfully completed command makes the counter meaningful.
             let updated_count_val = unsafe {
                 let ptr = updated_count_buffer.contents() as *const u32;
                 *ptr
             };
+            ensure!(
+                updated_count_val as usize == num_pairs,
+                "Incomplete Full iteration {}: completed {} of {} pairs (no successful result emitted)",
+                iteration + 1, updated_count_val, num_pairs
+            );
             completed_updates += u64::from(updated_count_val);
             if verbose {
                 let message = format!(
@@ -234,6 +261,10 @@ impl MetalContext {
             .chunks(2)
             .map(|chunk| [chunk[0], chunk[1]])
             .collect();
+        ensure!(
+            final_positions.iter().flatten().all(|v| v.is_finite()),
+            "Non-finite final coordinates"
+        );
         let readback_time = readback_started.elapsed();
 
         Ok(MetalRunResult {
@@ -246,5 +277,48 @@ impl MetalContext {
             attempted_updates: (num_pairs as u64) * (num_iterations as u64),
             completed_updates,
         })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn params() -> graph::SgdParams {
+        graph::SgdParams {
+            positions: vec![[0.0, 0.0], [4.0, 0.0]],
+            pairs: vec![graph::EdgeInfo {
+                u: 0,
+                v: 1,
+                dij: 2.0,
+                wij: 0.25,
+            }],
+            etas: vec![4.0],
+            center: false,
+        }
+    }
+
+    #[test]
+    fn completed_gpu_update_matches_known_solution() {
+        let context = MetalContext::new().unwrap();
+        let result = context
+            .execute_sgd(params(), false, OutputFormat::Json)
+            .unwrap();
+        assert_eq!(result.completed_updates, result.attempted_updates);
+        assert_eq!(result.positions, vec![[1.0, 0.0], [3.0, 0.0]]);
+    }
+
+    #[test]
+    fn missing_gpu_updates_are_an_error() {
+        let shader = include_str!("shader.metal").replace("while (true)", "while (false)");
+        assert_ne!(shader, include_str!("shader.metal"));
+        let context = MetalContext::with_shader(&shader).unwrap();
+        let error = context
+            .execute_sgd(params(), false, OutputFormat::Json)
+            .unwrap_err();
+        assert!(
+            error.to_string().contains("completed 0 of 1 pairs"),
+            "{error}"
+        );
     }
 }

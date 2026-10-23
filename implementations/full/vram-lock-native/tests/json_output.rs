@@ -41,5 +41,7 @@ fn json_mode_writes_one_record_and_no_progress_to_stdout() {
     assert_eq!(record["method"], "atomic_sgd");
     assert_eq!(record["run_id"], "contract-atomic");
     assert!(record["attempted_updates"].as_u64().unwrap() > 0);
-    assert!(record["completed_updates"].as_u64().unwrap() > 0);
+    assert_eq!(record["completed_updates"], record["attempted_updates"]);
+    assert_eq!(record["retry_failures"], 0);
+    assert!(record["stress_value"].as_f64().unwrap().is_finite());
 }
