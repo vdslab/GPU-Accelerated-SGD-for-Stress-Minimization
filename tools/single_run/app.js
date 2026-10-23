@@ -73,11 +73,11 @@ function updateControls() {
 
 function describeGraph() {
   const graph = config?.graphs.find((item) => item.path === $("graph").value);
-  $("graph-info").textContent = graph ? `選択: ${graph.name}${graph.versions?.length ? ` (${graph.versions.join(", ")})` : ""} / ノード: ${graph.nodes?.toLocaleString() ?? "?"} / エッジ: ${graph.edges?.toLocaleString() ?? "?"}` : "";
+  $("graph-info").textContent = graph ? `選択: ${graph.name}${graph.versions?.length ? ` (${graph.versions.join(", ")})` : ""} / ノード: ${graph.nodes?.toLocaleString() ?? "?"} / エッジ: ${graph.edges?.toLocaleString() ?? "未計数"}` : "";
 }
 
 function graphLabel(graph) {
-  return `${graph.name}（${graph.nodes?.toLocaleString() ?? "?"} / ${graph.edges?.toLocaleString() ?? "?"}）${graph.versions?.length ? ` ${graph.versions.join(" ")}` : ""}`;
+  return `${graph.name}（${graph.nodes?.toLocaleString() ?? "?"} / ${graph.edges?.toLocaleString() ?? "未計数"}）${graph.versions?.length ? ` ${graph.versions.join(" ")}` : ""}`;
 }
 
 function uniqueGraphs(graphs) {
@@ -188,7 +188,7 @@ function renderGraphTable() {
     row.append(name);
     for (const value of [graph.nodes, graph.edges]) {
       const cell = document.createElement("td");
-      cell.textContent = value?.toLocaleString() ?? "?";
+      cell.textContent = value?.toLocaleString() ?? "未計数";
       row.append(cell);
     }
     for (const version of versions) {

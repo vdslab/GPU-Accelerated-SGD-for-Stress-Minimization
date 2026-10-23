@@ -74,6 +74,16 @@ class GraphCatalogTests(unittest.TestCase):
         path.write_text("%%MatrixMarket matrix coordinate real general\n" + contents)
         return path
 
+    def test_service_does_not_scan_large_graph_bodies(self):
+        self.write_graph("large.mtx", "7 7 1\n1 2 1\n")
+        with patch.object(serve_single, "CATALOG_SCAN_LIMIT", 1), patch.object(
+            serve_single, "_read_graph_statistics", side_effect=AssertionError("body scan")
+        ):
+            service = serve_single.ExperimentService(self.root)
+            graph = service.config()["graphs"][0]
+            self.assertEqual((graph["nodes"], graph["entries"], graph["edges"]), (7, 1, None))
+            self.assertEqual(service.refresh_graphs()[0]["path"], "data/large.mtx")
+
     def test_edges_exclude_diagonals_and_merge_reversed_and_duplicate_coordinates(self):
         self.write_graph("normalized.mtx", "7 7 8\n1 1 1\n1 2 0\n2 1 7\n1 2 9\n2 3 1\n4 5 1\n5 4 1\n7 7 1\n")
         self.assertEqual(serve_single.graph_catalog(self.root), [{

@@ -48,6 +48,7 @@ METHOD_LABELS = {
 }
 LOG_LIMIT = 32_768
 BODY_LIMIT = 16_384
+CATALOG_SCAN_LIMIT = 1_000_000
 LOOPBACK_HOSTS = {"localhost", "127.0.0.1", "::1"}
 
 
@@ -132,7 +133,31 @@ def _graph_statistics(path: Path, modified_ns: int, size: int) -> tuple[int, int
         return None
 
 
-def graph_catalog(root: Path) -> list[dict[str, Any]]:
+@lru_cache(maxsize=256)
+def _graph_header(path: Path, modified_ns: int, size: int) -> tuple[int, int, None] | None:
+    """Read bounded header data; never scan large graphs to populate the picker."""
+    try:
+        with path.open(encoding="utf-8-sig") as source:
+            header = source.readline(8193).strip().lower().split()
+            if header[:3] != ["%%matrixmarket", "matrix", "coordinate"]:
+                return None
+            for _ in range(1024):
+                line = source.readline(8193)
+                if not line or len(line) > 8192:
+                    return None
+                line = line.strip()
+                if not line or line.startswith("%"):
+                    continue
+                rows, columns, entries = map(int, line.split())
+                if rows != columns or rows <= 0 or entries < 0:
+                    return None
+                return rows, entries, None
+    except (OSError, UnicodeError, ValueError):
+        pass
+    return None
+
+
+def graph_catalog(root: Path, *, fast: bool = False) -> list[dict[str, Any]]:
     """Return graph names and cached input node/edge counts."""
     root = root.resolve()
     data_root = (root / "data").resolve()
@@ -143,7 +168,8 @@ def graph_catalog(root: Path) -> list[dict[str, Any]]:
             if not path.is_relative_to(data_root) or not path.is_relative_to(root) or not path.is_file():
                 continue
             stat = path.stat()
-            statistics = _graph_statistics(path, stat.st_mtime_ns, stat.st_size)
+            reader = _graph_header if fast and stat.st_size > CATALOG_SCAN_LIMIT else _graph_statistics
+            statistics = reader(path, stat.st_mtime_ns, stat.st_size)
             if statistics is not None:
                 nodes, entries, edges = statistics
                 relative = candidate.relative_to(root).as_posix()
@@ -259,14 +285,14 @@ class ExperimentService:
         self.output_root = (self.root / "output").resolve()
         if not self.output_root.is_relative_to(self.root):
             raise ValueError("outputはリポジトリ内のフォルダである必要があります")
-        self.graphs = graph_catalog(self.root)
+        self.graphs = graph_catalog(self.root, fast=True)
         self.jobs: dict[str, Job] = {}
         self.active_run: str | None = None
         self.lock = threading.RLock()
         self.stopping = False
 
     def refresh_graphs(self) -> list[dict[str, Any]]:
-        graphs = graph_catalog(self.root)
+        graphs = graph_catalog(self.root, fast=True)
         with self.lock:
             self.graphs = graphs
         return graphs
