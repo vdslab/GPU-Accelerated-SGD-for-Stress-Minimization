@@ -163,9 +163,20 @@ impl MetalContext {
         );
         let upload_time = upload_started.elapsed();
 
+        let mut trace = experiment_common::trace::IterationTrace::from_env();
+        if let Some(trace) = &mut trace {
+            trace.record(0, Duration::ZERO, || {
+                gpu_positions
+                    .iter()
+                    .map(|p| [p[0] as f32 as f64, p[1] as f32 as f64])
+                    .collect()
+            });
+        }
+        let initial_trace_overhead = trace.as_ref().map(|t| t.overhead()).unwrap_or_default();
         let iteration_start = Instant::now();
         let mut completed_updates = 0_u64;
         for iteration in 0..num_iterations {
+            let trace_started = trace.as_ref().map(|_| Instant::now());
             // Create iteration buffer for this iteration
             let iteration_buffer = self.device.new_buffer_with_data(
                 &(iteration as u32) as *const _ as *const _,
@@ -237,6 +248,17 @@ impl MetalContext {
                 iteration + 1, updated_count_val, num_pairs
             );
             completed_updates += u64::from(updated_count_val);
+            if let (Some(trace), Some(started)) = (&mut trace, trace_started) {
+                trace.record(iteration + 1, started.elapsed(), || unsafe {
+                    std::slice::from_raw_parts(
+                        positions_buffer.contents().cast::<f32>(),
+                        2 * node_size,
+                    )
+                    .chunks_exact(2)
+                    .map(|p| [p[0] as f64, p[1] as f64])
+                    .collect()
+                });
+            }
             if verbose {
                 let message = format!(
                     "Iteration {} - Updated {} pairs",
@@ -249,7 +271,12 @@ impl MetalContext {
                 }
             }
         }
-        let iteration_time = iteration_start.elapsed();
+        let iteration_time = iteration_start.elapsed().saturating_sub(
+            trace
+                .as_ref()
+                .map(|t| t.overhead().saturating_sub(initial_trace_overhead))
+                .unwrap_or_default(),
+        );
 
         let readback_started = Instant::now();
         unsafe {

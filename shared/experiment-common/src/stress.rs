@@ -123,13 +123,26 @@ impl StressMeasurement {
     }
 }
 
+/// Optional formal-experiment sample count. Exact evaluation remains exact.
+fn auto_samples() -> usize {
+    match std::env::var("SGD_STRESS_SAMPLES") {
+        Ok(raw) => raw
+            .parse::<usize>()
+            .ok()
+            .filter(|&n| n > 0)
+            .expect("SGD_STRESS_SAMPLES must be a positive integer"),
+        Err(std::env::VarError::NotPresent) => DEFAULT_SAMPLES,
+        Err(error) => panic!("invalid SGD_STRESS_SAMPLES: {error}"),
+    }
+}
+
 pub fn measure_auto_f64(positions: &[[f64; 2]], edges: &[(usize, usize)]) -> StressMeasurement {
     let started = Instant::now();
     let result = evaluate_f64(
         StressMode::Auto,
         positions,
         edges,
-        DEFAULT_SAMPLES,
+        auto_samples(),
         DEFAULT_SEED,
     );
     StressMeasurement::from_result(result, started.elapsed().as_secs_f64() * 1_000.0)
@@ -141,7 +154,7 @@ pub fn measure_auto_f32(positions: &[[f32; 2]], edges: &[(usize, usize)]) -> Str
         StressMode::Auto,
         positions,
         edges,
-        DEFAULT_SAMPLES,
+        auto_samples(),
         DEFAULT_SEED,
     );
     StressMeasurement::from_result(result, started.elapsed().as_secs_f64() * 1_000.0)

@@ -146,10 +146,21 @@ impl MetalContext {
         let completed_buffer = self.buffer(&vec![0u32; pairs.len()]);
         let upload_time = upload.elapsed();
 
+        let mut trace = experiment_common::trace::IterationTrace::from_env();
+        if let Some(trace) = &mut trace {
+            trace.record(0, Duration::ZERO, || {
+                initial_positions
+                    .iter()
+                    .map(|p| [p[0] as f32 as f64, p[1] as f32 as f64])
+                    .collect()
+            });
+        }
+        let initial_trace_overhead = trace.as_ref().map(|t| t.overhead()).unwrap_or_default();
         let start = Instant::now();
         let mut completed_updates = 0u64;
         let mut dispatches = 0u64;
         for (iteration, eta) in etas.iter().enumerate() {
+            let trace_started = trace.as_ref().map(|_| Instant::now());
             // Retain the previous permutation, just as CPU Sparse shuffles in place.
             all_pending.shuffle(rng);
             let mut pending = all_pending.clone();
@@ -229,6 +240,17 @@ impl MetalContext {
                     bail!("Sparse lock retries stalled: iteration={}, remaining={} (no successful result emitted)", iteration + 1, pending.len());
                 }
             }
+            if let (Some(trace), Some(started)) = (&mut trace, trace_started) {
+                trace.record(iteration + 1, started.elapsed(), || unsafe {
+                    std::slice::from_raw_parts(
+                        position_buffer.contents().cast::<f32>(),
+                        2 * initial_positions.len(),
+                    )
+                    .chunks_exact(2)
+                    .map(|p| [p[0] as f64, p[1] as f64])
+                    .collect()
+                });
+            }
             if verbose {
                 let message = format!(
                     "Iteration {} - Updated {} pairs, dispatches={passes}",
@@ -241,7 +263,12 @@ impl MetalContext {
                 }
             }
         }
-        let iteration_time = start.elapsed();
+        let iteration_time = start.elapsed().saturating_sub(
+            trace
+                .as_ref()
+                .map(|t| t.overhead().saturating_sub(initial_trace_overhead))
+                .unwrap_or_default(),
+        );
         let readback = Instant::now();
         let raw = unsafe {
             std::slice::from_raw_parts(position_buffer.contents().cast::<f32>(), positions.len())

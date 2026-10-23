@@ -11,10 +11,17 @@ struct SparsePair {
 
 inline bool try_lock(device atomic_uint* locks, uint node) {
     uint expected = 0u;
-    return atomic_compare_exchange_weak_explicit(
+    bool acquired = atomic_compare_exchange_weak_explicit(
         &locks[node], &expected, 1u, memory_order_relaxed, memory_order_relaxed);
+    // Establish visibility on every successful acquisition, including rollback paths.
+    if (acquired) {
+        atomic_thread_fence(mem_flags::mem_device, memory_order_seq_cst, thread_scope_device);
+    }
+    return acquired;
 }
 inline void unlock(device atomic_uint* locks, uint node) {
+    // Publish before every unlock, including a failed second-lock attempt.
+    atomic_thread_fence(mem_flags::mem_device, memory_order_seq_cst, thread_scope_device);
     atomic_store_explicit(&locks[node], 0u, memory_order_relaxed);
 }
 

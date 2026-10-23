@@ -225,11 +225,22 @@ impl GpuContext {
         let two_pipeline = self.create_pipeline(&pipeline_layout, "two_sided_round");
         let upload_time = upload_start.elapsed();
 
+        let mut trace = experiment_common::trace::IterationTrace::from_env();
+        if let Some(trace) = &mut trace {
+            trace.record(0, Duration::ZERO, || {
+                position_data[..n]
+                    .iter()
+                    .map(|p| [p[0] as f64, p[1] as f64])
+                    .collect()
+            });
+        }
+        let initial_trace_overhead = trace.as_ref().map(|t| t.overhead()).unwrap_or_default();
         let compute_start = Instant::now();
         let mut rng = StdRng::seed_from_u64(seed ^ 0x4750_555f_5350_4152);
         let mut pivot_permutation: Vec<u32> = (0..h as u32).collect();
         let mut round_order: Vec<usize> = (0..schedule.round_count()).collect();
         for (iteration, &eta) in params.etas.iter().enumerate() {
+            let trace_started = trace.as_ref().map(|_| Instant::now());
             if verbose {
                 let message = iteration_log(iteration);
                 match output_format {
@@ -311,8 +322,24 @@ impl GpuContext {
                     .poll(wgpu::PollType::wait_indefinitely())
                     .unwrap();
             }
+            if let (Some(trace), Some(started)) = (&mut trace, trace_started) {
+                trace.record(iteration + 1, started.elapsed(), || {
+                    trace_positions(
+                        &self.device,
+                        &self.queue,
+                        &positions_buffer,
+                        &download_buffer,
+                        n as usize,
+                    )
+                });
+            }
         }
-        let compute_time = compute_start.elapsed();
+        let compute_time = compute_start.elapsed().saturating_sub(
+            trace
+                .as_ref()
+                .map(|t| t.overhead().saturating_sub(initial_trace_overhead))
+                .unwrap_or_default(),
+        );
 
         let readback_start = Instant::now();
         let mut encoder = self
@@ -541,4 +568,34 @@ mod tests {
             );
         }
     }
+}
+
+/// Read a completed iteration only for an enabled convergence checkpoint.
+/// This transfer is measured by IterationTrace as excluded overhead.
+fn trace_positions(
+    device: &wgpu::Device,
+    queue: &wgpu::Queue,
+    positions: &wgpu::Buffer,
+    download: &wgpu::Buffer,
+    node_count: usize,
+) -> Vec<[f64; 2]> {
+    let mut encoder = device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
+        label: Some("convergence checkpoint readback"),
+    });
+    encoder.copy_buffer_to_buffer(positions, 0, download, 0, positions.size());
+    queue.submit([encoder.finish()]);
+    let slice = download.slice(..);
+    slice.map_async(wgpu::MapMode::Read, |_| {});
+    device
+        .poll(wgpu::PollType::wait_indefinitely())
+        .expect("convergence readback poll");
+    let mapped = slice.get_mapped_range();
+    let values: &[[f32; 2]] = bytemuck::cast_slice(&mapped);
+    let result = values[..node_count]
+        .iter()
+        .map(|p| [p[0] as f64, p[1] as f64])
+        .collect();
+    drop(mapped);
+    download.unmap();
+    result
 }

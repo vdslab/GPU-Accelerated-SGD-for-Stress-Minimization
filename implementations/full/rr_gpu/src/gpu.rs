@@ -585,6 +585,16 @@ impl GpuContext {
             None
         };
         let upload_time = upload_started.elapsed();
+        let mut trace = experiment_common::trace::IterationTrace::from_env();
+        if let Some(trace) = &mut trace {
+            trace.record(0, Duration::ZERO, || {
+                positions_f32
+                    .iter()
+                    .map(|p| [p[0] as f64, p[1] as f64])
+                    .collect()
+            });
+        }
+        let initial_trace_overhead = trace.as_ref().map(|t| t.overhead()).unwrap_or_default();
         let iteration_started = Instant::now();
         let mut rng = rng_for_stream(seed, FULL_UPDATE_STREAM);
         let mut timestamp_index = 0_u32;
@@ -593,6 +603,7 @@ impl GpuContext {
         let mut round_order: Vec<usize> = (0..schedule.len()).collect();
 
         for iter in 0..num_iterations {
+            let trace_started = trace.as_ref().map(|_| Instant::now());
             let eta = etas[iter];
             let uni = Uniforms {
                 n,
@@ -669,8 +680,24 @@ impl GpuContext {
                     OutputFormat::Human => println!("{message}"),
                 }
             }
+            if let (Some(trace), Some(started)) = (&mut trace, trace_started) {
+                trace.record(iter + 1, started.elapsed(), || {
+                    trace_positions(
+                        &self.device,
+                        &self.queue,
+                        &positions_buffer,
+                        &download_buffer,
+                        n as usize,
+                    )
+                });
+            }
         }
-        let iteration_time = iteration_started.elapsed();
+        let iteration_time = iteration_started.elapsed().saturating_sub(
+            trace
+                .as_ref()
+                .map(|t| t.overhead().saturating_sub(initial_trace_overhead))
+                .unwrap_or_default(),
+        );
 
         // ── 結果ダウンロード ───────────────────────────────────────────────────
         let readback_started = Instant::now();
@@ -1013,4 +1040,34 @@ mod tests {
             }
         }
     }
+}
+
+/// Read a completed iteration only for an enabled convergence checkpoint.
+/// This transfer is measured by IterationTrace as excluded overhead.
+fn trace_positions(
+    device: &wgpu::Device,
+    queue: &wgpu::Queue,
+    positions: &wgpu::Buffer,
+    download: &wgpu::Buffer,
+    node_count: usize,
+) -> Vec<[f64; 2]> {
+    let mut encoder = device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
+        label: Some("convergence checkpoint readback"),
+    });
+    encoder.copy_buffer_to_buffer(positions, 0, download, 0, positions.size());
+    queue.submit([encoder.finish()]);
+    let slice = download.slice(..);
+    slice.map_async(wgpu::MapMode::Read, |_| {});
+    device
+        .poll(wgpu::PollType::wait_indefinitely())
+        .expect("convergence readback poll");
+    let mapped = slice.get_mapped_range();
+    let values: &[[f32; 2]] = bytemuck::cast_slice(&mapped);
+    let result = values[..node_count]
+        .iter()
+        .map(|p| [p[0] as f64, p[1] as f64])
+        .collect();
+    drop(mapped);
+    download.unmap();
+    result
 }

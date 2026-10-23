@@ -47,9 +47,14 @@ pub fn execute_sgd(
     let mut positions = sgd_params.positions.clone();
     let mut pairs = sgd_params.pairs.clone();
 
+    let mut trace = experiment_common::trace::IterationTrace::from_env();
+    if let Some(trace) = &mut trace {
+        trace.record(0, std::time::Duration::ZERO, || positions.clone());
+    }
     let tiny = 1e-12_f64;
 
     for (iteration, &eta) in sgd_params.etas.iter().enumerate() {
+        let trace_started = trace.as_ref().map(|_| std::time::Instant::now());
         pairs.shuffle(&mut rng);
 
         for pair in &pairs {
@@ -80,6 +85,9 @@ pub fn execute_sgd(
             positions[v][1] -= mu * r[1];
         }
 
+        if let (Some(trace), Some(started)) = (&mut trace, trace_started) {
+            trace.record(iteration + 1, started.elapsed(), || positions.clone());
+        }
         if verbose {
             match output_format {
                 OutputFormat::Json => eprintln!("Iteration: {}", iteration + 1),

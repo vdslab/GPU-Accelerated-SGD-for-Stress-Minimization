@@ -46,10 +46,18 @@ pub fn execute_sgd_iterations<R: Rng + ?Sized>(
     let mut positions = sgd_params.positions;
     let mut pairs = sgd_params.pairs;
 
-    for eta in sgd_params.etas {
+    let mut trace = experiment_common::trace::IterationTrace::from_env();
+    if let Some(trace) = &mut trace {
+        trace.record(0, std::time::Duration::ZERO, || positions.clone());
+    }
+    for (iteration, eta) in sgd_params.etas.into_iter().enumerate() {
+        let trace_started = trace.as_ref().map(|_| std::time::Instant::now());
         pairs.shuffle(rng);
         for &pair in &pairs {
             apply_constraint(&mut positions, pair, eta, rng);
+        }
+        if let (Some(trace), Some(started)) = (&mut trace, trace_started) {
+            trace.record(iteration + 1, started.elapsed(), || positions.clone());
         }
     }
     positions
