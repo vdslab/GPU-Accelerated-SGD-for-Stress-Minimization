@@ -67,7 +67,7 @@ def execute(base,j,g,limits,warmup=False):
    time.sleep(.2)
  wall=time.monotonic()-start;stderr=(folder/'stderr.log').read_text(errors='replace');match=re.search(r'(\d+)\s+maximum resident set size',stderr)
  if match:peak=max(peak,int(match[1]))
- row.update(status=reason or 'error',process_wall_seconds=wall,peak_rss_bytes=peak,returncode=proc.returncode)
+ row.update(status=reason or 'error',process_wall_seconds=wall,peak_rss_bytes=peak,peak_rss_source='macOS time -l + polling' if match else 'process-tree RSS polling (observed peak)',returncode=proc.returncode)
  if not reason and proc.returncode==0:
   try:
    r=json.loads((folder/'stdout.json').read_text());assert r['status']=='success' and r['input_sha256']==g['sha256'] and r['seed']==j['seed']
@@ -111,8 +111,11 @@ def main():
    r=dict(prior[j['reuse']]);r.update(j);r['reused_from']=j['reuse']
   else:
    if not args.pilot and graphs[j['graph']]['status']=='ready':
-    key=f"warmup-{j['graph']}-{j['method']}-p{j['pivots']}-t{j['tile_size']}";wj=dict(j,run_id=key,seed=0,study='warmup');execute(base,wj,graphs[j['graph']],limits,True)
-   r=execute(base,j,graphs[j['graph']],limits)
+    key=f"warmup-{j['graph']}-{j['method']}-p{j['pivots']}-t{j['tile_size']}";wj=dict(j,run_id=key,seed=0,study='warmup');warmup=execute(base,wj,graphs[j['graph']],limits,True)
+    if warmup['status']!='success':
+     r=dict(j,status='warmup_failed',failure_reason=warmup['status'],error=warmup.get('error'),warmup_run_id=key,executed=False)
+    else:r=execute(base,j,graphs[j['graph']],limits)
+   else:r=execute(base,j,graphs[j['graph']],limits)
   prior[j['run_id']]=r
   with resultsfile.open('a') as f:f.write(json.dumps(r,ensure_ascii=False)+'\n');f.flush()
   counts={s:sum(x['status']==s for x in prior.values()) for s in {x['status'] for x in prior.values()}}
