@@ -517,6 +517,7 @@ def structure_supplement(base,datasets,rows,pairs,figures):
             size_rows.append(dict(series=group,graph=r['graph'],family=r['family'],method=r['method'],seed=r['seed'],nodes=info['nodes'],speedup=r['speedup']))
     panels=sorted({(r['series'],r['family']) for r in size_rows if len({x['graph'] for x in size_rows if x['series']==r['series'] and x['family']==r['family']})>=2})
     if panels:
+        from matplotlib.ticker import NullFormatter, NullLocator
         fig,axes=plt.subplots(math.ceil(len(panels)/3),3,figsize=(14,math.ceil(len(panels)/3)*3.5),squeeze=False)
         for ax in axes.flat: ax.set_visible(False)
         for ax,(group,kind) in zip(axes.flat,panels):
@@ -528,6 +529,12 @@ def structure_supplement(base,datasets,rows,pairs,figures):
                     values.append((matches[0]['nodes'],np.median([r['speedup'] for r in matches])))
                 if values: ax.plot(*zip(*sorted(values)),marker='o',color=COLOR[method],label=LABEL[method])
             ax.set(title=f'{group} / {kind}',xlabel='Vertices',ylabel='Speedup',xscale='log',yscale='log'); ax.legend()
+            node_values=sorted({r['nodes'] for r in size_rows if r['series']==group and r['family']==kind})
+            ticks=node_values if len(node_values)<=3 else [node_values[0],node_values[len(node_values)//2],node_values[-1]]
+            labels=[f'{value/1_000_000:.3g}M' if value>=1_000_000 else f'{value/1_000:.3g}k' if value>=1_000 else f'{value:g}' for value in ticks]
+            ax.set_xticks(ticks,labels)
+            ax.xaxis.set_minor_locator(NullLocator()); ax.xaxis.set_minor_formatter(NullFormatter())
+            ax.tick_params(axis='x',labelsize=8)
         fig.tight_layout(); save(fig,'04_size_series',base,figures)
     dump_csv(base/'tables/size-series.csv',size_rows)
     schedule=[dict(graph=r['graph'],dataset_size_group=catalog.get(r['graph'],{}).get('family'),method=r['method'],seed=r['seed'],pivots=r.get('pivots'),nodes=r.get('nodes'),constraints=r.get('constraints'),
@@ -593,9 +600,14 @@ def sparse_write_load_figure(base,figures):
         ax.set_xticks(range(len(graphs)),graphs,rotation=35,ha='right',fontsize=8)
         ax.set_ylabel(label); ax.grid(axis='y',alpha=.15)
     handles,labels=axes[0].get_legend_handles_labels()
-    fig.legend(handles,labels,loc='upper center',ncol=2,fontsize=8)
-    fig.suptitle('Static planned endpoint counts per Sparse iteration; seed 0 / P=200; no measured GPU stores or lock waits',y=1.055,fontsize=10)
-    fig.tight_layout(rect=(0,0,1,.9)); save(fig,'04_sparse_write_load',base,figures)
+    # Finish axes layout before placing the two header rows at fixed figure
+    # coordinates; tight_layout must not reposition a suptitle over the legend.
+    fig.tight_layout(rect=(0,0,1,.86))
+    fig.text(.5,.985,'Static planned endpoint counts per Sparse iteration; seed 0 / P=200; no measured GPU stores or lock waits',
+             ha='center',va='top',fontsize=10)
+    fig.legend(handles,labels,loc='upper center',bbox_to_anchor=(.5,.92),
+               bbox_transform=fig.transFigure,ncol=2,fontsize=8,frameon=False,borderaxespad=0)
+    save(fig,'04_sparse_write_load',base,figures)
 
 
 def sample_indices(n,count,seed=0):

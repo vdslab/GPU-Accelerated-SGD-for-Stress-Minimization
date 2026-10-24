@@ -103,17 +103,45 @@ def comparison_summary(results):
 
 def source_terms(xy: np.ndarray, distances: np.ndarray, sources: np.ndarray) -> np.ndarray:
     """Return each source's sum of (Euclidean distance - graph distance)^2/d^2."""
+    xy = np.asarray(xy, dtype=np.float64)
+    distances = np.asarray(distances, dtype=np.float64)
+    sources = np.asarray(sources)
+    if xy.ndim != 2 or xy.shape[1] != 2 or not len(xy) or not np.isfinite(xy).all():
+        raise ValueError('Expected a nonempty array of finite 2D coordinates')
+    if sources.ndim != 1 or not np.issubdtype(sources.dtype, np.integer):
+        raise ValueError('Expected one-dimensional integer source indices')
+    if np.any(sources < 0) or np.any(sources >= len(xy)):
+        raise ValueError('Source index outside saved coordinates')
+    if distances.shape != (len(sources), len(xy)):
+        raise ValueError('Graph-distance dimensions do not match sources and coordinates')
+    # Zero self-distances and +inf for unreachable vertices contribute nothing.
+    # NaN, negative values and -inf cannot be valid shortest-path output.
+    if np.isnan(distances).any() or np.any(distances < 0):
+        raise ValueError('Graph distances must be nonnegative finite values or +inf')
     terms = []
     for index, source in enumerate(sources):
         distance = distances[index]
         valid = (distance > 0) & np.isfinite(distance)
-        delta = xy - xy[source]
-        actual = np.sqrt(np.einsum('ij,ij->i', delta, delta))
-        residual = np.zeros(len(xy), dtype=np.float64)
-        np.subtract(actual, distance, out=residual, where=valid)
-        np.divide(residual, distance, out=residual, where=valid)
-        terms.append(float(np.dot(residual, residual)))
-    return np.asarray(terms)
+        try:
+            with np.errstate(over='raise', invalid='raise', divide='raise'):
+                delta = xy - xy[source]
+                actual = np.sqrt(np.einsum('ij,ij->i', delta, delta, optimize=False))
+                if not np.isfinite(actual).all():
+                    raise ValueError(f'Nonfinite Euclidean distance for source {source}')
+                residual = np.zeros(len(xy), dtype=np.float64)
+                np.subtract(actual, distance, out=residual, where=valid)
+                np.divide(residual, distance, out=residual, where=valid)
+                if not np.isfinite(residual).all():
+                    raise ValueError(f'Nonfinite normalized residual for source {source}')
+                # Accelerate ddot can leave spurious IEEE exception flags even
+                # for ones(1024). Keep this identical sum of squares off BLAS.
+                term = float(np.einsum('i,i->', residual, residual, optimize=False))
+        except FloatingPointError as error:
+            raise ValueError(f'Nonfinite stress arithmetic for source {source}') from error
+        if not math.isfinite(term):
+            raise ValueError(f'Nonfinite squared-residual sum for source {source}')
+        terms.append(term)
+    return np.asarray(terms, dtype=np.float64)
 
 
 def paired_candidates(datasets, rows, base: Path):
