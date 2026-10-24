@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "yeast",
+    "family": "small",
+    "source_graph": "Pajek/yeast",
+    "category": "Pajek",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/yeast.mtx",
+    "source_sha256": "22a51331a985d1d3fac4e4c221500397281aca081748e6c5c86c7f579670037d",
+    "source_nodes": 2361,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/Pajek/yeast",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/Pajek/yeast.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

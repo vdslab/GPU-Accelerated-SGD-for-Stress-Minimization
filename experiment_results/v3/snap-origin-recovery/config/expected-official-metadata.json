@@ -1,0 +1,65 @@
+{
+  "verified_date_jst": "2026-10-24",
+  "graphs": [
+    {
+      "name": "com-Amazon",
+      "nodes": 334863,
+      "edges": 925872,
+      "nnz": 1851744,
+      "minimum_id": 1,
+      "maximum_id": 548551,
+      "directed": false,
+      "origin_url": "https://snap.stanford.edu/data/bigdata/communities/com-amazon.ungraph.txt.gz"
+    },
+    {
+      "name": "com-DBLP",
+      "nodes": 317080,
+      "edges": 1049866,
+      "nnz": 2099732,
+      "minimum_id": 0,
+      "maximum_id": 425956,
+      "directed": false,
+      "origin_url": "https://snap.stanford.edu/data/bigdata/communities/com-dblp.ungraph.txt.gz"
+    },
+    {
+      "name": "com-Youtube",
+      "nodes": 1134890,
+      "edges": 2987624,
+      "nnz": 5975248,
+      "minimum_id": 1,
+      "maximum_id": 1157827,
+      "directed": false,
+      "origin_url": "https://snap.stanford.edu/data/bigdata/communities/com-youtube.ungraph.txt.gz"
+    },
+    {
+      "name": "com-LiveJournal",
+      "nodes": 3997962,
+      "edges": 34681189,
+      "nnz": 69362378,
+      "minimum_id": 0,
+      "maximum_id": 4036537,
+      "directed": false,
+      "origin_url": "https://snap.stanford.edu/data/bigdata/communities/com-lj.ungraph.txt.gz"
+    },
+    {
+      "name": "soc-Pokec",
+      "nodes": 1632803,
+      "edges": 30622564,
+      "nnz": 30622564,
+      "minimum_id": 1,
+      "maximum_id": 1632803,
+      "directed": true,
+      "origin_url": "https://snap.stanford.edu/data/soc-pokec-relationships.txt.gz"
+    },
+    {
+      "name": "loc-Gowalla",
+      "nodes": 196591,
+      "edges": 950327,
+      "nnz": 1900654,
+      "minimum_id": 0,
+      "maximum_id": 196590,
+      "directed": false,
+      "origin_url": "https://snap.stanford.edu/data/loc-gowalla_edges.txt.gz"
+    }
+  ]
+}

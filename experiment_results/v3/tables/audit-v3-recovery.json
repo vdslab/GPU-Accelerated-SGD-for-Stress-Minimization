@@ -1,0 +1,327 @@
+{
+  "audit_scope": "final",
+  "complete_plan": true,
+  "status": "success",
+  "active_runners": [],
+  "expected_plan_conditions": 90,
+  "unique_result_conditions": 90,
+  "status_counts": {
+    "success": 45,
+    "warmup_failed": 45
+  },
+  "missing_run_ids": [],
+  "extra_run_ids": [],
+  "duplicate_plan_ids": {},
+  "duplicate_result_ids": {},
+  "physical_formal_executions": 45,
+  "reused_conditions": 0,
+  "unexecuted_formal_conditions": 45,
+  "additional_interrupted_formal_attempts": 0,
+  "total_formal_native_launch_attempts": 45,
+  "interrupted_formal_attempts": [],
+  "condition_accounting": {
+    "confirmed_conditions": 90,
+    "missing_conditions": 0,
+    "planned_condition_equation": "confirmed physical executions + reused conditions + unexecuted conditions = planned conditions (when complete)",
+    "launch_attempt_equation": "confirmed physical formal executions + additional interrupted formal attempts = total formal native launch attempts",
+    "physical_formal_executions_definition": "native launches with a finalized results.jsonl record; excludes interruption receipts",
+    "interrupted_attempt_definition": "formal native launch interrupted by host reboot, preserved in its receipt; kept separate from final condition results",
+    "excluded_attempt_scopes": [
+      "warmups",
+      "pilots",
+      "prebuffer-aborted"
+    ]
+  },
+  "physical_warmup_executions": 18,
+  "physical_formal_failures": 0,
+  "physical_warmup_failures": 9,
+  "blocking_warmup_kinds": {
+    "physical_warmup_failure": 45
+  },
+  "successful_rss_above_threshold": 0,
+  "rss_threshold_bytes": 8589934592,
+  "native_git_commit_expected": "c2f1dc7d64ff7fdb7520257d673bf895aff3d8ff",
+  "errors": [],
+  "warning_counts": {
+    "native_git_dirty": 54
+  },
+  "warnings": [
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-loc-Gowalla-sparse_sgd-s0-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-loc-Gowalla-atomic_sparse_sgd-s0-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-loc-Gowalla-rr_sparse_sgd-s0-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-loc-Gowalla-sparse_sgd-s1-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-loc-Gowalla-atomic_sparse_sgd-s1-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-loc-Gowalla-rr_sparse_sgd-s1-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-loc-Gowalla-sparse_sgd-s2-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-loc-Gowalla-atomic_sparse_sgd-s2-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-loc-Gowalla-rr_sparse_sgd-s2-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-loc-Gowalla-sparse_sgd-s3-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-loc-Gowalla-atomic_sparse_sgd-s3-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-loc-Gowalla-rr_sparse_sgd-s3-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-loc-Gowalla-sparse_sgd-s4-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-loc-Gowalla-atomic_sparse_sgd-s4-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-loc-Gowalla-rr_sparse_sgd-s4-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-DBLP-sparse_sgd-s0-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-DBLP-atomic_sparse_sgd-s0-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-DBLP-rr_sparse_sgd-s0-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-DBLP-sparse_sgd-s1-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-DBLP-atomic_sparse_sgd-s1-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-DBLP-rr_sparse_sgd-s1-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-DBLP-sparse_sgd-s2-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-DBLP-atomic_sparse_sgd-s2-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-DBLP-rr_sparse_sgd-s2-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-DBLP-sparse_sgd-s3-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-DBLP-atomic_sparse_sgd-s3-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-DBLP-rr_sparse_sgd-s3-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-DBLP-sparse_sgd-s4-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-DBLP-atomic_sparse_sgd-s4-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-DBLP-rr_sparse_sgd-s4-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-Amazon-sparse_sgd-s0-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-Amazon-atomic_sparse_sgd-s0-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-Amazon-rr_sparse_sgd-s0-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-Amazon-sparse_sgd-s1-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-Amazon-atomic_sparse_sgd-s1-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-Amazon-rr_sparse_sgd-s1-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-Amazon-sparse_sgd-s2-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-Amazon-atomic_sparse_sgd-s2-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-Amazon-rr_sparse_sgd-s2-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-Amazon-sparse_sgd-s3-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-Amazon-atomic_sparse_sgd-s3-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-Amazon-rr_sparse_sgd-s3-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-Amazon-sparse_sgd-s4-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-Amazon-atomic_sparse_sgd-s4-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "formal",
+      "run_id": "v3-basic-com-Amazon-rr_sparse_sgd-s4-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "warmup",
+      "run_id": "warmup-com-Amazon-atomic_sparse_sgd-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "warmup",
+      "run_id": "warmup-com-Amazon-rr_sparse_sgd-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "warmup",
+      "run_id": "warmup-com-Amazon-sparse_sgd-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "warmup",
+      "run_id": "warmup-com-DBLP-atomic_sparse_sgd-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "warmup",
+      "run_id": "warmup-com-DBLP-rr_sparse_sgd-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "warmup",
+      "run_id": "warmup-com-DBLP-sparse_sgd-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "warmup",
+      "run_id": "warmup-loc-Gowalla-atomic_sparse_sgd-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "warmup",
+      "run_id": "warmup-loc-Gowalla-rr_sparse_sgd-p200-tNone"
+    },
+    {
+      "kind": "native_git_dirty",
+      "scope": "warmup",
+      "run_id": "warmup-loc-Gowalla-sparse_sgd-p200-tNone"
+    }
+  ],
+  "limitations": [
+    "Record/config hashes checked; binaries and large inputs not rehashed.",
+    "Archive verification metadata and file existence checked; gzip payload not reread.",
+    "Reboot receipt evidence checked without adding an extra planned condition or final failure.",
+    "Last epoch locates an observed stage, not the exact interrupted operation.",
+    "retry_failures is final unfinished count; zero does not mean no lock contention."
+  ]
+}

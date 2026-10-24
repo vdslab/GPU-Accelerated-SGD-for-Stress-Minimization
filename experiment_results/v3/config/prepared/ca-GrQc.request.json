@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "ca-GrQc",
+    "family": "small",
+    "source_graph": "SNAP/ca-GrQc",
+    "category": "SNAP",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/ca-GrQc.mtx",
+    "source_sha256": "02ccbab96413c682059b5db1bfd21b9c139c666a7c79ef0e1592810ef7ca9eae",
+    "source_nodes": 5242,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/SNAP/ca-GrQc",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/SNAP/ca-GrQc.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

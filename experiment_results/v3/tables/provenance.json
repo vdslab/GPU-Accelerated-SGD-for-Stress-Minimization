@@ -1,0 +1,95 @@
+{
+  "script_sha256": "f4685dda4ab20c0e9446c37f87c58bd8e79703b9993b71a81c3ef53936aff86a",
+  "rows": 3210,
+  "figures": [
+    "01_layout_full",
+    "01_layout_sparse",
+    "01_layout_sparse_partial",
+    "02_full",
+    "03_sparse",
+    "03_sparse_small_aux",
+    "04_structure",
+    "04_structure_quality",
+    "04_structure_bins",
+    "04_size_series",
+    "04_sparse_write_load",
+    "05_convergence",
+    "06_tiles",
+    "07_pivots",
+    "06_tiles_pareto",
+    "05_iteration_times",
+    "02_full_iteration_times",
+    "03_sparse_components"
+  ],
+  "source_results_sha256": "344e02f24d53a1fec2ef9aa34ab01d4763bff70374ea0e70cba068ae72c7381a",
+  "commits": [
+    "118d3ec22b350fcc7522527154f3d03131215a25",
+    "c2f1dc7d64ff7fdb7520257d673bf895aff3d8ff"
+  ],
+  "cohort": {
+    "status": "adopted",
+    "main_base": "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3",
+    "recovery_base": "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3/snap-origin-recovery",
+    "loader_sha256": "f05795da0f44042723adce25fe428d621f94e3b1359acac10cd45e3060fef594",
+    "core_raw_records": 3210,
+    "recovery_raw_records": 90,
+    "raw_record_count": 3300,
+    "effective_conditions": 3210,
+    "superseded_condition_count": 90,
+    "errors": [],
+    "execution_commits_by_base": {
+      "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3": "118d3ec22b350fcc7522527154f3d03131215a25",
+      "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3/snap-origin-recovery": "c2f1dc7d64ff7fdb7520257d673bf895aff3d8ff"
+    },
+    "source_results_sha256_by_base": {
+      "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3": "344e02f24d53a1fec2ef9aa34ab01d4763bff70374ea0e70cba068ae72c7381a",
+      "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3/snap-origin-recovery": "250db3e9a41669e617565d2875d2cd61db4e5d416fa6325ffaa1937ab8a4ed0f"
+    },
+    "source_equivalence": "SNAP origin is the named original distribution; SuiteSparse MTX byte/edgewise equivalence is not verified.",
+    "native_shared_source_files": 67,
+    "runner_files": 1,
+    "config_sha256_by_base": {
+      "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3": {
+        "datasets.json": "be832f5e94e42071cff261a7da400312ef77b36f74f5fd5e0a55ebb9d8c58665",
+        "plan.json": "a4efc24f9d0f10075c23a6123379753674718895f546f6d4557a70df5102f519",
+        "execution.json": "cf2e5e374e67c51b54c5f4baaebd3b8ce055978c39d3b9294794e51acf590429",
+        "limits.json": "5e668a7cd3e62a6bc20e8c0cde660bed193a1e5f8fae308f8502a0213cc443d0",
+        "source-hashes.json": "c55ba7ea480c4aa7ebc2172cfb7ba04249a39197367e7a20ce6d1ea4467d77c5"
+      },
+      "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3/snap-origin-recovery": {
+        "datasets.json": "1ce15cca94b21170be6582e622c1872032122a7ae855505bcd38509c63dad10b",
+        "plan.json": "27adec8038a6e63444ec991e3bb3ca78695f8a1de95a41099f901fb512f3fe64",
+        "execution.json": "27e76139902becdcca3e99d77f4c852ee88832df3ed1e757271813a3ad7fd264",
+        "limits.json": "5e668a7cd3e62a6bc20e8c0cde660bed193a1e5f8fae308f8502a0213cc443d0",
+        "source-hashes.json": "bba20d6c3f96d2db8219a85fb5e023e4bdac6df7df5a32ff37f39ce84ad5e27f"
+      }
+    },
+    "recovery_manifest_sha256": "68b4977a945261d74a3189574cd1205d7311acef3a84248f1a1b7c2be0bfb902",
+    "same_native_shared_source_hashes": true,
+    "same_runner_hash": true,
+    "same_binary_hashes": true,
+    "same_limits": true,
+    "same_preparation_script_hash": true
+  },
+  "figure_png_bytes": {
+    "01_layout_full": 1490133,
+    "01_layout_sparse": 649978,
+    "01_layout_sparse_partial": 455718,
+    "02_full": 159598,
+    "03_sparse": 356699,
+    "03_sparse_small_aux": 160959,
+    "04_structure": 210424,
+    "04_structure_quality": 200232,
+    "04_structure_bins": 72179,
+    "04_size_series": 127811,
+    "04_sparse_write_load": 104058,
+    "05_convergence": 966800,
+    "06_tiles": 360495,
+    "07_pivots": 543279,
+    "06_tiles_pareto": 263932,
+    "05_iteration_times": 537726,
+    "02_full_iteration_times": 375615,
+    "03_sparse_components": 252709
+  },
+  "esa_artifact_base_url": null
+}

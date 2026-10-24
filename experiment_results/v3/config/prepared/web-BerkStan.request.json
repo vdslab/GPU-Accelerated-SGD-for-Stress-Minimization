@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "web-BerkStan",
+    "family": "large",
+    "source_graph": "SNAP/web-BerkStan",
+    "category": "SNAP",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/web-BerkStan.mtx",
+    "source_sha256": "4385c4db2bad37104be8440ff1b320d9f04c1581856ac4071062ba315645268a",
+    "source_nodes": 685230,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/SNAP/web-BerkStan",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/SNAP/web-BerkStan.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

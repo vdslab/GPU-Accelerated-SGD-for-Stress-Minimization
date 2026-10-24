@@ -1,0 +1,21 @@
+{
+  "study": "warmup",
+  "graph": "G_n_pin_pout",
+  "dataset": "G_n_pin_pout",
+  "method": "rr_sparse_sgd",
+  "seed": 0,
+  "iterations": 15,
+  "epsilon": 0.1,
+  "pivots": 200,
+  "tile_size": null,
+  "workgroup_size": null,
+  "run_id": "warmup-G_n_pin_pout-rr_sparse_sgd-p200-tNone",
+  "reuse": null,
+  "status": "unavailable",
+  "nodes": 99995,
+  "edges": 501198,
+  "artifact_dir": "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3/warmups/warmup-G_n_pin_pout-rr_sparse_sgd-p200-tNone",
+  "source_status": "ready",
+  "run_mode": "benchmark",
+  "error": "Original large graph has LCC below 100000 vertices; excluded from large cohort"
+}

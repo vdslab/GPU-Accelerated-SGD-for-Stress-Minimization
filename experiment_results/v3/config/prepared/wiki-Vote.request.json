@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "wiki-Vote",
+    "family": "small",
+    "source_graph": "SNAP/wiki-Vote",
+    "category": "SNAP",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/wiki-Vote.mtx",
+    "source_sha256": "c28b16ffed623c7f220cd4b8feab92edfca5b481ebc663db3e75bd1d19a8eec3",
+    "source_nodes": 8297,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/SNAP/wiki-Vote",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/SNAP/wiki-Vote.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "coPapersDBLP",
+    "family": "large",
+    "source_graph": "DIMACS10/coPapersDBLP",
+    "category": "DIMACS10",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/coPapersDBLP.mtx",
+    "source_sha256": "0062468c30e0b91634b2932386cfe4fae867b8097f5210926945bda1beff6373",
+    "source_nodes": 540486,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/DIMACS10/coPapersDBLP",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/DIMACS10/coPapersDBLP.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

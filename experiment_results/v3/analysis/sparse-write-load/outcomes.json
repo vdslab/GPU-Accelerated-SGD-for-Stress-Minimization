@@ -1,0 +1,67 @@
+{
+  "analysis_status": "complete",
+  "summary_sha256": "4fcddb4a307d826f79048a17e2d5e371b800033189c1ff2a3acec700cce7b7e5",
+  "results": [
+    {
+      "graph": "luxembourg_osm",
+      "seed": 0,
+      "pivots": 200,
+      "reference_run_id": "v3-basic-luxembourg_osm-sparse_sgd-s0-p200-tNone",
+      "result_path": "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3/analysis/sparse-write-load/luxembourg_osm-s0-p200.result.json",
+      "provenance_path": "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3/analysis/sparse-write-load/luxembourg_osm-s0-p200.provenance.json",
+      "status": "success",
+      "hashes_match_measured_record": true,
+      "result_sha256": "027b24f10d334005685340e5ff38f6f034041dfe573b1c25ac703c74bfebf499",
+      "reused": false
+    },
+    {
+      "graph": "web-Stanford",
+      "seed": 0,
+      "pivots": 200,
+      "reference_run_id": "v3-basic-web-Stanford-sparse_sgd-s0-p200-tNone",
+      "result_path": "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3/analysis/sparse-write-load/web-Stanford-s0-p200.result.json",
+      "provenance_path": "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3/analysis/sparse-write-load/web-Stanford-s0-p200.provenance.json",
+      "status": "success",
+      "hashes_match_measured_record": true,
+      "result_sha256": "50d36fa8ec053000c10e2796a704bb361f584db62f679a01fc1f994a2a9961bd",
+      "reused": false
+    },
+    {
+      "graph": "coAuthorsCiteseer",
+      "seed": 0,
+      "pivots": 200,
+      "reference_run_id": "v3-basic-coAuthorsCiteseer-sparse_sgd-s0-p200-tNone",
+      "result_path": "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3/analysis/sparse-write-load/coAuthorsCiteseer-s0-p200.result.json",
+      "provenance_path": "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3/analysis/sparse-write-load/coAuthorsCiteseer-s0-p200.provenance.json",
+      "status": "success",
+      "hashes_match_measured_record": true,
+      "result_sha256": "6c5eec4be0c6d6834edc7a44232fda58ecb248019f521ef882c30728c46be8dc",
+      "reused": false
+    },
+    {
+      "graph": "preferentialAttachment",
+      "seed": 0,
+      "pivots": 200,
+      "reference_run_id": "v3-basic-preferentialAttachment-sparse_sgd-s0-p200-tNone",
+      "result_path": "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3/analysis/sparse-write-load/preferentialAttachment-s0-p200.result.json",
+      "provenance_path": "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3/analysis/sparse-write-load/preferentialAttachment-s0-p200.provenance.json",
+      "status": "success",
+      "hashes_match_measured_record": true,
+      "result_sha256": "14d80cf63342ca93728aa30802fe03006bfa1bf8ba501809e64e8bc0663cef2f",
+      "reused": false
+    },
+    {
+      "graph": "kron_g500-logn17",
+      "seed": 0,
+      "pivots": 200,
+      "reference_run_id": "v3-basic-kron_g500-logn17-sparse_sgd-s0-p200-tNone",
+      "result_path": "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3/analysis/sparse-write-load/kron_g500-logn17-s0-p200.result.json",
+      "provenance_path": "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3/analysis/sparse-write-load/kron_g500-logn17-s0-p200.provenance.json",
+      "status": "success",
+      "hashes_match_measured_record": true,
+      "result_sha256": "f0cc595563dd9501fed2ddbc248052babc44931bbd77410738902b9187df637a",
+      "reused": false
+    }
+  ],
+  "skipped": []
+}

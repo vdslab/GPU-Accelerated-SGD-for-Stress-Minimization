@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "598a",
+    "family": "large",
+    "source_graph": "DIMACS10/598a",
+    "category": "DIMACS10",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/598a.mtx",
+    "source_sha256": "48bc144a8bb6c07c50def40a3891eac78f836ff5596b37366de7d6eaeb1afdab",
+    "source_nodes": 110971,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/DIMACS10/598a",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/DIMACS10/598a.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

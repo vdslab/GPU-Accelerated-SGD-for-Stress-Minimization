@@ -1,0 +1,21 @@
+{
+  "row": {
+    "name": "soc-Pokec",
+    "family": "large",
+    "source_graph": "SNAP/soc-Pokec",
+    "category": "SNAP",
+    "source_path": "/Users/kose/master/atomic-scheduling-investigation/data/v3_snap_origin/graphs/soc-Pokec/20261024T132551156123Z/soc-Pokec.mtx",
+    "source_sha256": "d805b98e307500ce7dc5f3f5238d25c9ebbbf487d61f0e626dff34b7c83e99a0",
+    "source_nodes": 1632803,
+    "source_distribution_status": "official_snap_origin_recovery",
+    "source_page": "https://sparse.tamu.edu/SNAP/soc-Pokec",
+    "origin_url": "https://snap.stanford.edu/data/soc-pokec-relationships.txt.gz",
+    "download_url": "https://snap.stanford.edu/data/soc-pokec-relationships.txt.gz",
+    "origin_path": "data/v3_snap_origin/originals/soc-pokec-relationships.txt.gz",
+    "origin_sha256": "1a23e0ec8a4e497752125f6b3f01696fea7fcdb696fa61d1e822faf4d0d69b14",
+    "identity_claim": "SNAP公式原配布から再構成（SuiteSparse配布物との辺・行番号直接照合未実施）",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_snap_origin/graphs/soc-Pokec/20261024T132551156123Z/prepared"
+}

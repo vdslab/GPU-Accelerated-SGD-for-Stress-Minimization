@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "luxembourg_osm",
+    "family": "large",
+    "source_graph": "DIMACS10/luxembourg_osm",
+    "category": "DIMACS10",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/luxembourg_osm.mtx",
+    "source_sha256": "3920e27dcdc7a4cfcf24b5e7c092584c54b7a71e8db042623d9c66741b2c0184",
+    "source_nodes": 114599,
+    "source_distribution_status": "existing_verified",
+    "source_page": "https://sparse.tamu.edu/DIMACS10/luxembourg_osm",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/DIMACS10/luxembourg_osm.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

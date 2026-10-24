@@ -1,0 +1,13 @@
+{
+  "input_path": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc/coAuthorsCiteseer.mtx",
+  "seed": 0,
+  "pivots": 200,
+  "iterations": 15,
+  "epsilon": 0.1,
+  "expected_input_sha256": "a2728d64c5835b554f14705101032355eadf1ca90f08c7195c39904f946dd81f",
+  "expected_graph_source_sha256": "58fbb42107c3bdbd20b423311769595ade6cd91559556db2c24cb06f1271f503",
+  "expected_preprocess_sha256": "3bb5e0b932471b2cbeb97b628ca4351dedabfa7360d3bf63d259f23eee4b3465",
+  "expected_initial_positions_sha256": "03dfd79d4d299146539807c03af2bdf510ea8126416f6fb241a6218de06fb580",
+  "expected_nodes": 227320,
+  "expected_constraints": 46257112
+}

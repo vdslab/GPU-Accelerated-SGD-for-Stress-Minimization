@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "roadNet-TX",
+    "family": "large",
+    "source_graph": "SNAP/roadNet-TX",
+    "category": "SNAP",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/roadNet-TX.mtx",
+    "source_sha256": "3a2522482097b7d592a6bd90f05c9db4b598eaa358d6f44d299becd1bdc4a3f1",
+    "source_nodes": 1393383,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/SNAP/roadNet-TX",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/SNAP/roadNet-TX.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

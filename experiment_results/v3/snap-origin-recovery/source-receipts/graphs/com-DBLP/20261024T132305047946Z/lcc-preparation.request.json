@@ -1,0 +1,21 @@
+{
+  "row": {
+    "name": "com-DBLP",
+    "family": "large",
+    "source_graph": "SNAP/com-DBLP",
+    "category": "SNAP",
+    "source_path": "/Users/kose/master/atomic-scheduling-investigation/data/v3_snap_origin/graphs/com-DBLP/20261024T132305047946Z/com-DBLP.mtx",
+    "source_sha256": "cbb1eeea31e519928b674070998e620a04188625b6b0c54d883db8f021b89a2d",
+    "source_nodes": 317080,
+    "source_distribution_status": "official_snap_origin_recovery",
+    "source_page": "https://sparse.tamu.edu/SNAP/com-DBLP",
+    "origin_url": "https://snap.stanford.edu/data/bigdata/communities/com-dblp.ungraph.txt.gz",
+    "download_url": "https://snap.stanford.edu/data/bigdata/communities/com-dblp.ungraph.txt.gz",
+    "origin_path": "data/v3_snap_origin/originals/com-dblp.ungraph.txt.gz",
+    "origin_sha256": "9eb0bd30312ddd04e2624f7c36c0983a2e99b116f0385be5a7fce6d6170f4cb3",
+    "identity_claim": "SNAP公式原配布から再構成（SuiteSparse配布物との辺・行番号直接照合未実施）",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_snap_origin/graphs/com-DBLP/20261024T132305047946Z/prepared"
+}

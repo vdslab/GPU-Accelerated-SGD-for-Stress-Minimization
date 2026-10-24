@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "mc2depi",
+    "family": "large",
+    "source_graph": "Williams/mc2depi",
+    "category": "Williams",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/mc2depi.mtx",
+    "source_sha256": "23c3d7b3336b2344adf09e25511666194bfa4866e335602b2d864ed18968193b",
+    "source_nodes": 525825,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/Williams/mc2depi",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/Williams/mc2depi.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

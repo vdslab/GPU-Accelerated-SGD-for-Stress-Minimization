@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "wikipedia-20051105",
+    "family": "large",
+    "source_graph": "Gleich/wikipedia-20051105",
+    "category": "Gleich",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/wikipedia-20051105.mtx",
+    "source_sha256": "ef042d57872f852bc8da6535aec2a8efb565324a4c095d4638f3fc6be20e316e",
+    "source_nodes": 1634989,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/Gleich/wikipedia-20051105",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/Gleich/wikipedia-20051105.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

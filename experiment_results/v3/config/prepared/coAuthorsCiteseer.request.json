@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "coAuthorsCiteseer",
+    "family": "large",
+    "source_graph": "DIMACS10/coAuthorsCiteseer",
+    "category": "DIMACS10",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/coAuthorsCiteseer.mtx",
+    "source_sha256": "77be499ad53a227cbeb5e06cb0beed75f023fc06132338b1fcfae8bf0cbad207",
+    "source_nodes": 227320,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/DIMACS10/coAuthorsCiteseer",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/DIMACS10/coAuthorsCiteseer.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

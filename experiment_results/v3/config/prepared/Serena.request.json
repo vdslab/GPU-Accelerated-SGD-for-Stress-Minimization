@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "Serena",
+    "family": "large",
+    "source_graph": "Janna/Serena",
+    "category": "Janna",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/Serena.mtx",
+    "source_sha256": "796107bb066c3aa6cf3d6b8dde3549d2c123bc525bcac0df7df20ab0a6dbf9e9",
+    "source_nodes": 1391349,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/Janna/Serena",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/Janna/Serena.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

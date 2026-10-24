@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "NACA0015",
+    "family": "large",
+    "source_graph": "DIMACS10/NACA0015",
+    "category": "DIMACS10",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/NACA0015.mtx",
+    "source_sha256": "6be4530f9ce89a4a8179f87cf67ef38b2ac4efbef1e6c272914e4aac45cbc9af",
+    "source_nodes": 1039183,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/DIMACS10/NACA0015",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/DIMACS10/NACA0015.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

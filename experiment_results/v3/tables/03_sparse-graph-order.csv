@@ -1,0 +1,81 @@
+id,graph,structural_category,category_basis,source_group,nodes,source_nodes,dataset_status
+1,luxembourg_osm,Road,heuristic from graph name,DIMACS10,114599,114599,ready
+2,usroads,Road,heuristic from graph name,Gleich,126146,129164,ready
+3,roadNet-PA,Road,heuristic from graph name,SNAP,1087562,1090920,ready
+4,roadNet-TX,Road,heuristic from graph name,SNAP,1351137,1393383,ready
+5,belgium_osm,Road,heuristic from graph name,DIMACS10,1441295,1441295,ready
+6,roadNet-CA,Road,heuristic from graph name,SNAP,1957027,1971281,ready
+7,netherlands_osm,Road,heuristic from graph name,DIMACS10,2216688,2216688,ready
+8,rgg_n_2_17_s0,Geometry / mesh,heuristic from graph name,DIMACS10,131067,131072,ready
+9,delaunay_n17,Geometry / mesh,heuristic from graph name,DIMACS10,131072,131072,ready
+10,fe_ocean,Geometry / mesh,heuristic from graph name,DIMACS10,143437,143437,ready
+11,rgg_n_2_18_s0,Geometry / mesh,heuristic from graph name,DIMACS10,262141,262144,ready
+12,delaunay_n18,Geometry / mesh,heuristic from graph name,DIMACS10,262144,262144,ready
+13,rgg_n_2_19_s0,Geometry / mesh,heuristic from graph name,DIMACS10,524280,524288,ready
+14,delaunay_n19,Geometry / mesh,heuristic from graph name,DIMACS10,524288,524288,ready
+15,NACA0015,Geometry / mesh,heuristic from graph name,DIMACS10,1039183,1039183,ready
+16,rgg_n_2_20_s0,Geometry / mesh,heuristic from graph name,DIMACS10,1048572,1048576,ready
+17,delaunay_n20,Geometry / mesh,heuristic from graph name,DIMACS10,1048576,1048576,ready
+18,rgg_n_2_21_s0,Geometry / mesh,heuristic from graph name,DIMACS10,2097142,2097152,ready
+19,delaunay_n21,Geometry / mesh,heuristic from graph name,DIMACS10,2097152,2097152,ready
+20,M6,Geometry / mesh,heuristic from graph name,DIMACS10,3501776,3501776,ready
+21,333SP,Geometry / mesh,heuristic from graph name,DIMACS10,3712815,3712815,ready
+22,rgg_n_2_22_s0,Geometry / mesh,heuristic from graph name,DIMACS10,4194299,4194304,ready
+23,delaunay_n22,Geometry / mesh,heuristic from graph name,DIMACS10,4194304,4194304,ready
+24,web-Stanford,Web,heuristic from graph name,SNAP,255265,281903,ready
+25,cnr-2000,Web,heuristic from graph name,LAW,325557,325557,ready
+26,web-NotreDame,Web,heuristic from graph name,SNAP,325729,325729,ready
+27,web-BerkStan,Web,heuristic from graph name,SNAP,654782,685230,ready
+28,web-Google,Web,heuristic from graph name,SNAP,855802,916428,ready
+29,eu-2005,Web,heuristic from graph name,LAW,862664,862664,ready
+30,webbase-1M,Web,heuristic from graph name,Williams,964584,1000005,ready
+31,in-2004,Web,heuristic from graph name,LAW,1353703,1382908,ready
+32,loc-Gowalla,Social / collaboration,heuristic from graph name,SNAP,196591,196591,ready
+33,coAuthorsCiteseer,Social / collaboration,heuristic from graph name,DIMACS10,227320,227320,ready
+34,com-DBLP,Social / collaboration,heuristic from graph name,SNAP,317080,317080,ready
+35,com-Amazon,Social / collaboration,heuristic from graph name,SNAP,334863,334863,ready
+36,coPapersCiteseer,Social / collaboration,heuristic from graph name,DIMACS10,434102,434102,ready
+37,coPapersDBLP,Social / collaboration,heuristic from graph name,DIMACS10,540486,540486,ready
+38,com-Youtube,Social / collaboration,heuristic from graph name,SNAP,1134890,1134890,ready
+39,wikipedia-20051105,Social / collaboration,heuristic from graph name,Gleich,1596970,1634989,ready
+40,soc-Pokec,Social / collaboration,heuristic from graph name,SNAP,1632803,1632803,ready
+41,wiki-Talk,Social / collaboration,heuristic from graph name,SNAP,2388953,2394385,ready
+42,com-LiveJournal,Social / collaboration,heuristic from graph name,SNAP,3997962,3997962,ready
+43,preferentialAttachment,Synthetic,heuristic from graph name,DIMACS10,100000,100000,ready
+44,smallworld,Synthetic,heuristic from graph name,DIMACS10,100000,100000,ready
+45,kron_g500-logn17,Synthetic,heuristic from graph name,DIMACS10,107901,131072,ready
+46,kron_g500-logn18,Synthetic,heuristic from graph name,DIMACS10,210141,262144,ready
+47,kron_g500-logn19,Synthetic,heuristic from graph name,DIMACS10,409123,524288,ready
+48,kron_g500-logn20,Synthetic,heuristic from graph name,DIMACS10,795153,1048576,ready
+49,G_n_pin_pout,Other / engineering,heuristic from graph name,DIMACS10,99995,100000,ready
+50,ford2,Other / engineering,heuristic from graph name,GHS_psdef,100196,100196,ready
+51,598a,Other / engineering,heuristic from graph name,DIMACS10,110971,110971,ready
+52,cage12,Other / engineering,heuristic from graph name,vanHeukelum,130228,130228,ready
+53,mt2010,Other / engineering,heuristic from graph name,DIMACS10,132288,132288,ready
+54,bmw7st_1,Other / engineering,heuristic from graph name,GHS_psdef,141346,141347,ready
+55,144,Other / engineering,heuristic from graph name,DIMACS10,144649,144649,ready
+56,caidaRouterLevel,Other / engineering,heuristic from graph name,DIMACS10,190914,192244,ready
+57,power197k,Other / engineering,heuristic from graph name,PowerSystem,,197156,unavailable
+58,co2010,Other / engineering,heuristic from graph name,DIMACS10,201062,201062,ready
+59,hood,Other / engineering,heuristic from graph name,GHS_psdef,210635,220542,ready
+60,m14b,Other / engineering,heuristic from graph name,DIMACS10,214765,214765,ready
+61,email-EuAll,Other / engineering,heuristic from graph name,SNAP,224832,265214,ready
+62,amazon0302,Other / engineering,heuristic from graph name,SNAP,262111,262111,ready
+63,Linux_call_graph,Other / engineering,heuristic from graph name,Sorensen,317926,324085,ready
+64,ny2010,Other / engineering,heuristic from graph name,DIMACS10,350167,350169,ready
+65,language,Other / engineering,heuristic from graph name,Tromble,399130,399130,ready
+66,cage13,Other / engineering,heuristic from graph name,vanHeukelum,445315,445315,ready
+67,auto,Other / engineering,heuristic from graph name,DIMACS10,448695,448695,ready
+68,mc2depi,Other / engineering,heuristic from graph name,Williams,525825,525825,ready
+69,ca2010,Other / engineering,heuristic from graph name,DIMACS10,709827,710145,ready
+70,apache2,Other / engineering,heuristic from graph name,GHS_psdef,715176,715176,ready
+71,Emilia_923,Other / engineering,heuristic from graph name,Janna,908712,923136,ready
+72,ldoor,Other / engineering,heuristic from graph name,GHS_psdef,909537,952203,ready
+73,tx2010,Other / engineering,heuristic from graph name,DIMACS10,914231,914231,ready
+74,Serena,Other / engineering,heuristic from graph name,Janna,1382121,1391349,ready
+75,StocF-1465,Other / engineering,heuristic from graph name,Janna,1436033,1465137,ready
+76,cage14,Other / engineering,heuristic from graph name,vanHeukelum,1505785,1505785,ready
+77,as-Skitter,Other / engineering,heuristic from graph name,SNAP,1694616,1696415,ready
+78,cit-Patents,Other / engineering,heuristic from graph name,SNAP,3764117,3774768,ready
+79,AS365,Other / engineering,heuristic from graph name,DIMACS10,3799275,3799275,ready
+80,venturiLevel3,Other / engineering,heuristic from graph name,DIMACS10,4026819,4026819,ready

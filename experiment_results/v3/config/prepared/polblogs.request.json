@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "polblogs",
+    "family": "small",
+    "source_graph": "Newman/polblogs",
+    "category": "Newman",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/polblogs.mtx",
+    "source_sha256": "61c77cd98623a5dcbc07a918d22486590d8863677ae6e62f735a401512ff6653",
+    "source_nodes": 1490,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/Newman/polblogs",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/Newman/polblogs.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "p2p-Gnutella08",
+    "family": "small",
+    "source_graph": "SNAP/p2p-Gnutella08",
+    "category": "SNAP",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/p2p-Gnutella08.mtx",
+    "source_sha256": "7853e42890fc2b1353dc5dc5846c04a7bedaedba84206f7ea5ee914d833ab4f1",
+    "source_nodes": 6301,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/SNAP/p2p-Gnutella08",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/SNAP/p2p-Gnutella08.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

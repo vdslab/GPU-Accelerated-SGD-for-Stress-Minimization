@@ -1,0 +1,324 @@
+{
+  "kind": "sampling_dot_warning_investigation",
+  "python": "/Users/kose/.pyenv/versions/3.11.0/bin/python3",
+  "python_version": "3.11.0",
+  "numpy_version": "2.3.0",
+  "macos_version": "15.7.2",
+  "machine": "arm64",
+  "blas_backend": "Accelerate (np.show_config and otool -L confirmed)",
+  "sampling_status": "success",
+  "sampling_records": 27,
+  "graphs": [
+    "144",
+    "luxembourg_osm",
+    "web-Stanford"
+  ],
+  "json_nonfinite_paths": [],
+  "native_256_comparisons": 9,
+  "native_256_max_absolute_difference_percent": 2.0556662792607245e-13,
+  "native_256_audits": [
+    {
+      "graph": "144",
+      "method": "atomic_sparse_sgd",
+      "stress_samples": 256,
+      "native_stress_value": 978162046.1936281,
+      "saved_coordinates_reevaluated_stress_value": 978162046.1936285,
+      "signed_relative_difference_percent": 4.874827847376268e-14,
+      "absolute_relative_difference_percent": 4.874827847376268e-14,
+      "flag": "within_0_1_percent"
+    },
+    {
+      "graph": "144",
+      "method": "rr_sparse_sgd",
+      "stress_samples": 256,
+      "native_stress_value": 985916800.9179657,
+      "saved_coordinates_reevaluated_stress_value": 985916800.9179646,
+      "signed_relative_difference_percent": -1.08820907094604e-13,
+      "absolute_relative_difference_percent": 1.08820907094604e-13,
+      "flag": "within_0_1_percent"
+    },
+    {
+      "graph": "144",
+      "method": "sparse_sgd",
+      "stress_samples": 256,
+      "native_stress_value": 978062714.6308502,
+      "saved_coordinates_reevaluated_stress_value": 978062714.6308503,
+      "signed_relative_difference_percent": 1.2188307331168877e-14,
+      "absolute_relative_difference_percent": 1.2188307331168877e-14,
+      "flag": "within_0_1_percent"
+    },
+    {
+      "graph": "luxembourg_osm",
+      "method": "atomic_sparse_sgd",
+      "stress_samples": 256,
+      "native_stress_value": 152827835.8120634,
+      "saved_coordinates_reevaluated_stress_value": 152827835.81206328,
+      "signed_relative_difference_percent": -7.800234094617174e-14,
+      "absolute_relative_difference_percent": 7.800234094617174e-14,
+      "flag": "within_0_1_percent"
+    },
+    {
+      "graph": "luxembourg_osm",
+      "method": "rr_sparse_sgd",
+      "stress_samples": 256,
+      "native_stress_value": 153262752.14438626,
+      "saved_coordinates_reevaluated_stress_value": 153262752.14438635,
+      "signed_relative_difference_percent": 5.833574427715949e-14,
+      "absolute_relative_difference_percent": 5.833574427715949e-14,
+      "flag": "within_0_1_percent"
+    },
+    {
+      "graph": "luxembourg_osm",
+      "method": "sparse_sgd",
+      "stress_samples": 256,
+      "native_stress_value": 152997964.97543317,
+      "saved_coordinates_reevaluated_stress_value": 152997964.9754331,
+      "signed_relative_difference_percent": -3.8957802337411034e-14,
+      "absolute_relative_difference_percent": 3.8957802337411034e-14,
+      "flag": "within_0_1_percent"
+    },
+    {
+      "graph": "web-Stanford",
+      "method": "atomic_sparse_sgd",
+      "stress_samples": 256,
+      "native_stress_value": 5344204177.187278,
+      "saved_coordinates_reevaluated_stress_value": 5344204177.187275,
+      "signed_relative_difference_percent": -5.3535060681842114e-14,
+      "absolute_relative_difference_percent": 5.3535060681842114e-14,
+      "flag": "within_0_1_percent"
+    },
+    {
+      "graph": "web-Stanford",
+      "method": "rr_sparse_sgd",
+      "stress_samples": 256,
+      "native_stress_value": 6286796052.030184,
+      "saved_coordinates_reevaluated_stress_value": 6286796052.030183,
+      "signed_relative_difference_percent": -1.5169480742074996e-14,
+      "absolute_relative_difference_percent": 1.5169480742074996e-14,
+      "flag": "within_0_1_percent"
+    },
+    {
+      "graph": "web-Stanford",
+      "method": "sparse_sgd",
+      "stress_samples": 256,
+      "native_stress_value": 5103171456.527175,
+      "saved_coordinates_reevaluated_stress_value": 5103171456.527164,
+      "signed_relative_difference_percent": -2.0556662792607245e-13,
+      "absolute_relative_difference_percent": 2.0556662792607245e-13,
+      "flag": "within_0_1_percent"
+    }
+  ],
+  "all_ones_reproduction": [
+    {
+      "n": 64,
+      "exact_expected": 64,
+      "direct_accelerate_cblas_ddot": 64.0,
+      "fenv_before": 0,
+      "fenv_after_hex": "0x0",
+      "reductions": {
+        "numpy_dot": {
+          "value": 64.0,
+          "equals_exact_expected": true,
+          "warnings": []
+        },
+        "numpy_einsum": {
+          "value": 64.0,
+          "equals_exact_expected": true,
+          "warnings": []
+        },
+        "numpy_square_sum": {
+          "value": 64.0,
+          "equals_exact_expected": true,
+          "warnings": []
+        }
+      }
+    },
+    {
+      "n": 512,
+      "exact_expected": 512,
+      "direct_accelerate_cblas_ddot": 512.0,
+      "fenv_before": 0,
+      "fenv_after_hex": "0x0",
+      "reductions": {
+        "numpy_dot": {
+          "value": 512.0,
+          "equals_exact_expected": true,
+          "warnings": []
+        },
+        "numpy_einsum": {
+          "value": 512.0,
+          "equals_exact_expected": true,
+          "warnings": []
+        },
+        "numpy_square_sum": {
+          "value": 512.0,
+          "equals_exact_expected": true,
+          "warnings": []
+        }
+      }
+    },
+    {
+      "n": 769,
+      "exact_expected": 769,
+      "direct_accelerate_cblas_ddot": 769.0,
+      "fenv_before": 0,
+      "fenv_after_hex": "0x0",
+      "reductions": {
+        "numpy_dot": {
+          "value": 769.0,
+          "equals_exact_expected": true,
+          "warnings": []
+        },
+        "numpy_einsum": {
+          "value": 769.0,
+          "equals_exact_expected": true,
+          "warnings": []
+        },
+        "numpy_square_sum": {
+          "value": 769.0,
+          "equals_exact_expected": true,
+          "warnings": []
+        }
+      }
+    },
+    {
+      "n": 1023,
+      "exact_expected": 1023,
+      "direct_accelerate_cblas_ddot": 1023.0,
+      "fenv_before": 0,
+      "fenv_after_hex": "0x9f",
+      "reductions": {
+        "numpy_dot": {
+          "value": 1023.0,
+          "equals_exact_expected": true,
+          "warnings": [
+            "divide by zero encountered in dot",
+            "overflow encountered in dot",
+            "invalid value encountered in dot"
+          ]
+        },
+        "numpy_einsum": {
+          "value": 1023.0,
+          "equals_exact_expected": true,
+          "warnings": []
+        },
+        "numpy_square_sum": {
+          "value": 1023.0,
+          "equals_exact_expected": true,
+          "warnings": []
+        }
+      }
+    },
+    {
+      "n": 1024,
+      "exact_expected": 1024,
+      "direct_accelerate_cblas_ddot": 1024.0,
+      "fenv_before": 0,
+      "fenv_after_hex": "0x9f",
+      "reductions": {
+        "numpy_dot": {
+          "value": 1024.0,
+          "equals_exact_expected": true,
+          "warnings": [
+            "divide by zero encountered in dot",
+            "overflow encountered in dot",
+            "invalid value encountered in dot"
+          ]
+        },
+        "numpy_einsum": {
+          "value": 1024.0,
+          "equals_exact_expected": true,
+          "warnings": []
+        },
+        "numpy_square_sum": {
+          "value": 1024.0,
+          "equals_exact_expected": true,
+          "warnings": []
+        }
+      }
+    },
+    {
+      "n": 114599,
+      "exact_expected": 114599,
+      "direct_accelerate_cblas_ddot": 114599.0,
+      "fenv_before": 0,
+      "fenv_after_hex": "0x9f",
+      "reductions": {
+        "numpy_dot": {
+          "value": 114599.0,
+          "equals_exact_expected": true,
+          "warnings": [
+            "divide by zero encountered in dot",
+            "overflow encountered in dot",
+            "invalid value encountered in dot"
+          ]
+        },
+        "numpy_einsum": {
+          "value": 114599.0,
+          "equals_exact_expected": true,
+          "warnings": []
+        },
+        "numpy_square_sum": {
+          "value": 114599.0,
+          "equals_exact_expected": true,
+          "warnings": []
+        }
+      }
+    }
+  ],
+  "saved_coordinate_check": {
+    "graph": "luxembourg_osm",
+    "method": "sparse_sgd",
+    "seed": 0,
+    "pivots": 200,
+    "nodes": 114599,
+    "coordinates_all_finite": true,
+    "coordinate_min": [
+      -790.582030548041,
+      -532.6298593443229
+    ],
+    "coordinate_max": [
+      565.87146794937,
+      632.6068503128246
+    ],
+    "all_pairs_euclidean_upper_bound": 1788.2233314433856,
+    "unit_edge_graph_absolute_residual_upper_bound": 1787.2233314433856,
+    "unit_edge_graph_source_squared_sum_upper_bound": 366048371130.5746,
+    "comparison_distance_row": "synthetic integers (arange(n)%127)+1; source distance set to zero; not actual graph stress",
+    "synthetic_residual_all_finite": true,
+    "synthetic_residual_min": -0.9892826163407914,
+    "synthetic_residual_max": 1052.6795680899356,
+    "synthetic_squared_sum": 271066110.87437403,
+    "dot_einsum_square_sum_math_fsum_equal": true,
+    "only_dot_warned": true
+  },
+  "scope": "No native reruns, MTX reads, graph-distance recomputation or full stress rerun; one saved Luxembourg CPU coordinate layout inspected. Sampling source and 8 small numerical tests updated; no commit.",
+  "ctypes_scope": "Read-only loading and calculation through existing libm/Accelerate; fenv was cleared only inside the short-lived diagnostic Python subprocess. No environment, installed library, OS setting or other process was changed.",
+  "fix_validation": {
+    "source": "experiments/check_v3_sampling.py",
+    "reduction": "numpy.einsum(i,i->, optimize=False), no BLAS dot",
+    "finite_validation": [
+      "coordinates",
+      "graph distances except allowed +inf",
+      "Euclidean distances",
+      "normalized residual",
+      "squared residual sum"
+    ],
+    "unit_test_command": "python3 -m unittest experiments.tests.test_v3_sampling -v",
+    "unit_test_count": 8,
+    "unit_test_status": "success",
+    "real_coordinate_vector_check": {
+      "graph": "luxembourg_osm",
+      "method": "sparse_sgd",
+      "seed": 0,
+      "pivots": 200,
+      "nodes": 114599,
+      "distances": "synthetic integers 1..127, not actual graph stress",
+      "source_count": 1,
+      "result": 271066110.87437403,
+      "independent_math_hypot_fsum": 271066110.87437403,
+      "relative_difference": 0.0,
+      "runtime_warnings": 0
+    }
+  }
+}

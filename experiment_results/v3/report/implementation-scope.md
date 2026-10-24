@@ -50,7 +50,7 @@ Sparseの初期座標は**同じseedでもpivot数Pに依存する**。Sparseは
 - Pを変えると制約・方向別重みも変わり、そこから導出する学習率列も変わり得る。CPU/Atomicのshuffle開始時のRNG状態にも影響する。
 - No.7は各Pで現在の処理を行った速度・品質の比較である。「同一初期配置でpivot数だけを変えた因果比較」とは解釈しない。品質差の全量を制約数の増減だけへ帰属できない。初期配置を独立RNGへ分ける対照実験は、今回の固定済みv3には追加していない。
 
-根拠：[Sparse前処理・pivot選択・初期座標生成](/Users/kose/master/atomic-scheduling-investigation/implementations/sparse/baseline-sparse-sgd-non-gpu/src/graph.rs:314)、[RNG生成と引継ぎ](/Users/kose/master/atomic-scheduling-investigation/implementations/sparse/baseline-sparse-sgd-non-gpu/src/main.rs:159)。ソースの静的確認であり、追加実行による確認ではない。
+根拠：[Sparse前処理・pivot選択・初期座標生成](https://github.com/vdslab/GPU-Accelerated-SGD-for-Stress-Minimization/blob/118d3ec22b350fcc7522527154f3d03131215a25/implementations/sparse/baseline-sparse-sgd-non-gpu/src/graph.rs#L314)、[RNG生成と引継ぎ](https://github.com/vdslab/GPU-Accelerated-SGD-for-Stress-Minimization/blob/118d3ec22b350fcc7522527154f3d03131215a25/implementations/sparse/baseline-sparse-sgd-non-gpu/src/main.rs#L159)。ソースの静的確認であり、追加実行による確認ではない。
 
 ## 結果から言える範囲
 
@@ -60,10 +60,10 @@ v3は、各実装をこの条件で動かした速度と最終品質の比較で
 
 ## 参照ソース
 
-- [共通Full seed生成](/Users/kose/master/atomic-scheduling-investigation/shared/experiment-common/src/seed.rs)
-- [Full CPU更新](/Users/kose/master/atomic-scheduling-investigation/implementations/full/baseline-sgd-non-gpu/src/algorithm.rs)、[Full前処理](/Users/kose/master/atomic-scheduling-investigation/implementations/full/baseline-sgd-non-gpu/src/graph.rs)
-- [Full Atomic host](/Users/kose/master/atomic-scheduling-investigation/implementations/full/vram-lock-native/src/metal.rs)、[shader](/Users/kose/master/atomic-scheduling-investigation/implementations/full/vram-lock-native/src/shader.metal)
-- [Full RR host](/Users/kose/master/atomic-scheduling-investigation/implementations/full/rr_gpu/src/gpu.rs)、[shader](/Users/kose/master/atomic-scheduling-investigation/implementations/full/rr_gpu/src/shader.wgsl)
-- [Sparse共通前処理](/Users/kose/master/atomic-scheduling-investigation/implementations/sparse/baseline-sparse-sgd-non-gpu/src/graph.rs)、[CPU更新](/Users/kose/master/atomic-scheduling-investigation/implementations/sparse/baseline-sparse-sgd-non-gpu/src/algorithm.rs)
-- [Sparse Atomic host](/Users/kose/master/atomic-scheduling-investigation/implementations/sparse/vram-lock-sparse/src/metal.rs)、[shader](/Users/kose/master/atomic-scheduling-investigation/implementations/sparse/vram-lock-sparse/src/shader.metal)
-- [Sparse RR schedule](/Users/kose/master/atomic-scheduling-investigation/implementations/sparse/sparse-sgd-gpu/src/schedule.rs)、[host](/Users/kose/master/atomic-scheduling-investigation/implementations/sparse/sparse-sgd-gpu/src/gpu.rs)、[shader](/Users/kose/master/atomic-scheduling-investigation/implementations/sparse/sparse-sgd-gpu/src/shader.wgsl)
+- [共通Full seed生成](https://github.com/vdslab/GPU-Accelerated-SGD-for-Stress-Minimization/blob/118d3ec22b350fcc7522527154f3d03131215a25/shared/experiment-common/src/seed.rs)
+- [Full CPU更新](https://github.com/vdslab/GPU-Accelerated-SGD-for-Stress-Minimization/blob/118d3ec22b350fcc7522527154f3d03131215a25/implementations/full/baseline-sgd-non-gpu/src/algorithm.rs)、[Full前処理](https://github.com/vdslab/GPU-Accelerated-SGD-for-Stress-Minimization/blob/118d3ec22b350fcc7522527154f3d03131215a25/implementations/full/baseline-sgd-non-gpu/src/graph.rs)
+- [Full Atomic host](https://github.com/vdslab/GPU-Accelerated-SGD-for-Stress-Minimization/blob/118d3ec22b350fcc7522527154f3d03131215a25/implementations/full/vram-lock-native/src/metal.rs)、[shader](https://github.com/vdslab/GPU-Accelerated-SGD-for-Stress-Minimization/blob/118d3ec22b350fcc7522527154f3d03131215a25/implementations/full/vram-lock-native/src/shader.metal)
+- [Full RR host](https://github.com/vdslab/GPU-Accelerated-SGD-for-Stress-Minimization/blob/118d3ec22b350fcc7522527154f3d03131215a25/implementations/full/rr_gpu/src/gpu.rs)、[shader](https://github.com/vdslab/GPU-Accelerated-SGD-for-Stress-Minimization/blob/118d3ec22b350fcc7522527154f3d03131215a25/implementations/full/rr_gpu/src/shader.wgsl)
+- [Sparse共通前処理](https://github.com/vdslab/GPU-Accelerated-SGD-for-Stress-Minimization/blob/118d3ec22b350fcc7522527154f3d03131215a25/implementations/sparse/baseline-sparse-sgd-non-gpu/src/graph.rs)、[CPU更新](https://github.com/vdslab/GPU-Accelerated-SGD-for-Stress-Minimization/blob/118d3ec22b350fcc7522527154f3d03131215a25/implementations/sparse/baseline-sparse-sgd-non-gpu/src/algorithm.rs)
+- [Sparse Atomic host](https://github.com/vdslab/GPU-Accelerated-SGD-for-Stress-Minimization/blob/118d3ec22b350fcc7522527154f3d03131215a25/implementations/sparse/vram-lock-sparse/src/metal.rs)、[shader](https://github.com/vdslab/GPU-Accelerated-SGD-for-Stress-Minimization/blob/118d3ec22b350fcc7522527154f3d03131215a25/implementations/sparse/vram-lock-sparse/src/shader.metal)
+- [Sparse RR schedule](https://github.com/vdslab/GPU-Accelerated-SGD-for-Stress-Minimization/blob/118d3ec22b350fcc7522527154f3d03131215a25/implementations/sparse/sparse-sgd-gpu/src/schedule.rs)、[host](https://github.com/vdslab/GPU-Accelerated-SGD-for-Stress-Minimization/blob/118d3ec22b350fcc7522527154f3d03131215a25/implementations/sparse/sparse-sgd-gpu/src/gpu.rs)、[shader](https://github.com/vdslab/GPU-Accelerated-SGD-for-Stress-Minimization/blob/118d3ec22b350fcc7522527154f3d03131215a25/implementations/sparse/sparse-sgd-gpu/src/shader.wgsl)

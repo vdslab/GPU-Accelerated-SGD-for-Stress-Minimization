@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "kron_g500-logn18",
+    "family": "large",
+    "source_graph": "DIMACS10/kron_g500-logn18",
+    "category": "DIMACS10",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/kron_g500-logn18.mtx",
+    "source_sha256": "a2508e0e98df780b5f121faea475eea9bf7fa32104c9bc6d94573965a4d70611",
+    "source_nodes": 262144,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/DIMACS10/kron_g500-logn18",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/DIMACS10/kron_g500-logn18.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

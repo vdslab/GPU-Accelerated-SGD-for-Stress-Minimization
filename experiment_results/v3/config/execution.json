@@ -1,0 +1,23 @@
+{
+  "git_commit": "118d3ec22b350fcc7522527154f3d03131215a25",
+  "binary_sha256": {
+    "sgd": "1cd8ddc1b65eef2ed0ceaf9ce0457bfa8c3d61384f8a72e2a676d6fa667aeb30",
+    "atomic_sgd": "09ec6b6a97e1f89c7961937b6bf51dcb35580d9ecd610fd147ed4f0c0ba73137",
+    "rr_sgd": "c98d77e5da7b32dced8826af46426f8571e819e0778e17a0c959043d4c7f8691",
+    "sparse_sgd": "c3599ff25151586e16941df89a993b80b0c4606c1ff366c1b6b062bb496a85c0",
+    "atomic_sparse_sgd": "44c2895781beefff8ea2d26e4514177d5c728f58072643af936cfa7dcc2bfea5",
+    "rr_sparse_sgd": "c0f96e1567b77649df0e95c2169c9132538d4d6b8a06701a71ba2ae8bd410967"
+  },
+  "limits": {
+    "timeout_seconds": 120,
+    "max_rss_bytes": 8589934592,
+    "min_free_disk_bytes": 8589934592,
+    "timeout_scope": "whole child process: input, preprocessing, initialization, SGD, stress evaluation and output",
+    "measurement_policy": "sequential; one warmup per graph/method/pivots/tile setting; successful runs only; failed warmup blocks formal seeds with explicit unexecuted records",
+    "rationale": "Apple M4 Pro 24 GiB unified RAM. Pilot 60 s stopped web-Stanford RR after 15 SGD iterations had completed; doubled process wall limit before formal runs. RSS cap reserves memory for macOS and analysis. Resource-censored results are missing, never 0/1 speedup.",
+    "artifact_policy": "Buffered native text exports; after the child exits, text and f64 checkpoints are losslessly gzip level1 archived with CRC and SHA verification outside native timing. Initial interrupted 662 conditions excluded."
+  },
+  "runner_sha256": "d018cd24a4293bbf6c5ceccf75973e196f9d5e7b5fe3731fe860d4028d0addad",
+  "plan_sha256": "a2aa6aadc7783ff404f99fe3a60c3c4541ec0f4ae1ae82ac8c181a6531f1957f",
+  "datasets_sha256": "be832f5e94e42071cff261a7da400312ef77b36f74f5fd5e0a55ebb9d8c58665"
+}

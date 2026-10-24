@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "hood",
+    "family": "large",
+    "source_graph": "GHS_psdef/hood",
+    "category": "GHS_psdef",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/hood.mtx",
+    "source_sha256": "163805a11f42987b3647f4ca9ffb986286b2fc1ca5c9b8bfdd7bfdf49e48a528",
+    "source_nodes": 220542,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/GHS_psdef/hood",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/GHS_psdef/hood.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

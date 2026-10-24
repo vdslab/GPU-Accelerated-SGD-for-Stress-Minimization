@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "belgium_osm",
+    "family": "large",
+    "source_graph": "DIMACS10/belgium_osm",
+    "category": "DIMACS10",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/belgium_osm.mtx",
+    "source_sha256": "38aa2db5ac873c7ba8aa30309dff65f1ab4ea071f7cd49953ddfa4b27ee5ac01",
+    "source_nodes": 1441295,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/DIMACS10/belgium_osm",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/DIMACS10/belgium_osm.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

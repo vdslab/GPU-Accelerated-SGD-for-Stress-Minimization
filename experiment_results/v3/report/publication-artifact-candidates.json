@@ -1,0 +1,5157 @@
+{
+  "schema_version": 1,
+  "kind": "provisional_v3_publication_candidates",
+  "generated_utc": "2026-10-24T14:29:26.864454+00:00",
+  "status": "final_pre_publication",
+  "repository_root": "/Users/kose/master/atomic-scheduling-investigation",
+  "manifest_path": "experiment_results/v3/report/publication-artifact-candidates.json",
+  "review_threshold_bytes": 20000000,
+  "provenance_policy": "Path/stat enumeration only; no payload content reads or payload hashes. Config secret scan limited to top-level JSON named in secret_scan. No staging or commit performed. Do not git add experiment_results/v3 recursively.",
+  "candidate_summary": {
+    "files": 957,
+    "bytes": 47247749
+  },
+  "candidates": [
+    {
+      "path": "experiment_results/v3/analysis/sampling-before-einsum/receipt.json",
+      "bytes": 429,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sampling-before-einsum/sampling-analysis.log",
+      "bytes": 11344,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sampling-before-einsum/sampling-sensitivity.csv",
+      "bytes": 18325,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sampling-before-einsum/sampling-sensitivity.json",
+      "bytes": 50291,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sparse-write-load/coAuthorsCiteseer-s0-p200.provenance.json",
+      "bytes": 1476,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sparse-write-load/coAuthorsCiteseer-s0-p200.request.json",
+      "bytes": 643,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sparse-write-load/coAuthorsCiteseer-s0-p200.result.json",
+      "bytes": 17725,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sparse-write-load/kron_g500-logn17-s0-p200.provenance.json",
+      "bytes": 1475,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sparse-write-load/kron_g500-logn17-s0-p200.request.json",
+      "bytes": 642,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sparse-write-load/kron_g500-logn17-s0-p200.result.json",
+      "bytes": 73704,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sparse-write-load/luxembourg_osm-s0-p200.provenance.json",
+      "bytes": 1473,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sparse-write-load/luxembourg_osm-s0-p200.request.json",
+      "bytes": 640,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sparse-write-load/luxembourg_osm-s0-p200.result.json",
+      "bytes": 4873,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sparse-write-load/outcomes.json",
+      "bytes": 3564,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sparse-write-load/preferentialAttachment-s0-p200.provenance.json",
+      "bytes": 1481,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sparse-write-load/preferentialAttachment-s0-p200.request.json",
+      "bytes": 648,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sparse-write-load/preferentialAttachment-s0-p200.result.json",
+      "bytes": 22692,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sparse-write-load/selection.json",
+      "bytes": 7679,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sparse-write-load/summary.csv",
+      "bytes": 5255,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sparse-write-load/web-Stanford-s0-p200.provenance.json",
+      "bytes": 1471,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sparse-write-load/web-Stanford-s0-p200.request.json",
+      "bytes": 638,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/analysis/sparse-write-load/web-Stanford-s0-p200.result.json",
+      "bytes": 55364,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/datasets.json",
+      "bytes": 134688,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/execution.json",
+      "bytes": 1796,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/limits.json",
+      "bytes": 903,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/machine.json",
+      "bytes": 368,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/plan.json",
+      "bytes": 1059283,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/1138_bus.json",
+      "bytes": 1279,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/1138_bus.request.json",
+      "bytes": 720,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/1138_bus.worker.json",
+      "bytes": 1191,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/144.json",
+      "bytes": 1280,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/144.request.json",
+      "bytes": 723,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/144.worker.json",
+      "bytes": 1189,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/333SP.json",
+      "bytes": 1298,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/333SP.request.json",
+      "bytes": 734,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/333SP.worker.json",
+      "bytes": 1206,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/598a.json",
+      "bytes": 1285,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/598a.request.json",
+      "bytes": 728,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/598a.worker.json",
+      "bytes": 1194,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/AS365.json",
+      "bytes": 1297,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/AS365.request.json",
+      "bytes": 734,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/AS365.worker.json",
+      "bytes": 1206,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/EVA.json",
+      "bytes": 1258,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/EVA.request.json",
+      "bytes": 707,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/EVA.worker.json",
+      "bytes": 1169,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/Emilia_923.json",
+      "bytes": 1332,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/Emilia_923.request.json",
+      "bytes": 746,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/Emilia_923.worker.json",
+      "bytes": 1241,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/G_n_pin_pout.json",
+      "bytes": 1435,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/G_n_pin_pout.request.json",
+      "bytes": 768,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/G_n_pin_pout.worker.json",
+      "bytes": 1344,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/Linux_call_graph.json",
+      "bytes": 1376,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/Linux_call_graph.request.json",
+      "bytes": 788,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/Linux_call_graph.worker.json",
+      "bytes": 1285,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/M6.json",
+      "bytes": 1274,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/M6.request.json",
+      "bytes": 719,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/M6.worker.json",
+      "bytes": 1183,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/NACA0015.json",
+      "bytes": 1316,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/NACA0015.request.json",
+      "bytes": 749,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/NACA0015.worker.json",
+      "bytes": 1225,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/Serena.json",
+      "bytes": 1305,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/Serena.request.json",
+      "bytes": 727,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/Serena.worker.json",
+      "bytes": 1216,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/StocF-1465.json",
+      "bytes": 1331,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/StocF-1465.request.json",
+      "bytes": 747,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/StocF-1465.worker.json",
+      "bytes": 1240,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/USpowerGrid.json",
+      "bytes": 1309,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/USpowerGrid.request.json",
+      "bytes": 747,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/USpowerGrid.worker.json",
+      "bytes": 1220,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/amazon0302.json",
+      "bytes": 1310,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/amazon0302.request.json",
+      "bytes": 742,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/amazon0302.worker.json",
+      "bytes": 1219,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/apache2.json",
+      "bytes": 1315,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/apache2.request.json",
+      "bytes": 747,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/apache2.worker.json",
+      "bytes": 1225,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/as-Skitter.json",
+      "bytes": 1321,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/as-Skitter.request.json",
+      "bytes": 743,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/as-Skitter.worker.json",
+      "bytes": 1230,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/auto.json",
+      "bytes": 1285,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/auto.request.json",
+      "bytes": 728,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/auto.worker.json",
+      "bytes": 1194,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/bcspwr10.json",
+      "bytes": 1279,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/bcspwr10.request.json",
+      "bytes": 720,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/bcspwr10.worker.json",
+      "bytes": 1191,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/bcsstk15.json",
+      "bytes": 1284,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/bcsstk15.request.json",
+      "bytes": 722,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/bcsstk15.worker.json",
+      "bytes": 1196,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/bcsstk16.json",
+      "bytes": 1284,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/bcsstk16.request.json",
+      "bytes": 722,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/bcsstk16.worker.json",
+      "bytes": 1197,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/bcsstk17.json",
+      "bytes": 1293,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/bcsstk17.request.json",
+      "bytes": 723,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/bcsstk17.worker.json",
+      "bytes": 1202,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/belgium_osm.json",
+      "bytes": 1335,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/belgium_osm.request.json",
+      "bytes": 764,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/belgium_osm.worker.json",
+      "bytes": 1246,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/bmw7st_1.json",
+      "bytes": 1328,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/bmw7st_1.request.json",
+      "bytes": 752,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/bmw7st_1.worker.json",
+      "bytes": 1237,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/ca-GrQc.json",
+      "bytes": 1285,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/ca-GrQc.request.json",
+      "bytes": 725,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/ca-GrQc.worker.json",
+      "bytes": 1196,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/ca-HepTh.json",
+      "bytes": 1290,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/ca-HepTh.request.json",
+      "bytes": 730,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/ca-HepTh.worker.json",
+      "bytes": 1201,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/ca2010.json",
+      "bytes": 1299,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/ca2010.request.json",
+      "bytes": 738,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/ca2010.worker.json",
+      "bytes": 1208,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/cage12.json",
+      "bytes": 1318,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/cage12.request.json",
+      "bytes": 750,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/cage12.worker.json",
+      "bytes": 1227,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/cage13.json",
+      "bytes": 1317,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/cage13.request.json",
+      "bytes": 750,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/cage13.worker.json",
+      "bytes": 1226,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/cage14.json",
+      "bytes": 1321,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/cage14.request.json",
+      "bytes": 751,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/cage14.worker.json",
+      "bytes": 1230,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/caidaRouterLevel.json",
+      "bytes": 1371,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/caidaRouterLevel.request.json",
+      "bytes": 788,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/caidaRouterLevel.worker.json",
+      "bytes": 1280,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/cit-Patents.json",
+      "bytes": 1325,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/cit-Patents.request.json",
+      "bytes": 748,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/cit-Patents.worker.json",
+      "bytes": 1234,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/cnr-2000.json",
+      "bytes": 1300,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/cnr-2000.request.json",
+      "bytes": 728,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/cnr-2000.worker.json",
+      "bytes": 1209,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/co2010.json",
+      "bytes": 1298,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/co2010.request.json",
+      "bytes": 738,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/co2010.worker.json",
+      "bytes": 1207,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/coAuthorsCiteseer.json",
+      "bytes": 1377,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/coAuthorsCiteseer.request.json",
+      "bytes": 793,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/coAuthorsCiteseer.worker.json",
+      "bytes": 1286,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/coPapersCiteseer.json",
+      "bytes": 1372,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/coPapersCiteseer.request.json",
+      "bytes": 788,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/coPapersCiteseer.worker.json",
+      "bytes": 1281,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/coPapersDBLP.json",
+      "bytes": 1344,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/coPapersDBLP.request.json",
+      "bytes": 768,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/coPapersDBLP.worker.json",
+      "bytes": 1253,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/data.json",
+      "bytes": 1275,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/data.request.json",
+      "bytes": 726,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/data.worker.json",
+      "bytes": 1186,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n12.json",
+      "bytes": 1326,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n12.request.json",
+      "bytes": 766,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n12.worker.json",
+      "bytes": 1238,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n14.json",
+      "bytes": 1330,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n14.request.json",
+      "bytes": 767,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n14.worker.json",
+      "bytes": 1243,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n17.json",
+      "bytes": 1338,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n17.request.json",
+      "bytes": 768,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n17.worker.json",
+      "bytes": 1248,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n18.json",
+      "bytes": 1342,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n18.request.json",
+      "bytes": 768,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n18.worker.json",
+      "bytes": 1251,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n19.json",
+      "bytes": 1338,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n19.request.json",
+      "bytes": 768,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n19.worker.json",
+      "bytes": 1248,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n20.json",
+      "bytes": 1343,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n20.request.json",
+      "bytes": 769,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n20.worker.json",
+      "bytes": 1252,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n21.json",
+      "bytes": 1343,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n21.request.json",
+      "bytes": 769,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n21.worker.json",
+      "bytes": 1252,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n22.json",
+      "bytes": 1345,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n22.request.json",
+      "bytes": 769,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/delaunay_n22.worker.json",
+      "bytes": 1254,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/dwt_1005.json",
+      "bytes": 1280,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/dwt_1005.request.json",
+      "bytes": 720,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/dwt_1005.worker.json",
+      "bytes": 1191,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/dwt_2680.json",
+      "bytes": 1282,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/dwt_2680.request.json",
+      "bytes": 720,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/dwt_2680.worker.json",
+      "bytes": 1193,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/email-EuAll.json",
+      "bytes": 1326,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/email-EuAll.request.json",
+      "bytes": 747,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/email-EuAll.worker.json",
+      "bytes": 1235,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/eu-2005.json",
+      "bytes": 1295,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/eu-2005.request.json",
+      "bytes": 723,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/eu-2005.worker.json",
+      "bytes": 1204,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/fe_4elt2.json",
+      "bytes": 1303,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/fe_4elt2.request.json",
+      "bytes": 745,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/fe_4elt2.worker.json",
+      "bytes": 1216,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/fe_ocean.json",
+      "bytes": 1311,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/fe_ocean.request.json",
+      "bytes": 748,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/fe_ocean.worker.json",
+      "bytes": 1221,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/ford2.json",
+      "bytes": 1299,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/ford2.request.json",
+      "bytes": 737,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/ford2.worker.json",
+      "bytes": 1209,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/hood.json",
+      "bytes": 1302,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/hood.request.json",
+      "bytes": 732,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/hood.worker.json",
+      "bytes": 1211,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/in-2004.json",
+      "bytes": 1300,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/in-2004.request.json",
+      "bytes": 724,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/in-2004.worker.json",
+      "bytes": 1209,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/kron_g500-logn17.json",
+      "bytes": 1377,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/kron_g500-logn17.request.json",
+      "bytes": 788,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/kron_g500-logn17.worker.json",
+      "bytes": 1286,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/kron_g500-logn18.json",
+      "bytes": 1381,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/kron_g500-logn18.request.json",
+      "bytes": 788,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/kron_g500-logn18.worker.json",
+      "bytes": 1290,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/kron_g500-logn19.json",
+      "bytes": 1381,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/kron_g500-logn19.request.json",
+      "bytes": 788,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/kron_g500-logn19.worker.json",
+      "bytes": 1290,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/kron_g500-logn20.json",
+      "bytes": 1382,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/kron_g500-logn20.request.json",
+      "bytes": 789,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/kron_g500-logn20.worker.json",
+      "bytes": 1292,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/language.json",
+      "bytes": 1315,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/language.request.json",
+      "bytes": 744,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/language.worker.json",
+      "bytes": 1225,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/ldoor.json",
+      "bytes": 1309,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/ldoor.request.json",
+      "bytes": 737,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/ldoor.worker.json",
+      "bytes": 1218,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/luxembourg_osm.json",
+      "bytes": 1352,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/luxembourg_osm.request.json",
+      "bytes": 776,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/luxembourg_osm.worker.json",
+      "bytes": 1261,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/m14b.json",
+      "bytes": 1287,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/m14b.request.json",
+      "bytes": 728,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/m14b.worker.json",
+      "bytes": 1196,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/mc2depi.json",
+      "bytes": 1312,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/mc2depi.request.json",
+      "bytes": 743,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/mc2depi.worker.json",
+      "bytes": 1221,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/mt2010.json",
+      "bytes": 1298,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/mt2010.request.json",
+      "bytes": 738,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/mt2010.worker.json",
+      "bytes": 1207,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/netherlands_osm.json",
+      "bytes": 1363,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/netherlands_osm.request.json",
+      "bytes": 784,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/netherlands_osm.worker.json",
+      "bytes": 1273,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/ny2010.json",
+      "bytes": 1298,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/ny2010.request.json",
+      "bytes": 738,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/ny2010.worker.json",
+      "bytes": 1207,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/p2p-Gnutella08.json",
+      "bytes": 1329,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/p2p-Gnutella08.request.json",
+      "bytes": 760,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/p2p-Gnutella08.worker.json",
+      "bytes": 1240,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/polblogs.json",
+      "bytes": 1299,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/polblogs.request.json",
+      "bytes": 738,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/polblogs.worker.json",
+      "bytes": 1210,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/preferentialAttachment.json",
+      "bytes": 1401,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/preferentialAttachment.request.json",
+      "bytes": 818,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/preferentialAttachment.worker.json",
+      "bytes": 1309,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/rgg_n_2_17_s0.json",
+      "bytes": 1346,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/rgg_n_2_17_s0.request.json",
+      "bytes": 773,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/rgg_n_2_17_s0.worker.json",
+      "bytes": 1255,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/rgg_n_2_18_s0.json",
+      "bytes": 1348,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/rgg_n_2_18_s0.request.json",
+      "bytes": 773,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/rgg_n_2_18_s0.worker.json",
+      "bytes": 1257,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/rgg_n_2_19_s0.json",
+      "bytes": 1349,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/rgg_n_2_19_s0.request.json",
+      "bytes": 773,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/rgg_n_2_19_s0.worker.json",
+      "bytes": 1258,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/rgg_n_2_20_s0.json",
+      "bytes": 1349,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/rgg_n_2_20_s0.request.json",
+      "bytes": 774,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/rgg_n_2_20_s0.worker.json",
+      "bytes": 1258,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/rgg_n_2_21_s0.json",
+      "bytes": 1352,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/rgg_n_2_21_s0.request.json",
+      "bytes": 774,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/rgg_n_2_21_s0.worker.json",
+      "bytes": 1261,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/rgg_n_2_22_s0.json",
+      "bytes": 1355,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/rgg_n_2_22_s0.request.json",
+      "bytes": 774,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/rgg_n_2_22_s0.worker.json",
+      "bytes": 1263,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/roadNet-CA.json",
+      "bytes": 1316,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/roadNet-CA.request.json",
+      "bytes": 743,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/roadNet-CA.worker.json",
+      "bytes": 1226,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/roadNet-PA.json",
+      "bytes": 1313,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/roadNet-PA.request.json",
+      "bytes": 743,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/roadNet-PA.worker.json",
+      "bytes": 1223,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/roadNet-TX.json",
+      "bytes": 1317,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/roadNet-TX.request.json",
+      "bytes": 743,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/roadNet-TX.worker.json",
+      "bytes": 1227,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/smallworld.json",
+      "bytes": 1315,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/smallworld.request.json",
+      "bytes": 758,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/smallworld.worker.json",
+      "bytes": 1224,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/tx2010.json",
+      "bytes": 1300,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/tx2010.request.json",
+      "bytes": 738,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/tx2010.worker.json",
+      "bytes": 1209,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/uk.json",
+      "bytes": 1260,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/uk.request.json",
+      "bytes": 716,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/uk.worker.json",
+      "bytes": 1172,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/usroads.json",
+      "bytes": 1296,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/usroads.request.json",
+      "bytes": 735,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/usroads.worker.json",
+      "bytes": 1206,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/venturiLevel3.json",
+      "bytes": 1352,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/venturiLevel3.request.json",
+      "bytes": 774,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/venturiLevel3.worker.json",
+      "bytes": 1260,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/web-BerkStan.json",
+      "bytes": 1330,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/web-BerkStan.request.json",
+      "bytes": 752,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/web-BerkStan.worker.json",
+      "bytes": 1239,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/web-Google.json",
+      "bytes": 1317,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/web-Google.request.json",
+      "bytes": 742,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/web-Google.worker.json",
+      "bytes": 1226,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/web-NotreDame.json",
+      "bytes": 1336,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/web-NotreDame.request.json",
+      "bytes": 755,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/web-NotreDame.worker.json",
+      "bytes": 1245,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/web-Stanford.json",
+      "bytes": 1329,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/web-Stanford.request.json",
+      "bytes": 750,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/web-Stanford.worker.json",
+      "bytes": 1238,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/webbase-1M.json",
+      "bytes": 1340,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/webbase-1M.request.json",
+      "bytes": 759,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/webbase-1M.worker.json",
+      "bytes": 1249,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/wiki-Talk.json",
+      "bytes": 1312,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/wiki-Talk.request.json",
+      "bytes": 738,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/wiki-Talk.worker.json",
+      "bytes": 1221,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/wiki-Vote.json",
+      "bytes": 1300,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/wiki-Vote.request.json",
+      "bytes": 735,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/wiki-Vote.worker.json",
+      "bytes": 1212,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/wikipedia-20051105.json",
+      "bytes": 1388,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/wikipedia-20051105.request.json",
+      "bytes": 791,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/wikipedia-20051105.worker.json",
+      "bytes": 1297,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/yeast.json",
+      "bytes": 1274,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/yeast.request.json",
+      "bytes": 719,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/prepared/yeast.worker.json",
+      "bytes": 1185,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/source-catalog.json",
+      "bytes": 54475,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/config/source-hashes.json",
+      "bytes": 12814,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/01_layout_full.png",
+      "bytes": 1490133,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/01_layout_full.svg",
+      "bytes": 1126865,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/01_layout_sparse.png",
+      "bytes": 649978,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/01_layout_sparse.svg",
+      "bytes": 447045,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/01_layout_sparse_partial.png",
+      "bytes": 455718,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/01_layout_sparse_partial.svg",
+      "bytes": 311327,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/02_full.png",
+      "bytes": 159598,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/02_full.svg",
+      "bytes": 129225,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/02_full_iteration_times.png",
+      "bytes": 375615,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/02_full_iteration_times.svg",
+      "bytes": 221049,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/03_sparse.png",
+      "bytes": 356699,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/03_sparse.svg",
+      "bytes": 470306,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/03_sparse_components.png",
+      "bytes": 252709,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/03_sparse_components.svg",
+      "bytes": 298117,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/03_sparse_small_aux.png",
+      "bytes": 160959,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/03_sparse_small_aux.svg",
+      "bytes": 129434,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/04_size_series.png",
+      "bytes": 127811,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/04_size_series.svg",
+      "bytes": 46409,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/04_sparse_write_load.png",
+      "bytes": 104058,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/04_sparse_write_load.svg",
+      "bytes": 29571,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/04_structure.png",
+      "bytes": 210424,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/04_structure.svg",
+      "bytes": 270162,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/04_structure_bins.png",
+      "bytes": 72179,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/04_structure_bins.svg",
+      "bytes": 57713,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/04_structure_quality.png",
+      "bytes": 200232,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/04_structure_quality.svg",
+      "bytes": 248680,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/05_convergence.png",
+      "bytes": 966800,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/05_convergence.svg",
+      "bytes": 351214,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/05_iteration_times.png",
+      "bytes": 537726,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/05_iteration_times.svg",
+      "bytes": 169360,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/06_tiles.png",
+      "bytes": 360495,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/06_tiles.svg",
+      "bytes": 234716,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/06_tiles_pareto.png",
+      "bytes": 263932,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/06_tiles_pareto.svg",
+      "bytes": 96919,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/07_pivots.png",
+      "bytes": 543279,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/figures/07_pivots.svg",
+      "bytes": 304428,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/interruption-reboot-20261024/artifacts/v3-basic-web-NotreDame-sparse_sgd-s3-p200-tNone/command.json",
+      "bytes": 1780,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/interruption-reboot-20261024/artifacts/v3-basic-web-NotreDame-sparse_sgd-s3-p200-tNone/stderr.log",
+      "bytes": 0,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/interruption-reboot-20261024/artifacts/v3-basic-web-NotreDame-sparse_sgd-s3-p200-tNone/stdout.json",
+      "bytes": 0,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/interruption-reboot-20261024/receipt.json",
+      "bytes": 1293,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/raw/results.jsonl",
+      "bytes": 9193297,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/RESULTS.md",
+      "bytes": 81241,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/cache-type-audit-before-fix.csv",
+      "bytes": 244147,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/convergence-esa-discussion.md",
+      "bytes": 13623,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/convergence-trace-time-validation.csv",
+      "bytes": 89196,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/data-availability-recheck.md",
+      "bytes": 8935,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/data-availability.md",
+      "bytes": 3965,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/esa-finalization-checklist.md",
+      "bytes": 11785,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/esa-results.md",
+      "bytes": 32363,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/esa-v3-results.md",
+      "bytes": 41846,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/final-audit.md",
+      "bytes": 5058,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/full-basic-observations.md",
+      "bytes": 13406,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/implementation-scope.md",
+      "bytes": 11167,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/io-export-incident.md",
+      "bytes": 2049,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/pilot.md",
+      "bytes": 2472,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/publication-artifact-candidates.json",
+      "bytes": 191017,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/reboot-incident.md",
+      "bytes": 11307,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/resource-incidents.md",
+      "bytes": 19742,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/sampling-dot-warning-evidence.json",
+      "bytes": 10408,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/sampling-dot-warning-investigation.md",
+      "bytes": 6006,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/sampling-einsum-recheck.json",
+      "bytes": 477,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/sampling-sensitivity-observations.md",
+      "bytes": 2119,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/sensitivity-core-metadata.csv",
+      "bytes": 117295,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/sensitivity-observations.md",
+      "bytes": 11735,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/sparse-basic-observations.md",
+      "bytes": 21205,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/sparse-esa-discussion.md",
+      "bytes": 2563,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/structure-esa-discussion.md",
+      "bytes": 6441,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/success-rss-threshold-exceedances.csv",
+      "bytes": 7916,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/tile-limit-incidents.md",
+      "bytes": 9613,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/report/web-notredame-timeout-system-snapshot.md",
+      "bytes": 5034,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/config/datasets.json",
+      "bytes": 23513,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/config/execution.json",
+      "bytes": 1796,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/config/expected-official-metadata.json",
+      "bytes": 1738,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/config/limits.json",
+      "bytes": 903,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/config/plan.json",
+      "bytes": 29763,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/config/prepared/com-Amazon.json",
+      "bytes": 3805,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/config/prepared/com-DBLP.json",
+      "bytes": 3751,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/config/prepared/com-LiveJournal.json",
+      "bytes": 3910,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/config/prepared/com-Youtube.json",
+      "bytes": 3836,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/config/prepared/loc-Gowalla.json",
+      "bytes": 3764,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/config/prepared/soc-Pokec.json",
+      "bytes": 3754,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/config/recovery.json",
+      "bytes": 12001,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/config/source-hashes.json",
+      "bytes": 13455,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/preparation-outcomes.json",
+      "bytes": 610,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/preparation-report.md",
+      "bytes": 1816,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/preparation-status.json",
+      "bytes": 77,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/raw/results.jsonl",
+      "bytes": 200606,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/graphs/com-Amazon/20261024T132257219978Z/lcc-preparation.request.json",
+      "bytes": 1257,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/graphs/com-Amazon/20261024T132257219978Z/lcc-preparation.worker.json",
+      "bytes": 1785,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/graphs/com-Amazon/20261024T132257219978Z/validation.json",
+      "bytes": 3179,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/graphs/com-DBLP/20261024T132305047946Z/lcc-preparation.request.json",
+      "bytes": 1239,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/graphs/com-DBLP/20261024T132305047946Z/lcc-preparation.worker.json",
+      "bytes": 1763,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/graphs/com-DBLP/20261024T132305047946Z/validation.json",
+      "bytes": 3165,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/graphs/com-LiveJournal/20261024T132407609759Z/lcc-preparation.request.json",
+      "bytes": 1276,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/graphs/com-LiveJournal/20261024T132407609759Z/lcc-preparation.worker.json",
+      "bytes": 1826,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/graphs/com-LiveJournal/20261024T132407609759Z/validation.json",
+      "bytes": 3244,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/graphs/com-Youtube/20261024T132314193702Z/lcc-preparation.request.json",
+      "bytes": 1267,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/graphs/com-Youtube/20261024T132314193702Z/lcc-preparation.worker.json",
+      "bytes": 1800,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/graphs/com-Youtube/20261024T132314193702Z/validation.json",
+      "bytes": 3206,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/graphs/loc-Gowalla/20261024T132631312241Z/lcc-preparation.request.json",
+      "bytes": 1220,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/graphs/loc-Gowalla/20261024T132631312241Z/lcc-preparation.worker.json",
+      "bytes": 1752,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/graphs/loc-Gowalla/20261024T132631312241Z/validation.json",
+      "bytes": 2896,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/graphs/soc-Pokec/20261024T132551156123Z/lcc-preparation.request.json",
+      "bytes": 1227,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/graphs/soc-Pokec/20261024T132551156123Z/lcc-preparation.worker.json",
+      "bytes": 1756,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/graphs/soc-Pokec/20261024T132551156123Z/validation.json",
+      "bytes": 2909,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/index.json",
+      "bytes": 8576,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/originals/com-amazon.ungraph.txt.gz.download.json",
+      "bytes": 371,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/originals/com-dblp.ungraph.txt.gz.download.json",
+      "bytes": 369,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/originals/com-lj.ungraph.txt.gz.download.json",
+      "bytes": 371,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/originals/com-youtube.ungraph.txt.gz.download.json",
+      "bytes": 374,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/originals/loc-gowalla_edges.txt.gz.download.json",
+      "bytes": 350,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/source-receipts/originals/soc-pokec-relationships.txt.gz.download.json",
+      "bytes": 360,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/warmups/warmup-com-Amazon-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4155,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/warmups/warmup-com-Amazon-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4071,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/warmups/warmup-com-Amazon-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3984,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/warmups/warmup-com-DBLP-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4110,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/warmups/warmup-com-DBLP-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4031,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/warmups/warmup-com-DBLP-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3959,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/warmups/warmup-com-LiveJournal-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1428,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/warmups/warmup-com-LiveJournal-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1408,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/warmups/warmup-com-LiveJournal-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1393,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/warmups/warmup-com-Youtube-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1403,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/warmups/warmup-com-Youtube-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1383,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/warmups/warmup-com-Youtube-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1368,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/warmups/warmup-loc-Gowalla-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4164,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/warmups/warmup-loc-Gowalla-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4103,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/warmups/warmup-loc-Gowalla-sparse_sgd-p200-tNone/record.json",
+      "bytes": 4008,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/warmups/warmup-soc-Pokec-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1392,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/warmups/warmup-soc-Pokec-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1372,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/snap-origin-recovery/warmups/warmup-soc-Pokec-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1355,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/02_full-counts.csv",
+      "bytes": 1558,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/02_full-graph-order.csv",
+      "bytes": 1681,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/03_sparse-counts.csv",
+      "bytes": 8302,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/03_sparse-graph-order.csv",
+      "bytes": 6856,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/03_sparse_small_aux-counts.csv",
+      "bytes": 1978,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/03_sparse_small_aux-graph-order.csv",
+      "bytes": 1681,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/actual-attempts.csv",
+      "bytes": 5510522,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-core-failures.csv",
+      "bytes": 31294,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-core-physical-executions.csv",
+      "bytes": 417087,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-core-reused.csv",
+      "bytes": 25548,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-core-status.csv",
+      "bytes": 1057,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-core-success-rss-exceedances.csv",
+      "bytes": 6019,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-core-unexecuted.csv",
+      "bytes": 166862,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-core.json",
+      "bytes": 360332,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-execution-counts.csv",
+      "bytes": 678,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-failures.csv",
+      "bytes": 47023,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-interrupted-attempts.csv",
+      "bytes": 785,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-physical-executions.csv",
+      "bytes": 650419,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-recovery-failures.csv",
+      "bytes": 1905,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-recovery-physical-executions.csv",
+      "bytes": 9773,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-recovery-reused.csv",
+      "bytes": 7,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-recovery-status.csv",
+      "bytes": 638,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-recovery-success-rss-exceedances.csv",
+      "bytes": 7,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-recovery-unexecuted.csv",
+      "bytes": 10887,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-recovery.json",
+      "bytes": 9634,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-reused.csv",
+      "bytes": 34933,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-status.csv",
+      "bytes": 1050,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-success-rss-exceedances.csv",
+      "bytes": 7916,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3-unexecuted.csv",
+      "bytes": 222621,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/audit-v3.json",
+      "bytes": 711520,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/cohort-source-records.csv",
+      "bytes": 1136950,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/cohort-superseded.csv",
+      "bytes": 59641,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/cohort.json",
+      "bytes": 2748,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/convergence-panel-coverage.csv",
+      "bytes": 4615,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/convergence-stress-audit.csv",
+      "bytes": 243433,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/convergence.csv",
+      "bytes": 1647728,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/dataset-availability.csv",
+      "bytes": 5538,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/effective-datasets.json",
+      "bytes": 174275,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/failures.csv",
+      "bytes": 258037,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/graph-structure.csv",
+      "bytes": 14867,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/iteration-time-validation.csv",
+      "bytes": 117336,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/layout-selection.csv",
+      "bytes": 12442,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/layout-sparse-partial-availability.csv",
+      "bytes": 3710,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/pair-exclusions.csv",
+      "bytes": 796,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/paired-ratios.csv",
+      "bytes": 263826,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/per-iteration-time.csv",
+      "bytes": 994626,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/pivots-parameter-coverage.csv",
+      "bytes": 26028,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/provenance.json",
+      "bytes": 4235,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/runs.csv",
+      "bytes": 6034566,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/sampling-sensitivity.csv",
+      "bytes": 18300,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/sampling-sensitivity.json",
+      "bytes": 50232,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/size-series.csv",
+      "bytes": 10375,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/sparse-overview-thumbnails.csv",
+      "bytes": 1418,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/sparse-schedule.csv",
+      "bytes": 71601,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/structure-bins.csv",
+      "bytes": 2332,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/structure-correlations.csv",
+      "bytes": 3295,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/structure-points.csv",
+      "bytes": 92907,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/summary-incidents.csv",
+      "bytes": 7,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/summary.csv",
+      "bytes": 205536,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/target-arrival-coverage.csv",
+      "bytes": 7820,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/target-arrival.csv",
+      "bytes": 526230,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/tile-endpoint-cpu-comparison.csv",
+      "bytes": 444,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/tile-pareto.csv",
+      "bytes": 4844,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/tiling-parameter-coverage.csv",
+      "bytes": 14316,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/warmup-attempts.csv",
+      "bytes": 825544,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/tables/warmup-failures.csv",
+      "bytes": 99395,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-1138_bus-atomic_sgd-pNone-tNone/record.json",
+      "bytes": 3293,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-1138_bus-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3880,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-1138_bus-rr_sgd-pNone-t1024/record.json",
+      "bytes": 3428,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-1138_bus-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3805,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-1138_bus-sgd-pNone-tNone/record.json",
+      "bytes": 3155,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-1138_bus-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3739,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-144-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3811,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-144-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3724,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-144-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3653,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-333SP-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1305,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-333SP-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1286,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-333SP-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1270,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-598a-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3829,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-598a-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3742,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-598a-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3679,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-AS365-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1305,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-AS365-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1284,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-AS365-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1269,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-EVA-atomic_sgd-pNone-tNone/record.json",
+      "bytes": 3248,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-EVA-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3811,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-EVA-rr_sgd-pNone-t1/record.json",
+      "bytes": 3343,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-EVA-rr_sgd-pNone-t1024/record.json",
+      "bytes": 3383,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-EVA-rr_sgd-pNone-t128/record.json",
+      "bytes": 3357,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-EVA-rr_sgd-pNone-t16/record.json",
+      "bytes": 3348,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-EVA-rr_sgd-pNone-t2/record.json",
+      "bytes": 3329,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-EVA-rr_sgd-pNone-t256/record.json",
+      "bytes": 3370,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-EVA-rr_sgd-pNone-t32/record.json",
+      "bytes": 3367,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-EVA-rr_sgd-pNone-t4/record.json",
+      "bytes": 3319,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-EVA-rr_sgd-pNone-t512/record.json",
+      "bytes": 3336,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-EVA-rr_sgd-pNone-t64/record.json",
+      "bytes": 3348,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-EVA-rr_sgd-pNone-t8/record.json",
+      "bytes": 3348,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-EVA-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3706,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-EVA-sgd-pNone-tNone/record.json",
+      "bytes": 3100,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-EVA-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3661,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-Emilia_923-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1334,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-Emilia_923-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1314,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-Emilia_923-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1300,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-G_n_pin_pout-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 672,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-G_n_pin_pout-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 660,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-G_n_pin_pout-sparse_sgd-p200-tNone/record.json",
+      "bytes": 651,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-Linux_call_graph-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4052,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-Linux_call_graph-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3995,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-Linux_call_graph-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3904,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-M6-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1286,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-M6-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1268,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-M6-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1253,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-NACA0015-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1323,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-NACA0015-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1302,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-NACA0015-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1287,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-Serena-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1311,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-Serena-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1291,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-Serena-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1276,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-StocF-1465-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1334,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-StocF-1465-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1314,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-StocF-1465-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1298,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-USpowerGrid-atomic_sgd-pNone-tNone/record.json",
+      "bytes": 3371,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-USpowerGrid-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3944,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-USpowerGrid-rr_sgd-pNone-t1/record.json",
+      "bytes": 1264,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-USpowerGrid-rr_sgd-pNone-t1024/record.json",
+      "bytes": 3499,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-USpowerGrid-rr_sgd-pNone-t128/record.json",
+      "bytes": 3457,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-USpowerGrid-rr_sgd-pNone-t16/record.json",
+      "bytes": 3461,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-USpowerGrid-rr_sgd-pNone-t2/record.json",
+      "bytes": 3457,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-USpowerGrid-rr_sgd-pNone-t256/record.json",
+      "bytes": 3450,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-USpowerGrid-rr_sgd-pNone-t32/record.json",
+      "bytes": 3455,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-USpowerGrid-rr_sgd-pNone-t4/record.json",
+      "bytes": 3434,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-USpowerGrid-rr_sgd-pNone-t512/record.json",
+      "bytes": 3442,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-USpowerGrid-rr_sgd-pNone-t64/record.json",
+      "bytes": 3454,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-USpowerGrid-rr_sgd-pNone-t8/record.json",
+      "bytes": 3450,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-USpowerGrid-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3835,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-USpowerGrid-sgd-pNone-tNone/record.json",
+      "bytes": 3218,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-USpowerGrid-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3816,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-amazon0302-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3924,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-amazon0302-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3879,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-amazon0302-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3798,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-apache2-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1315,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-apache2-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1294,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-apache2-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1280,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-as-Skitter-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1336,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-as-Skitter-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1315,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-as-Skitter-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1301,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-auto-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3839,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-auto-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3754,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-auto-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3670,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcspwr10-atomic_sgd-pNone-tNone/record.json",
+      "bytes": 3297,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcspwr10-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3900,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcspwr10-rr_sgd-pNone-t1024/record.json",
+      "bytes": 3417,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcspwr10-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3828,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcspwr10-sgd-pNone-tNone/record.json",
+      "bytes": 3198,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcspwr10-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3725,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk15-atomic_sgd-pNone-tNone/record.json",
+      "bytes": 3361,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk15-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3899,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk15-rr_sgd-pNone-t1024/record.json",
+      "bytes": 3423,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk15-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3809,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk15-sgd-pNone-tNone/record.json",
+      "bytes": 3185,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk15-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3735,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk16-atomic_sgd-pNone-tNone/record.json",
+      "bytes": 3285,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk16-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3879,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk16-rr_sgd-pNone-t1/record.json",
+      "bytes": 1248,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk16-rr_sgd-pNone-t1024/record.json",
+      "bytes": 3411,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk16-rr_sgd-pNone-t128/record.json",
+      "bytes": 3414,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk16-rr_sgd-pNone-t16/record.json",
+      "bytes": 3417,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk16-rr_sgd-pNone-t2/record.json",
+      "bytes": 3410,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk16-rr_sgd-pNone-t256/record.json",
+      "bytes": 3442,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk16-rr_sgd-pNone-t32/record.json",
+      "bytes": 3444,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk16-rr_sgd-pNone-t4/record.json",
+      "bytes": 3414,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk16-rr_sgd-pNone-t512/record.json",
+      "bytes": 3423,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk16-rr_sgd-pNone-t64/record.json",
+      "bytes": 3423,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk16-rr_sgd-pNone-t8/record.json",
+      "bytes": 3413,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk16-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3809,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk16-sgd-pNone-tNone/record.json",
+      "bytes": 3177,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk16-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3769,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk17-atomic_sgd-pNone-tNone/record.json",
+      "bytes": 3323,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk17-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3904,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk17-rr_sgd-pNone-t1024/record.json",
+      "bytes": 3436,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk17-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3833,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk17-sgd-pNone-tNone/record.json",
+      "bytes": 3219,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bcsstk17-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3727,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-belgium_osm-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1341,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-belgium_osm-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1320,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-belgium_osm-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1305,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bmw7st_1-atomic_sparse_sgd-p100-tNone/record.json",
+      "bytes": 3911,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bmw7st_1-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3889,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bmw7st_1-atomic_sparse_sgd-p400-tNone/record.json",
+      "bytes": 3908,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bmw7st_1-atomic_sparse_sgd-p50-tNone/record.json",
+      "bytes": 3890,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bmw7st_1-rr_sparse_sgd-p100-tNone/record.json",
+      "bytes": 3855,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bmw7st_1-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3844,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bmw7st_1-rr_sparse_sgd-p400-tNone/record.json",
+      "bytes": 3823,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bmw7st_1-rr_sparse_sgd-p50-tNone/record.json",
+      "bytes": 3829,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bmw7st_1-sparse_sgd-p100-tNone/record.json",
+      "bytes": 3749,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bmw7st_1-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3747,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bmw7st_1-sparse_sgd-p400-tNone/record.json",
+      "bytes": 3742,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-bmw7st_1-sparse_sgd-p50-tNone/record.json",
+      "bytes": 3735,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ca-GrQc-atomic_sgd-pNone-tNone/record.json",
+      "bytes": 3321,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ca-GrQc-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3897,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ca-GrQc-rr_sgd-pNone-t1024/record.json",
+      "bytes": 3380,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ca-GrQc-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3789,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ca-GrQc-sgd-pNone-tNone/record.json",
+      "bytes": 3187,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ca-GrQc-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3720,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ca-HepTh-atomic_sgd-pNone-tNone/record.json",
+      "bytes": 3315,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ca-HepTh-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3906,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ca-HepTh-rr_sgd-pNone-t1024/record.json",
+      "bytes": 3427,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ca-HepTh-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3813,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ca-HepTh-sgd-pNone-tNone/record.json",
+      "bytes": 3193,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ca-HepTh-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3742,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ca2010-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1308,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ca2010-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1290,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ca2010-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1275,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-cage12-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3861,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-cage12-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3786,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-cage12-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3701,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-cage13-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3874,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-cage13-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3800,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-cage13-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3705,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-cage14-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1312,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-cage14-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1292,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-cage14-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1276,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-caidaRouterLevel-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4049,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-caidaRouterLevel-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3989,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-caidaRouterLevel-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3921,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-cit-Patents-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1340,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-cit-Patents-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1320,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-cit-Patents-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1304,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-cnr-2000-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3910,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-cnr-2000-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3837,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-cnr-2000-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3769,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-co2010-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3868,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-co2010-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3787,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-co2010-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3718,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-coAuthorsCiteseer-atomic_sparse_sgd-p100-tNone/record.json",
+      "bytes": 4095,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-coAuthorsCiteseer-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4072,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-coAuthorsCiteseer-atomic_sparse_sgd-p400-tNone/record.json",
+      "bytes": 4071,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-coAuthorsCiteseer-atomic_sparse_sgd-p50-tNone/record.json",
+      "bytes": 4045,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-coAuthorsCiteseer-rr_sparse_sgd-p100-tNone/record.json",
+      "bytes": 3996,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-coAuthorsCiteseer-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4011,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-coAuthorsCiteseer-rr_sparse_sgd-p400-tNone/record.json",
+      "bytes": 4005,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-coAuthorsCiteseer-rr_sparse_sgd-p50-tNone/record.json",
+      "bytes": 3964,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-coAuthorsCiteseer-sparse_sgd-p100-tNone/record.json",
+      "bytes": 3909,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-coAuthorsCiteseer-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3916,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-coAuthorsCiteseer-sparse_sgd-p400-tNone/record.json",
+      "bytes": 3921,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-coAuthorsCiteseer-sparse_sgd-p50-tNone/record.json",
+      "bytes": 3913,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-coPapersCiteseer-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4065,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-coPapersCiteseer-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3989,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-coPapersCiteseer-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3904,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-coPapersDBLP-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4004,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-coPapersDBLP-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3916,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-coPapersDBLP-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3815,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-data-atomic_sgd-pNone-tNone/record.json",
+      "bytes": 3250,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-data-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3803,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-data-rr_sgd-pNone-t1024/record.json",
+      "bytes": 3399,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-data-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3749,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-data-sgd-pNone-tNone/record.json",
+      "bytes": 3148,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-data-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3644,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n12-atomic_sgd-pNone-tNone/record.json",
+      "bytes": 3374,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n12-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3964,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n12-rr_sgd-pNone-t1024/record.json",
+      "bytes": 3472,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n12-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3905,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n12-sgd-pNone-tNone/record.json",
+      "bytes": 3244,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n12-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3813,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n14-atomic_sgd-pNone-tNone/record.json",
+      "bytes": 1311,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n14-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3957,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n14-rr_sgd-pNone-t1024/record.json",
+      "bytes": 3498,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n14-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3870,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n14-sgd-pNone-tNone/record.json",
+      "bytes": 3242,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n14-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3815,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n17-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3987,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n17-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3898,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n17-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3831,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n18-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4000,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n18-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3900,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n18-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3838,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n19-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1346,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n19-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3900,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n19-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1310,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n20-atomic_sparse_sgd-p100-tNone/record.json",
+      "bytes": 1345,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n20-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1345,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n20-atomic_sparse_sgd-p400-tNone/record.json",
+      "bytes": 1345,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n20-atomic_sparse_sgd-p50-tNone/record.json",
+      "bytes": 4002,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n20-rr_sparse_sgd-p100-tNone/record.json",
+      "bytes": 1324,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n20-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1326,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n20-rr_sparse_sgd-p400-tNone/record.json",
+      "bytes": 1327,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n20-rr_sparse_sgd-p50-tNone/record.json",
+      "bytes": 3879,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n20-sparse_sgd-p100-tNone/record.json",
+      "bytes": 3824,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n20-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1312,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n20-sparse_sgd-p400-tNone/record.json",
+      "bytes": 1310,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n20-sparse_sgd-p50-tNone/record.json",
+      "bytes": 3823,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n21-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1347,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n21-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1326,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n21-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1312,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n22-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1346,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n22-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1326,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-delaunay_n22-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1312,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_1005-atomic_sgd-pNone-tNone/record.json",
+      "bytes": 3272,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_1005-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3898,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_1005-rr_sgd-pNone-t1024/record.json",
+      "bytes": 3413,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_1005-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3813,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_1005-sgd-pNone-tNone/record.json",
+      "bytes": 3196,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_1005-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3738,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_2680-atomic_sgd-pNone-tNone/record.json",
+      "bytes": 3333,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_2680-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3871,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_2680-rr_sgd-pNone-t1/record.json",
+      "bytes": 3397,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_2680-rr_sgd-pNone-t1024/record.json",
+      "bytes": 3404,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_2680-rr_sgd-pNone-t128/record.json",
+      "bytes": 3407,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_2680-rr_sgd-pNone-t16/record.json",
+      "bytes": 3405,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_2680-rr_sgd-pNone-t2/record.json",
+      "bytes": 3413,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_2680-rr_sgd-pNone-t256/record.json",
+      "bytes": 3450,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_2680-rr_sgd-pNone-t32/record.json",
+      "bytes": 3391,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_2680-rr_sgd-pNone-t4/record.json",
+      "bytes": 3404,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_2680-rr_sgd-pNone-t512/record.json",
+      "bytes": 3423,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_2680-rr_sgd-pNone-t64/record.json",
+      "bytes": 3427,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_2680-rr_sgd-pNone-t8/record.json",
+      "bytes": 3423,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_2680-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3811,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_2680-sgd-pNone-tNone/record.json",
+      "bytes": 3188,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-dwt_2680-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3720,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-email-EuAll-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3969,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-email-EuAll-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3910,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-email-EuAll-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3816,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-eu-2005-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1316,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-eu-2005-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1296,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-eu-2005-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1282,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-fe_4elt2-atomic_sgd-pNone-tNone/record.json",
+      "bytes": 3279,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-fe_4elt2-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3907,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-fe_4elt2-rr_sgd-pNone-t1/record.json",
+      "bytes": 1248,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-fe_4elt2-rr_sgd-pNone-t1024/record.json",
+      "bytes": 3418,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-fe_4elt2-rr_sgd-pNone-t128/record.json",
+      "bytes": 3424,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-fe_4elt2-rr_sgd-pNone-t16/record.json",
+      "bytes": 3434,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-fe_4elt2-rr_sgd-pNone-t2/record.json",
+      "bytes": 1248,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-fe_4elt2-rr_sgd-pNone-t256/record.json",
+      "bytes": 3418,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-fe_4elt2-rr_sgd-pNone-t32/record.json",
+      "bytes": 3406,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-fe_4elt2-rr_sgd-pNone-t4/record.json",
+      "bytes": 3391,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-fe_4elt2-rr_sgd-pNone-t512/record.json",
+      "bytes": 3400,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-fe_4elt2-rr_sgd-pNone-t64/record.json",
+      "bytes": 3416,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-fe_4elt2-rr_sgd-pNone-t8/record.json",
+      "bytes": 3441,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-fe_4elt2-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3821,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-fe_4elt2-sgd-pNone-tNone/record.json",
+      "bytes": 3206,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-fe_4elt2-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3718,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-fe_ocean-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3903,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-fe_ocean-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3815,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-fe_ocean-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3739,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ford2-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3852,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ford2-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3734,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ford2-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3680,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-hood-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3847,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-hood-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3764,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-hood-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3681,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-in-2004-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1317,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-in-2004-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1298,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-in-2004-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1282,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-kron_g500-logn17-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4059,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-kron_g500-logn17-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3990,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-kron_g500-logn17-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3913,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-kron_g500-logn18-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4107,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-kron_g500-logn18-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3993,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-kron_g500-logn18-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3894,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-kron_g500-logn19-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4077,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-kron_g500-logn19-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1345,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-kron_g500-logn19-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3914,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-kron_g500-logn20-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1368,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-kron_g500-logn20-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1351,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-kron_g500-logn20-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1335,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-language-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3917,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-language-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3822,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-language-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3766,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ldoor-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1304,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ldoor-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1283,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ldoor-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1268,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-luxembourg_osm-atomic_sparse_sgd-p100-tNone/record.json",
+      "bytes": 4024,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-luxembourg_osm-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3994,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-luxembourg_osm-atomic_sparse_sgd-p400-tNone/record.json",
+      "bytes": 4024,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-luxembourg_osm-atomic_sparse_sgd-p50-tNone/record.json",
+      "bytes": 3987,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-luxembourg_osm-rr_sparse_sgd-p100-tNone/record.json",
+      "bytes": 3929,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-luxembourg_osm-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3966,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-luxembourg_osm-rr_sparse_sgd-p400-tNone/record.json",
+      "bytes": 3938,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-luxembourg_osm-rr_sparse_sgd-p50-tNone/record.json",
+      "bytes": 3921,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-luxembourg_osm-sparse_sgd-p100-tNone/record.json",
+      "bytes": 3862,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-luxembourg_osm-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3863,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-luxembourg_osm-sparse_sgd-p400-tNone/record.json",
+      "bytes": 3880,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-luxembourg_osm-sparse_sgd-p50-tNone/record.json",
+      "bytes": 3838,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-m14b-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3837,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-m14b-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3793,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-m14b-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3675,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-mc2depi-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1314,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-mc2depi-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1294,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-mc2depi-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1278,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-mt2010-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3855,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-mt2010-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3780,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-mt2010-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3704,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-netherlands_osm-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1363,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-netherlands_osm-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1345,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-netherlands_osm-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1329,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ny2010-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3867,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ny2010-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3810,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-ny2010-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3694,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-p2p-Gnutella08-atomic_sgd-pNone-tNone/record.json",
+      "bytes": 3369,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-p2p-Gnutella08-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4015,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-p2p-Gnutella08-rr_sgd-pNone-t1024/record.json",
+      "bytes": 3528,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-p2p-Gnutella08-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3921,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-p2p-Gnutella08-sgd-pNone-tNone/record.json",
+      "bytes": 3259,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-p2p-Gnutella08-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3850,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-polblogs-atomic_sgd-pNone-tNone/record.json",
+      "bytes": 3314,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-polblogs-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3915,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-polblogs-rr_sgd-pNone-t1024/record.json",
+      "bytes": 3417,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-polblogs-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3858,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-polblogs-sgd-pNone-tNone/record.json",
+      "bytes": 3171,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-polblogs-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3741,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-preferentialAttachment-atomic_sparse_sgd-p100-tNone/record.json",
+      "bytes": 4195,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-preferentialAttachment-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4179,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-preferentialAttachment-atomic_sparse_sgd-p400-tNone/record.json",
+      "bytes": 4176,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-preferentialAttachment-atomic_sparse_sgd-p50-tNone/record.json",
+      "bytes": 4156,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-preferentialAttachment-rr_sparse_sgd-p100-tNone/record.json",
+      "bytes": 4128,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-preferentialAttachment-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4078,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-preferentialAttachment-rr_sparse_sgd-p400-tNone/record.json",
+      "bytes": 4082,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-preferentialAttachment-rr_sparse_sgd-p50-tNone/record.json",
+      "bytes": 4066,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-preferentialAttachment-sparse_sgd-p100-tNone/record.json",
+      "bytes": 4008,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-preferentialAttachment-sparse_sgd-p200-tNone/record.json",
+      "bytes": 4000,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-preferentialAttachment-sparse_sgd-p400-tNone/record.json",
+      "bytes": 4014,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-preferentialAttachment-sparse_sgd-p50-tNone/record.json",
+      "bytes": 3978,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-rgg_n_2_17_s0-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3997,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-rgg_n_2_17_s0-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3941,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-rgg_n_2_17_s0-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3837,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-rgg_n_2_18_s0-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3992,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-rgg_n_2_18_s0-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3938,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-rgg_n_2_18_s0-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3850,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-rgg_n_2_19_s0-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4020,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-rgg_n_2_19_s0-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3921,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-rgg_n_2_19_s0-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3871,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-rgg_n_2_20_s0-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1351,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-rgg_n_2_20_s0-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1332,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-rgg_n_2_20_s0-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1317,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-rgg_n_2_21_s0-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1353,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-rgg_n_2_21_s0-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1328,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-rgg_n_2_21_s0-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1319,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-rgg_n_2_22_s0-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1354,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-rgg_n_2_22_s0-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1334,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-rgg_n_2_22_s0-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1318,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-roadNet-CA-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1334,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-roadNet-CA-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1314,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-roadNet-CA-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1298,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-roadNet-PA-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1335,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-roadNet-PA-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1313,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-roadNet-PA-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1299,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-roadNet-TX-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1335,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-roadNet-TX-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1314,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-roadNet-TX-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1300,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-smallworld-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3974,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-smallworld-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3861,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-smallworld-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3806,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-tx2010-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1308,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-tx2010-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1290,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-tx2010-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1274,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-uk-atomic_sgd-pNone-tNone/record.json",
+      "bytes": 3231,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-uk-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3771,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-uk-rr_sgd-pNone-t1024/record.json",
+      "bytes": 3353,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-uk-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3732,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-uk-sgd-pNone-tNone/record.json",
+      "bytes": 3132,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-uk-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3613,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-usroads-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3871,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-usroads-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3801,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-usroads-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3736,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-venturiLevel3-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1351,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-venturiLevel3-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1327,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-venturiLevel3-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1317,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-BerkStan-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3981,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-BerkStan-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1325,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-BerkStan-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3840,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-Google-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1333,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-Google-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1312,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-Google-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1299,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-NotreDame-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 4022,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-NotreDame-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3951,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-NotreDame-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3848,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-Stanford-atomic_sparse_sgd-p100-tNone/record.json",
+      "bytes": 3989,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-Stanford-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3992,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-Stanford-atomic_sparse_sgd-p400-tNone/record.json",
+      "bytes": 3992,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-Stanford-atomic_sparse_sgd-p50-tNone/record.json",
+      "bytes": 3995,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-Stanford-rr_sparse_sgd-p100-tNone/record.json",
+      "bytes": 3904,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-Stanford-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3910,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-Stanford-rr_sparse_sgd-p400-tNone/record.json",
+      "bytes": 3901,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-Stanford-rr_sparse_sgd-p50-tNone/record.json",
+      "bytes": 3901,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-Stanford-sparse_sgd-p100-tNone/record.json",
+      "bytes": 3824,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-Stanford-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3835,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-Stanford-sparse_sgd-p400-tNone/record.json",
+      "bytes": 3823,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-web-Stanford-sparse_sgd-p50-tNone/record.json",
+      "bytes": 3813,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-webbase-1M-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1332,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-webbase-1M-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1312,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-webbase-1M-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1297,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wiki-Talk-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1329,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wiki-Talk-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1308,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wiki-Talk-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1294,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wiki-Vote-atomic_sgd-pNone-tNone/record.json",
+      "bytes": 3307,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wiki-Vote-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3929,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wiki-Vote-rr_sgd-pNone-t1/record.json",
+      "bytes": 1254,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wiki-Vote-rr_sgd-pNone-t1024/record.json",
+      "bytes": 3470,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wiki-Vote-rr_sgd-pNone-t128/record.json",
+      "bytes": 3451,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wiki-Vote-rr_sgd-pNone-t16/record.json",
+      "bytes": 3449,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wiki-Vote-rr_sgd-pNone-t2/record.json",
+      "bytes": 3429,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wiki-Vote-rr_sgd-pNone-t256/record.json",
+      "bytes": 3436,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wiki-Vote-rr_sgd-pNone-t32/record.json",
+      "bytes": 3439,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wiki-Vote-rr_sgd-pNone-t4/record.json",
+      "bytes": 3439,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wiki-Vote-rr_sgd-pNone-t512/record.json",
+      "bytes": 3414,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wiki-Vote-rr_sgd-pNone-t64/record.json",
+      "bytes": 3444,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wiki-Vote-rr_sgd-pNone-t8/record.json",
+      "bytes": 3415,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wiki-Vote-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3829,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wiki-Vote-sgd-pNone-tNone/record.json",
+      "bytes": 3196,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wiki-Vote-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3749,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wikipedia-20051105-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1377,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wikipedia-20051105-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 1358,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-wikipedia-20051105-sparse_sgd-p200-tNone/record.json",
+      "bytes": 1348,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-yeast-atomic_sgd-pNone-tNone/record.json",
+      "bytes": 3242,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-yeast-atomic_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3825,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-yeast-rr_sgd-pNone-t1024/record.json",
+      "bytes": 3400,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-yeast-rr_sparse_sgd-p200-tNone/record.json",
+      "bytes": 3739,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-yeast-sgd-pNone-tNone/record.json",
+      "bytes": 3156,
+      "publish_action": "stage_reviewed_small_artifact"
+    },
+    {
+      "path": "experiment_results/v3/warmups/warmup-yeast-sparse_sgd-p200-tNone/record.json",
+      "bytes": 3676,
+      "publish_action": "stage_reviewed_small_artifact"
+    }
+  ],
+  "candidate_files_above_20_mb": [],
+  "excluded_specific_files": [
+    {
+      "path": "data/v3_snap_origin/graphs/com-Amazon/20261024T132257219978Z/com-Amazon.lcc-origin-node-ids.npy",
+      "bytes": 2679032,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-Amazon/20261024T132257219978Z/com-Amazon.matrix-node-ids.npy",
+      "bytes": 2679032,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-Amazon/20261024T132257219978Z/com-Amazon.mtx",
+      "bytes": 12345186,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-Amazon/20261024T132257219978Z/prepared/com-Amazon.mtx",
+      "bytes": 12345168,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-Amazon/20261024T132257219978Z/prepared/com-Amazon.vertex-map.npy",
+      "bytes": 2679032,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-DBLP/20261024T132305047946Z/com-DBLP.lcc-origin-node-ids.npy",
+      "bytes": 2536768,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-DBLP/20261024T132305047946Z/com-DBLP.matrix-node-ids.npy",
+      "bytes": 2536768,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-DBLP/20261024T132305047946Z/com-DBLP.mtx",
+      "bytes": 13609854,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-DBLP/20261024T132305047946Z/prepared/com-DBLP.mtx",
+      "bytes": 13609836,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-DBLP/20261024T132305047946Z/prepared/com-DBLP.vertex-map.npy",
+      "bytes": 2536768,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-LiveJournal/20261024T132407609759Z/com-LiveJournal.lcc-origin-node-ids.npy",
+      "bytes": 31983824,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-LiveJournal/20261024T132407609759Z/com-LiveJournal.matrix-node-ids.npy",
+      "bytes": 31983824,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-LiveJournal/20261024T132407609759Z/com-LiveJournal.mtx",
+      "bytes": 501554292,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-LiveJournal/20261024T132407609759Z/prepared/com-LiveJournal.mtx",
+      "bytes": 501554274,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-LiveJournal/20261024T132407609759Z/prepared/com-LiveJournal.vertex-map.npy",
+      "bytes": 31983824,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-Youtube/20261024T132314193702Z/com-Youtube.lcc-origin-node-ids.npy",
+      "bytes": 9079248,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-Youtube/20261024T132314193702Z/com-Youtube.matrix-node-ids.npy",
+      "bytes": 9079248,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-Youtube/20261024T132314193702Z/com-Youtube.mtx",
+      "bytes": 38682090,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-Youtube/20261024T132314193702Z/prepared/com-Youtube.mtx",
+      "bytes": 38682072,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-Youtube/20261024T132314193702Z/prepared/com-Youtube.vertex-map.npy",
+      "bytes": 9079248,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/loc-Gowalla/20261024T132631312241Z/loc-Gowalla.lcc-origin-node-ids.npy",
+      "bytes": 1572856,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/loc-Gowalla/20261024T132631312241Z/loc-Gowalla.matrix-node-ids.npy",
+      "bytes": 1572856,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/loc-Gowalla/20261024T132631312241Z/loc-Gowalla.mtx",
+      "bytes": 11060039,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/loc-Gowalla/20261024T132631312241Z/prepared/loc-Gowalla.mtx",
+      "bytes": 11060021,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/loc-Gowalla/20261024T132631312241Z/prepared/loc-Gowalla.vertex-map.npy",
+      "bytes": 1572856,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/soc-Pokec/20261024T132551156123Z/prepared/soc-Pokec.mtx",
+      "bytes": 309060185,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/soc-Pokec/20261024T132551156123Z/prepared/soc-Pokec.vertex-map.npy",
+      "bytes": 13062552,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/soc-Pokec/20261024T132551156123Z/soc-Pokec.lcc-origin-node-ids.npy",
+      "bytes": 13062552,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/soc-Pokec/20261024T132551156123Z/soc-Pokec.matrix-node-ids.npy",
+      "bytes": 13062552,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/soc-Pokec/20261024T132551156123Z/soc-Pokec.mtx",
+      "bytes": 309060203,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/originals/com-amazon.ungraph.txt.gz",
+      "bytes": 4501435,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/originals/com-dblp.ungraph.txt.gz",
+      "bytes": 4138463,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/originals/com-lj.ungraph.txt.gz",
+      "bytes": 124262769,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/originals/com-youtube.ungraph.txt.gz",
+      "bytes": 10590328,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/originals/loc-gowalla_edges.txt.gz",
+      "bytes": 6351523,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/originals/soc-pokec-relationships.txt.gz",
+      "bytes": 132454730,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "experiment_results/v3/report/esa-9029-original.md",
+      "bytes": 16975,
+      "reason": "Private esa source/backup or proof screenshot; excluded regardless of extension"
+    }
+  ],
+  "excluded_known_files_above_20_mb": [
+    {
+      "path": "data/v3_snap_origin/graphs/com-LiveJournal/20261024T132407609759Z/com-LiveJournal.lcc-origin-node-ids.npy",
+      "bytes": 31983824,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-LiveJournal/20261024T132407609759Z/com-LiveJournal.matrix-node-ids.npy",
+      "bytes": 31983824,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-LiveJournal/20261024T132407609759Z/com-LiveJournal.mtx",
+      "bytes": 501554292,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-LiveJournal/20261024T132407609759Z/prepared/com-LiveJournal.mtx",
+      "bytes": 501554274,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-LiveJournal/20261024T132407609759Z/prepared/com-LiveJournal.vertex-map.npy",
+      "bytes": 31983824,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-Youtube/20261024T132314193702Z/com-Youtube.mtx",
+      "bytes": 38682090,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/com-Youtube/20261024T132314193702Z/prepared/com-Youtube.mtx",
+      "bytes": 38682072,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/soc-Pokec/20261024T132551156123Z/prepared/soc-Pokec.mtx",
+      "bytes": 309060185,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/graphs/soc-Pokec/20261024T132551156123Z/soc-Pokec.mtx",
+      "bytes": 309060203,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/originals/com-lj.ungraph.txt.gz",
+      "bytes": 124262769,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    },
+    {
+      "path": "data/v3_snap_origin/originals/soc-pokec-relationships.txt.gz",
+      "bytes": 132454730,
+      "reason": "SNAP graph/original/mapping payload; retain locally, publish validation/checksum receipts only"
+    }
+  ],
+  "exclusion_rules": [
+    {
+      "prefix": "experiment_results/v2/",
+      "reason": "Earlier experiment; no new v2 artifacts in v3 publication"
+    },
+    {
+      "prefix": "experiment_results/v3/pilot/",
+      "reason": "Historical/pilot/interrupted/verification payloads are not new publication candidates; already tracked notes and metadata may remain unchanged"
+    },
+    {
+      "prefix": "experiment_results/v3/pilot-expanded/",
+      "reason": "Historical/pilot/interrupted/verification payloads are not new publication candidates; already tracked notes and metadata may remain unchanged"
+    },
+    {
+      "prefix": "experiment_results/v3/pilot-monitor-incident/",
+      "reason": "Historical/pilot/interrupted/verification payloads are not new publication candidates; already tracked notes and metadata may remain unchanged"
+    },
+    {
+      "prefix": "experiment_results/v3/prebuffer-aborted/",
+      "reason": "Historical/pilot/interrupted/verification payloads are not new publication candidates; already tracked notes and metadata may remain unchanged"
+    },
+    {
+      "prefix": "experiment_results/v3/verification-buffered/",
+      "reason": "Historical/pilot/interrupted/verification payloads are not new publication candidates; already tracked notes and metadata may remain unchanged"
+    },
+    {
+      "prefix": "experiment_results/v3/raw/artifacts/",
+      "reason": "Native coordinate exports, archives, f64 snapshots and native per-run payloads; formal metadata is already in raw/results.jsonl"
+    },
+    {
+      "prefix": "experiment_results/v3/snap-origin-recovery/raw/artifacts/",
+      "reason": "Recovery native payloads; keep results.jsonl only"
+    },
+    {
+      "prefix": "experiment_results/v3/cache/",
+      "reason": "Large or disposable NPY/cache payloads"
+    },
+    {
+      "prefix": "experiment_results/v3/config/source-snapshot/",
+      "reason": "Raw frozen source snapshot; source hashes and pinned Git commits are sufficient publication metadata"
+    },
+    {
+      "prefix": "experiment_results/v3/snap-origin-recovery/config/source-snapshot/",
+      "reason": "Recovery raw source snapshot excluded"
+    },
+    {
+      "prefix": "experiment_results/v3/analysis/sampling-before-einsum/",
+      "reason": "Superseded offline analysis saved for local audit; current post-fix tables and warning-investigation report are the publication candidates"
+    },
+    {
+      "prefix": "data/",
+      "reason": "Ignored input/MTX/NPY/ordered-pair/original-gzip payload tree; only the explicitly named small receipt JSON files are copy candidates"
+    },
+    {
+      "glob": "**/warmups/*/trace/**",
+      "reason": "Coordinate snapshots and runtime trace payloads are outside this minimal candidate set; record.json is explicitly included"
+    },
+    {
+      "glob": "**/*esa*original*|**/*esa*backup*|**/*proof*|**/*screenshot*",
+      "reason": "Private original esa text, backups and UI proof screenshots are excluded regardless of size"
+    },
+    {
+      "glob": "**/*.log|**/checkpoint.json",
+      "reason": "Runner progress/logs and mutable checkpoints are excluded except the explicit reboot stdout/stderr receipt files"
+    },
+    {
+      "glob": "**/*.mtx|**/*.npy|**/*.u64le|**/*.f64*|**/*.txt|**/*.txt.gz|**/*.bin",
+      "reason": "Large/native/input numerical payloads are never allowed by extension in this candidate list"
+    }
+  ],
+  "excluded_payload_scan_scope": "Excluded subtrees were not recursively statted or content-read. Concrete SNAP payload exclusions are the manifest-listed source files only, not an exhaustive size inventory of all local data.",
+  "existing_tracked_artifacts_policy": "Keep existing tracked v3 IO/pilot/prebuffer/verification notes and metadata; this list is an allowlist for new artifacts, not a deletion plan.",
+  "secret_scan": {
+    "scope": "Only core/recovery config/*.json, including machine/execution/catalog; no raw coordinate payloads, source snapshots or private esa content were scanned.",
+    "files": [
+      "experiment_results/v3/config/datasets.json",
+      "experiment_results/v3/config/execution.json",
+      "experiment_results/v3/config/limits.json",
+      "experiment_results/v3/config/machine.json",
+      "experiment_results/v3/config/plan.json",
+      "experiment_results/v3/config/source-catalog.json",
+      "experiment_results/v3/config/source-hashes.json",
+      "experiment_results/v3/snap-origin-recovery/config/datasets.json",
+      "experiment_results/v3/snap-origin-recovery/config/execution.json",
+      "experiment_results/v3/snap-origin-recovery/config/expected-official-metadata.json",
+      "experiment_results/v3/snap-origin-recovery/config/limits.json",
+      "experiment_results/v3/snap-origin-recovery/config/plan.json",
+      "experiment_results/v3/snap-origin-recovery/config/recovery.json",
+      "experiment_results/v3/snap-origin-recovery/config/source-hashes.json"
+    ],
+    "files_scanned": 14,
+    "sensitive_key_patterns": "^(?:api[_-]?key|access[_-]?token|refresh[_-]?token|auth[_-]?token|token|password|passwd|secret|client[_-]?secret|private[_-]?key|serial(?:[_-]?number)?|(?:hardware[_-]?)?uuid|machine[_-]?id|credential(?:s)?)$",
+    "credential_or_identifier_value_pattern_names": [
+      "private_key_pem",
+      "github_access_token",
+      "openai_style_secret",
+      "aws_access_key_id",
+      "uuid_literal",
+      "credential_in_url",
+      "credential_query_parameter"
+    ],
+    "findings": [],
+    "status": "no_explicit_secret_patterns_found",
+    "local_user_path_string_fields": 108,
+    "limitations": "Pattern scan detects explicit serial/UUID/token/credential forms; not a guarantee against all secrets. Absolute local user paths remain in provenance, but were not classified as authentication secrets."
+  },
+  "finalization_required": [
+    "Publication section URL mapping and esa screenshot are recorded after publication."
+  ],
+  "manifest_size_bytes": 191017,
+  "source_receipts_copied_to": "experiment_results/v3/snap-origin-recovery/source-receipts/index.json"
+}

@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "G_n_pin_pout",
+    "family": "large",
+    "source_graph": "DIMACS10/G_n_pin_pout",
+    "category": "DIMACS10",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/G_n_pin_pout.mtx",
+    "source_sha256": "f6f3948b3dd70d87b9eba683c9d2c14a4bce718af7b6e13fd70f350605a94acc",
+    "source_nodes": 100000,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/DIMACS10/G_n_pin_pout",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/DIMACS10/G_n_pin_pout.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

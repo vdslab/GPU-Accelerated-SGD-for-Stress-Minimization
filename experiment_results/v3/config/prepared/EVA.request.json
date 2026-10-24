@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "EVA",
+    "family": "small",
+    "source_graph": "Pajek/EVA",
+    "category": "Pajek",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/EVA.mtx",
+    "source_sha256": "5f445fe1f0728933313d5acac41b43434705da4ea323842a4597500b7487d006",
+    "source_nodes": 8497,
+    "source_distribution_status": "existing_verified",
+    "source_page": "https://sparse.tamu.edu/Pajek/EVA",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/Pajek/EVA.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

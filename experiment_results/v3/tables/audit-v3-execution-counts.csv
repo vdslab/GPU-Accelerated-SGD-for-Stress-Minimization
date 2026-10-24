@@ -1,0 +1,11 @@
+item,count,unit
+expected_plan_conditions,3210,planned conditions
+unique_result_conditions,3210,finalized conditions
+confirmed_physical_formal_executions,2370,finalized native launches
+reused_conditions,120,planned conditions
+unexecuted_formal_conditions,720,planned conditions
+missing_conditions,0,planned conditions
+additional_interrupted_formal_attempts,1,extra native launch attempts
+total_formal_native_launch_attempts,2371,native launch attempts excluding warmups/pilots/prebuffer
+preserved_raw_result_records,3300,core plus recovery raw records; not unique conditions
+superseded_unexecuted_conditions,90,original unavailable conditions replaced only in effective analysis

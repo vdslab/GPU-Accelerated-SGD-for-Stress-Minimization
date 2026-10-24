@@ -1,0 +1,10 @@
+scope,run_id,graph,dataset,study,method,seed,pivots,tile_size,status,failure_reason,warmup_run_id,process_wall_seconds,peak_rss_bytes,archive_status,reused_from,last_epoch,stage,error
+warmup,warmup-com-LiveJournal-atomic_sparse_sgd-p200-tNone,com-LiveJournal,com-LiveJournal,warmup,atomic_sparse_sgd,0,200,,memory_limit,,,98.99177629199403,8651227136,success,,,before_trace_or_trace_missing,
+warmup,warmup-com-LiveJournal-rr_sparse_sgd-p200-tNone,com-LiveJournal,com-LiveJournal,warmup,rr_sparse_sgd,0,200,,memory_limit,,,100.22815683299996,8662974464,success,,,before_trace_or_trace_missing,
+warmup,warmup-com-LiveJournal-sparse_sgd-p200-tNone,com-LiveJournal,com-LiveJournal,warmup,sparse_sgd,0,200,,memory_limit,,,105.58279691699863,8610906112,success,,,before_trace_or_trace_missing,
+warmup,warmup-com-Youtube-atomic_sparse_sgd-p200-tNone,com-Youtube,com-Youtube,warmup,atomic_sparse_sgd,0,200,,memory_limit,,,14.466858624997258,8619950080,success,,,before_trace_or_trace_missing,
+warmup,warmup-com-Youtube-rr_sparse_sgd-p200-tNone,com-Youtube,com-Youtube,warmup,rr_sparse_sgd,0,200,,memory_limit,,,14.657514499995159,8645115904,success,,,before_trace_or_trace_missing,
+warmup,warmup-com-Youtube-sparse_sgd-p200-tNone,com-Youtube,com-Youtube,warmup,sparse_sgd,0,200,,memory_limit,,,118.29438504100108,9248309248,success,,,before_trace_or_trace_missing,
+warmup,warmup-soc-Pokec-atomic_sparse_sgd-p200-tNone,soc-Pokec,soc-Pokec,warmup,atomic_sparse_sgd,0,200,,memory_limit,,,64.46309154199844,8622702592,success,,,before_trace_or_trace_missing,
+warmup,warmup-soc-Pokec-rr_sparse_sgd-p200-tNone,soc-Pokec,soc-Pokec,warmup,rr_sparse_sgd,0,200,,memory_limit,,,73.39232824999635,8707276800,success,,,before_trace_or_trace_missing,
+warmup,warmup-soc-Pokec-sparse_sgd-p200-tNone,soc-Pokec,soc-Pokec,warmup,sparse_sgd,0,200,,memory_limit,,,69.60651849999704,8736800768,success,,,before_trace_or_trace_missing,

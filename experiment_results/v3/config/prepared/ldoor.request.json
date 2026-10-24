@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "ldoor",
+    "family": "large",
+    "source_graph": "GHS_psdef/ldoor",
+    "category": "GHS_psdef",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/ldoor.mtx",
+    "source_sha256": "be4de4434c508038652ff7401cf5413cfbda3e4f3476928ab2831655cb0f2969",
+    "source_nodes": 952203,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/GHS_psdef/ldoor",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/GHS_psdef/ldoor.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

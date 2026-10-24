@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "ford2",
+    "family": "large",
+    "source_graph": "GHS_psdef/ford2",
+    "category": "GHS_psdef",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/ford2.mtx",
+    "source_sha256": "0565a78c5b5aa0be0d4b0a3d69a34938dcf96bc95e224d24937f0d1f4a6011bb",
+    "source_nodes": 100196,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/GHS_psdef/ford2",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/GHS_psdef/ford2.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

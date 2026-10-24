@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "caidaRouterLevel",
+    "family": "large",
+    "source_graph": "DIMACS10/caidaRouterLevel",
+    "category": "DIMACS10",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/caidaRouterLevel.mtx",
+    "source_sha256": "d1b9c91ff387346c06a593f0dff0be1a7a17df3d82436a1bb5291a05e4bec8a5",
+    "source_nodes": 192244,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/DIMACS10/caidaRouterLevel",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/DIMACS10/caidaRouterLevel.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

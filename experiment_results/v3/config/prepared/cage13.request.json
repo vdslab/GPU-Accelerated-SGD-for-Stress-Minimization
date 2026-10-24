@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "cage13",
+    "family": "large",
+    "source_graph": "vanHeukelum/cage13",
+    "category": "vanHeukelum",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/cage13.mtx",
+    "source_sha256": "1eb8f8b386178849e3da1c073d2d52d26b15b979b038344ab40bfb5e294d51e4",
+    "source_nodes": 445315,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/vanHeukelum/cage13",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/vanHeukelum/cage13.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

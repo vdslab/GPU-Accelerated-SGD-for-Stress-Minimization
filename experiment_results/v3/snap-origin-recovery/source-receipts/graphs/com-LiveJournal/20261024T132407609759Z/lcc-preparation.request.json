@@ -1,0 +1,21 @@
+{
+  "row": {
+    "name": "com-LiveJournal",
+    "family": "large",
+    "source_graph": "SNAP/com-LiveJournal",
+    "category": "SNAP",
+    "source_path": "/Users/kose/master/atomic-scheduling-investigation/data/v3_snap_origin/graphs/com-LiveJournal/20261024T132407609759Z/com-LiveJournal.mtx",
+    "source_sha256": "8639bc3610bfefe5dc78b02208749b6590df2504be271fa7a26b1527f5001d81",
+    "source_nodes": 3997962,
+    "source_distribution_status": "official_snap_origin_recovery",
+    "source_page": "https://sparse.tamu.edu/SNAP/com-LiveJournal",
+    "origin_url": "https://snap.stanford.edu/data/bigdata/communities/com-lj.ungraph.txt.gz",
+    "download_url": "https://snap.stanford.edu/data/bigdata/communities/com-lj.ungraph.txt.gz",
+    "origin_path": "data/v3_snap_origin/originals/com-lj.ungraph.txt.gz",
+    "origin_sha256": "e0e8996341b963ecbe0a572c71446c03fd6e93a6c521578eaae7566c68ff608e",
+    "identity_claim": "SNAP公式原配布から再構成（SuiteSparse配布物との辺・行番号直接照合未実施）",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_snap_origin/graphs/com-LiveJournal/20261024T132407609759Z/prepared"
+}

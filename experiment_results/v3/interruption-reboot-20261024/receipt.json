@@ -1,0 +1,27 @@
+{
+  "incident": "OS reboot interrupted unconfirmed native execution",
+  "observed_boot_time_jst": "2026-10-24T12:19:50+09:00",
+  "last_confirmed_conditions": 1074,
+  "last_confirmed_run_id": "v3-basic-web-NotreDame-rr_sparse_sgd-s2-p200-tNone",
+  "interrupted_run_id": "v3-basic-web-NotreDame-sparse_sgd-s3-p200-tNone",
+  "original_artifact_directory": "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3/raw/artifacts/v3-basic-web-NotreDame-sparse_sgd-s3-p200-tNone",
+  "preserved_artifact_directory": "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3/interruption-reboot-20261024/artifacts/v3-basic-web-NotreDame-sparse_sgd-s3-p200-tNone",
+  "files": [
+    {
+      "relative_path": "stderr.log",
+      "bytes": 0,
+      "mtime": "2026-10-24T02:53:32.982474+00:00"
+    },
+    {
+      "relative_path": "command.json",
+      "bytes": 1780,
+      "mtime": "2026-10-24T02:53:32.979351+00:00"
+    },
+    {
+      "relative_path": "stdout.json",
+      "bytes": 0,
+      "mtime": "2026-10-24T02:53:32.982318+00:00"
+    }
+  ],
+  "handling": "Preserve incomplete attempt outside final cohort; resume missing condition under unchanged frozen protocol. Existing confirmed conditions are retained. No trace or native result exists for interrupted attempt."
+}

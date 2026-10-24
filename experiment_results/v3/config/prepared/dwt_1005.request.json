@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "dwt_1005",
+    "family": "small",
+    "source_graph": "HB/dwt_1005",
+    "category": "HB",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/dwt_1005.mtx",
+    "source_sha256": "9e01e79c94b2a48518efd40ab899247785384e2dc3050ab514630d8ad93da962",
+    "source_nodes": 1005,
+    "source_distribution_status": "existing_verified",
+    "source_page": "https://sparse.tamu.edu/HB/dwt_1005",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/HB/dwt_1005.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

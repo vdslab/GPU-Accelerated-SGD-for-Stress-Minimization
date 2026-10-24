@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "USpowerGrid",
+    "family": "small",
+    "source_graph": "Pajek/USpowerGrid",
+    "category": "Pajek",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/USpowerGrid.mtx",
+    "source_sha256": "8fda7edfc1844d73d4f5be7d9a49963104349292aae64e73782c1a55c3b5f05f",
+    "source_nodes": 4941,
+    "source_distribution_status": "existing_verified",
+    "source_page": "https://sparse.tamu.edu/Pajek/USpowerGrid",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/Pajek/USpowerGrid.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "venturiLevel3",
+    "family": "large",
+    "source_graph": "DIMACS10/venturiLevel3",
+    "category": "DIMACS10",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/venturiLevel3.mtx",
+    "source_sha256": "15803569e62fee0dd04299d37188a20368952e50bf029d4e8e4611a6eede2bcb",
+    "source_nodes": 4026819,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/DIMACS10/venturiLevel3",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/DIMACS10/venturiLevel3.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

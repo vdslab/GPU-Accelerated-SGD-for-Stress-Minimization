@@ -1,0 +1,27 @@
+{
+  "provenance": {
+    "tool": {
+      "schema_version": 1,
+      "diagnostic_binary_sha256": "35d708f4e8ae6c1dda28009075a96545817ace5901ea069726d2fb358814725b",
+      "diagnostic_source_sha256": "383c06d027ad92a743f63da2acf3aff36687b73d2b08b9ceccafc83b65bf43e3",
+      "diagnostic_manifest_sha256": "39c63e4cc2e5e998d4d9b98dcfc6dc0b3c39c87f6685330b31f56032257931bb",
+      "diagnostic_lock_sha256": "7c51045818b2a08e0e570c30f6dc60dbc2dc45b36e255a51c2194422c0348ec2",
+      "shared_graph_source_sha256": "58fbb42107c3bdbd20b423311769595ade6cd91559556db2c24cb06f1271f503",
+      "orchestration_sha256": "2537b0121bfcfd5403d71351bdccc0cf5b9e0ae929de9d8f5915c0a4f835a692"
+    },
+    "request": {
+      "input_path": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc/kron_g500-logn17.mtx",
+      "seed": 0,
+      "pivots": 200,
+      "iterations": 15,
+      "epsilon": 0.1,
+      "expected_input_sha256": "1ab303eace58e544cf6d78176d18559dc802071187ae6668d192115c4701c363",
+      "expected_graph_source_sha256": "58fbb42107c3bdbd20b423311769595ade6cd91559556db2c24cb06f1271f503",
+      "expected_preprocess_sha256": "70ad3b630f3f53e7bf2ea3333aae6c529f651b1d728605bfdee29559b6cff542",
+      "expected_initial_positions_sha256": "8d1228b3789f517a6981dfbf1e45c1bf8314e07f5fe2f590eb7852f3a1cbc64d",
+      "expected_nodes": 107901,
+      "expected_constraints": 26662435
+    }
+  },
+  "result_sha256": "f0cc595563dd9501fed2ddbc248052babc44931bbd77410738902b9187df637a"
+}

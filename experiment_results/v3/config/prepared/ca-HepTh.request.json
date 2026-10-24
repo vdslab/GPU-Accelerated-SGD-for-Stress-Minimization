@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "ca-HepTh",
+    "family": "small",
+    "source_graph": "SNAP/ca-HepTh",
+    "category": "SNAP",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/ca-HepTh.mtx",
+    "source_sha256": "047291a60dcf877592743d90b6c8455e5bdf6f4a7442a77e6d3d5ecb00159744",
+    "source_nodes": 9877,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/SNAP/ca-HepTh",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/SNAP/ca-HepTh.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

@@ -1,0 +1,13 @@
+{
+  "input_path": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc/kron_g500-logn17.mtx",
+  "seed": 0,
+  "pivots": 200,
+  "iterations": 15,
+  "epsilon": 0.1,
+  "expected_input_sha256": "1ab303eace58e544cf6d78176d18559dc802071187ae6668d192115c4701c363",
+  "expected_graph_source_sha256": "58fbb42107c3bdbd20b423311769595ade6cd91559556db2c24cb06f1271f503",
+  "expected_preprocess_sha256": "70ad3b630f3f53e7bf2ea3333aae6c529f651b1d728605bfdee29559b6cff542",
+  "expected_initial_positions_sha256": "8d1228b3789f517a6981dfbf1e45c1bf8314e07f5fe2f590eb7852f3a1cbc64d",
+  "expected_nodes": 107901,
+  "expected_constraints": 26662435
+}

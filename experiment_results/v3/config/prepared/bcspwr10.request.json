@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "bcspwr10",
+    "family": "small",
+    "source_graph": "HB/bcspwr10",
+    "category": "HB",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/bcspwr10.mtx",
+    "source_sha256": "5011d5518a7d96ab054dadb8f0670fded73385548add1cfa75c43742523c3e33",
+    "source_nodes": 5300,
+    "source_distribution_status": "existing_verified",
+    "source_page": "https://sparse.tamu.edu/HB/bcspwr10",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/HB/bcspwr10.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

@@ -1,0 +1,27 @@
+{
+  "provenance": {
+    "tool": {
+      "schema_version": 1,
+      "diagnostic_binary_sha256": "35d708f4e8ae6c1dda28009075a96545817ace5901ea069726d2fb358814725b",
+      "diagnostic_source_sha256": "383c06d027ad92a743f63da2acf3aff36687b73d2b08b9ceccafc83b65bf43e3",
+      "diagnostic_manifest_sha256": "39c63e4cc2e5e998d4d9b98dcfc6dc0b3c39c87f6685330b31f56032257931bb",
+      "diagnostic_lock_sha256": "7c51045818b2a08e0e570c30f6dc60dbc2dc45b36e255a51c2194422c0348ec2",
+      "shared_graph_source_sha256": "58fbb42107c3bdbd20b423311769595ade6cd91559556db2c24cb06f1271f503",
+      "orchestration_sha256": "2537b0121bfcfd5403d71351bdccc0cf5b9e0ae929de9d8f5915c0a4f835a692"
+    },
+    "request": {
+      "input_path": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc/luxembourg_osm.mtx",
+      "seed": 0,
+      "pivots": 200,
+      "iterations": 15,
+      "epsilon": 0.1,
+      "expected_input_sha256": "e71dcaaf863f4c1304b35f5a4348d1a090d237d845db2c7de584d059ce19bb0e",
+      "expected_graph_source_sha256": "58fbb42107c3bdbd20b423311769595ade6cd91559556db2c24cb06f1271f503",
+      "expected_preprocess_sha256": "9a122d918f78887d21bf34648022244c2082dc633b5302f35ef67467a9bf5dc2",
+      "expected_initial_positions_sha256": "7e9f19d8206d8e23445347b6f720115ae1685bb06d98b05024c21e59ea48a11c",
+      "expected_nodes": 114599,
+      "expected_constraints": 23018952
+    }
+  },
+  "result_sha256": "027b24f10d334005685340e5ff38f6f034041dfe573b1c25ac703c74bfebf499"
+}

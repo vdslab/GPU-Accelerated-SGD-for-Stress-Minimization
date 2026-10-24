@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "web-Google",
+    "family": "large",
+    "source_graph": "SNAP/web-Google",
+    "category": "SNAP",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/web-Google.mtx",
+    "source_sha256": "1b75dab8f83a8e597f71a678abccfb2334f6c29d3b61ccd30d3e5f535e068f91",
+    "source_nodes": 916428,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/SNAP/web-Google",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/SNAP/web-Google.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

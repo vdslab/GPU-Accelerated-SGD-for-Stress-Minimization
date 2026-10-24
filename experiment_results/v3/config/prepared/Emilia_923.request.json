@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "Emilia_923",
+    "family": "large",
+    "source_graph": "Janna/Emilia_923",
+    "category": "Janna",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/Emilia_923.mtx",
+    "source_sha256": "8c9eb77b9de8eb306e20e3d4128b05c8759f9a93a543811d5f31e7557e0b090e",
+    "source_nodes": 923136,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/Janna/Emilia_923",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/Janna/Emilia_923.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

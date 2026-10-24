@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "language",
+    "family": "large",
+    "source_graph": "Tromble/language",
+    "category": "Tromble",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/language.mtx",
+    "source_sha256": "939995bbbcad49c8be86f7a9fa1c438a03216d899668e554fa8c49518f4655da",
+    "source_nodes": 399130,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/Tromble/language",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/Tromble/language.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

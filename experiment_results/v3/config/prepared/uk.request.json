@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "uk",
+    "family": "small",
+    "source_graph": "DIMACS10/uk",
+    "category": "DIMACS10",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/uk.mtx",
+    "source_sha256": "2e4c718a2ca9bd32c2c9bcf42e299a18964aae19f5366d300b0bd6881288c52b",
+    "source_nodes": 4824,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/DIMACS10/uk",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/DIMACS10/uk.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "co2010",
+    "family": "large",
+    "source_graph": "DIMACS10/co2010",
+    "category": "DIMACS10",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/co2010.mtx",
+    "source_sha256": "2beba69b1bd2d61b60a5fdfcbb0d8de27ee08ab678e9b547224fa99047196e51",
+    "source_nodes": 201062,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/DIMACS10/co2010",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/DIMACS10/co2010.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

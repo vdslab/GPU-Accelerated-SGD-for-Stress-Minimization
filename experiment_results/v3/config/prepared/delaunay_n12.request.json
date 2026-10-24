@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "delaunay_n12",
+    "family": "small",
+    "source_graph": "DIMACS10/delaunay_n12",
+    "category": "DIMACS10",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/delaunay_n12.mtx",
+    "source_sha256": "f66512efaacb705c51721df88104de52628c3770d5beb60d5330b9f320ad75db",
+    "source_nodes": 4096,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/DIMACS10/delaunay_n12",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/DIMACS10/delaunay_n12.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

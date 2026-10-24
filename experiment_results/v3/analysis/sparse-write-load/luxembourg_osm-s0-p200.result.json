@@ -1,0 +1,159 @@
+{
+  "atomic_lock_target_touches": {
+    "all": {
+      "coefficient_of_variation": 11.885599375826096,
+      "histogram_count_to_vertices": {
+        "114598": 200,
+        "200": 6,
+        "201": 4270,
+        "202": 97234,
+        "203": 11813,
+        "204": 1054,
+        "205": 21,
+        "206": 1
+      },
+      "max": 114598,
+      "mean": 401.73041649578096,
+      "p50": 202,
+      "p90": 203,
+      "p99": 204,
+      "share_of_all_vertex_total": 1.0,
+      "top_1pct_share": 0.5020343019960248,
+      "top_1pct_total": 23112607,
+      "top_1pct_vertex_count": 1146,
+      "total_per_iteration": 46037904,
+      "vertices": 114599
+    },
+    "nonpivot": {
+      "coefficient_of_variation": 0.002053704540224331,
+      "histogram_count_to_vertices": {
+        "200": 6,
+        "201": 4270,
+        "202": 97234,
+        "203": 11813,
+        "204": 1054,
+        "205": 21,
+        "206": 1
+      },
+      "max": 206,
+      "mean": 202.08484339898075,
+      "p50": 202,
+      "p90": 203,
+      "p99": 203,
+      "share_of_all_vertex_total": 0.5021580478555235,
+      "top_1pct_share": 0.010092911659955678,
+      "top_1pct_total": 233331,
+      "top_1pct_vertex_count": 1144,
+      "total_per_iteration": 23118304,
+      "vertices": 114399
+    },
+    "pivot": {
+      "coefficient_of_variation": 0.0,
+      "histogram_count_to_vertices": {
+        "114598": 200
+      },
+      "max": 114598,
+      "mean": 114598.0,
+      "p50": 114598,
+      "p90": 114598,
+      "p99": 114598,
+      "share_of_all_vertex_total": 0.4978419521444764,
+      "top_1pct_share": 0.01,
+      "top_1pct_total": 229196,
+      "top_1pct_vertex_count": 2,
+      "total_per_iteration": 22919600,
+      "vertices": 200
+    }
+  },
+  "constraints": 23018952,
+  "definitions": {
+    "atomic_lock_target_touches": "Per iteration, add one at both endpoints of every constraint, including zero-weight endpoints. Intended pair-level lock targets, not actual attempts/retries/waits/collisions.",
+    "cv": "Population standard deviation divided by mean; null for empty or all-zero groups.",
+    "positive_weight_endpoint_updates": "Per iteration, add one at u/v only when the corresponding f64 weight is positive. Semantic eligibility for an update, not a hardware memory-store count.",
+    "top_1pct": "Largest ceil(group vertex count / 100) loads; share uses that group's total.",
+    "whole_run": "Per-iteration counts can be multiplied by iterations; no SGD trajectory or timing is simulated."
+  },
+  "diagnostic_only": true,
+  "epsilon": 0.1,
+  "gpu_executed": false,
+  "graph_source_sha256": "58fbb42107c3bdbd20b423311769595ade6cd91559556db2c24cb06f1271f503",
+  "hashes_match_measured_record": true,
+  "initial_positions_sha256": "7e9f19d8206d8e23445347b6f720115ae1685bb06d98b05024c21e59ea48a11c",
+  "input_sha256": "e71dcaaf863f4c1304b35f5a4348d1a090d237d845db2c7de584d059ce19bb0e",
+  "iterations": 15,
+  "nodes": 114599,
+  "pivots": 200,
+  "positive_weight_endpoint_updates": {
+    "all": {
+      "coefficient_of_variation": 0.0020640072058574336,
+      "histogram_count_to_vertices": {
+        "200": 11,
+        "201": 4448,
+        "202": 97249,
+        "203": 11815,
+        "204": 1054,
+        "205": 21,
+        "206": 1
+      },
+      "max": 206,
+      "mean": 202.0830722781176,
+      "p50": 202,
+      "p90": 203,
+      "p99": 203,
+      "share_of_all_vertex_total": 1.0,
+      "top_1pct_share": 0.01009291699926567,
+      "top_1pct_total": 233737,
+      "top_1pct_vertex_count": 1146,
+      "total_per_iteration": 23158518,
+      "vertices": 114599
+    },
+    "nonpivot": {
+      "coefficient_of_variation": 0.002053704540224331,
+      "histogram_count_to_vertices": {
+        "200": 6,
+        "201": 4270,
+        "202": 97234,
+        "203": 11813,
+        "204": 1054,
+        "205": 21,
+        "206": 1
+      },
+      "max": 206,
+      "mean": 202.08484339898075,
+      "p50": 202,
+      "p90": 203,
+      "p99": 203,
+      "share_of_all_vertex_total": 0.9982635330982751,
+      "top_1pct_share": 0.010092911659955678,
+      "top_1pct_total": 233331,
+      "top_1pct_vertex_count": 1144,
+      "total_per_iteration": 23118304,
+      "vertices": 114399
+    },
+    "pivot": {
+      "coefficient_of_variation": 0.0018280177002525605,
+      "histogram_count_to_vertices": {
+        "200": 5,
+        "201": 178,
+        "202": 15,
+        "203": 2
+      },
+      "max": 203,
+      "mean": 201.07,
+      "p50": 201,
+      "p90": 201,
+      "p99": 202,
+      "share_of_all_vertex_total": 0.0017364669017248858,
+      "top_1pct_share": 0.010095986472372805,
+      "top_1pct_total": 406,
+      "top_1pct_vertex_count": 2,
+      "total_per_iteration": 40214,
+      "vertices": 200
+    }
+  },
+  "preprocess_sha256": "9a122d918f78887d21bf34648022244c2082dc633b5302f35ef67467a9bf5dc2",
+  "rng_version": "rand 0.9.5 StdRng",
+  "seed": 0,
+  "sgd_executed": false,
+  "status": "success"
+}

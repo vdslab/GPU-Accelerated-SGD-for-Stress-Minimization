@@ -1,0 +1,17 @@
+{
+  "row": {
+    "name": "bcsstk17",
+    "family": "small",
+    "source_graph": "HB/bcsstk17",
+    "category": "HB",
+    "source_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/bcsstk17.mtx",
+    "source_sha256": "fe763b8683ba918f1d78d1b5686d258bb8220ceabb7154378f2ef54afb5628da",
+    "source_nodes": 10974,
+    "source_distribution_status": "downloaded_verified",
+    "source_page": "https://sparse.tamu.edu/HB/bcsstk17",
+    "download_url": "https://www.cise.ufl.edu/research/sparse/MM/HB/bcsstk17.tar.gz",
+    "preparation_policy": "v3-nonzero-simple-undirected-largest-component-1",
+    "eligible": false
+  },
+  "data_dir": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc"
+}

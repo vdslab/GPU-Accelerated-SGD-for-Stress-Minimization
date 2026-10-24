@@ -1,0 +1,27 @@
+{
+  "provenance": {
+    "tool": {
+      "schema_version": 1,
+      "diagnostic_binary_sha256": "35d708f4e8ae6c1dda28009075a96545817ace5901ea069726d2fb358814725b",
+      "diagnostic_source_sha256": "383c06d027ad92a743f63da2acf3aff36687b73d2b08b9ceccafc83b65bf43e3",
+      "diagnostic_manifest_sha256": "39c63e4cc2e5e998d4d9b98dcfc6dc0b3c39c87f6685330b31f56032257931bb",
+      "diagnostic_lock_sha256": "7c51045818b2a08e0e570c30f6dc60dbc2dc45b36e255a51c2194422c0348ec2",
+      "shared_graph_source_sha256": "58fbb42107c3bdbd20b423311769595ade6cd91559556db2c24cb06f1271f503",
+      "orchestration_sha256": "2537b0121bfcfd5403d71351bdccc0cf5b9e0ae929de9d8f5915c0a4f835a692"
+    },
+    "request": {
+      "input_path": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc/preferentialAttachment.mtx",
+      "seed": 0,
+      "pivots": 200,
+      "iterations": 15,
+      "epsilon": 0.1,
+      "expected_input_sha256": "fb8627ea2b2222ed5c71bd8150225ed8471efb9cc9f39f4bdadb760752bbb883",
+      "expected_graph_source_sha256": "58fbb42107c3bdbd20b423311769595ade6cd91559556db2c24cb06f1271f503",
+      "expected_preprocess_sha256": "8e9e07de55323dfc014bd0d0b7cce802da3c619d7e70865da87daf2c64b0b4ff",
+      "expected_initial_positions_sha256": "b235daae1fb817e04ca2f0c0b036aee70db02b6acf79aa488b32e610d8644d3e",
+      "expected_nodes": 100000,
+      "expected_constraints": 20478122
+    }
+  },
+  "result_sha256": "14d80cf63342ca93728aa30802fe03006bfa1bf8ba501809e64e8bc0663cef2f"
+}

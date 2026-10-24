@@ -1,0 +1,101 @@
+graph,source_group,structural_category,category_basis,nodes,edges,mean_degree,max_degree,degree_cv
+luxembourg_osm,DIMACS10,Road,"heuristic from graph name, not verified domain metadata",114599,119666,2.0884300910130107,6,0.19689851138790493
+belgium_osm,DIMACS10,Road,"heuristic from graph name, not verified domain metadata",1441295,1549970,2.150801883028804,10,0.22907476826385545
+netherlands_osm,DIMACS10,Road,"heuristic from graph name, not verified domain metadata",2216688,2441238,2.202599553929105,7,0.26403417006863233
+roadNet-PA,SNAP,Road,"heuristic from graph name, not verified domain metadata",1087562,1541514,2.834806659298504,9,0.3585996341945896
+roadNet-TX,SNAP,Road,"heuristic from graph name, not verified domain metadata",1351137,1879201,2.7816587067040572,12,0.3617410723947068
+roadNet-CA,SNAP,Road,"heuristic from graph name, not verified domain metadata",1957027,2760388,2.8210014476039422,12,0.35148919518095245
+usroads,Gleich,Road,"heuristic from graph name, not verified domain metadata",126146,161950,2.567659695907916,7,0.3044463707774525
+mt2010,DIMACS10,Other / engineering,"heuristic from graph name, not verified domain metadata",132288,319334,4.827860425737784,139,0.7433735850541775
+co2010,DIMACS10,Other / engineering,"heuristic from graph name, not verified domain metadata",201062,487287,4.847131730510987,120,0.6849491356025579
+ca2010,DIMACS10,Other / engineering,"heuristic from graph name, not verified domain metadata",709827,1744039,4.91398326634518,141,0.5899372461128384
+tx2010,DIMACS10,Other / engineering,"heuristic from graph name, not verified domain metadata",914231,2228136,4.874339198736425,121,0.6256648027966744
+ny2010,DIMACS10,Other / engineering,"heuristic from graph name, not verified domain metadata",350167,854772,4.882081978027627,61,0.5219646603153862
+delaunay_n17,DIMACS10,Geometry / mesh,"heuristic from graph name, not verified domain metadata",131072,393176,5.9993896484375,17,0.22411449431894737
+delaunay_n18,DIMACS10,Geometry / mesh,"heuristic from graph name, not verified domain metadata",262144,786396,5.999725341796875,21,0.22352952922085945
+delaunay_n19,DIMACS10,Geometry / mesh,"heuristic from graph name, not verified domain metadata",524288,1572823,5.999843597412109,21,0.22306431762922985
+delaunay_n20,DIMACS10,Geometry / mesh,"heuristic from graph name, not verified domain metadata",1048576,3145686,5.999919891357422,23,0.2227760286714525
+delaunay_n21,DIMACS10,Geometry / mesh,"heuristic from graph name, not verified domain metadata",2097152,6291408,5.9999542236328125,23,0.2227274802940597
+delaunay_n22,DIMACS10,Geometry / mesh,"heuristic from graph name, not verified domain metadata",4194304,12582869,5.999979496002197,23,0.22273127007529475
+rgg_n_2_17_s0,DIMACS10,Geometry / mesh,"heuristic from graph name, not verified domain metadata",131067,728750,11.1202667338079,28,0.30068676880589335
+rgg_n_2_18_s0,DIMACS10,Geometry / mesh,"heuristic from graph name, not verified domain metadata",262141,1547283,11.80496755562846,31,0.2921090140156411
+rgg_n_2_19_s0,DIMACS10,Geometry / mesh,"heuristic from graph name, not verified domain metadata",524280,3269760,12.473334859235523,30,0.2840630542784919
+rgg_n_2_20_s0,DIMACS10,Geometry / mesh,"heuristic from graph name, not verified domain metadata",1048572,6891617,13.14476640612185,36,0.276017935569514
+rgg_n_2_21_s0,DIMACS10,Geometry / mesh,"heuristic from graph name, not verified domain metadata",2097142,14487992,13.816891750773195,37,0.2701430331243353
+rgg_n_2_22_s0,DIMACS10,Geometry / mesh,"heuristic from graph name, not verified domain metadata",4194299,30359197,14.476410480034923,36,0.26334592280265917
+598a,DIMACS10,Other / engineering,"heuristic from graph name, not verified domain metadata",110971,741934,13.371673680511124,26,0.21800273706146958
+144,DIMACS10,Other / engineering,"heuristic from graph name, not verified domain metadata",144649,1074393,14.855173558061239,26,0.18298771045686846
+fe_ocean,DIMACS10,Geometry / mesh,"heuristic from graph name, not verified domain metadata",143437,409593,5.711120561640302,6,0.11702230011715196
+m14b,DIMACS10,Other / engineering,"heuristic from graph name, not verified domain metadata",214765,1679018,15.635862454310525,40,0.20025644666691358
+auto,DIMACS10,Other / engineering,"heuristic from graph name, not verified domain metadata",448695,3314611,14.77445035046078,37,0.18366911802581856
+NACA0015,DIMACS10,Geometry / mesh,"heuristic from graph name, not verified domain metadata",1039183,3114818,5.994743947889833,10,0.14289171690524036
+M6,DIMACS10,Geometry / mesh,"heuristic from graph name, not verified domain metadata",3501776,10501936,5.998062697328441,10,0.1408315195115811
+333SP,DIMACS10,Geometry / mesh,"heuristic from graph name, not verified domain metadata",3712815,11108633,5.983941025879286,28,0.11747450667092496
+AS365,DIMACS10,Other / engineering,"heuristic from graph name, not verified domain metadata",3799275,11368076,5.984339643747821,14,0.14462678454503405
+venturiLevel3,DIMACS10,Other / engineering,"heuristic from graph name, not verified domain metadata",4026819,8054237,4.000297505301331,6,0.029563551355400893
+mc2depi,Williams,Other / engineering,"heuristic from graph name, not verified domain metadata",525825,1574400,5.988304093567251,6,0.025488532210999337
+apache2,GHS_psdef,Other / engineering,"heuristic from graph name, not verified domain metadata",715176,2051347,5.7366214749935684,7,0.07811183119942024
+web-Stanford,SNAP,Web,"heuristic from graph name, not verified domain metadata",255265,1941926,15.214980510449925,38625,11.509563810729752
+web-NotreDame,SNAP,Web,"heuristic from graph name, not verified domain metadata",325729,1090108,6.693343239318574,10721,6.397981647914971
+web-BerkStan,SNAP,Web,"heuristic from graph name, not verified domain metadata",654782,6581871,20.104007135199197,84230,14.50868199746961
+web-Google,SNAP,Web,"heuristic from graph name, not verified domain metadata",855802,4291352,10.028843120254452,6332,3.998273189542118
+cnr-2000,LAW,Web,"heuristic from graph name, not verified domain metadata",325557,2738969,16.82635606053625,18236,13.024344786842311
+in-2004,LAW,Web,"heuristic from graph name, not verified domain metadata",1353703,13126172,19.392986497038123,21869,7.597440203124221
+eu-2005,LAW,Web,"heuristic from graph name, not verified domain metadata",862664,16138468,37.41542014040229,68963,8.240675655350449
+webbase-1M,Williams,Web,"heuristic from graph name, not verified domain metadata",964584,1965434,4.075195110016339,28686,11.323519333702892
+wikipedia-20051105,Gleich,Social / collaboration,"heuristic from graph name, not verified domain metadata",1596970,18539720,23.21862026212139,75757,9.244612454252211
+cit-Patents,SNAP,Other / engineering,"heuristic from graph name, not verified domain metadata",3764117,16511740,8.773234200743495,793,1.1966123185313842
+language,Tromble,Other / engineering,"heuristic from graph name, not verified domain metadata",399130,793545,3.976373612607421,11609,5.356276201106106
+Linux_call_graph,Sorensen,Other / engineering,"heuristic from graph name, not verified domain metadata",317926,1206466,7.589602611928562,15979,9.711918112973532
+com-Amazon,SNAP,Social / collaboration,"heuristic from graph name, not verified domain metadata",334863,925872,5.529855493141971,549,1.0419132926959411
+com-DBLP,SNAP,Social / collaboration,"heuristic from graph name, not verified domain metadata",317080,1049866,6.622089062697111,343,1.5112614098166843
+com-Youtube,SNAP,Social / collaboration,"heuristic from graph name, not verified domain metadata",1134890,2987624,5.265045951590022,28754,9.63986703579333
+com-LiveJournal,SNAP,Social / collaboration,"heuristic from graph name, not verified domain metadata",3997962,34681189,17.349434036641668,14815,2.4759962844776964
+soc-Pokec,SNAP,Social / collaboration,"heuristic from graph name, not verified domain metadata",1632803,22301964,27.31739713854029,14854,1.568665877470068
+loc-Gowalla,SNAP,Social / collaboration,"heuristic from graph name, not verified domain metadata",196591,950327,9.668062118815206,14730,5.541705376283719
+email-EuAll,SNAP,Other / engineering,"heuristic from graph name, not verified domain metadata",224832,339925,3.023813336179903,7636,13.664741385085675
+wiki-Talk,SNAP,Social / collaboration,"heuristic from graph name, not verified domain metadata",2388953,4656682,3.8985128631664163,100029,26.32406555212651
+coAuthorsCiteseer,DIMACS10,Social / collaboration,"heuristic from graph name, not verified domain metadata",227320,814134,7.162889319021644,1372,1.4845566582965801
+coPapersCiteseer,DIMACS10,Social / collaboration,"heuristic from graph name, not verified domain metadata",434102,16036720,73.88457090729828,1188,1.3707645493012035
+coPapersDBLP,DIMACS10,Social / collaboration,"heuristic from graph name, not verified domain metadata",540486,15245729,56.41488956235684,3299,1.174089794844497
+amazon0302,SNAP,Other / engineering,"heuristic from graph name, not verified domain metadata",262111,899792,6.86573245685988,420,0.7886556135147346
+G_n_pin_pout,DIMACS10,Other / engineering,"heuristic from graph name, not verified domain metadata",99995,501198,10.024461223061152,25,0.3162825484885083
+preferentialAttachment,DIMACS10,Synthetic,"heuristic from graph name, not verified domain metadata",100000,499985,9.9997,983,1.5545857972929655
+smallworld,DIMACS10,Synthetic,"heuristic from graph name, not verified domain metadata",100000,499998,9.99996,17,0.1343389160268391
+kron_g500-logn17,DIMACS10,Synthetic,"heuristic from graph name, not verified domain metadata",107901,5113981,94.79024290785071,29935,4.375792760569912
+kron_g500-logn18,DIMACS10,Synthetic,"heuristic from graph name, not verified domain metadata",210141,10582679,100.71979290095697,49162,5.0114688557676965
+kron_g500-logn19,DIMACS10,Synthetic,"heuristic from graph name, not verified domain metadata",409123,21780761,106.47536804335127,80674,5.7315567800204485
+kron_g500-logn20,DIMACS10,Synthetic,"heuristic from graph name, not verified domain metadata",795153,44619358,112.22835856747066,131503,6.540083525050117
+cage12,vanHeukelum,Other / engineering,"heuristic from graph name, not verified domain metadata",130228,951154,14.607519120312068,32,0.32238034510795066
+cage13,vanHeukelum,Other / engineering,"heuristic from graph name, not verified domain metadata",445315,3517014,15.795623322816434,38,0.3246716889146498
+cage14,vanHeukelum,Other / engineering,"heuristic from graph name, not verified domain metadata",1505785,12812282,17.017412180357752,40,0.3154315225023034
+caidaRouterLevel,DIMACS10,Other / engineering,"heuristic from graph name, not verified domain metadata",190914,607610,6.365274416753093,1071,2.2278409085972823
+as-Skitter,SNAP,Other / engineering,"heuristic from graph name, not verified domain metadata",1694616,11094209,13.093478404547106,35455,10.458082364509036
+ford2,GHS_psdef,Other / engineering,"heuristic from graph name, not verified domain metadata",100196,222246,4.436224999001956,29,0.3512509850427358
+bmw7st_1,GHS_psdef,Other / engineering,"heuristic from graph name, not verified domain metadata",141346,3588526,50.77647757983954,434,0.25197099073509965
+hood,GHS_psdef,Other / engineering,"heuristic from graph name, not verified domain metadata",210635,4837440,45.93196762171529,76,0.2719949985649192
+ldoor,GHS_psdef,Other / engineering,"heuristic from graph name, not verified domain metadata",909537,20770807,45.6733634805401,76,0.254457744250151
+Emilia_923,Janna,Other / engineering,"heuristic from graph name, not verified domain metadata",908712,19725201,43.413536962205846,56,0.08591091333014673
+Serena,Janna,Other / engineering,"heuristic from graph name, not verified domain metadata",1382121,31370311,45.394449545300304,248,0.20342903050816616
+StocF-1465,Janna,Other / engineering,"heuristic from graph name, not verified domain metadata",1436033,9770126,13.607105129199677,188,0.12898946698437477
+power197k,PowerSystem,Other / engineering,"heuristic from graph name, not verified domain metadata",,,,,
+1138_bus,HB,Other / engineering,"heuristic from graph name, not verified domain metadata",1138,1458,2.562390158172232,17,0.7033212233036101
+bcspwr10,HB,Other / engineering,"heuristic from graph name, not verified domain metadata",5300,8271,3.121132075471698,13,0.4620873868774142
+USpowerGrid,Pajek,Other / engineering,"heuristic from graph name, not verified domain metadata",4941,6594,2.66909532483303,19,0.6711158815096939
+dwt_1005,HB,Other / engineering,"heuristic from graph name, not verified domain metadata",1005,3808,7.578109452736318,26,0.4775682977870069
+dwt_2680,HB,Other / engineering,"heuristic from graph name, not verified domain metadata",2680,11173,8.338059701492538,18,0.2225193016211766
+bcsstk15,HB,Other / engineering,"heuristic from graph name, not verified domain metadata",3942,56934,28.885844748858446,43,0.26198062815308354
+bcsstk16,HB,Other / engineering,"heuristic from graph name, not verified domain metadata",4810,142747,59.35426195426196,80,0.2669376493104268
+bcsstk17,HB,Other / engineering,"heuristic from graph name, not verified domain metadata",10456,208838,39.946059678653405,149,0.3302438662220715
+delaunay_n12,DIMACS10,Geometry / mesh,"heuristic from graph name, not verified domain metadata",4096,12264,5.98828125,14,0.22838783519297104
+delaunay_n14,DIMACS10,Geometry / mesh,"heuristic from graph name, not verified domain metadata",16384,49122,5.996337890625,16,0.22483539297342903
+data,DIMACS10,Other / engineering,"heuristic from graph name, not verified domain metadata",2851,15093,10.587863907400912,17,0.2558232670663
+uk,DIMACS10,Other / engineering,"heuristic from graph name, not verified domain metadata",4824,6837,2.834577114427861,3,0.14330540540098965
+fe_4elt2,DIMACS10,Geometry / mesh,"heuristic from graph name, not verified domain metadata",11143,32818,5.890334739298214,12,0.1511430632536978
+EVA,Pajek,Social / collaboration,"heuristic from graph name, not verified domain metadata",4475,4652,2.0791061452513966,552,5.178951784915986
+yeast,Pajek,Other / engineering,"heuristic from graph name, not verified domain metadata",2224,6609,5.943345323741007,64,1.3425722263988777
+polblogs,Newman,Other / engineering,"heuristic from graph name, not verified domain metadata",1222,16714,27.355155482815057,351,1.40381090355572
+ca-GrQc,SNAP,Social / collaboration,"heuristic from graph name, not verified domain metadata",4158,13422,6.455988455988456,81,1.3361011482507996
+wiki-Vote,SNAP,Social / collaboration,"heuristic from graph name, not verified domain metadata",7066,100736,28.512878573450326,1065,2.02464956247605
+p2p-Gnutella08,SNAP,Social / collaboration,"heuristic from graph name, not verified domain metadata",6299,20776,6.596602635338943,97,1.294774612545918
+ca-HepTh,SNAP,Social / collaboration,"heuristic from graph name, not verified domain metadata",8638,24806,5.74345913405881,65,1.123171459531342
