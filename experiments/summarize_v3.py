@@ -51,6 +51,20 @@ def dump_csv(path, rows, fields=None):
                          for k, v in row.items()} for row in rows)
 
 
+def parse_checkpoint_row(row):
+    """Restore CSV numeric types, including the sampled evaluator's zero seed.
+
+    Use this for both cache hits and --skip-convergence so evaluator metadata
+    compares identically to freshly calculated checkpoints. Keep missing values
+    missing; exact evaluation ignores its source-count/seed metadata in audits.
+    """
+    floats = {'stress', 'elapsed_ms'}
+    integers = {'seed', 'epoch', 'stress_samples', 'stress_seed'}
+    return {key: (float(value) if key in floats else int(value) if key in integers else value)
+            if value is not None and value != '' else value
+            for key, value in row.items()}
+
+
 def read_jsonl(path):
     if not path.exists():
         return []
@@ -706,7 +720,7 @@ def convergence(base,datasets,rows,figures,incidents,skip=False):
                     # paths then reuse their evaluated values on later summaries.
                     key=hashlib.sha256((str(p)+str(p.stat().st_size)+str(p.stat().st_mtime_ns)).encode()).hexdigest()
                     if key in cached:
-                        output.append({k:float(v) if k in ['stress','elapsed_ms'] and v else int(v) if k in ['seed','epoch','stress_samples'] and v else v for k,v in cached[key].items()})
+                        output.append(parse_checkpoint_row(cached[key]))
                     else:
                         snaps.append((r,e,key))
             if not snaps:
@@ -744,7 +758,7 @@ def convergence(base,datasets,rows,figures,incidents,skip=False):
                 dump_csv(cache_path,output)
             del dist
     else:
-        output=[{k:float(v) if k in ['stress','elapsed_ms'] and v else int(v) if k in ['seed','epoch','stress_samples'] and v else v for k,v in r.items()} for r in old]
+        output=[parse_checkpoint_row(r) for r in old]
     dump_csv(cache_path,output)
     planpath=base/'config/plan.json'
     planned=json.loads(planpath.read_text()) if planpath.exists() else rows
