@@ -13,7 +13,7 @@
 - [x] No.5の成功657run・5,256 checkpointのoffline評価を完了。最終[stress照合](../tables/convergence-stress-audit.csv)は657件すべて定義一致・0.1%以内で、最大相対差は0.000003178071675456068%。CSV再読込のseed型不一致による誤flagも修正後に解消した。[No.5考察](convergence-esa-discussion.md)
 - [x] 最終再描画はsource `bbddcfe` で正常終了。1〜7の18図について目視QAを完了し、2,415件の対応比較・目標到達・coverage・構造/P/Tの各表と最終考察を照合した。欠測枠、失敗段階、補助図と基本測定の区別を残した。
 - [x] 時間監査は[基本測定1,154件](../tables/iteration-time-validation.csv)と[No.5 trace657件](convergence-trace-time-validation.csv)を別scopeで確認し、どちらも全件pass。No.5の最終累積SGD時間とrecordとの差は最大0 ms。最終資源監査・再起動・timeout等の事故記録も更新済み。
-- [ ] esa公開工程：公開用の設定・表・18図・報告をGitHubへ保存して参照先を確定し、esaへ画像添付・1〜7の結果/考察/事故概要を反映する。公開後に保存内容・画像表示・根拠リンクを確認する。
+- [x] esa公開工程：公開用の設定・表・18図・報告をGitHubへ保存して参照先を確定し、esaへ画像添付・1〜7の結果/考察/事故概要を反映する。公開後に保存内容・画像表示・根拠リンクを確認する。
 
 **最終有効cohortはデータ99件ready・98件適格（小20＋大78）で確定した。** power197k1件は未取得、G_n_pin_pout1件はサイズ除外。core確定時の93件ready・92件適格（小20＋大72）と、未取得4＋同一性未確認3の状態は取得当初の履歴として保持する。補完6件は公式SNAP原配布から再構成したもので、SuiteSparse配布物との辺・行番号の直接照合済みとは扱わない。
 
@@ -62,3 +62,6 @@
 - 根拠リンクは他の閲覧者が開けるGitHub/esa添付等へ置換する。ローカル絶対パスのままでは共有できない。
 - 「計測中」「現在保存されている記録」など生成本文の途中経過表現を、全計画処理が終了したことと成否を示す表現へ整える。
 - 既存本文・構成例・画像を不用意に削除せず、追加部分に最終結果、指標定義、事故概要を含める。
+
+
+公開確認：esa [#9029](https://vdslab.esa.io/posts/9029) を更新し、既存構成例8画像を保持した上で実験結果v3の7節・18実測画像・考察・事故概要を掲載した。公開後に18画像すべての読込とローカル絶対パス不在を確認。検証記録は[esa-publication-verification.json](esa-publication-verification.json)、掲載本文は[esa-v3-published-section.md](esa-v3-published-section.md)。根拠リンク40件は結果commit244602f内の実在を照合した。

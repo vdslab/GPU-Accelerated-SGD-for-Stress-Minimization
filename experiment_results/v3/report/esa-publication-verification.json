@@ -1,0 +1,145 @@
+{
+  "url": "https://vdslab.esa.io/posts/9029",
+  "publishedAt": "2026-10-24T15:59:43.894Z",
+  "artifactCommit": "244602fdbd82964c5986ad2c88d3cc527284a8e4",
+  "headings": [
+    {
+      "id": "0-3-0",
+      "links": [
+        {
+          "href": "#実験結果（v3）",
+          "text": " > 実験結果（v3）"
+        }
+      ],
+      "text": " > 実験結果（v3）実験結果（v3）"
+    },
+    {
+      "id": "0-3-2",
+      "links": [
+        {
+          "href": "#2. 小規模20グラフ：Full SGD",
+          "text": " > 2. 小規模20グラフ：Full SGD"
+        }
+      ],
+      "text": " > 2. 小規模20グラフ：Full SGD2. 小規模20グラフ：Full SGD"
+    }
+  ],
+  "images": [
+    {
+      "loaded": true,
+      "name": "01_layout_full.png",
+      "src": "https://img.esa.io/uploads/production/attachments/8704/2026/10/25/164555/83de69a1-9352-4602-8b53-bd716988b089.png"
+    },
+    {
+      "loaded": true,
+      "name": "01_layout_sparse.png",
+      "src": "https://img.esa.io/uploads/production/attachments/8704/2026/10/25/164555/6eddde31-1885-4c91-9d8b-2bc08bbc32dc.png"
+    },
+    {
+      "loaded": true,
+      "name": "01_layout_sparse_partial.png",
+      "src": "https://img.esa.io/uploads/production/attachments/8704/2026/10/25/164555/c60afba1-9190-424d-a8f4-47f009f7af16.png"
+    },
+    {
+      "loaded": true,
+      "name": "02_full.png",
+      "src": "https://img.esa.io/uploads/production/attachments/8704/2026/10/25/164555/da14af89-14ac-4c29-b6ef-89ac78e62386.png"
+    },
+    {
+      "loaded": true,
+      "name": "02_full_iteration_times.png",
+      "src": "https://img.esa.io/uploads/production/attachments/8704/2026/10/25/164555/fb59f083-3c75-463c-9d5f-3356c83bb3a4.png"
+    },
+    {
+      "loaded": true,
+      "name": "03_sparse.png",
+      "src": "https://img.esa.io/uploads/production/attachments/8704/2026/10/25/164555/c9033cc6-da59-4a76-982b-a328903ffcf3.png"
+    },
+    {
+      "loaded": true,
+      "name": "03_sparse_small_aux.png",
+      "src": "https://img.esa.io/uploads/production/attachments/8704/2026/10/25/164555/9148dad2-d4a7-4237-ab4f-8a34b5395775.png"
+    },
+    {
+      "loaded": true,
+      "name": "03_sparse_components.png",
+      "src": "https://img.esa.io/uploads/production/attachments/8704/2026/10/25/164555/f1b94412-ec4c-4580-b647-c85cd9756763.png"
+    },
+    {
+      "loaded": true,
+      "name": "04_structure.png",
+      "src": "https://img.esa.io/uploads/production/attachments/8704/2026/10/25/164555/24c59cca-f6c5-403a-8de1-1dd51feb1e4d.png"
+    },
+    {
+      "loaded": true,
+      "name": "04_structure_quality.png",
+      "src": "https://img.esa.io/uploads/production/attachments/8704/2026/10/25/164555/ae729271-8510-4c22-82a3-ade667b8bf87.png"
+    },
+    {
+      "loaded": true,
+      "name": "04_structure_bins.png",
+      "src": "https://img.esa.io/uploads/production/attachments/8704/2026/10/25/164555/08b6d4b0-f733-4057-ac6e-a0b9434636b0.png"
+    },
+    {
+      "loaded": true,
+      "name": "04_size_series.png",
+      "src": "https://img.esa.io/uploads/production/attachments/8704/2026/10/25/164555/2b199e69-ea1f-4b99-a3e0-8fe6ebb01f7f.png"
+    },
+    {
+      "loaded": true,
+      "name": "04_sparse_write_load.png",
+      "src": "https://img.esa.io/uploads/production/attachments/8704/2026/10/25/164555/7e6b71c0-228a-441e-beed-f3cff47efa0b.png"
+    },
+    {
+      "loaded": true,
+      "name": "05_convergence.png",
+      "src": "https://img.esa.io/uploads/production/attachments/8704/2026/10/25/164555/4559332f-6304-4608-82b5-92f52a14fda4.png"
+    },
+    {
+      "loaded": true,
+      "name": "05_iteration_times.png",
+      "src": "https://img.esa.io/uploads/production/attachments/8704/2026/10/25/164555/ccf78499-9a1a-4c56-9fd8-49199a76c05f.png"
+    },
+    {
+      "loaded": true,
+      "name": "06_tiles.png",
+      "src": "https://img.esa.io/uploads/production/attachments/8704/2026/10/25/164555/f9f39e3e-f236-49d1-a39c-f868949bece6.png"
+    },
+    {
+      "loaded": true,
+      "name": "06_tiles_pareto.png",
+      "src": "https://img.esa.io/uploads/production/attachments/8704/2026/10/25/164555/5db9386c-ab25-4272-aff7-30752c090577.png"
+    },
+    {
+      "loaded": true,
+      "name": "07_pivots.png",
+      "src": "https://img.esa.io/uploads/production/attachments/8704/2026/10/25/164555/8bb2cc8e-385a-46cc-aa07-78b110242bec.png"
+    }
+  ],
+  "resultText": true,
+  "section_sha256": "175a72744d2f188a3791eda1f3fca77f19ce120350eef23337164d30c4b87343",
+  "pngs": {
+    "01_layout_full.png": "1795033834eb1fe44f4d0c61cf3058733a327d0a18e6858125bd86ad24d937ca",
+    "01_layout_sparse.png": "68ed311b4db24bd3bb70a88ca8bea4de64bb085c841973ff87747d40110c9841",
+    "01_layout_sparse_partial.png": "c0870938c71b2f51e8700e91736c9ca67c9cc602f65db60dad8c8a9e8b3b12f7",
+    "02_full.png": "33d6239b132c1c97957d3054a392d0158fdf769519256a7c6d9c6f754ec99ee9",
+    "02_full_iteration_times.png": "58292a1d44fff59f9b39ba1ad8e682e047850e9720949fb53e67697d15c9c3a1",
+    "03_sparse.png": "59e7237400c3064348d99f1503a03481110b7e23c39d20c8847349429f87baff",
+    "03_sparse_components.png": "31c768110d95f82314c092f19bdaa4e51c9425d08404d29e7be1bd99ac527734",
+    "03_sparse_small_aux.png": "f0f70fbd72ff135ca4d6ee816ccd2249f0bb59bd5c74df5107a498d39c778e2f",
+    "04_size_series.png": "7b18a4b3c0cc1812b2dfaf420ddc6217bd97a92603898f2d83c862fa45cd7fdd",
+    "04_sparse_write_load.png": "7fd9333be0cb6020d303d4f94d9fc5523433c55276d9429487b255562a682c78",
+    "04_structure.png": "d409165e7234ff059c707ee523f674e43f25e34eac6752b39648234045aa820f",
+    "04_structure_bins.png": "c2fcce57373538aff40ec42f1579b042f59ef24e246e99fcff036de48200fb54",
+    "04_structure_quality.png": "fbe78187d31f78beef18cbb66ba1a810b2caa5069df1ac7bea4436bab405546d",
+    "05_convergence.png": "640ec4b4441f0b99fa59a32e5696ee02350bb0919e0c2c859f574a6aaf3e860a",
+    "05_iteration_times.png": "873ff1ce7d15f246bdb3605cb0bb791ba0e5d2471cc387b3a3b6ee188c56ba3b",
+    "06_tiles.png": "2360d3fa56923a7b1525f48571de86ca957ae45bef4752133a6b4ea8a5105f2e",
+    "06_tiles_pareto.png": "7114aa23d4606e52083becdd8b58da1c4eefaf32dc49af0c8446e5817e9cee82",
+    "07_pivots.png": "53471df7b874dfefd76522452337e7d869f205de4268d42743277f8e4349151c"
+  },
+  "retained_original_plan_images": 8,
+  "numbered_result_sections": 7,
+  "github_link_targets_verified": 40,
+  "private_article_backup_published": false
+}
