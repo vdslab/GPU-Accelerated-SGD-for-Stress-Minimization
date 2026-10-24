@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import time
 from pathlib import Path
 
@@ -17,8 +18,10 @@ import numpy as np
 
 try:
     from summarize_v3 import BASE, dump_csv, load, path_of, sample_indices, open_layout_text
+    from v3_recovery import active_runners
 except ModuleNotFoundError:
     from experiments.summarize_v3 import BASE, dump_csv, load, path_of, sample_indices, open_layout_text
+    from experiments.v3_recovery import active_runners
 
 METHODS = ('sparse_sgd', 'atomic_sparse_sgd', 'rr_sparse_sgd')
 COUNTS = (64, 256, 1024)
@@ -50,6 +53,52 @@ def coordinates(path: Path, n: int) -> np.ndarray:
     if count != n or not np.isfinite(xy).all():
         raise ValueError(f'Invalid saved coordinates: got {count}, expected {n}')
     return xy
+
+
+def finite_signed(value):
+    """Allow both signs for ratio changes; negative percentages are meaningful."""
+    return isinstance(value,(int,float)) and not isinstance(value,bool) and math.isfinite(value)
+
+
+def add_quality_and_native_audit(measurements):
+    cpu={r['stress_samples']:r['stress_value'] for r in measurements if r['method']=='sparse_sgd'}
+    for row in measurements:
+        reference=cpu.get(row['stress_samples'])
+        row['quality_ratio_vs_cpu']=(row['stress_value']/reference
+            if finite_signed(reference) and reference>0 and finite_signed(row['stress_value']) else None)
+        row.update(saved256_vs_native_signed_percent=None,saved256_vs_native_absolute_percent=None,saved256_native_audit_flag=None)
+        if row['stress_samples']!=256: continue
+        original=row.get('original_stress_value'); recalculated=row.get('stress_value')
+        definition_ok=(row.get('original_stress_kind')=='sampled' and row.get('original_stress_samples')==256 and row.get('original_stress_seed')==0)
+        difference=None
+        if finite_signed(original) and finite_signed(recalculated):
+            if original>0: difference=(recalculated-original)/original*100
+            elif original==recalculated==0: difference=0.
+        row['saved256_vs_native_signed_percent']=difference
+        row['saved256_vs_native_absolute_percent']=abs(difference) if difference is not None else None
+        row['saved256_native_audit_flag']=('definition_mismatch' if not definition_ok else 'invalid_or_zero_reference' if difference is None
+                                          else 'investigate' if abs(difference)>=.1 else 'within_0_1_percent')
+    return measurements
+
+
+def comparison_summary(results):
+    changes=[]; audits=[]
+    for graph,method in sorted({(r['graph'],r['method']) for r in results}):
+        records={r['stress_samples']:r for r in results if r['graph']==graph and r['method']==method}
+        r256=records.get(256,{}); r1024=records.get(1024,{})
+        q256=r256.get('quality_ratio_vs_cpu'); q1024=r1024.get('quality_ratio_vs_cpu')
+        difference=q256-q1024 if finite_signed(q256) and finite_signed(q1024) else None
+        relative=(q256/q1024-1)*100 if difference is not None and q1024>0 else None
+        changes.append(dict(graph=graph,method=method,quality_ratio_256=q256,quality_ratio_1024=q1024,
+                            ratio_difference_256_minus_1024=difference,signed_relative_change_percent=relative,
+                            absolute_relative_change_percent=abs(relative) if relative is not None else None))
+        if r256:
+            audits.append(dict(graph=graph,method=method,stress_samples=256,native_stress_value=r256.get('original_stress_value'),
+                               saved_coordinates_reevaluated_stress_value=r256.get('stress_value'),
+                               signed_relative_difference_percent=r256.get('saved256_vs_native_signed_percent'),
+                               absolute_relative_difference_percent=r256.get('saved256_vs_native_absolute_percent'),
+                               flag=r256.get('saved256_native_audit_flag')))
+    return changes,audits
 
 
 def source_terms(xy: np.ndarray, distances: np.ndarray, sources: np.ndarray) -> np.ndarray:
@@ -152,6 +201,11 @@ def evaluate_graph(name, info, methods, base: Path, block_size: int):
                         'stress_samples': stop, 'stress_value': n * sums[method] / (2 * stop),
                         'input_sha256': digest, 'coordinates_sha256': layout_hashes[method],
                         'final_positions_path': row['final_positions_path'],
+                        'analysis_origin_base': row.get('analysis_origin_base'),
+                        'analysis_origin_scope': row.get('analysis_origin_scope'),
+                        'native_git_commit': row.get('git_commit'),
+                        'original_stress_kind': row.get('stress_kind'),
+                        'original_stress_seed': row.get('stress_seed'),
                         'original_stress_samples': row.get('stress_samples'),
                         'original_stress_value': row.get('stress_value')})
                 print(f'Sampling sensitivity {name}: {stop} sources', flush=True)
@@ -165,7 +219,7 @@ def evaluate_graph(name, info, methods, base: Path, block_size: int):
             row['absolute_change_256_vs_1024_percent'] = (100 * abs(s256 / baseline - 1)
                                                           if baseline else None)
             row['evaluation_wall_seconds'] = time.monotonic() - started
-    return measurements
+    return add_quality_and_native_audit(measurements)
 
 
 def main(argv=None):
@@ -174,7 +228,32 @@ def main(argv=None):
     parser.add_argument('--block-size', type=int, choices=(1, 2, 4, 8, 16), default=8)
     args = parser.parse_args(argv)
     base = args.results_dir.resolve()
-    datasets, raw = load(base)
+    runners = active_runners({base, (base / 'snap-origin-recovery').resolve()})
+    if runners:
+        raise SystemExit('Core or SNAP-recovery native runner is active; no sampling analysis started')
+    datasets, raw, cohort = load(base, with_cohort=True)
+    recovery_status = cohort.get('status')
+    if recovery_status in ('incomplete', 'rejected'):
+        raise SystemExit(f'SNAP recovery is {recovery_status}; complete and validate it before sampling analysis')
+    if recovery_status == 'adopted':
+        if (cohort.get('core_raw_records') != 3210 or cohort.get('recovery_raw_records') != 90
+                or cohort.get('effective_conditions') != 3210 or cohort.get('errors')):
+            raise SystemExit('Validated recovery cohort is not complete; no sampling analysis started')
+    elif recovery_status in (None, 'absent'):
+        # Without an adopted overlay, the loader preserves a partial core for
+        # lightweight reports. Heavy BFS analysis needs all unique planned IDs.
+        plan = json.loads((base / 'config/plan.json').read_text())
+        jobs = plan.get('jobs', plan.get('tasks', [])) if isinstance(plan, dict) else plan
+        records = [json.loads(line) for line in (base / 'raw/results.jsonl').read_text().splitlines()
+                   if line.strip()]
+        planned_ids = [row['run_id'] for row in jobs]
+        recorded_ids = [row['run_id'] for row in records]
+        if (len(planned_ids) != 3210 or len(set(planned_ids)) != 3210
+                or len(recorded_ids) != 3210 or len(set(recorded_ids)) != 3210
+                or set(recorded_ids) != set(planned_ids)):
+            raise SystemExit('Core 3210-condition plan is incomplete or nonunique; no sampling analysis started')
+    else:
+        raise SystemExit(f'Unknown recovery status {recovery_status!r}; no sampling analysis started')
     catalog, chosen, issues = paired_candidates(datasets, raw, base)
     tables = base / 'tables'
     tables.mkdir(parents=True, exist_ok=True)
@@ -192,11 +271,18 @@ def main(argv=None):
         issues.append({'status': 'incomplete', 'reason': f'Only {len(checked)}/3 graphs evaluated'})
     changes = [row['absolute_change_256_vs_1024_percent'] for row in results
                if row['stress_samples'] == 256 and row['absolute_change_256_vs_1024_percent'] is not None]
+    ratio_changes,native_audits=comparison_summary(results)
+    ratio_absolute=[r['absolute_relative_change_percent'] for r in ratio_changes if finite_signed(r.get('absolute_relative_change_percent'))]
     report = {'status': 'success' if complete else 'incomplete',
+              'cohort': {key:value for key,value in cohort.items() if key not in ('record_provenance','superseded_records')},
               'description': 'Identical saved layouts; nested Rust-compatible SplitMix64 sources; n/(2k) estimator',
               'requested_samples': list(COUNTS), 'stress_seed': 0, 'layout_seed': 0,
               'preferred_graphs': list(PREFERRED), 'selected_graphs': [name for name, _ in chosen],
               'evaluated_graphs': checked, 'max_absolute_change_256_vs_1024_percent': max(changes) if changes else None,
+              'quality_ratio_sensitivity_256_vs_1024': ratio_changes,
+              'max_absolute_quality_ratio_relative_change_percent': max(ratio_absolute) if ratio_absolute else None,
+              'saved256_vs_native_audit': native_audits,
+              'saved256_audit_description': 'Final saved coordinates reevaluated with 256 sources versus native original_stress_value; separate from pre-centering checkpoint audit. Positive and negative percentage differences preserved; abs difference >=0.1% flags investigation without excluding runs.',
               'records': results, 'issues': issues}
     if not results:
         dump_csv(tables / 'sampling-sensitivity.csv', [{'status': 'unavailable', 'reason': 'No eligible paired layouts'}])
