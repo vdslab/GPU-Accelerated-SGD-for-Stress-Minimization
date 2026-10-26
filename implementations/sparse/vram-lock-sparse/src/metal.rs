@@ -73,6 +73,18 @@ impl MetalContext {
         verbose: bool,
         format: OutputFormat,
     ) -> Result<MetalRunResult> {
+        self.execute_sgd_with_cpu_shuffle(params, rng, verbose, format, false)
+    }
+
+    /// Explicit CPU permutation is opt-in; by default lock acquisition determines update order.
+    pub fn execute_sgd_with_cpu_shuffle<R: Rng + ?Sized>(
+        &self,
+        params: SgdParams,
+        rng: &mut R,
+        verbose: bool,
+        format: OutputFormat,
+        cpu_shuffle: bool,
+    ) -> Result<MetalRunResult> {
         let setup = Instant::now();
         ensure!(
             !params.pairs.is_empty() && !params.etas.is_empty(),
@@ -150,8 +162,12 @@ impl MetalContext {
         let mut completed_updates = 0u64;
         let mut dispatches = 0u64;
         for (iteration, eta) in etas.iter().enumerate() {
-            // Retain the previous permutation, just as CPU Sparse shuffles in place.
-            all_pending.shuffle(rng);
+            // Fixed submission order by default, matching Atomic Full. GPU lock
+            // acquisition determines update order; it is not a uniform shuffle.
+            if cpu_shuffle {
+                // Preserve the historical in-place CPU permutation for comparisons.
+                all_pending.shuffle(rng);
+            }
             let mut pending = all_pending.clone();
             let mut passes = 0;
             while !pending.is_empty() {
@@ -281,6 +297,56 @@ mod tests {
     use crate::{cpu_reference::apply_constraint, graph::EdgeInfo};
     use rand::{rngs::StdRng, SeedableRng};
 
+    #[test]
+    fn moving_shared_endpoint_tracks_serial_recurrence() {
+        let context = MetalContext::new().unwrap();
+        let count = 4096;
+        let eta = 0.0001;
+        let mut expected = 0.0f32;
+        for _ in 0..count {
+            let diff = 3.0 - expected;
+            let r = ((diff - 1.0) / (2.0 * diff)) * diff;
+            expected += eta as f32 * r;
+        }
+        for seed in 0..20 {
+            let mut positions = vec![[3.0, 0.0]; count + 1];
+            positions[0] = [0.0, 0.0];
+            let pairs = (1..=count)
+                .map(|v| EdgeInfo {
+                    u: 0,
+                    v,
+                    dij: 1.0,
+                    weight_u: 1.0,
+                    weight_v: 0.0,
+                })
+                .collect();
+            let params = SgdParams {
+                positions,
+                pairs,
+                etas: vec![eta],
+                pivots: vec![0],
+                center: false,
+            };
+            let r = context
+                .execute_sgd_with_cpu_shuffle(
+                    params,
+                    &mut StdRng::seed_from_u64(seed),
+                    false,
+                    OutputFormat::Json,
+                    seed % 2 == 1,
+                )
+                .unwrap();
+            assert_eq!(r.completed_updates, count as u64);
+            assert!(
+                (r.positions[0][0] - expected as f64).abs() < 0.0001,
+                "{} != {}",
+                r.positions[0][0],
+                expected
+            );
+            assert_eq!(r.positions[0][1], 0.0);
+            assert!(r.positions[1..].iter().all(|&p| p == [3.0, 0.0]));
+        }
+    }
     #[test]
     fn gpu_directional_updates_match_cpu_reference() {
         let context = MetalContext::new().unwrap();

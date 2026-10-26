@@ -2,7 +2,7 @@
 
 CPU Sparse SGDの制約ペアをMetal GPUへ転送し、両端点をatomicロックして更新する。
 `vram-lock-native` と同じく、32スレッドのthreadgroupにつき1スレッドが1ペアを処理する。
-macOSと、既存のnative atomic SGDが動作するMetal GPUが必要。
+Metal 3.2以降のdevice-scope atomic fenceが使えるApple silicon環境が必要（検証環境：macOS 15.7.2、M4 Pro）。対応しない言語版ではshaderコンパイル時に明示的に失敗する。
 
 ## 実行
 
@@ -24,9 +24,11 @@ method IDは `atomic_sparse_sgd`。既存の `experiments/run_experiments.py` �
 ## 更新と競合処理
 
 - CPU Sparse版の `graph.rs` を共有し、pivot・領域・距離・制約・方向別重み・学習率・初期配置を一致させる。
-- 各反復でCPU版と同じRNGの続きからペアをシャッフルする。GPUの実際の更新順は非決定的。
+- 標準動作では各反復のペア投入順を固定し、CPUシャッフルを行わない（Atomic Fullと同じ方針）。更新順はGPUのロック獲得順に依存し、一様ランダムな順序は保証しない。
+- 比較用の `--cpu-shuffle` を指定した場合のみ、従来どおり各反復でCPU版と同じRNGの続きからペアをシャッフルする。出力座標ファイルの `CPU shuffle` ヘッダーに設定を保存する。JSONのmethod IDは共通なので、比較時はrun IDにも方式を明記する。
 - ペアの両端点を頂点番号の小さい順にロックする。片側の重みが0でも、座標の読取りを保護するため両端をロックする。
-- ロック取得後に両端の座標を読み、`mu_u=min(eta*weight_u,1)` と `mu_v=min(eta*weight_v,1)` を用いて別々の移動量をatomic加算する。
+- 両端のロック取得後にdevice-scopeのseq_cst acquire fenceを置き、座標更新後・ロック解放前に同scopeのrelease fenceを置く。Metal 3.2の `atomic_thread_fence` を使い、座標の可視性をロックの引継ぎに同期させる。
+- ロック取得・fence後に両端の座標を読み、`mu_u=min(eta*weight_u,1)` と `mu_v=min(eta*weight_v,1)` を用いて別々の移動量をatomic加算する。
 - 座標と学習率はGPU上ではf32。出力・centering・共通stress評価はf64。
 - 座標が一致した場合はnative atomic SGDと同じ固定方向へ微小変位を作る。CPU版のランダム方向とは異なる。
 
@@ -38,7 +40,7 @@ GPU完了後、ホストが未完了ペアだけを再投入する。完了し�
 成功時の `retry_failures`（未完了数）は0となる。これはロック競合がなかったという意味ではない。
 再投入は `dispatches` に含め、`--verbose` で各反復の投入回数を確認できる。
 
-時間区間は既存の共通形式に従う。`iteration_time_ms` にCPUシャッフル、反復内の転送、GPU投入、待機、未完了ペアの抽出と再投入を含める。
+時間区間は既存の共通形式に従う。`iteration_time_ms` にCPUシャッフル（指定時のみ）、反復内の転送、GPU投入、待機、未完了ペアの抽出と再投入を含める。
 最初のバッファ転送は `upload_time_ms`、最終座標の取得は `readback_time_ms`、centeringは `postprocess_time_ms`。
 GPU timestampの個別計測は未対応。
 

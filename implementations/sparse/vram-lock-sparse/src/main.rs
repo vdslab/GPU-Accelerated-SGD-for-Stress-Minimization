@@ -28,6 +28,7 @@ struct Config {
     epsilon: f64,
     seed: u64,
     center: bool,
+    cpu_shuffle: bool,
 }
 
 impl Default for Config {
@@ -40,6 +41,7 @@ impl Default for Config {
             epsilon: 0.1,
             seed: 0,
             center: true,
+            cpu_shuffle: false,
         }
     }
 }
@@ -79,6 +81,7 @@ impl Config {
                 }
                 "--verbose" => config.common.verbose = true,
                 "--no-center" => config.center = false,
+                "--cpu-shuffle" => config.cpu_shuffle = true,
                 "--largest-component" => {}
                 value if !value.starts_with('-') && !positional => {
                     config.input = value.into();
@@ -118,7 +121,7 @@ fn print_help() {
         "Usage: vram-lock-sparse [INPUT] [--run-id ID] [--input PATH] [--output-dir PATH] \
          [--pivots N] [--iterations N] [--epsilon F] [--seed N] \
          [--output-format human|json] [--run-mode benchmark|diagnostic] \
-         [--verbose] [--no-center]"
+         [--verbose] [--no-center] [--cpu-shuffle]"
     );
 }
 
@@ -155,11 +158,12 @@ fn main() -> Result<()> {
     let runtime_init_time = runtime_started.elapsed();
     config.log(format!("GPU: {} ({})", context.device_name, "Metal"));
 
-    let run = context.execute_sgd(
+    let run = context.execute_sgd_with_cpu_shuffle(
         params,
         &mut rng,
         config.common.verbose,
         config.common.output_format,
+        config.cpu_shuffle,
     )?;
 
     let edges: Vec<_> = graph
@@ -337,6 +341,7 @@ fn save_result(
     writeln!(file, "# Iterations: {}", config.iterations)?;
     writeln!(file, "# Epsilon: {}", config.epsilon)?;
     writeln!(file, "# Seed: {}", config.seed)?;
+    writeln!(file, "# CPU shuffle: {}", config.cpu_shuffle)?;
     writeln!(file, "# Pivot selection: {PIVOT_SELECTION}")?;
     writeln!(file, "# Weight model: {WEIGHT_MODEL}")?;
     writeln!(file, "# Pivot count: {}", pivots.len())?;
@@ -402,6 +407,12 @@ mod tests {
         assert_eq!(config.common.output_format, OutputFormat::Json);
         assert_eq!(config.common.run_mode, RunMode::Diagnostic);
         assert_eq!(config.common.output_dir, PathBuf::from("out"));
+    }
+
+    #[test]
+    fn cpu_shuffle_is_opt_in() {
+        assert!(!Config::from_iter(Vec::<String>::new()).unwrap().cpu_shuffle);
+        assert!(Config::from_iter(["--cpu-shuffle".to_owned()]).unwrap().cpu_shuffle);
     }
 
     #[test]
