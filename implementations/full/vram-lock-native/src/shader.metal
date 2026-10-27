@@ -18,12 +18,19 @@ inline void atomic_add_float(device atomic<float>* addr, float value) {
 inline bool try_lock(device atomic_uint* locks, uint node) {
     // Try to swap 0 -> 1. If old value was 0, we got the lock
     uint expected = 0;
-    return atomic_compare_exchange_weak_explicit(
+    bool acquired = atomic_compare_exchange_weak_explicit(
         &locks[node], &expected, 1u,
         memory_order_relaxed, memory_order_relaxed);
+    // Establish visibility on every successful acquisition, including rollback paths.
+    if (acquired) {
+        atomic_thread_fence(mem_flags::mem_device, memory_order_seq_cst, thread_scope_device);
+    }
+    return acquired;
 }
 
 inline void unlock(device atomic_uint* locks, uint node) {
+    // Publish before every unlock, including a failed second-lock attempt.
+    atomic_thread_fence(mem_flags::mem_device, memory_order_seq_cst, thread_scope_device);
     atomic_store_explicit(&locks[node], 0u, memory_order_relaxed);
 }
 
@@ -32,9 +39,9 @@ inline bool acquire_locks(device atomic_uint* locks, uint node1, uint node2) {
     uint first = min(node1, node2);
     uint second = max(node1, node2);
     
-    // Spin until both locks are acquired (with timeout for safety)
-    const uint max_retries = 1000000;
-    for (uint retry = 0; retry < max_retries; retry++) {
+    // Retry until both locks are acquired.
+    // No attempt limit and no incrementing counter.
+    while (true) {
         if (try_lock(locks, first)) {
             if (try_lock(locks, second)) {
                 return true;  // Both locks acquired successfully
@@ -42,10 +49,10 @@ inline bool acquire_locks(device atomic_uint* locks, uint node1, uint node2) {
                 unlock(locks, first);  // Release first lock and retry
             }
         }
-        // Small yield to allow other workgroups to progress
+        // A failed second acquisition releases the first lock before retrying.
     }
     
-    // Timeout (should be extremely rare with proper GPU parallelism)
+    // Defensive fallback if the retry loop is disabled in a diagnostic shader.
     return false;
 }
 
@@ -96,10 +103,9 @@ kernel void sgd(
     float wij = pair.wij;
     float eta = etas[iteration];
     
-    // Acquire locks for both nodes (deadlock-free with retry limit)
+    // Acquire both node locks before reading either coordinate.
     if (!acquire_locks(locks, i, j)) {
-        // Failed to acquire locks after max retries
-        // Skip this pair in this iteration
+        // Defensive failure path; the host rejects an incomplete iteration.
         return;
     }
     
