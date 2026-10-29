@@ -33,9 +33,15 @@ def convergence(base,datasets,records):
  from scipy.sparse.csgraph import shortest_path
  dest=base/'tables/convergence.csv'
  previous=list(csv.DictReader(dest.open())) if dest.exists() else []
- cache={(r.get('input_sha256'),r['snapshot_sha256']):r for r in previous};out=[]
+ cache={(r.get('input_sha256'),r['snapshot_sha256']):r for r in previous if r.get('snapshot_sha256')};out=[]
+ if (base/'reference/sparse-v3/convergence.csv').exists():
+  for row in csv.DictReader((base/'reference/sparse-v3/convergence.csv').open()):
+   row=dict(row,experiment_version='v3')
+   for k in ['epoch','seed','stress_samples','stress_seed']:row[k]=int(row[k])
+   for k in ['stress','elapsed_ms']:row[k]=float(row[k])
+   out.append(row)
  for g in datasets:
-  group=[r for r in records if r['study']=='convergence' and r['graph']==g['name'] and r['status']=='success']
+  group=[r for r in records if r['study']=='convergence' and r['graph']==g['name'] and r['status']=='success' and r['experiment_version']=='v4']
   if not group:continue
   n=g['nodes'];sources=sample_indices(n,256);dist=None
   for r in group:
@@ -60,22 +66,40 @@ def convergence(base,datasets,records):
       dist=np.memmap(cachepath,dtype='<u4',mode='r',shape=(256,n))
      with gzip.open(p,'rb') as f:xy=np.frombuffer(f.read(),dtype='<f8').reshape(-1,2)
      assert len(xy)==n and np.isfinite(xy).all()
-     row=dict(graph=r['graph'],family='sparse',method=r['method'],seed=r['seed'],epoch=entry['iteration'],elapsed_ms=entry['cumulative_algorithm_seconds']*1000,stress=checkpoint_stress(xy,dist,sources),stress_kind='sampled',stress_samples=256,stress_seed=0,snapshot=str(p),snapshot_sha256=digest,input_sha256=g['sha256'])
+     row=dict(graph=r['graph'],family='sparse',method=r['method'],seed=r['seed'],epoch=entry['iteration'],elapsed_ms=entry['cumulative_algorithm_seconds']*1000,stress=checkpoint_stress(xy,dist,sources),stress_kind='sampled',stress_samples=256,stress_seed=0,snapshot=str(p),snapshot_sha256=digest,input_sha256=g['sha256'],experiment_version='v4')
     if row['epoch']==15:assert math.isclose(row['stress'],r['stress_value'],rel_tol=1e-10),(r['run_id'],row['stress'],r['stress_value'])
     cache[key]=row
     out.append(row);dump_csv(dest,out)
    print('Evaluated convergence',r['run_id'],flush=True)
   del dist
+ dump_csv(dest,out)
  return out
 
 def main():
  ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--results-dir',type=Path,default=BASE);ap.add_argument('--allow-partial',action='store_true');ap.add_argument('--skip-convergence',action='store_true');a=ap.parse_args();base=a.results_dir
- plan=json.loads((base/'config/plan.json').read_text());datasets=json.loads((base/'config/datasets.json').read_text());records=read_jsonl(base/'raw/results.jsonl');byid={r['run_id']:r for r in records}
- assert len(byid)==len(records)
+ original_plan=json.loads((base/'config/plan.json').read_text());rr_only=(base/'config/rr-only-plan.json').exists()
+ plan=json.loads((base/'config/rr-only-plan.json').read_text()) if rr_only else original_plan
+ datasets=json.loads((base/'config/datasets.json').read_text());native=read_jsonl(base/'raw/results.jsonl');assert len({r['run_id'] for r in native})==len(native)
+ measured=[r for r in native if not rr_only or r['method']=='rr_sparse_sgd'];byid={r['run_id']:r for r in measured}
  if not a.allow_partial:assert set(byid)=={j['run_id'] for j in plan},'Measurements incomplete'
- for r in records:r['family']='sparse';r['experiment_version']='v4'
+ for r in measured:r['family']='sparse';r['experiment_version']='v4'
+ records=list(measured)
+ if rr_only:
+  for row in csv.DictReader((base/'reference/sparse-v3/runs.csv').open()):
+   r=dict(row,experiment_version='v3',source_run_id=row['run_id'])
+   for k in ['seed','iterations','pivots','stress_samples','stress_seed','nodes','edges','peak_rss_bytes']:
+    if r.get(k):r[k]=int(r[k])
+   for k in ['epsilon','iteration_time_ms','algorithm_time_cold_ms','process_wall_seconds','stress_value']:
+    if r.get(k):r[k]=float(r[k])
+   records.append(r)
  (base/'tables').mkdir(exist_ok=True);dump_csv(base/'tables/runs.csv',records)
- failures=[dict(run_id=j['run_id'],graph=j['graph'],method=j['method'],seed=j['seed'],study=j['study'],status=byid.get(j['run_id'],{}).get('status','pending'),reason=byid.get(j['run_id'],{}).get('failure_reason',byid.get(j['run_id'],{}).get('error',''))) for j in plan if byid.get(j['run_id'],{}).get('status')!='success'];dump_csv(base/'tables/missing.csv',failures)
+ dump_csv(base/'tables/excluded-auxiliary-v4.csv',[r for r in native if rr_only and r['method']!='rr_sparse_sgd'])
+ bykey={(r['study'],r['graph'],r['method'],r['seed']):r for r in records};assert len(bykey)==len(records)
+ failures=[]
+ for j in original_plan:
+  r=bykey.get((j['study'],j['graph'],j['method'],j['seed']),{})
+  if r.get('status')!='success':failures.append(dict(run_id=r.get('run_id',j['run_id']),graph=j['graph'],method=j['method'],seed=j['seed'],study=j['study'],experiment_version=r.get('experiment_version','v4'),status=r.get('status','pending'),reason=r.get('failure_reason',r.get('error',''))))
+ dump_csv(base/'tables/missing.csv',failures)
  successes={(r['study'],r['graph'],r['method'],r['seed']):r for r in records if r['status']=='success'}
  pairs=[]
  for r in successes.values():
@@ -83,13 +107,13 @@ def main():
   cpu=successes.get((r['study'],r['graph'],'sparse_sgd',r['seed']))
   if not cpu:continue
   for k in ['initial_positions_sha256','preprocess_sha256','input_sha256','iterations','epsilon','pivots','stress_kind','stress_samples','stress_seed']:assert r[k]==cpu[k],(r['run_id'],k)
-  pairs.append(dict(study=r['study'],graph=r['graph'],family='sparse',method=r['method'],seed=r['seed'],speedup=cpu['iteration_time_ms']/r['iteration_time_ms'],stress_ratio=r['stress_value']/cpu['stress_value'],cpu_iteration_ms=cpu['iteration_time_ms'],gpu_iteration_ms=r['iteration_time_ms'],cpu_stress=cpu['stress_value'],gpu_stress=r['stress_value'],algorithm_speedup=cpu['algorithm_time_cold_ms']/r['algorithm_time_cold_ms'],process_speedup=cpu['process_wall_seconds']/r['process_wall_seconds']))
+  pairs.append(dict(study=r['study'],graph=r['graph'],family='sparse',method=r['method'],seed=r['seed'],speedup=cpu['iteration_time_ms']/r['iteration_time_ms'],stress_ratio=r['stress_value']/cpu['stress_value'],cpu_iteration_ms=cpu['iteration_time_ms'],gpu_iteration_ms=r['iteration_time_ms'],cpu_stress=cpu['stress_value'],gpu_stress=r['stress_value'],cpu_experiment_version=cpu['experiment_version'],gpu_experiment_version=r['experiment_version'],cpu_run_id=cpu['run_id'],gpu_run_id=r['run_id'],algorithm_speedup=cpu['algorithm_time_cold_ms']/r['algorithm_time_cold_ms'],process_speedup=cpu['process_wall_seconds']/r['process_wall_seconds']))
  dump_csv(base/'tables/paired-ratios.csv',pairs)
  summaries=[]
  for g in datasets:
   for m in METHODS:
    rs=[r for r in records if r['graph']==g['name'] and r['study']=='basic' and r['method']==m];ok=[r for r in rs if r['status']=='success'];pp=[r for r in pairs if r['graph']==g['name'] and r['study']=='basic' and r['method']==m]
-   s=dict(graph=g['name'],method=m,planned=5,success=len(ok),paired_seeds=len(pp),nodes=g['nodes'])
+   s=dict(graph=g['name'],method=m,experiment_version='v4' if m=='rr_sparse_sgd' or not rr_only else 'v3',planned=5,success=len(ok),paired_seeds=len(pp),nodes=g['nodes'])
    for k in ['iteration_time_ms','algorithm_time_cold_ms','process_wall_seconds','stress_value','peak_rss_bytes']:
     values=[r[k] for r in ok]
     if values:s.update({k+'_median':statistics.median(values),k+'_min':min(values),k+'_max':max(values)})
@@ -103,7 +127,7 @@ def main():
   pp=[r for r in pairs if r['study']=='basic' and r['graph']==g['name'] and r['method']=='rr_sparse_sgd']
   if not pp:continue
   for m,k in [('CPU','cpu_iteration_ms'),('RR','gpu_iteration_ms')]:
-   values=[r[k]/15 for r in pp];times.append(dict(family='sparse',graph=g['name'],method=m,paired_seeds=len(pp),iterations_per_run=15,median_ms_per_iteration=statistics.median(values),min_ms_per_iteration=min(values),max_ms_per_iteration=max(values),experiment_version='v4'))
+   values=[r[k]/15 for r in pp];times.append(dict(family='sparse',graph=g['name'],method=m,paired_seeds=len(pp),iterations_per_run=15,median_ms_per_iteration=statistics.median(values),min_ms_per_iteration=min(values),max_ms_per_iteration=max(values),experiment_version='v3' if m=='CPU' and rr_only else 'v4'))
  dump_csv(base/'tables/fig05_iteration_times.csv',times)
  conv=[] if a.skip_convergence else convergence(base,datasets,records)
  if a.skip_convergence and (base/'tables/convergence.csv').exists():conv=list(csv.DictReader((base/'tables/convergence.csv').open()))
@@ -116,6 +140,6 @@ def main():
   if not a.skip_convergence:assert {int(p['epoch']) for p in points}=={0,1,2,3,5,8,10,15},r['run_id']
   arrivals.append(dict(graph=r['graph'],method=r['method'],seed=r['seed'],observed_points=len(points),reached=bool(good),first_observed_epoch=min((int(p['epoch']) for p in good),default=None),first_observed_ms=min((float(p['elapsed_ms']) for p in good),default=None),final_within_target=r['stress_value']<=1.05*cpu['stress_value']))
  dump_csv(base/'tables/arrivals.csv',arrivals)
- summary=dict(convergence_evaluated=not a.skip_convergence,planned=len(plan),completed=len(records),statuses=dict(Counter(r['status'] for r in records)),basic_graphs=38,convergence_graphs=3,rr_comparable=sum(s['paired_seeds']>0 for s in summaries if s['method']=='rr_sparse_sgd'),rr_faster=sum(s.get('speedup_median',0)>1 for s in summaries if s['method']=='rr_sparse_sgd'),rr_quality_within_5pct=sum(s.get('stress_ratio_median',math.inf)<=1.05 for s in summaries if s['method']=='rr_sparse_sgd'))
+ summary=dict(convergence_evaluated=not a.skip_convergence,scope='RR only' if rr_only else 'all methods',planned=len(plan),completed=len(measured),statuses=dict(Counter(r['status'] for r in measured)),reference_records=len(records)-len(measured),comparison_statuses=dict(Counter(r['status'] for r in records)),excluded_auxiliary_v4_records=len(native)-len(measured),basic_graphs=38,convergence_graphs=3,rr_comparable=sum(s['paired_seeds']>0 for s in summaries if s['method']=='rr_sparse_sgd'),rr_faster=sum(s.get('speedup_median',0)>1 for s in summaries if s['method']=='rr_sparse_sgd'),rr_quality_within_5pct=sum(s.get('stress_ratio_median',math.inf)<=1.05 for s in summaries if s['method']=='rr_sparse_sgd'))
  (base/'tables/audit.json').write_text(json.dumps(summary,indent=2)+'\n');print(summary)
 if __name__=='__main__':main()

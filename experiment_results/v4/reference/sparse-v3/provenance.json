@@ -1,0 +1,16 @@
+{
+  "policy": "Reference only: no further CPU or Atomic reruns per user instruction. All paper comparison baselines consistently use v3, not a mixture of v3 and newly collected v4 baselines.",
+  "source": "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3/tables",
+  "rows": 440,
+  "statuses": {
+    "success": 421,
+    "timeout": 3,
+    "memory_limit": 6,
+    "warmup_failed": 10
+  },
+  "convergence_rows": 480,
+  "source_sha256": {
+    "runs.csv": "99e226daf2240c7a71239fe02aa6b5ecf8adac783e387d6bd1fabfb418c12371",
+    "convergence.csv": "4ab40e7548f78cd06d9b88f43d87786fbd94c23bbdd6b2879e6fda1fdcd3792a"
+  }
+}

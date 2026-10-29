@@ -33,7 +33,7 @@ def main():
  vals=[float(r[k]) for r in times if r['family']=='sparse' for k in ['min_ms_per_iteration','max_ms_per_iteration']]
  lo=10**math.floor(math.log10(min(vals)));hi=10**math.ceil(math.log10(max(vals)))
  f,axs=plt.subplots(3,1,figsize=(7.2,8.7))
- for ax,(fam,graphs,title) in zip(axs,[('full',fullgraphs,'(a) Full (v3, unchanged)'),('sparse',sparsegraphs[:19],'(b) Sparse (v4): graphs 1–19'),('sparse',sparsegraphs[19:],'(c) Sparse (v4): graphs 20–38')]):
+ for ax,(fam,graphs,title) in zip(axs,[('full',fullgraphs,'(a) Full (v3, unchanged)'),('sparse',sparsegraphs[:19],'(b) Sparse: CPU v3 / RR v4, graphs 1–19'),('sparse',sparsegraphs[19:],'(c) Sparse: CPU v3 / RR v4, graphs 20–38')]):
   for x,g in enumerate(graphs):
    group=[r for r in times if r['family']==fam and r['graph']==g]
    if not group:ax.text(x,.04,'N/A',rotation=90,ha='center',fontsize=6,transform=ax.get_xaxis_transform());continue
@@ -60,7 +60,7 @@ def main():
     values=[float(r['stress']) for r in points if int(r['epoch'])==epoch]
     if values:xs.append(epoch);ys.append(np.median(values)/np.median([cpu_final[s] for s in seeds]))
    ax.plot(xs,ys,ls=ls,c=col,marker=mark,ms=3,lw=1);counts.append(len(seeds));coverage.append(dict(graph=g,method=m,seeds=len(seeds),normalization='method median / corresponding CPU final median'))
-  ax.axhline(1,c='.65',lw=.5);ax.set_yscale('log');ax.set_title(g+f" ({'v3' if fam=='full' else 'v4'})",fontsize=8.5);ax.set_xticks([0,5,10,15]);ax.tick_params(labelsize=7)
+  ax.axhline(1,c='.65',lw=.5);ax.set_yscale('log');ax.set_title(g+f" ({'v3' if fam=='full' else 'RR v4 / others v3'})",fontsize=8.5);ax.set_xticks([0,5,10,15]);ax.tick_params(labelsize=7)
   if counts!=[10,10,10]:ax.text(.98,.95,'n='+ '/'.join(map(str,counts)),transform=ax.transAxes,ha='right',va='top',fontsize=6)
  for ax in axs[:,0]:ax.set_ylabel('Stress / CPU final median',fontsize=8)
  for ax in axs[1]:ax.set_xlabel('Iteration')
@@ -108,7 +108,7 @@ def main():
  for row in range(2):
   low=min(axs[row,c].get_ylim()[0] for c in range(2));high=max(axs[row,c].get_ylim()[1] for c in range(2))
   for c in range(2):axs[row,c].set_ylim(low,high)
- f.legend([plt.Line2D([],[],ls='',marker='s',c='.55',mfc='white'),plt.Line2D([],[],ls='',marker='o',c='black')],['Atomic','RR'],ncol=2,frameon=False,loc='upper center')
+ f.legend([plt.Line2D([],[],ls='',marker='s',c='.55',mfc='white'),plt.Line2D([],[],ls='',marker='o',c='black')],['Atomic (v3)','RR (v4)'],ncol=2,frameon=False,loc='upper center')
  f.subplots_adjust(top=.91,bottom=.23,left=.08,right=.99,hspace=.13,wspace=.14);save(f,'sparse_speed_stress')
  print('Generated figures 5–7 and Sparse quality supplement; Full data inherited from v3')
 if __name__=='__main__':main()

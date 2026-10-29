@@ -6,7 +6,8 @@ import psutil
 BASE=Path(__file__).resolve().parents[1]/'experiment_results/v4'
 def main():
  reference=json.loads((BASE/'reference/v3-duration-estimates.json').read_text())
- plan=json.loads((BASE/'config/plan.json').read_text());done=[json.loads(s) for s in (BASE/'raw/results.jsonl').read_text().splitlines() if s.strip()];ids={r['run_id'] for r in done}
+ planpath=BASE/'config/rr-only-plan.json';rr_only=planpath.exists()
+ plan=json.loads((planpath if rr_only else BASE/'config/plan.json').read_text());done=[json.loads(s) for s in (BASE/'raw/results.jsonl').read_text().splitlines() if s.strip()];done=[r for r in done if not rr_only or r['method']=='rr_sparse_sgd'];ids={r['run_id'] for r in done}
  def key(r):return '|'.join(str(r[k]) for k in ['study','graph','method'])
  ratios=collections.defaultdict(list)
  for r in done:

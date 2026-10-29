@@ -15,18 +15,20 @@ def main():
   return f"比較可能{len(rows)}グラフ中{sum(x>1 for x in speed)}グラフでCPUより高速。速度比中央値の範囲は{min(speed):.3f}〜{max(speed):.3f}倍、stress比中央値は{min(quality):.3f}〜{max(quality):.3f}。速度比>1かつstress比≤1.05は{sum(s>1 and q<=1.05 for s,q in zip(speed,quality))}グラフ。"
  text=f'''# v4 Sparse SGD 論文図の再実験結果
 
-CPU / Atomic / RR Sparseの現行実装を再測定した。Fullの数値はv3を継承し、再実行していない。
+RR Sparseのみ現行実装で再測定し、CPU・Atomic Sparseは既存v3の結果を参照した。Fullの数値もv3を継承する。
 標準GPUは単一f32、CPUはf64。丸め誤差の補償、疑似倍精度、追加反復、グラフ別の方式変更は使っていない。
 
 ## 実験範囲と条件
 
-図5の既存37グラフと図7のdelaunay_n19を対象に3手法×5 seed、図6のSparse 3グラフを3手法×10 seedで測定した。
-計{audit['planned']}条件の記録が完了し、状態内訳は{audit['statuses']}。
+図5の既存37グラフと図7のdelaunay_n19を対象にRRのみ5 seed、図6のSparse 3グラフをRRのみ10 seedで測定した。
+RR計{audit['planned']}条件の記録が完了し、状態内訳は{audit['statuses']}。CPU・Atomicの参照は{audit['reference_records']}条件で、比較用データ全体の状態内訳は{audit['comparison_statuses']}。
+当初3手法を再測定した後、ユーザー指示でRRのみへ変更した。変更前のCPU・Atomic {audit['excluded_auxiliary_v4_records']}条件は補助記録として保存し、以下の比較には混ぜない。
 これは以前図に掲載された38グラフの追試であり、v3の78大規模候補すべての追試ではない。
 入力はv3と同じ前処理済み最大連結成分をSHA照合した。
 
 全て15反復、epsilon=0.1、pivot=200。基本比較seedは0〜4、収束seedは0〜9。
-RRは頂点ごとのpivot置換と4分割相実行、Atomicは現行既定のCPU事前shuffleなし、CPUは全制約を毎反復shuffle。
+RR v4は頂点ごとのpivot置換と4分割相実行。参照CPU v3は全制約を毎反復shuffleし、参照Atomic v3もCPUでペアIDを事前shuffleする測定版である。
+CPU・Atomicは2026年10月24〜25日の既存測定、RRは10月30日の測定であり、同一セッションの計測ではない。単一機種でも実行時の負荷などによる時間差は残る。Atomicの値は現行既定実装の再測定結果とは呼ばない。
 GPUとCPUでは精度と更新順序が異なるため、stress差の全てを丸め誤差だけに帰属しない。
 共通f64評価器を使い、8,000頂点以下はexact、それより大きい場合は固定256始点・評価seed 0のfull stress推定値。
 今回の38グラフはいずれも推定評価であり、微小な優劣や全頂点対での順位を保証しない。
@@ -36,11 +38,11 @@ RSS監視の間隔は約200 msで、終了後の最大RSSも併記する。厳�
 通常計測には収束checkpoint保存を入れず、収束診断の座標保存・readbackは反復時間から除いた。
 図5の1反復平均は15反復の合計÷15、誤差棒は対応seed間の最小〜最大であり、信頼区間ではない。
 
-## CPUとの時間・stress比較
+## CPU v3との時間・stress比較
 
 RR Sparse：{description(rr)}
 
-Atomic Sparse：{description(atomic)}
+Atomic Sparse（既存v3参照）：{description(atomic)}
 
 | グラフ | CPU/RR対応seed数 | CPU 1反復 ms | RR 1反復 ms | CPU/RR速度比 | RR/CPU stress比 |
 | --- | ---: | ---: | ---: | ---: | ---: |
@@ -77,7 +79,9 @@ Full delaunay_n14の上段はv3の既存結果である。
 `config/`に計画・入力・ソース・バイナリSHA、`raw/results.jsonl`に全条件、`warmups/`に事前試行、
 `tables/missing.csv`に欠測理由、`tables/paired-ratios.csv`にseedごとの対応比較、
 `tables/convergence.csv`にcheckpointのstress、`figures/`にPNG/PDF/SVGを保存した。
-Fullの出所は`reference/full-v3/`で、Sparse v4と区別する。
+Fullの出所は`reference/full-v3/`、Sparse CPU・Atomicの出所は`reference/sparse-v3/`。
+新規RRの計画は`config/rr-only-plan.json`、変更前の計画は`config/plan.json`、
+比較から除いた途中までのCPU・Atomic v4は`tables/excluded-auxiliary-v4.csv`に保存した。
 '''
  (BASE/'report').mkdir(exist_ok=True);(BASE/'report/RESULTS.md').write_text(text)
  print('Wrote',BASE/'report/RESULTS.md')
