@@ -34,3 +34,7 @@ JSONにはT・W・メモリ方式・shared容量・shuffle設定の`rr_*`項目�
 ラウンドごとのqueue write/submitは同じ順序で実行し、GPU完了待ちを各反復の末尾にまとめています。
 反復時間は最後のGPU処理の完了までを含みます。更新式・内側/外側シャッフル・タイル設定は変更していません。
 [Full/SparseのCPU比較と座標一致検証](../../../experiment_results/v2/validation/rr-iteration-20261030/README.md)を参照してください。
+
+追加のバッチ化と反復間CPU待機の除去も検証しましたが、既定設定で安定した高速化を確認できず、標準には採用していません。
+候補と現行RRの最終座標・stressは20組で完全一致しました。
+[追加案の全測定・再現用patch](../../../experiment_results/validation/rr-full-batching-20261030/README.md)を参照してください。

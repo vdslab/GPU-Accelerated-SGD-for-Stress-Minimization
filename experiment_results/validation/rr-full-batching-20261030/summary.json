@@ -1,0 +1,24 @@
+[
+  {
+    "graph": "fe_4elt2",
+    "seeds": 3,
+    "before_ms": 623.934708,
+    "after_ms": 657.308583,
+    "cpu_ms": 17591.514125,
+    "before_after_speedup": 1.0288502867782898,
+    "cpu_after_speedup": 26.821617599355157,
+    "rr_cpu_stress_ratio": 1.0238660281718803,
+    "repeat_seed0_speedup_median": 1.0125158394267018
+  },
+  {
+    "graph": "delaunay_n14",
+    "seeds": 3,
+    "before_ms": 1185.835167,
+    "after_ms": 1048.067416,
+    "cpu_ms": 40523.75575,
+    "before_after_speedup": 1.131449321767675,
+    "cpu_after_speedup": 38.66521860269339,
+    "rr_cpu_stress_ratio": 1.1539971957442092,
+    "repeat_seed0_speedup_median": 0.933267610129009
+  }
+]

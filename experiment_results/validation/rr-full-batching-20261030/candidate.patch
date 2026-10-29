@@ -1,0 +1,267 @@
+diff --git a/implementations/full/rr_gpu/src/gpu.rs b/implementations/full/rr_gpu/src/gpu.rs
+index d9de0dc..50c1bf1 100644
+--- a/implementations/full/rr_gpu/src/gpu.rs
++++ b/implementations/full/rr_gpu/src/gpu.rs
+@@ -10,6 +10,31 @@ use std::time::{Duration, Instant};
+ use wgpu::util::DeviceExt;
+ 
+ pub const DEFAULT_TILE_SIZE: u32 = 1024;
++const MAX_DISPATCHES_PER_SUBMISSION: usize = 256;
++
++// Each dispatch binds a separate aligned slice, so later rounds never overwrite
++// tile/permutation data that an earlier dispatch is still using.
++fn storage_slots(bytes: u64, rounds: usize, limits: &wgpu::Limits) -> Result<(u64, u64)> {
++    anyhow::ensure!(rounds > 0 && bytes > 0, "empty RR dispatch data");
++    anyhow::ensure!(
++        bytes <= u64::from(limits.max_storage_buffer_binding_size),
++        "RR dispatch data exceeds storage binding limit"
++    );
++    let alignment = u64::from(limits.min_storage_buffer_offset_alignment);
++    let stride = bytes.div_ceil(alignment) * alignment;
++    let size = stride
++        .checked_mul(rounds as u64)
++        .context("RR buffer size overflow")?;
++    anyhow::ensure!(
++        size <= limits.max_buffer_size,
++        "RR dispatch buffer exceeds GPU limit"
++    );
++    anyhow::ensure!(
++        stride * (rounds as u64 - 1) <= u64::from(u32::MAX),
++        "RR dynamic offset exceeds u32"
++    );
++    Ok((stride, size))
++}
+ 
+ #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+ pub enum MemoryMode {
+@@ -356,6 +381,17 @@ impl GpuContext {
+         let partial_self_perm_offset = tile_size + self_round_count(tile_size);
+ 
+         let max_tiles_per_round = schedule.iter().map(|r| r.len()).max().unwrap_or(1);
++        let tile_binding_bytes = (max_tiles_per_round * 8).max(8) as u64;
++        let (tile_stride, tile_buffer_size) =
++            storage_slots(tile_binding_bytes, schedule.len(), &self.device.limits())?;
++        let mut packed_tiles = vec![0_u32; tile_buffer_size as usize / 4];
++        for (ri, round) in schedule.iter().enumerate() {
++            let start = ri * tile_stride as usize / 4;
++            for (index, &(i, j)) in round.iter().enumerate() {
++                packed_tiles[start + 2 * index] = i;
++                packed_tiles[start + 2 * index + 1] = j;
++            }
++        }
+ 
+         // ── バッファ作成 ───────────────────────────────────────────────────────
+         let positions_flat: Vec<f32> = positions_f32.iter().flat_map(|p| [p[0], p[1]]).collect();
+@@ -400,14 +436,14 @@ impl GpuContext {
+                 usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
+             });
+ 
+-        // tiles バッファ: 各ラウンドのタイル割り当て [(i,j), ...]
+-        // 最大 max_tiles_per_round タイル × 8 bytes（vec2<u32>）
+-        let tiles_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
+-            label: Some("tiles"),
+-            size: (max_tiles_per_round * 8).max(8) as u64,
+-            usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
+-            mapped_at_creation: false,
+-        });
++        // All outer-round tiles are immutable; select a round with a dynamic offset.
++        let tiles_buffer = self
++            .device
++            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
++                label: Some("all RR tiles"),
++                contents: bytemuck::cast_slice(&packed_tiles),
++                usage: wgpu::BufferUsages::STORAGE,
++            });
+ 
+         // Packed independent permutations for cross/full-self/partial-self matching rounds.
+         let perm_init = build_inner_permutation(
+@@ -416,13 +452,16 @@ impl GpuContext {
+             false,
+             &mut rng_for_stream(seed, FULL_UPDATE_STREAM),
+         );
+-        let perm_buffer = self
+-            .device
+-            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+-                label: Some("inner_perm"),
+-                contents: bytemuck::cast_slice(&perm_init),
+-                usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
+-            });
++        let perm_binding_bytes = (perm_init.len() * 4) as u64;
++        let (perm_stride, perm_buffer_size) =
++            storage_slots(perm_binding_bytes, schedule.len(), &self.device.limits())?;
++        let perm_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
++            label: Some("all RR inner permutations"),
++            size: perm_buffer_size,
++            usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
++            mapped_at_creation: false,
++        });
++        let mut packed_permutations = vec![0_u32; perm_buffer_size as usize / 4];
+ 
+         let download_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
+             label: Some("download"),
+@@ -489,7 +528,7 @@ impl GpuContext {
+                         visibility: wgpu::ShaderStages::COMPUTE,
+                         ty: wgpu::BindingType::Buffer {
+                             ty: wgpu::BufferBindingType::Storage { read_only: true },
+-                            has_dynamic_offset: false,
++                            has_dynamic_offset: true,
+                             min_binding_size: Some(NonZeroU64::new(8).unwrap()),
+                         },
+                         count: None,
+@@ -500,7 +539,7 @@ impl GpuContext {
+                         visibility: wgpu::ShaderStages::COMPUTE,
+                         ty: wgpu::BindingType::Buffer {
+                             ty: wgpu::BufferBindingType::Storage { read_only: true },
+-                            has_dynamic_offset: false,
++                            has_dynamic_offset: true,
+                             min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                         },
+                         count: None,
+@@ -530,11 +569,19 @@ impl GpuContext {
+                 },
+                 wgpu::BindGroupEntry {
+                     binding: 4,
+-                    resource: tiles_buffer.as_entire_binding(),
++                    resource: wgpu::BindingResource::Buffer(wgpu::BufferBinding {
++                        buffer: &tiles_buffer,
++                        offset: 0,
++                        size: NonZeroU64::new(tile_binding_bytes),
++                    }),
+                 },
+                 wgpu::BindGroupEntry {
+                     binding: 5,
+-                    resource: perm_buffer.as_entire_binding(),
++                    resource: wgpu::BindingResource::Buffer(wgpu::BufferBinding {
++                        buffer: &perm_buffer,
++                        offset: 0,
++                        size: NonZeroU64::new(perm_binding_bytes),
++                    }),
+                 },
+             ],
+         });
+@@ -608,14 +655,7 @@ impl GpuContext {
+                 round_order.shuffle(&mut rng);
+             }
+ 
+-            for (round_position, &ri) in round_order.iter().enumerate() {
+-                let round = &schedule[ri];
+-
+-                // タイルバッファを今ラウンドの割り当てで更新
+-                let tiles_flat: Vec<u32> = round.iter().flat_map(|&(ti, tj)| [ti, tj]).collect();
+-                self.queue
+-                    .write_buffer(&tiles_buffer, 0, bytemuck::cast_slice(&tiles_flat));
+-
++            for round_position in 0..round_order.len() {
+                 // Shuffle exact matching-round domains independently; never reduce modulo.
+                 let inner_perm = build_inner_permutation(
+                     tile_size,
+@@ -623,9 +663,17 @@ impl GpuContext {
+                     self.kernel.inner_shuffle,
+                     &mut rng,
+                 );
+-                self.queue
+-                    .write_buffer(&perm_buffer, 0, bytemuck::cast_slice(&inner_perm));
++                let start = round_position * perm_stride as usize / 4;
++                packed_permutations[start..start + inner_perm.len()].copy_from_slice(&inner_perm);
++                // The tile slice uses the original round index; permutations use
++                // execution order, preserving the original random-number stream.
++            }
++            self.queue
++                .write_buffer(&perm_buffer, 0, bytemuck::cast_slice(&packed_permutations));
+ 
++            for batch_start in (0..round_order.len()).step_by(MAX_DISPATCHES_PER_SUBMISSION) {
++                let batch_end =
++                    (batch_start + MAX_DISPATCHES_PER_SUBMISSION).min(round_order.len());
+                 let mut encoder = self
+                     .device
+                     .create_command_encoder(&wgpu::CommandEncoderDescriptor { label: None });
+@@ -633,9 +681,9 @@ impl GpuContext {
+                     let timestamp_writes =
+                         timestamp_resources.as_ref().and_then(|(query_set, _, _)| {
+                             let beginning_of_pass_write_index =
+-                                (round_position == 0).then_some(timestamp_index);
+-                            let end_of_pass_write_index = (round_position + 1 == round_order.len())
+-                                .then_some(timestamp_index + 1);
++                                (batch_start == 0).then_some(timestamp_index);
++                            let end_of_pass_write_index =
++                                (batch_end == round_order.len()).then_some(timestamp_index + 1);
+                             (beginning_of_pass_write_index.is_some()
+                                 || end_of_pass_write_index.is_some())
+                             .then_some(wgpu::ComputePassTimestampWrites {
+@@ -649,17 +697,30 @@ impl GpuContext {
+                         timestamp_writes,
+                     });
+                     pass.set_pipeline(&pipeline);
+-                    pass.set_bind_group(0, &bind_group, &[]);
+-                    // workgroup g → タイル tiles[g] = (i, j) を担当
+-                    pass.dispatch_workgroups(round.len() as u32, 1, 1);
++                    for (round_position, &ri) in round_order
++                        .iter()
++                        .enumerate()
++                        .take(batch_end)
++                        .skip(batch_start)
++                    {
++                        pass.set_bind_group(
++                            0,
++                            &bind_group,
++                            &[
++                                (ri as u64 * tile_stride) as u32,
++                                (round_position as u64 * perm_stride) as u32,
++                            ],
++                        );
++                        // wgpu tracks positions as read/write storage and orders
++                        // dependent dispatches; workgroups within a round own disjoint tiles.
++                        pass.dispatch_workgroups(schedule[ri].len() as u32, 1, 1);
++                    }
+                 }
+                 self.queue.submit([encoder.finish()]);
+             }
+-            // Queue writes and submissions retain round order. Synchronize once
+-            // per epoch so iteration timing includes completed GPU work.
+-            self.device
+-                .poll(wgpu::PollType::wait_indefinitely())
+-                .unwrap();
++            // write_buffer stages a copy before the NEXT submit. Thus next
++            // iteration's uniforms/permutations overwrite these buffers only
++            // after this iteration's last submission, without a CPU-side wait.
+             if timestamp_resources.is_some() {
+                 timestamp_index += 2;
+             }
+@@ -672,6 +733,10 @@ impl GpuContext {
+                 }
+             }
+         }
++        // Include completed GPU work, not just CPU submission time.
++        self.device
++            .poll(wgpu::PollType::wait_indefinitely())
++            .context("RR GPU execution failed")?;
+         let iteration_time = iteration_started.elapsed();
+ 
+         // ── 結果ダウンロード ───────────────────────────────────────────────────
+@@ -750,6 +815,26 @@ mod tests {
+     use super::*;
+     use std::collections::{BTreeMap, BTreeSet};
+ 
++    #[test]
++    fn dispatch_storage_slices_are_aligned_and_bounded() {
++        let limits = wgpu::Limits::default();
++        let (stride, size) = storage_slots(24, 257, &limits).unwrap();
++        assert_eq!(
++            stride % u64::from(limits.min_storage_buffer_offset_alignment),
++            0
++        );
++        assert!(stride >= 24);
++        assert_eq!(size, stride * 257);
++        assert!(storage_slots(24, 0, &limits).is_err());
++        assert!(storage_slots(
++            u64::from(limits.max_storage_buffer_binding_size) + 1,
++            1,
++            &limits
++        )
++        .is_err());
++        assert!(storage_slots(24, usize::MAX, &limits).is_err());
++    }
++
+     // CPU image of the shader's matchings, including strided invocation work.
+     fn tile_matchings(
+         li: u32,

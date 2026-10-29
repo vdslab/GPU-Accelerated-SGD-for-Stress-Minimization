@@ -1,0 +1,19 @@
+{
+  "baseline_commit": "6f8c2c19d87548eac40201136a42baf7b354c7e5",
+  "platform": "macOS-15.7.2-arm64-arm-64bit",
+  "sha256": {
+    "implementations/full/rr_gpu/src/gpu.rs": "ea5ff2b55bd170f29b9e52d26f104cfd7f525824a77e511b4b0d32ea730de072",
+    "implementations/full/rr_gpu/src/shader.wgsl": "87659347344e06f43af284217726ead5a53fdeb5656ad4e2c105c39823056eb8",
+    "implementations/full/rr_gpu/target/release/rr-gpu": "4af310c60bddbf8f2ef680a15a17f2c35d636b41dc85d9f5f666bd8809b210f8",
+    "target/rr-full-batching-baseline/rr-gpu": "9336e0353b1a99230815ddf72b4e88b34e8eb15e1ac96229ad26720c1c9279d6",
+    "implementations/full/baseline-sgd-non-gpu/target/release/baseline-sgd-non-gpu": "162fa879a39981b827e2af246754874874186d85e418a679beac8343c3e9515a",
+    "data/fe_4elt2.mtx": "6e83576d527a868f150c058311af647348ae19e25fdcc2615158d40cadab6921",
+    "data/delaunay_n14.mtx": "de3eabccb8ce806174eeae302c8277021e46af335a7ae328e6e5ec3ca3bcf5fe"
+  },
+  "shader_unchanged": true,
+  "decision": "not adopted: no consistent improvement at default settings",
+  "restored_production_gpu_rs_sha256": "8db1247d72bf814a9b8fb22a42e65fb265628f9878a9541c3410861c62632f07",
+  "candidate_patch_sha256": "ada6b3eea483240057f3ede6537186ea7d8a26775abfafa6cd8ad808a0019c73",
+  "candidate_binary_path": "target/rr-full-batching-candidate/rr-gpu",
+  "production_binary_restored": true
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "graph": "USpowerGrid",
+    "tile": 127,
+    "workgroup": 64,
+    "memory": "shared",
+    "shuffled": true,
+    "seed": 0,
+    "exact_coordinates_and_stress": true
+  },
+  {
+    "graph": "USpowerGrid",
+    "tile": 127,
+    "workgroup": 64,
+    "memory": "shared",
+    "shuffled": true,
+    "seed": 3,
+    "exact_coordinates_and_stress": true
+  },
+  {
+    "graph": "EVA",
+    "tile": 32,
+    "workgroup": 32,
+    "memory": "global",
+    "shuffled": true,
+    "seed": 0,
+    "exact_coordinates_and_stress": true
+  },
+  {
+    "graph": "EVA",
+    "tile": 32,
+    "workgroup": 32,
+    "memory": "global",
+    "shuffled": true,
+    "seed": 3,
+    "exact_coordinates_and_stress": true
+  },
+  {
+    "graph": "1138_bus",
+    "tile": 4,
+    "workgroup": 32,
+    "memory": "shared",
+    "shuffled": true,
+    "seed": 0,
+    "exact_coordinates_and_stress": true
+  },
+  {
+    "graph": "1138_bus",
+    "tile": 4,
+    "workgroup": 32,
+    "memory": "shared",
+    "shuffled": true,
+    "seed": 3,
+    "exact_coordinates_and_stress": true
+  },
+  {
+    "graph": "1138_bus",
+    "tile": 127,
+    "workgroup": 64,
+    "memory": "global",
+    "shuffled": false,
+    "seed": 0,
+    "exact_coordinates_and_stress": true
+  },
+  {
+    "graph": "1138_bus",
+    "tile": 127,
+    "workgroup": 64,
+    "memory": "global",
+    "shuffled": false,
+    "seed": 3,
+    "exact_coordinates_and_stress": true
+  }
+]
