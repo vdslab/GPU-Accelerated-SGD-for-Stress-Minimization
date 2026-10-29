@@ -1,0 +1,14 @@
+{
+  "command": [
+    "implementations/sparse/sparse-sgd-gpu/target/release/examples/quality_search",
+    "data/web-NotreDame.mtx",
+    "7",
+    "4@0,200@5",
+    "256",
+    "200",
+    "cap=0.75",
+    "no-cpu"
+  ],
+  "binary_sha256": "c2552625e5dcf8425426daa19ebbebc285b1c9e983714ba93bb3ce767c40d2e5",
+  "cpu_reference": "experiment_results/v2/validation/rr-f32-compensated-20261030/cap09-validation"
+}

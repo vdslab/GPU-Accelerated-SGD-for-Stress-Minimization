@@ -11,6 +11,7 @@ pub struct PreparedRun {
     pub params: SgdParams,
     pub one_sided: Vec<OneSidedEntry>,
     pub one_sided_count: usize,
+    pub weight_residuals: Vec<f32>,
     pub constraint_count: usize,
     pub fingerprint: String,
 }
@@ -191,6 +192,20 @@ pub fn prepare<R: Rng + ?Sized>(
     center: bool,
     rng: &mut R,
 ) -> Result<PreparedRun> {
+    prepare_with_residuals(graph, iterations, epsilon, h, center, rng, false)
+}
+
+/// Preserve coefficient low parts for the f32 extended-precision diagnostic.
+#[allow(clippy::too_many_arguments)]
+pub fn prepare_with_residuals<R: Rng + ?Sized>(
+    graph: &Graph,
+    iterations: usize,
+    epsilon: f64,
+    h: usize,
+    center: bool,
+    rng: &mut R,
+    residuals: bool,
+) -> Result<PreparedRun> {
     let distances = Distances::new(graph, h, rng)?;
     // Unweighted graph edges have distance one and override both weights with 1.
     // Traverse each BFS row contiguously; avoid a second canonical pair traversal.
@@ -241,6 +256,11 @@ pub fn prepare<R: Rng + ?Sized>(
         .checked_mul(h)
         .context("dense table overflow")?;
     let mut one_sided = vec![OneSidedEntry::default(); dense_len];
+    let mut weight_residuals = if residuals {
+        vec![0.0; dense_len]
+    } else {
+        vec![]
+    };
     let mut one_sided_count = 0;
     let mut pairs = Vec::new();
     distances.visit(graph, |pair| {
@@ -262,6 +282,10 @@ pub fn prepare<R: Rng + ?Sized>(
             dij: pair.dij as f32,
             weight: weight as f32,
         };
+        if residuals {
+            weight_residuals[vertex * h + distances.slot[pivot]] =
+                (weight - f64::from(weight as f32)) as f32;
+        }
         one_sided_count += 1;
     });
     ensure!(
@@ -279,6 +303,7 @@ pub fn prepare<R: Rng + ?Sized>(
         params,
         one_sided,
         one_sided_count,
+        weight_residuals,
         constraint_count,
         fingerprint: fingerprint.finish(),
     })
@@ -289,6 +314,48 @@ mod tests {
     use super::*;
     use crate::schedule::{build_prepared_schedule, build_schedule};
     use rand::{rngs::StdRng, SeedableRng};
+
+    #[test]
+    fn optional_residuals_preserve_f64_one_sided_coefficients() {
+        let graph =
+            Graph::try_from_edges(64, &(1..64).map(|v| (v - 1, v)).collect::<Vec<_>>()).unwrap();
+        let plain = prepare(&graph, 15, 0.1, 8, true, &mut StdRng::seed_from_u64(3)).unwrap();
+        let extended = prepare_with_residuals(
+            &graph,
+            15,
+            0.1,
+            8,
+            true,
+            &mut StdRng::seed_from_u64(3),
+            true,
+        )
+        .unwrap();
+        assert!(plain.weight_residuals.is_empty());
+        assert_eq!(plain.fingerprint, extended.fingerprint);
+        assert_eq!(plain.params.positions, extended.params.positions);
+        let reference = graph
+            .prepare_sgd_params(15, 0.1, 8, true, &mut StdRng::seed_from_u64(3))
+            .unwrap();
+        for pair in reference.pairs {
+            let (vertex, pivot, weight) = if pair.weight_v == 0.0 {
+                (pair.u, pair.v, pair.weight_u)
+            } else if pair.weight_u == 0.0 {
+                (pair.v, pair.u, pair.weight_v)
+            } else {
+                continue;
+            };
+            let slot = extended
+                .params
+                .pivots
+                .iter()
+                .position(|&v| v == pivot)
+                .unwrap();
+            let index = vertex * 8 + slot;
+            let reconstructed = f64::from(extended.one_sided[index].weight)
+                + f64::from(extended.weight_residuals[index]);
+            assert!((reconstructed - weight).abs() <= weight.abs() * 1e-14);
+        }
+    }
 
     #[test]
     fn streaming_preserves_constraints_on_long_paths_and_stars() {

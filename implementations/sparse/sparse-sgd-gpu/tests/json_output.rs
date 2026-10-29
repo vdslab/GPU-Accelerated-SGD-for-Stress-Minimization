@@ -44,6 +44,10 @@ fn json_mode_writes_one_record_and_no_progress_to_stdout() {
     assert_eq!(record["method"], "rr_sparse_sgd");
     assert_eq!(record["run_id"], "contract-rr-sparse");
     assert_eq!(record["pivots"], 3);
+    assert_eq!(record["rr_pivot_order"], "per-vertex-feistel4-cyclewalk");
+    assert_eq!(record["rr_phase_chunks"], 3);
+    assert_eq!(record["rr_step_cap"], 1.0);
+    assert_eq!(record["rr_arithmetic"], "f32");
     assert!(record["preprocess_sha256"].is_string());
     assert!(record["rounds"].as_u64().unwrap() > 0);
 }

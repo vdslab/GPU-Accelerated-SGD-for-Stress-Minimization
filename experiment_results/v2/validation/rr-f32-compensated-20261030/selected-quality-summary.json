@@ -1,0 +1,51 @@
+{
+  "selection_cases": 32,
+  "heldout_cases": 8,
+  "all_cases": 40,
+  "median_cpu_ratio": 1.0015401073008383,
+  "max_cpu_ratio": 1.0638627809449803,
+  "max_original_ratio": 1.0395000485213644,
+  "heldout_max_cpu_ratio": 1.0214521679591766,
+  "per_graph": {
+    "EVA": {
+      "cpu_ratio_median": 1.007313204816709,
+      "cpu_ratio_max": 1.0624148165762481,
+      "original_ratio_median": 0.9644922363772203
+    },
+    "USpowerGrid": {
+      "cpu_ratio_median": 1.0009458526024997,
+      "cpu_ratio_max": 1.0054376098101558,
+      "original_ratio_median": 1.0014793463698732
+    },
+    "luxembourg_osm": {
+      "cpu_ratio_median": 0.9997613108954043,
+      "cpu_ratio_max": 1.002134361999177,
+      "original_ratio_median": 0.9988402399875385
+    },
+    "preferentialAttachment": {
+      "cpu_ratio_median": 1.0125836912752932,
+      "cpu_ratio_max": 1.0346935346356256,
+      "original_ratio_median": 0.8646544700144242
+    },
+    "smallworld": {
+      "cpu_ratio_median": 1.0086961167324398,
+      "cpu_ratio_max": 1.0110033499784958,
+      "original_ratio_median": 0.8466376429386301
+    },
+    "coAuthorsCiteseer": {
+      "cpu_ratio_median": 1.0064131961871727,
+      "cpu_ratio_max": 1.0214521679591766,
+      "original_ratio_median": 0.8527082609305899
+    },
+    "web-NotreDame": {
+      "cpu_ratio_median": 1.006170958959332,
+      "cpu_ratio_max": 1.0440398731976703,
+      "original_ratio_median": 0.7416224031335997
+    },
+    "web-Stanford": {
+      "cpu_ratio_median": 0.9867546551159098,
+      "cpu_ratio_max": 1.0638627809449803,
+      "original_ratio_median": 0.8689234062050172
+    }
+  }
+}

@@ -9,7 +9,7 @@ RR_METADATA_FIELDS = (
 )
 
 
-def validate_rr_metadata(record: Mapping[str, Any]) -> None:
+def validate_full_rr_metadata(record: Mapping[str, Any]) -> None:
     """Accept legacy records or a complete, consistent Full RR metadata block.
 
     Unknown fields remain the enclosing schema validator's responsibility.
@@ -36,3 +36,33 @@ def validate_rr_metadata(record: Mapping[str, Any]) -> None:
     expected = 16 * record["rr_tile_size"] if record["rr_memory_mode"] == "shared" else 0
     if isinstance(value, bool) or not isinstance(value, int) or value != expected:
         raise ValueError(f"rr_shared_bytes must equal {expected} for this tile and memory mode")
+
+
+RR_SPARSE_METADATA_FIELDS = (
+    "rr_pivot_order", "rr_phase_chunks", "rr_step_cap", "rr_arithmetic",
+)
+
+
+def validate_rr_metadata(record: Mapping[str, Any]) -> None:
+    """Validate optional Full and Sparse RR blocks; keep legacy records valid."""
+    validate_full_rr_metadata(record)
+    present = set(RR_SPARSE_METADATA_FIELDS).intersection(record)
+    if not present:
+        return
+    if record.get("method") != "rr_sparse_sgd":
+        raise ValueError("Sparse RR metadata is only permitted for rr_sparse_sgd")
+    if present != set(RR_SPARSE_METADATA_FIELDS):
+        raise ValueError("Incomplete Sparse RR metadata")
+    if record["rr_pivot_order"] != "per-vertex-feistel4-cyclewalk":
+        raise ValueError("Unknown Sparse RR pivot order")
+    if record["rr_arithmetic"] != "f32":
+        raise ValueError("Sparse RR arithmetic must be f32")
+    cap = record["rr_step_cap"]
+    if isinstance(cap, bool) or not isinstance(cap, (int, float)) or cap != 1:
+        raise ValueError("Sparse RR step cap must be 1")
+    chunks = record["rr_phase_chunks"]
+    pivots = record.get("pivots")
+    if isinstance(pivots, bool) or not isinstance(pivots, int) or pivots < 1:
+        raise ValueError("Sparse RR metadata requires a positive pivot count")
+    if isinstance(chunks, bool) or not isinstance(chunks, int) or chunks != min(4, pivots):
+        raise ValueError("Sparse RR phase chunks must equal min(4, pivots)")

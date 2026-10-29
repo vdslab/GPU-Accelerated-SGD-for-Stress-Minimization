@@ -83,9 +83,29 @@
     "rr_memory_mode": {"enum": ["shared", "global"]},
     "rr_shared_bytes": {"type": "integer", "minimum": 0, "maximum": 16384},
     "rr_outer_shuffle": {"type": "boolean"},
-    "rr_inner_shuffle": {"type": "boolean"}
+    "rr_inner_shuffle": {"type": "boolean"},
+    "rr_pivot_order": {"const": "per-vertex-feistel4-cyclewalk"},
+    "rr_phase_chunks": {"type": "integer", "minimum": 1, "maximum": 4},
+    "rr_step_cap": {"type": "number", "const": 1},
+    "rr_arithmetic": {"const": "f32"}
   },
   "allOf": [
+    {
+      "if": {"anyOf": [
+        {"required": ["rr_pivot_order"]}, {"required": ["rr_phase_chunks"]},
+        {"required": ["rr_step_cap"]}, {"required": ["rr_arithmetic"]}
+      ]},
+      "then": {
+        "required": ["rr_pivot_order", "rr_phase_chunks", "rr_step_cap", "rr_arithmetic"],
+        "properties": {"method": {"const": "rr_sparse_sgd"}, "pivots": {"type": "integer", "minimum": 1}},
+        "allOf": [
+          {"if": {"properties": {"pivots": {"const": 1}}}, "then": {"properties": {"rr_phase_chunks": {"const": 1}}}},
+          {"if": {"properties": {"pivots": {"const": 2}}}, "then": {"properties": {"rr_phase_chunks": {"const": 2}}}},
+          {"if": {"properties": {"pivots": {"const": 3}}}, "then": {"properties": {"rr_phase_chunks": {"const": 3}}}},
+          {"if": {"properties": {"pivots": {"minimum": 4}}}, "then": {"properties": {"rr_phase_chunks": {"const": 4}}}}
+        ]
+      }
+    },
     {
       "if": {
         "anyOf": [

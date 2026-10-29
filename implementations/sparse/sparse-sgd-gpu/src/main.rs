@@ -17,6 +17,8 @@ use std::time::{Duration, Instant};
 
 const PIVOT_SELECTION: &str = "max-min-random-sp-distance-proportional";
 const WEIGHT_MODEL: &str = "ortmann-region-directed-weight";
+const RR_PIVOT_ORDER: &str = "per-vertex-feistel4-cyclewalk";
+const RR_PHASE_CHUNKS: usize = 4;
 
 #[derive(Debug, Clone, PartialEq)]
 struct Config {
@@ -162,20 +164,25 @@ fn main() -> Result<()> {
     let method_setup_time = setup_started.elapsed();
 
     let runtime_started = Instant::now();
-    let context = GpuContext::new()?;
+    let context = GpuContext::new_with_pivot_shuffle()?;
     let runtime_init_time = runtime_started.elapsed();
     config.log(format!(
         "GPU: {} ({})",
         context.adapter_name, context.backend
     ));
 
-    let run = context.execute(
+    let run = context.execute_with_phase_chunks(
         params,
         &schedule,
         config.seed,
         config.common.verbose,
         config.common.output_format,
+        RR_PHASE_CHUNKS,
     )?;
+    config.log(format!(
+        "RR pivot order: {RR_PIVOT_ORDER}, phase chunks: {}",
+        RR_PHASE_CHUNKS.min(pivots.len())
+    ));
     config.log(format!(
         "GPU batching: dispatches/iteration={}, submissions/iteration={}",
         run.dispatches_per_iteration, run.submissions_per_iteration
@@ -272,7 +279,15 @@ fn main() -> Result<()> {
     )?;
 
     match config.common.output_format {
-        OutputFormat::Json => println!("{}", record.to_json_line()?),
+        OutputFormat::Json => {
+            // Method-specific metadata, following RR Full's compatible v1 extension.
+            let mut value = serde_json::to_value(&record)?;
+            value["rr_pivot_order"] = RR_PIVOT_ORDER.into();
+            value["rr_phase_chunks"] = RR_PHASE_CHUNKS.min(pivots.len()).into();
+            value["rr_step_cap"] = 1.0.into();
+            value["rr_arithmetic"] = "f32".into();
+            println!("{}", serde_json::to_string(&value)?);
+        }
         OutputFormat::Human => {
             println!(
                 "Constraints={}, rounds={}, dispatches={}, Iteration={:.3} ms, Algorithm={:.3} ms, CLI total={:.3} ms",
@@ -338,6 +353,13 @@ fn save_result(
     writeln!(file, "# Seed: {}", config.seed)?;
     writeln!(file, "# Pivot selection: {PIVOT_SELECTION}")?;
     writeln!(file, "# Weight model: {WEIGHT_MODEL}")?;
+    writeln!(file, "# RR pivot order: {RR_PIVOT_ORDER}")?;
+    writeln!(
+        file,
+        "# RR phase chunks: {}",
+        RR_PHASE_CHUNKS.min(pivots.len())
+    )?;
+    writeln!(file, "# RR arithmetic: f32; directional step cap: 1")?;
     writeln!(file, "# Pivot count: {}", pivots.len())?;
     writeln!(file, "# Constraint count: {constraint_count}")?;
     writeln!(file)?;

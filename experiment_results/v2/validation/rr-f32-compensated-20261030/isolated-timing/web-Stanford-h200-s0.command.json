@@ -1,0 +1,17 @@
+{
+  "command": [
+    "implementations/sparse/sparse-sgd-gpu/target/release/examples/quality_search",
+    "data/web-Stanford.mtx",
+    "0",
+    "4@0",
+    "256",
+    "200",
+    "shuffle",
+    "cpu",
+    "15",
+    "experiment_results/v2/validation/rr-f32-compensated-20261030/isolated-timing",
+    "3"
+  ],
+  "binary_sha256": "12413ceabfc98fbb49a9198b5080c122300e8fff7c5f61715045b81b8b4696cd",
+  "execution": "sequential; no concurrent task workloads; each repetition restarts identical parameters"
+}

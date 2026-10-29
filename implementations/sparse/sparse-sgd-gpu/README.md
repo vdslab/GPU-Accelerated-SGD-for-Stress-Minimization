@@ -19,8 +19,16 @@ PNGの描画ができます。
 - one-sided相: 1 invocationが1非pivot頂点だけを書き、pivotは読み取り専用にする
 - two-sided相: pivot完全グラフをcircle methodで分解し、実辺を空きへ詰めたmatchingを順に実行する
 
-各反復で相順、matching round順、pivot順をseedから再現可能にシャッフルします。
+各反復で相順、matching round順、共通pivot順をseedから再現可能にシャッフルします。
+CLIの標準実行では、さらに頂点ごとに独立したpivot順を作り、片側更新とmatching roundを
+4分割して交互に処理します（pivotが4個未満ならその個数）。各制約の処理は1反復につき1回です。
+
+頂点別の順序には4段Feistel置換とcycle walkingを使います。pivot数が2の累乗でなくても
+重複・欠落がなく、追加の頂点×pivot順序表は不要です。グラフの種類・次数で切り替えません。
+座標・GPU演算は単一のf32で、重み・学習率・移動係数の上限1・RR matchingを維持します。
 atomicsやlockは使用しません。
+
+JSONには`rr_pivot_order`、`rr_phase_chunks`、`rr_step_cap`、`rr_arithmetic`を記録します。
 
 
 ## 共通の省メモリ・高速化
@@ -38,23 +46,29 @@ atomicsやlockは使用しません。
   次反復のuniform/permutation書き換えは完了待ちの後です。
 - 出力形式を維持したままBufWriterと明示flushを使用します。
 
-標準の更新順序、15反復、epsilon、pivot数は変更していません。
-従来RRとの品質一致はCPU版と同じ品質であることを意味しません。
-[v3との照合・品質の未解決点・100万ノード実測](../../../experiment_results/v2/validation/rr-common-optimization-20261030/README.md)を参照してください。
+前処理の同値性と反復高速化を保ち、標準の更新順序を上記の方式へ変更しています。
+反復数・epsilon・pivot数は指定値のままです。CPUと同じ15反復で比較し、追加反復は行いません。
+[現在のf32品質検証・CPU比較](../../../experiment_results/v2/validation/rr-f32-compensated-20261030/README.md)には
+8グラフ×4seed、選択後の未使用seed、Stanfordの4,096始点評価、時間比較を記録しています。
+CPUと完全に同じstressや、未検証の全グラフ・seedでの改善を保証するものではありません。
+
+[v3との照合・旧順序の品質課題・100万ノード実測](../../../experiment_results/v2/validation/rr-common-optimization-20261030/README.md)
+は旧実装の記録です。
 
 ## 品質の診断
 
-`quality_probe`は同じ初期配置と固定256始点のsampled full stressを使います。
-小規模グラフでもsampledなので、v3の小規模exact stressと直接比べないでください。
+CLI標準の対照実験には`quality_search`の`shuffle`と`4@0`を指定します。
+`4@0`は最初から4分割する指定です。`standard`と`1@0`は旧RR順序を再生します。
+`cpu`を付けると独立したCPU前処理とのSHA一致も確認します。
 
 ```sh
-cargo run --release --manifest-path implementations/sparse/sparse-sgd-gpu/Cargo.toml --example quality_probe -- data/web-NotreDame.mtx 200 3 cpu 1
+cargo run --release --manifest-path implementations/sparse/sparse-sgd-gpu/Cargo.toml --example quality_search -- data/web-NotreDame.mtx 3 '4@0' 256 200 shuffle cpu
 ```
 
-最後の`1`を`1,4,16`とすると、片側相を分割して両側roundと交互に実行する対照実験になります。
-さらに`stride`を付けると頂点別の互いに素な巡回strideを試します。いずれも**診断専用**で、
-CLIの標準実行では無効です。制約数は変えませんが更新順序と品質が変わります。
-別グラフで大きく悪化する例があるため、改善済みの標準手法として扱わないでください。
+評価は固定256始点（上記コマンドの場合）のsampled full stressです。小規模グラフでもsampledなので、
+CLIのauto exact stressやv3の小規模exact stressと直接比べないでください。
+`quality_probe`の循環shift/strideは旧方式の診断用に残しています。
+`compensated`・`extended`・`coefficients`・`recenter`・`cap=VALUE`も診断専用で、CLI標準では使用しません。
 
 [追加の反復高速化・Full/Sparseの大規模CPU比較](../../../experiment_results/v2/validation/rr-iteration-20261030/README.md)
 では、compute passをまとめた前後の最終座標一致も検証しています。

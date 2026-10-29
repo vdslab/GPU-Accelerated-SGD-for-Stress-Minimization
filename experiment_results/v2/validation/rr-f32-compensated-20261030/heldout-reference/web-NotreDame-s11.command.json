@@ -1,0 +1,13 @@
+{
+  "command": [
+    "implementations/sparse/sparse-sgd-gpu/target/release/examples/quality_search",
+    "data/web-NotreDame.mtx",
+    "11",
+    "1@0",
+    "256",
+    "200",
+    "standard",
+    "cpu"
+  ],
+  "binary_sha256": "c2552625e5dcf8425426daa19ebbebc285b1c9e983714ba93bb3ce767c40d2e5"
+}

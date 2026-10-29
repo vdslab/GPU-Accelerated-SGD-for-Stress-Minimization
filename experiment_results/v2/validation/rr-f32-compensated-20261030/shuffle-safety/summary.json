@@ -1,0 +1,49 @@
+{
+  "cases": 12,
+  "max_ratio_cpu": 1.0624148165762481,
+  "max_ratio_original": 1.0395000485213644,
+  "cpu_regressions_over_5_percent": [
+    {
+      "graph": "EVA",
+      "seed": 3,
+      "mode": "shuffle",
+      "variant": "4@0",
+      "cpu_stress": 1096984.9037437176,
+      "original_stress": 1121166.8695500228,
+      "candidate_stress": 1165453.015297795,
+      "ratio_cpu": 1.0624148165762481,
+      "ratio_original": 1.0395000485213644,
+      "cpu_seconds": 0.15723125,
+      "candidate_seconds": 0.069176875,
+      "speedup": 2.2728874352881654
+    },
+    {
+      "graph": "EVA",
+      "seed": 3,
+      "mode": "shuffle",
+      "variant": "200@5",
+      "cpu_stress": 1096984.9037437176,
+      "original_stress": 1121166.8695500228,
+      "candidate_stress": 1152794.4214233048,
+      "ratio_cpu": 1.0508753743913195,
+      "ratio_original": 1.0282094955998617,
+      "cpu_seconds": 0.15723125,
+      "candidate_seconds": 0.058232,
+      "speedup": 2.700083287539497
+    },
+    {
+      "graph": "EVA",
+      "seed": 7,
+      "mode": "shuffle",
+      "variant": "4@0",
+      "cpu_stress": 1101727.3942711002,
+      "original_stress": 1152494.0398003762,
+      "candidate_stress": 1165549.9484042877,
+      "ratio_cpu": 1.0579295336260677,
+      "ratio_original": 1.011328395768687,
+      "cpu_seconds": 0.144514041,
+      "candidate_seconds": 0.061185542,
+      "speedup": 2.361898518444112
+    }
+  ]
+}

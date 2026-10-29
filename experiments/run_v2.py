@@ -189,16 +189,12 @@ def validate_success(item: VariantRun, completed: subprocess.CompletedProcess) -
     if not isinstance(raw, dict):
         raise common.RunnerError("Method stdout JSON must be an object")
     rr_fields = {key: value for key, value in raw.items() if key.startswith("rr_")}
-    if item.run.method != "rr_sgd" and rr_fields:
-        raise common.RunnerError("RR metadata only permitted for rr_sgd")
     if item.variant:
         expected = {RR_META[key]: value for key, value in item.variant.items()}
         expected["rr_shared_bytes"] = 16 * item.variant["tile_size"] if item.variant["coordinate_memory"] == "shared" else 0
         if rr_fields != expected:
             raise common.RunnerError(f"RR metadata disagrees with requested variant: {rr_fields!r} vs {expected!r}")
-    generic = {key: value for key, value in raw.items() if key not in rr_fields}
-    sanitized = subprocess.CompletedProcess(completed.args, completed.returncode, json.dumps(generic) + "\n", completed.stderr)
-    common.parse_and_validate_success(item.run, sanitized)
+    common.parse_and_validate_success(item.run, completed)
     if item.run.method in {"atomic_sgd", "atomic_sparse_sgd"}:
         constraints = raw["constraints"]
         if not isinstance(constraints, int) or isinstance(constraints, bool) or constraints < 0:

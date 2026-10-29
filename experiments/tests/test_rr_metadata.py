@@ -126,6 +126,53 @@ class RRMetadataCompatibilityTests(unittest.TestCase):
         result = fixture.results()[0]["record"]
         self.assertEqual({key: result[key] for key in METADATA}, METADATA)
 
+    def test_single_runner_and_v2_retain_sparse_rr_metadata(self):
+        fixture = test_single.SingleRunTests("test_single_run_preserves_config_timings_and_layout_and_renders_twice")
+        fixture.setUp()
+        self.addCleanup(fixture.tearDown)
+        metadata = {"rr_pivot_order": "per-vertex-feistel4-cyclewalk", "rr_phase_chunks": 1,
+                    "rr_step_cap": 1.0, "rr_arithmetic": "f32"}
+        binary = fixture.root / test_single.run_single.METHODS["rr_sparse_sgd"].binary
+        binary.write_text(binary.read_text().replace(
+            'print(json.dumps(record, separators=(",", ":")))',
+            'record.update(' + repr(metadata) + ')\nprint(json.dumps(record, separators=(",", ":")))'))
+        code, _, error = fixture.execute("--method", "rr_sparse_sgd", "--iterations", "2", "--pivots", "1")
+        self.assertEqual(code, 0, error)
+        result = fixture.results()[0]["record"]
+        self.assertEqual({key: result[key] for key in metadata}, metadata)
+        self.check_aggregation(dict(result, vertex_map_path=self.record["final_positions_path"]))
+        completed = subprocess.CompletedProcess([], 0, json.dumps(result) + "\n", "")
+        item = run_v2.VariantRun(dataclasses.replace(self.run, method="rr_sparse_sgd"), "default", {})
+        with patch.object(run_v2.common, "parse_and_validate_success", return_value=result) as validate:
+            self.assertEqual(run_v2.validate_success(item, completed), result)
+            validate.assert_called_once_with(item.run, completed)
+
+    def test_sparse_metadata_validation_rejects_partial_wrong_method_and_wrong_chunks(self):
+        valid = {"method": "rr_sparse_sgd", "pivots": 200,
+                 "rr_pivot_order": "per-vertex-feistel4-cyclewalk", "rr_phase_chunks": 4,
+                 "rr_step_cap": 1.0, "rr_arithmetic": "f32"}
+        record_metadata.validate_rr_metadata(valid)
+        for pivots in (1, 2, 3, 4, 200):
+            record_metadata.validate_rr_metadata(dict(valid, pivots=pivots, rr_phase_chunks=min(4, pivots)))
+        bad_records = [dict(valid, **change) for change in (
+            {"method": "rr_sgd"}, {"rr_phase_chunks": 3}, {"rr_phase_chunks": 4.0},
+            {"rr_step_cap": True}, {"rr_step_cap": 0.9}, {"rr_arithmetic": "f64"},
+            {"rr_pivot_order": "unknown"}, {"pivots": None}, {"pivots": True})]
+        bad_records += [{k: v for k, v in valid.items() if k != field}
+                        for field in record_metadata.RR_SPARSE_METADATA_FIELDS]
+        for bad in bad_records:
+            with self.subTest(record=bad), self.assertRaises(ValueError):
+                record_metadata.validate_rr_metadata(bad)
+        if importlib.util.find_spec("jsonschema"):
+            import jsonschema
+            validator = jsonschema.Draft202012Validator(json.loads(run_experiments.SCHEMA_PATH.read_text()))
+            validator.validate(dict(self.record, **valid))
+            for bad in bad_records:
+                # JSON Schema treats integral floats as integers; Python consumers are stricter.
+                if isinstance(bad.get("rr_phase_chunks"), float):
+                    continue
+                self.assertTrue(list(validator.iter_errors(dict(self.record, **bad))))
+
     def test_future_source_snapshot_covers_schema_and_shared_validator(self):
         files = {str(path.relative_to(run_v2.REPO_ROOT)) for path in run_v2.source_files()}
         self.assertIn("experiments/record_metadata.py", files)
