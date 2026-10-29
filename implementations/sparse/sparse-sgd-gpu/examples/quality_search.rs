@@ -20,7 +20,7 @@ use std::{
 mod cpu;
 fn main() -> Result<()> {
     let args: Vec<_> = std::env::args().collect();
-    anyhow::ensure!(args.len()>=4,"usage: quality_search GRAPH SEED VARIANTS [SAMPLES] [PIVOTS] [standard|compensated|extended|coefficients|cap=VALUE] [cpu|no-cpu] [ITERATIONS] [POSITIONS_DIR] [REPEATS]; VARIANTS = chunks@start,... (zero-based start)");
+    anyhow::ensure!(args.len()>=4,"usage: quality_search GRAPH SEED VARIANTS [SAMPLES] [PIVOTS] [standard|shuffle] [cpu|no-cpu] [ITERATIONS] [POSITIONS_DIR] [REPEATS]; VARIANTS = chunks@start,... (zero-based start)");
     let seed = args[2].parse()?;
     let repeats: usize = args.get(10).map(|x| x.parse()).transpose()?.unwrap_or(1);
     anyhow::ensure!(repeats > 0, "repeats must be positive");
@@ -29,61 +29,23 @@ fn main() -> Result<()> {
     let h = args.get(5).map(|x| x.parse()).transpose()?.unwrap_or(200);
     let mode = args.get(6).map(String::as_str).unwrap_or("standard");
     anyhow::ensure!(
-        matches!(
-            mode,
-            "standard" | "compensated" | "extended" | "coefficients" | "recenter" | "shuffle"
-        ) || mode.starts_with("cap="),
-        "unknown arithmetic mode: {mode}"
+        matches!(mode, "standard" | "shuffle"),
+        "unknown order mode: {mode}; only ordinary f32 is supported"
     );
     let g = Graph::from_mtx(Path::new(&args[1]))?.largest_connected_component()?;
-    let coefficients = args.get(6).is_some_and(|x| x == "coefficients");
-    let mut p = preprocess::prepare_with_residuals(
+    let p = preprocess::prepare(
         &g,
         iterations,
         0.1,
         h,
         true,
         &mut StdRng::seed_from_u64(seed),
-        coefficients,
     )?;
     let s = build_prepared_schedule(&g, &p.params, p.one_sided, p.one_sided_count, seed)?;
-    let compensated = args.get(6).is_some_and(|x| x == "compensated");
-    let extended = args.get(6).is_some_and(|x| x == "extended");
-    let cap = args
-        .get(6)
-        .and_then(|x| x.strip_prefix("cap="))
-        .map(str::parse::<f32>)
-        .transpose()?;
     let context = if mode == "shuffle" {
         GpuContext::new_with_pivot_shuffle()?
-    } else if mode == "recenter" {
-        GpuContext::new_with_recentering()?
-    } else if let Some(cap) = cap {
-        GpuContext::new_with_step_cap(cap)?
-    } else if coefficients {
-        let lookup: std::collections::HashMap<_, _> = p
-            .params
-            .pairs
-            .iter()
-            .map(|pair| {
-                (
-                    (pair.u as u32, pair.v as u32),
-                    (pair.weight_u, pair.weight_v),
-                )
-            })
-            .collect();
-        for pair in &s.two_sided {
-            let (wu, wv) = lookup[&(pair.u, pair.v)];
-            p.weight_residuals
-                .push((wu - f64::from(pair.weight_u)) as f32);
-            p.weight_residuals
-                .push((wv - f64::from(pair.weight_v)) as f32);
-        }
-        GpuContext::new_with_extended_coefficients(p.weight_residuals)?
-    } else if extended {
-        GpuContext::new_with_extended_precision()?
     } else {
-        GpuContext::new_with_compensation(compensated)?
+        GpuContext::new()?
     };
     let edges: Vec<_> = g
         .edge_src
@@ -147,7 +109,7 @@ fn main() -> Result<()> {
         };
         println!(
             "{}",
-            serde_json::json!({"positions_path":positions_path,"arithmetic_mode":mode,"iterations":iterations,"step_cap":cap,"coefficients":coefficients,"compensated":compensated,"extended":extended,"graph":args[1],"nodes":g.node_size,"edges":g.edge_size,"seed":seed,"pivots":h,"variant":variant,"samples":samples,"stress":stress,"repeats":repeats,"iteration_samples_seconds":timings,"iteration_seconds":median(&timings),"gpu_run_wall_seconds":wall,"initial_sha256":positions_sha256_f64(&p.params.positions),"preprocess_sha256":p.fingerprint,"final_sha256":positions_sha256_f64(&run.positions)})
+            serde_json::json!({"positions_path":positions_path,"arithmetic_mode":mode,"iterations":iterations,"step_cap":1.0,"arithmetic":"f32","graph":args[1],"nodes":g.node_size,"edges":g.edge_size,"seed":seed,"pivots":h,"variant":variant,"samples":samples,"stress":stress,"repeats":repeats,"iteration_samples_seconds":timings,"iteration_seconds":median(&timings),"gpu_run_wall_seconds":wall,"initial_sha256":positions_sha256_f64(&p.params.positions),"preprocess_sha256":p.fingerprint,"final_sha256":positions_sha256_f64(&run.positions)})
         );
     }
     if args.get(7).is_some_and(|x| x == "cpu") {

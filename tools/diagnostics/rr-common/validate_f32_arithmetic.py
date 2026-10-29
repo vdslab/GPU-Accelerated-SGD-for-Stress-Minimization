@@ -11,11 +11,11 @@ import subprocess
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=pathlib.Path, required=True)
-    parser.add_argument('--mode', default='cap=0.9')
+    parser.add_argument('--mode', choices=['standard', 'shuffle'], default='shuffle')
     parser.add_argument('--binary', type=pathlib.Path, default=pathlib.Path('implementations/sparse/sparse-sgd-gpu/target/release/examples/quality_search'))
     parser.add_argument('--cpu-reference', type=pathlib.Path)
     parser.add_argument('--baseline-reference', type=pathlib.Path)
-    parser.add_argument('--variants', default='1@0')
+    parser.add_argument('--variants', default='4@0')
     parser.add_argument('--graphs', default='EVA,USpowerGrid,luxembourg_osm,preferentialAttachment,smallworld,coAuthorsCiteseer,web-NotreDame,web-Stanford')
     parser.add_argument('--seeds', default='0,1,3,7')
     args = parser.parse_args()

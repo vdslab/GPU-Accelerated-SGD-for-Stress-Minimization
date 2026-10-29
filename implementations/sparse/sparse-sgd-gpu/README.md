@@ -68,7 +68,11 @@ cargo run --release --manifest-path implementations/sparse/sparse-sgd-gpu/Cargo.
 評価は固定256始点（上記コマンドの場合）のsampled full stressです。小規模グラフでもsampledなので、
 CLIのauto exact stressやv3の小規模exact stressと直接比べないでください。
 `quality_probe`の循環shift/strideは旧方式の診断用に残しています。
-`compensated`・`extended`・`coefficients`・`recenter`・`cap=VALUE`も診断専用で、CLI標準では使用しません。
+丸め誤差の補償・f32二重化・係数の下位桁保持・反復中の再中心化・移動係数上限の変更は撤去しました。
+診断モードも通常のf32による`standard`と`shuffle`だけです。
+CPUはf64、GPUはf32、同じ反復数で比較し、精度差は実装条件として報告します。
+stressの差には更新順序と演算精度の両方が影響するため、全差分を丸め誤差だけに帰属しません。
+最終座標の中心合わせと共通のf64 stress評価は従来どおりで、GPU反復の精度補償ではありません。
 
 [追加の反復高速化・Full/Sparseの大規模CPU比較](../../../experiment_results/v2/validation/rr-iteration-20261030/README.md)
 では、compute passをまとめた前後の最終座標一致も検証しています。
