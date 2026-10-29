@@ -47,7 +47,9 @@ def main():
  text=re.sub(r'^\| delaunay_n19・Sparse .*$',f'| delaunay_n19・Sparse v4 | 524,288 | {len(cpu)}/5 | {len(atomic)}/5 | {len(gpu)}/5 | {span(gpu,"iteration_time_ms",1000)}秒 | {span(gpu,"process_wall_seconds")}秒 |',text,flags=re.M)
  fail=[r for r in runs if r['study']=='basic' and r['graph']=='delaunay_n19' and r['status']!='success']
  counts={m:{status:sum(r['method']==m and r['status']==status for r in fail) for status in sorted({r['status'] for r in fail if r['method']==m})} for m in ['sparse_sgd','atomic_sparse_sgd','rr_sparse_sgd']}
- replace('**表1：**','**表1：** 資源監視条件下の完了数と時間。Full delaunay_n14のCPUは正式5実行がRSS監視で停止し、Atomicは事前試行がRSSで停止した。Full RRの残り1実行はRSSで停止した。Sparseの非成功状態（CPU・Atomicはv3、RRはv4）は'+str(counts)+'。warmup_failedは事前試行失敗による正式seed未起動を表す。全体時間は入力・前処理・評価・保存を含み、終了後の圧縮は含めない。')
+ labels={'sparse_sgd':'CPU v3','atomic_sparse_sgd':'Atomic v3','rr_sparse_sgd':'RR v4'};states={'memory_limit':'RSS上限停止','timeout':'時間上限停止','warmup_failed':'事前試行失敗による未起動','error':'実行エラー','disk_limit':'ディスク空き上限停止'}
+ failures_text='、'.join(f'{labels[m]}：'+ '・'.join(f'{states.get(k,k)}{n}件' for k,n in cc.items()) for m,cc in counts.items() if cc) or 'なし'
+ replace('**表1：**','**表1：** 資源監視条件下の完了数と時間。Full delaunay_n14のCPUは正式5実行がRSS監視で停止し、Atomicは事前試行がRSSで停止した。Full RRの残り1実行はRSSで停止した。Sparseの非成功状態は'+failures_text+'。Sparse CPU・Atomicの事前試行停止理由は既存v3のRSS上限である。全体時間は入力・前処理・評価・保存を含み、終了後の圧縮は含めない。')
  replace('Sparse RRは524,288',f'Sparse RR v4は524,288頂点・1,572,823辺のdelaunay_n19で{len(gpu)}/5 seedが完了した。SGDの15反復合計は{span(gpu,"iteration_time_ms",1000)}秒、全体時間は{span(gpu,"process_wall_seconds")}秒だった。CPUは{len(cpu)}/5、Atomicは{len(atomic)}/5が完了した。'+('CPU対応成功seedによる速度・stress比較は図5と基本比較に含める。' if cpu else 'CPUの正式成功がないため、速度・品質の優劣は評価しない。')+'stressの絶対値を異なるグラフ間の品質比較には用いない。')
  text=text.replace('![図7 CPUの対応結果がない大規模グラフの配置]','![図7 資源監視条件下の大規模グラフ配置]')
  replace('**図7：**',f'**図7：** 完了して保存されたRR配置を全て示す。上段はFull v3のseed 1〜4、下段はSparse v4のseed {", ".join(r["seed"] for r in gpu) if gpu else "なし"}である。良好なGPU seedの選抜は行わない。頂点だけを描き、同じグラフ内で共通の座標尺度を使う。見出しの秒数はSGDの15反復合計で、全体時間は表1を参照する。')

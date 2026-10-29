@@ -5,6 +5,8 @@ import csv,json,statistics
 BASE=Path(__file__).resolve().parents[1]/'experiment_results/v4'
 def read(name):return list(csv.DictReader((BASE/'tables'/name).open()))
 def number(r,k):return float(r[k])
+STATUS={'success':'完了','warmup_failed':'事前試行失敗で未起動','timeout':'時間上限','memory_limit':'RSS上限','disk_limit':'ディスク空き上限','error':'実行エラー'}
+def status_counts(counts):return '、'.join(f'{STATUS.get(k,k)} {v}件' for k,v in counts.items())
 def main():
  audit=json.loads((BASE/'tables/audit.json').read_text());assert audit['completed']==audit['planned'] and audit['convergence_evaluated']
  summary=read('summary.csv');pairs=read('paired-ratios.csv');runs=read('runs.csv');arrivals=read('arrivals.csv')
@@ -21,7 +23,7 @@ RR Sparseのみ現行実装で再測定し、CPU・Atomic Sparseは既存v3の�
 ## 実験範囲と条件
 
 図5の既存37グラフと図7のdelaunay_n19を対象にRRのみ5 seed、図6のSparse 3グラフをRRのみ10 seedで測定した。
-RR計{audit['planned']}条件の記録が完了し、状態内訳は{audit['statuses']}。CPU・Atomicの参照は{audit['reference_records']}条件で、比較用データ全体の状態内訳は{audit['comparison_statuses']}。
+RR計{audit['planned']}条件の記録が完了し、状態内訳は{status_counts(audit['statuses'])}。CPU・Atomicの参照は{audit['reference_records']}条件で、比較用データ全体の状態内訳は{status_counts(audit['comparison_statuses'])}。
 当初3手法を再測定した後、ユーザー指示でRRのみへ変更した。変更前のCPU・Atomic {audit['excluded_auxiliary_v4_records']}条件は補助記録として保存し、以下の比較には混ぜない。
 これは以前図に掲載された38グラフの追試であり、v3の78大規模候補すべての追試ではない。
 入力はv3と同じ前処理済み最大連結成分をSHA照合した。
@@ -63,10 +65,11 @@ Atomic Sparse（既存v3参照）：{description(atomic)}
    values=[float(r[k])/unit for r in rs];return f'{min(values):.3f}〜{max(values):.3f}' if values else '—'
   text+=f"| {m} | {len(rs)}/5 | {span('iteration_time_ms',1000)} | {span('process_wall_seconds')} | {span('peak_rss_bytes',1024**3)} |\n"
  missing=read('missing.csv')
- text+='\n## 非成功条件\n\n| 実験 | グラフ | 手法 | 状態 | 件数 |\n| --- | --- | --- | --- | ---: |\n'
+ text+='\n## 非成功条件\n\n| 実験 | グラフ | 手法・測定元 | 状態 | 理由 | 件数 |\n| --- | --- | --- | --- | --- | ---: |\n'
  from collections import Counter
- for (study,g,m,status),count in sorted(Counter((r['study'],r['graph'],r['method'],r['status']) for r in missing).items()):
-  text+=f'| {study} | {g} | {m} | {status} | {count} |\n'
+ for (study,g,m,version,status,reason),count in sorted(Counter((r['study'],r['graph'],r['method'],r['experiment_version'],r['status'],r['reason']) for r in missing).items()):
+  reason=STATUS.get(reason,reason).replace('\n','<br>').replace('|','\\|')[:200]
+  text+=f'| {study} | {g} | {m} ({version}) | {STATUS.get(status,status)} | {reason} | {count} |\n'
  text+='\n## 速度と品質の全対象比較\n\n![Sparse v4 speed and stress](../figures/sparse_speed_stress.png)\n\n同seedのCPUに対する比の中央値と最小〜最大。上段は大きいほど高速、下段は小さいほどstressが低い。下段の点線は1.05。×は対応成功seedがない条件を表す。全38対象を表示し、成功したGPUだけの選抜はしない。\n'
  text+='''
 図7は全ての正式完了RR配置を示す。CPUに結果が得られた場合は「CPUでは処理不能」とは表現しない。
