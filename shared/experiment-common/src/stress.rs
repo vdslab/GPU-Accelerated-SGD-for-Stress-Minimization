@@ -123,13 +123,21 @@ impl StressMeasurement {
     }
 }
 
+fn configured_samples() -> usize {
+    std::env::var("SGD_STRESS_SAMPLES").map(|value| {
+        let samples = value.parse::<usize>().expect("SGD_STRESS_SAMPLES must be a positive integer");
+        assert!(samples > 0, "SGD_STRESS_SAMPLES must be positive");
+        samples
+    }).unwrap_or(DEFAULT_SAMPLES)
+}
+
 pub fn measure_auto_f64(positions: &[[f64; 2]], edges: &[(usize, usize)]) -> StressMeasurement {
     let started = Instant::now();
     let result = evaluate_f64(
         StressMode::Auto,
         positions,
         edges,
-        DEFAULT_SAMPLES,
+        configured_samples(),
         DEFAULT_SEED,
     );
     StressMeasurement::from_result(result, started.elapsed().as_secs_f64() * 1_000.0)
@@ -141,7 +149,7 @@ pub fn measure_auto_f32(positions: &[[f32; 2]], edges: &[(usize, usize)]) -> Str
         StressMode::Auto,
         positions,
         edges,
-        DEFAULT_SAMPLES,
+        configured_samples(),
         DEFAULT_SEED,
     );
     StressMeasurement::from_result(result, started.elapsed().as_secs_f64() * 1_000.0)

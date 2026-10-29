@@ -412,7 +412,11 @@ mod tests {
     #[test]
     fn cpu_shuffle_is_opt_in() {
         assert!(!Config::from_iter(Vec::<String>::new()).unwrap().cpu_shuffle);
-        assert!(Config::from_iter(["--cpu-shuffle".to_owned()]).unwrap().cpu_shuffle);
+        assert!(
+            Config::from_iter(["--cpu-shuffle".to_owned()])
+                .unwrap()
+                .cpu_shuffle
+        );
     }
 
     #[test]

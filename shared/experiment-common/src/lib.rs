@@ -19,3 +19,5 @@ pub use stress::{
     evaluate_f32, evaluate_f64, measure_auto_f32, measure_auto_f64, StressKind, StressMeasurement,
     StressMode, StressResult, AUTO_EXACT_MAX_N, DEFAULT_SAMPLES, DEFAULT_SEED,
 };
+
+pub mod trace;

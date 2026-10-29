@@ -1,0 +1,20 @@
+[
+  {
+    "method": "sparse_sgd",
+    "trace_checkpoints": 8,
+    "identical_final_coordinates": true,
+    "atomic_note": null
+  },
+  {
+    "method": "atomic_sparse_sgd",
+    "trace_checkpoints": 8,
+    "identical_final_coordinates": false,
+    "atomic_note": "lock order is nondeterministic"
+  },
+  {
+    "method": "rr_sparse_sgd",
+    "trace_checkpoints": 8,
+    "identical_final_coordinates": true,
+    "atomic_note": null
+  }
+]
