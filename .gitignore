@@ -5,7 +5,7 @@
 # Historical local payloads are kept on disk; archive metadata is tracked.
 /archive/experiments/legacy-output/
 
-# Build and editor caches at any depth
+# Build and editor caches at any depth (including tools/diagnostics/*/target/)
 target/
 __pycache__/
 *.pyc

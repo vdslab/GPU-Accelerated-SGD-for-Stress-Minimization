@@ -2,3 +2,7 @@
 **/*.initial.txt
 **/*.final.txt
 **/*.vertex-map.txt
+
+# Diagnostic layouts and saved executables stay local; manifests retain SHA-256.
+**/*.positions.txt
+**/binaries/
