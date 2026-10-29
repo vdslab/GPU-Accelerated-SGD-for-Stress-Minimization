@@ -10,7 +10,7 @@ use std::time::{Duration, Instant};
 use wgpu::util::DeviceExt;
 
 const WORKGROUP_SIZE: u32 = 256;
-const MAX_PASSES_PER_SUBMISSION: usize = 256;
+const MAX_DISPATCHES_PER_SUBMISSION: usize = 256;
 const CANARY: [f32; 2] = [123_456.0, -654_321.0];
 
 #[repr(C)]
@@ -81,11 +81,47 @@ impl GpuContext {
         verbose: bool,
         output_format: OutputFormat,
     ) -> Result<GpuRunResult> {
+        self.execute_with_phase_chunks(params, schedule, seed, verbose, output_format, 1)
+    }
+
+    /// Diagnostic control: each constraint is still visited exactly once per epoch.
+    /// Chunk count is global, never selected by graph family or degree.
+    pub fn execute_with_phase_chunks(
+        &self,
+        params: SgdParams,
+        schedule: &Schedule,
+        seed: u64,
+        verbose: bool,
+        output_format: OutputFormat,
+        phase_chunks: usize,
+    ) -> Result<GpuRunResult> {
+        self.execute_diagnostic(
+            params,
+            schedule,
+            seed,
+            verbose,
+            output_format,
+            phase_chunks,
+            false,
+        )
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    pub fn execute_diagnostic(
+        &self,
+        params: SgdParams,
+        schedule: &Schedule,
+        seed: u64,
+        verbose: bool,
+        output_format: OutputFormat,
+        phase_chunks: usize,
+        vertex_stride: bool,
+    ) -> Result<GpuRunResult> {
         let upload_start = Instant::now();
         let n = params.positions.len();
         let h = params.pivots.len();
         ensure!(
-            n <= u32::MAX as usize && h <= u32::MAX as usize,
+            n > 0 && h > 0 && n <= u32::MAX as usize && h <= u32::MAX as usize,
             "グラフが大きすぎます"
         );
         ensure!(
@@ -93,9 +129,39 @@ impl GpuContext {
             "one-sided配列の長さが不正です"
         );
 
-        let initial_positions = params.positions.clone();
-        let mut position_data: Vec<[f32; 2]> = params
-            .positions
+        // Constraints are already encoded in schedule; release before GPU allocation.
+        drop(params.pairs);
+        let limits = self.device.limits();
+        for (name, bytes) in [
+            (
+                "one-sided",
+                std::mem::size_of_val(schedule.one_sided.as_slice()) as u64,
+            ),
+            (
+                "two-sided",
+                std::mem::size_of_val(schedule.two_sided.as_slice())
+                    .max(std::mem::size_of::<crate::schedule::GpuPair>()) as u64,
+            ),
+            ("positions", (n as u64 + 2) * 8),
+        ] {
+            ensure!(
+                bytes <= limits.max_buffer_size
+                    && bytes <= u64::from(limits.max_storage_buffer_binding_size),
+                "{name} requires {bytes} bytes, exceeding this adapter's storage buffer limit"
+            );
+        }
+        ensure!(
+            n.div_ceil(WORKGROUP_SIZE as usize)
+                <= limits.max_compute_workgroups_per_dimension as usize,
+            "vertex dispatch exceeds adapter workgroup limit"
+        );
+        // The experimental affine permutation uses a u32 product.
+        ensure!(
+            !vertex_stride || h <= 65535,
+            "diagnostic stride requires at most 65535 pivots"
+        );
+        let initial_positions = params.positions;
+        let mut position_data: Vec<[f32; 2]> = initial_positions
             .iter()
             .map(|p| [p[0] as f32, p[1] as f32])
             .collect();
@@ -116,28 +182,38 @@ impl GpuContext {
                 contents: bytemuck::cast_slice(&schedule.one_sided),
                 usage: wgpu::BufferUsages::STORAGE,
             });
+        let dummy_pair = [crate::schedule::GpuPair::default()];
         let pair_data = if schedule.two_sided.is_empty() {
-            vec![crate::schedule::GpuPair::default()]
+            &dummy_pair[..]
         } else {
-            schedule.two_sided.clone()
+            &schedule.two_sided[..]
         };
         let pair_buffer = self
             .device
             .create_buffer_init(&wgpu::util::BufferInitDescriptor {
                 label: Some("two-sided pairs"),
-                contents: bytemuck::cast_slice(&pair_data),
+                contents: bytemuck::cast_slice(pair_data),
                 usage: wgpu::BufferUsages::STORAGE,
             });
         let permutation_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
             label: Some("pivot permutation"),
-            size: (h.max(1) * std::mem::size_of::<u32>()) as u64,
+            size: (2 * h.max(1) * std::mem::size_of::<u32>()) as u64,
             usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
             mapped_at_creation: false,
         });
 
+        let pivot_ids: Vec<u32> = params.pivots.iter().map(|&p| p as u32).collect();
+        self.queue.write_buffer(
+            &permutation_buffer,
+            (h * 4) as u64,
+            bytemuck::cast_slice(&pivot_ids),
+        );
+
         let alignment = self.device.limits().min_uniform_buffer_offset_alignment as usize;
         let slot_size = std::mem::size_of::<Uniforms>().div_ceil(alignment) * alignment;
-        let invocation_count = schedule.round_count() + 1;
+        ensure!(phase_chunks > 0, "phase chunks must be positive");
+        let phase_chunks = phase_chunks.min(h);
+        let invocation_count = schedule.round_count() + phase_chunks;
         let submission_ranges = submission_ranges(invocation_count);
         let uniform_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
             label: Some("dynamic iteration uniforms"),
@@ -168,7 +244,7 @@ impl GpuContext {
                         2,
                         wgpu::BufferBindingType::Storage { read_only: true },
                         false,
-                        16,
+                        8,
                     ),
                     buffer_layout(
                         3,
@@ -229,6 +305,8 @@ impl GpuContext {
         let mut rng = StdRng::seed_from_u64(seed ^ 0x4750_555f_5350_4152);
         let mut pivot_permutation: Vec<u32> = (0..h as u32).collect();
         let mut round_order: Vec<usize> = (0..schedule.round_count()).collect();
+        let mut invocations = Vec::with_capacity(invocation_count);
+        let mut uniform_bytes = vec![0u8; slot_size * invocation_count];
         for (iteration, &eta) in params.etas.iter().enumerate() {
             if verbose {
                 let message = iteration_log(iteration);
@@ -246,23 +324,34 @@ impl GpuContext {
             );
 
             let one_first = rng.random_bool(0.5);
-            let mut invocations = Vec::with_capacity(invocation_count);
-            if one_first {
-                invocations.push(None);
-            }
-            invocations.extend(round_order.iter().copied().map(Some));
-            if !one_first {
-                invocations.push(None);
+            invocations.clear();
+            for chunk in 0..phase_chunks {
+                let start = chunk * h / phase_chunks;
+                let end = (chunk + 1) * h / phase_chunks;
+                let one = (None, start, end - start);
+                if one_first {
+                    invocations.push(one);
+                }
+                let begin_round = chunk * round_order.len() / phase_chunks;
+                let end_round = (chunk + 1) * round_order.len() / phase_chunks;
+                invocations.extend(
+                    round_order[begin_round..end_round]
+                        .iter()
+                        .copied()
+                        .map(|r| (Some(r), 0, 0)),
+                );
+                if !one_first {
+                    invocations.push(one);
+                }
             }
 
-            let mut uniform_bytes = vec![0u8; slot_size * invocation_count];
-            for (slot, round) in invocations.iter().enumerate() {
+            for (slot, (round, pivot_start, pivot_len)) in invocations.iter().enumerate() {
                 let (start, count) = round
                     .map(|ri| {
                         let range = schedule.round_range(ri);
                         (range.start as u32, range.len() as u32)
                     })
-                    .unwrap_or((0, n as u32));
+                    .unwrap_or((*pivot_start as u32, *pivot_len as u32));
                 let uniforms = Uniforms {
                     n: n as u32,
                     start,
@@ -271,7 +360,7 @@ impl GpuContext {
                     eta: eta as f32,
                     seed: seed as u32,
                     pivot_count: h as u32,
-                    _pad: 0,
+                    _pad: u32::from(vertex_stride),
                 };
                 uniform_bytes[slot * slot_size..slot * slot_size + 32]
                     .copy_from_slice(bytemuck::bytes_of(&uniforms));
@@ -284,33 +373,36 @@ impl GpuContext {
                         .create_command_encoder(&wgpu::CommandEncoderDescriptor {
                             label: Some("Sparse SGD invocation batch"),
                         });
-                for slot in batch_range.clone() {
-                    let round = invocations[slot];
-                    let count = round.map(|ri| schedule.round_range(ri).len()).unwrap_or(n);
-                    if count == 0 {
-                        continue;
-                    }
+                {
+                    // Dispatches retain their order and storage dependencies in
+                    // a compute pass; no per-round pass/encoder boundary is needed.
+                    // Keep batches bounded to limit command recording overhead.
                     let mut pass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
-                        label: Some(if round.is_some() {
-                            "two-sided matching"
-                        } else {
-                            "one-sided owners"
-                        }),
+                        label: Some("Sparse SGD ordered dispatches"),
                         timestamp_writes: None,
                     });
-                    pass.set_pipeline(if round.is_some() {
-                        &two_pipeline
-                    } else {
-                        &one_pipeline
-                    });
-                    pass.set_bind_group(0, &bind_group, &[(slot * slot_size) as u32]);
-                    pass.dispatch_workgroups((count as u32).div_ceil(WORKGROUP_SIZE), 1, 1);
+                    for slot in batch_range.clone() {
+                        let round = invocations[slot].0;
+                        let count = round.map(|ri| schedule.round_range(ri).len()).unwrap_or(n);
+                        if count == 0 {
+                            continue;
+                        }
+                        pass.set_pipeline(if round.is_some() {
+                            &two_pipeline
+                        } else {
+                            &one_pipeline
+                        });
+                        pass.set_bind_group(0, &bind_group, &[(slot * slot_size) as u32]);
+                        pass.dispatch_workgroups((count as u32).div_ceil(WORKGROUP_SIZE), 1, 1);
+                    }
                 }
                 self.queue.submit([encoder.finish()]);
-                self.device
-                    .poll(wgpu::PollType::wait_indefinitely())
-                    .unwrap();
             }
+            // Queue submissions are ordered; retain the bounded command buffers,
+            // but wait once per epoch before reusing its uniforms/permutation.
+            self.device
+                .poll(wgpu::PollType::wait_indefinitely())
+                .context("GPU iteration failed")?;
         }
         let compute_time = compute_start.elapsed();
 
@@ -386,11 +478,11 @@ impl GpuContext {
 }
 
 fn submission_ranges(invocation_count: usize) -> Vec<Range<usize>> {
-    let mut ranges = Vec::with_capacity(invocation_count.div_ceil(MAX_PASSES_PER_SUBMISSION));
+    let mut ranges = Vec::with_capacity(invocation_count.div_ceil(MAX_DISPATCHES_PER_SUBMISSION));
     let mut start = 0;
     while start < invocation_count {
         let end = start
-            .saturating_add(MAX_PASSES_PER_SUBMISSION)
+            .saturating_add(MAX_DISPATCHES_PER_SUBMISSION)
             .min(invocation_count);
         ranges.push(start..end);
         start = end;
@@ -447,7 +539,7 @@ mod tests {
             assert_eq!(ranges.last().unwrap().end, invocations);
             for (index, range) in ranges.iter().enumerate() {
                 assert!(!range.is_empty());
-                assert!(range.len() <= MAX_PASSES_PER_SUBMISSION);
+                assert!(range.len() <= MAX_DISPATCHES_PER_SUBMISSION);
                 if index > 0 {
                     assert_eq!(ranges[index - 1].end, range.start);
                 }

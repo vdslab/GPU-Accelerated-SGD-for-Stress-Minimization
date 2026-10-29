@@ -1,0 +1,61 @@
+   Compiling sparse-sgd-gpu v0.1.0 (/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu)
+    Finished `release` profile [optimized] target(s) in 2.07s
+     Running unittests src/lib.rs (implementations/sparse/sparse-sgd-gpu/target/release/deps/sparse_sgd_gpu-4708e10e6bec1aa4)
+
+running 32 tests
+test cpu_reference::tests::directional_weights_move_endpoints_by_different_amounts ... ok
+test cpu_reference::tests::complete_run_centers_the_result ... ok
+test cpu_reference::tests::coincident_positions_remain_finite ... ok
+test cpu_reference::tests::each_directional_mu_is_clamped_to_one ... ok
+test cpu_reference::tests::symmetric_update_moves_endpoints_equally_in_opposite_directions ... ok
+test cpu_reference::tests::complete_pipeline_is_reproducible_for_same_seed ... ok
+test cpu_reference::tests::zero_directional_weight_keeps_that_endpoint_fixed ... ok
+test gpu::tests::iteration_log_is_one_based ... ok
+test gpu::tests::submission_ranges_are_contiguous_and_bounded ... ok
+test gpu::tests::uniform_has_wgsl_compatible_size ... ok
+test gpu::tests::shader_declares_both_entry_points_and_directional_weights ... ok
+test graph::tests::bfs_marks_unreachable_vertices_and_connectivity_rejects_graph ... ok
+test graph::tests::connected_graph_largest_component_is_identity_map ... ok
+test graph::tests::distance_weighted_pivots_are_unique_clamped_and_reproducible ... ok
+test graph::tests::equally_sized_components_choose_smallest_original_vertex ... ok
+test graph::tests::largest_component_reindexes_vertices_and_records_statistics ... ok
+test graph::tests::largest_component_rejects_self_loop_only_input_with_statistics ... ok
+test graph::tests::learning_rate_has_expected_endpoints ... ok
+test graph::tests::prepared_parameters_are_reproducible_for_same_seed ... ok
+test graph::tests::random_positions_can_be_centered ... ok
+test graph::tests::regions_use_early_pivot_for_ties_and_prefix_counts_match_formula ... ok
+test graph::tests::sparse_constraints_have_region_corrected_directional_weights ... ok
+test schedule::tests::circle_method_even_and_odd_are_complete_matchings ... ok
+test schedule::tests::flat_validator_rejects_endpoint_conflict ... ok
+test schedule::tests::compact_schedule_matches_reference_first_fit_exactly ... ok
+test schedule::tests::prepared_constraints_are_classified_once_and_rounds_are_matchings ... ok
+test schedule::tests::high_degree_star_uses_delta_rounds_and_two_memberships_per_pair ... ok
+test graph::tests::matrix_market_loading_filters_loops_and_duplicate_directions ... ok
+test graph::tests::matrix_market_loading_rejects_out_of_range_indices ... ok
+test preprocess::tests::streaming_matches_independent_cpu_reference_and_schedule_exactly ... ok
+test preprocess::tests::streaming_preserves_constraints_on_long_paths_and_stars ... ok
+test gpu::tests::real_gpu_pipeline_matches_cpu_quality_and_preserves_guards ... ok
+
+test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running unittests src/main.rs (implementations/sparse/sparse-sgd-gpu/target/release/deps/sparse_sgd_gpu-79f603607d705e64)
+
+running 2 tests
+test tests::historical_largest_component_flag_is_a_compatible_no_op ... ok
+test tests::command_line_parameters_are_parsed ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/json_output.rs (implementations/sparse/sparse-sgd-gpu/target/release/deps/json_output-581face1401220e1)
+
+running 1 test
+test json_mode_writes_one_record_and_no_progress_to_stdout ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
+
+   Doc-tests sparse_sgd_gpu
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

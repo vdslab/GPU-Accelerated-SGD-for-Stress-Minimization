@@ -28,3 +28,9 @@ implementations/full/rr_gpu/target/release/rr-gpu \
 
 JSONにはT・W・メモリ方式・shared容量・shuffle設定の`rr_*`項目も記録される。
 [実験手順](../../../experiments/docs/README.md) · [v2結果](../../../experiment_results/v2/README.md) · [実験一覧](../../../experiment_results/README.md)
+
+## 更新順序を維持した反復の高速化
+
+ラウンドごとのqueue write/submitは同じ順序で実行し、GPU完了待ちを各反復の末尾にまとめています。
+反復時間は最後のGPU処理の完了までを含みます。更新式・内側/外側シャッフル・タイル設定は変更していません。
+[Full/SparseのCPU比較と座標一致検証](../../../experiment_results/v2/validation/rr-iteration-20261030/README.md)を参照してください。

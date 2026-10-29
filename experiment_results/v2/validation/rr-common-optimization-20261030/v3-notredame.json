@@ -1,0 +1,59 @@
+{
+  "source": "/Users/kose/master/atomic-scheduling-investigation/experiment_results/v3/tables/paired-ratios.csv",
+  "source_sha256": "a82056cdfdd3de0e6a2bfeda0e3290af2d3976ca820a6ebae2ec8a799ee28c82",
+  "paired_rows": [
+    {
+      "study": "basic",
+      "graph": "web-NotreDame",
+      "family": "sparse",
+      "method": "rr_sparse_sgd",
+      "seed": "0",
+      "pivots": "200",
+      "tile_size": "",
+      "speedup": "3.2636474989460247",
+      "stress_ratio": "1.0822250679236367",
+      "cpu_stress": "7624286429.760801",
+      "stress_value": "8251193899.317145"
+    },
+    {
+      "study": "basic",
+      "graph": "web-NotreDame",
+      "family": "sparse",
+      "method": "rr_sparse_sgd",
+      "seed": "1",
+      "pivots": "200",
+      "tile_size": "",
+      "speedup": "1.419110749594747",
+      "stress_ratio": "1.1571426657938508",
+      "cpu_stress": "7311566741.47717",
+      "stress_value": "8460525830.362552"
+    },
+    {
+      "study": "basic",
+      "graph": "web-NotreDame",
+      "family": "sparse",
+      "method": "rr_sparse_sgd",
+      "seed": "3",
+      "pivots": "200",
+      "tile_size": "",
+      "speedup": "3.453836988643504",
+      "stress_ratio": "1.442364045639826",
+      "cpu_stress": "6982973940.667906",
+      "stress_value": "10071990543.659239"
+    },
+    {
+      "study": "basic",
+      "graph": "web-NotreDame",
+      "family": "sparse",
+      "method": "rr_sparse_sgd",
+      "seed": "4",
+      "pivots": "200",
+      "tile_size": "",
+      "speedup": "3.449640882226033",
+      "stress_ratio": "1.0132749092732396",
+      "cpu_stress": "7524907438.909989",
+      "stress_value": "7624799902.451046"
+    }
+  ],
+  "median_stress_ratio": 1.1196838668587437
+}

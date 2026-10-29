@@ -1,0 +1,36 @@
+Graph: nodes=1048576, edges=3145686, components=1, seed=0
+GPU: Apple M4 Pro (Metal)
+Iteration: 1
+Iteration: 2
+Iteration: 3
+Iteration: 4
+Iteration: 5
+Iteration: 6
+Iteration: 7
+Iteration: 8
+Iteration: 9
+Iteration: 10
+Iteration: 11
+Iteration: 12
+Iteration: 13
+Iteration: 14
+Iteration: 15
+GPU batching: dispatches/iteration=25, submissions/iteration=1
+       48.42 real        11.01 user        36.43 sys
+          2096545792  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              410511  page reclaims
+                 361  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                1839  voluntary context switches
+               11667  involuntary context switches
+        900615585027  instructions retired
+        193284582626  cycles elapsed
+          2411497752  peak memory footprint

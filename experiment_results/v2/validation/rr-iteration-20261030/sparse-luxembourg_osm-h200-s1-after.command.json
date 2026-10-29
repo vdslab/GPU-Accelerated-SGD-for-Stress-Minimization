@@ -1,0 +1,12 @@
+{
+  "command": [
+    "implementations/sparse/sparse-sgd-gpu/target/release/examples/quality_probe",
+    "data/luxembourg_osm.mtx",
+    "200",
+    "1",
+    "cpu",
+    "1"
+  ],
+  "binary_sha256": "a84f3587ecda3dece8e3674cd3dcba2374dfa48011a926909a19413e4e0b1f5a",
+  "input_sha256": "3920e27dcdc7a4cfcf24b5e7c092584c54b7a71e8db042623d9c66741b2c0184"
+}

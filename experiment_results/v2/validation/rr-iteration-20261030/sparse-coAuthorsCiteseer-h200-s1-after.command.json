@@ -1,0 +1,12 @@
+{
+  "command": [
+    "implementations/sparse/sparse-sgd-gpu/target/release/examples/quality_probe",
+    "data/coAuthorsCiteseer.mtx",
+    "200",
+    "1",
+    "cpu",
+    "1"
+  ],
+  "binary_sha256": "a84f3587ecda3dece8e3674cd3dcba2374dfa48011a926909a19413e4e0b1f5a",
+  "input_sha256": "77be499ad53a227cbeb5e06cb0beed75f023fc06132338b1fcfae8bf0cbad207"
+}

@@ -1,0 +1,108 @@
+[
+  {
+    "family": "Full",
+    "graph": "delaunay_n14",
+    "nodes": 16384,
+    "pivots": null,
+    "seeds": [
+      0,
+      1,
+      3
+    ],
+    "before_s": 2.044212458,
+    "after_s": 1.1418075,
+    "cpu_s": 41.742284125,
+    "speedup_before": 1.5154107991058037,
+    "speedup_cpu": 36.55807491630594,
+    "stress_ratio": 1.1539971957442092,
+    "max_stress_ratio": 1.1645552827045775
+  },
+  {
+    "family": "Full",
+    "graph": "fe_4elt2",
+    "nodes": 11143,
+    "pivots": null,
+    "seeds": [
+      0,
+      1,
+      3
+    ],
+    "before_s": 1.142159584,
+    "after_s": 0.604884167,
+    "cpu_s": 17.165989083,
+    "speedup_before": 2.0811462270145875,
+    "speedup_cpu": 28.429239949009936,
+    "stress_ratio": 1.0238660281718803,
+    "max_stress_ratio": 1.0239340975565785
+  },
+  {
+    "family": "Sparse",
+    "graph": "coAuthorsCiteseer",
+    "nodes": 227320,
+    "pivots": 200,
+    "seeds": [
+      0,
+      1,
+      3
+    ],
+    "before_s": 0.632978125,
+    "after_s": 0.267777458,
+    "cpu_s": 13.691262209,
+    "speedup_before": 2.351970665980982,
+    "speedup_cpu": 51.23343220460515,
+    "stress_ratio": 1.2725704989257884,
+    "max_stress_ratio": 1.337420937710314
+  },
+  {
+    "family": "Sparse",
+    "graph": "delaunay_n20",
+    "nodes": 1048576,
+    "pivots": 64,
+    "seeds": [
+      0
+    ],
+    "before_s": 0.30251525,
+    "after_s": 0.2736885,
+    "cpu_s": 22.496003291,
+    "speedup_before": 1.1053268588194243,
+    "speedup_cpu": 82.19564684303506,
+    "stress_ratio": 1.034189055385095,
+    "max_stress_ratio": 1.034189055385095
+  },
+  {
+    "family": "Sparse",
+    "graph": "luxembourg_osm",
+    "nodes": 114599,
+    "pivots": 200,
+    "seeds": [
+      0,
+      1,
+      3
+    ],
+    "before_s": 0.232124166,
+    "after_s": 0.131996417,
+    "cpu_s": 6.711228959,
+    "speedup_before": 1.7606193755688468,
+    "speedup_cpu": 50.84402373588671,
+    "stress_ratio": 1.0049019911474426,
+    "max_stress_ratio": 1.0067631563475654
+  },
+  {
+    "family": "Sparse",
+    "graph": "web-NotreDame",
+    "nodes": 325729,
+    "pivots": 200,
+    "seeds": [
+      0,
+      1,
+      3
+    ],
+    "before_s": 3.431640625,
+    "after_s": 0.674542583,
+    "cpu_s": 19.977857084,
+    "speedup_before": 5.087359510704159,
+    "speedup_cpu": 29.616062059643166,
+    "stress_ratio": 1.1571426657938508,
+    "max_stress_ratio": 1.442364045639826
+  }
+]

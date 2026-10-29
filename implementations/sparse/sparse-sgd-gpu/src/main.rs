@@ -3,17 +3,15 @@ use chrono::Local;
 use experiment_common::{
     current_binary, dataset_name, environment_metadata, git_metadata, measure_auto_f64,
     positions_sha256_f64, sha256_file, Artifacts, CommonExperimentArgs, ExperimentRecord,
-    FingerprintBuilder, GraphMetrics, Method, MethodStats, OutputFormat, Parameters,
-    RecordIdentity, RunMode, TimingBreakdown,
+    GraphMetrics, Method, MethodStats, OutputFormat, Parameters, RecordIdentity, RunMode,
+    TimingBreakdown,
 };
 use rand::{rngs::StdRng, SeedableRng};
 use sparse_sgd_gpu::{
-    gpu::GpuContext,
-    graph::{Graph, SgdParams},
-    schedule::build_schedule,
+    gpu::GpuContext, graph::Graph, preprocess, schedule::build_prepared_schedule,
 };
 use std::fs::{create_dir_all, File};
-use std::io::Write;
+use std::io::{BufWriter, Write};
 use std::path::{Path, PathBuf};
 use std::time::{Duration, Instant};
 
@@ -139,7 +137,8 @@ fn main() -> Result<()> {
 
     let preprocess_started = Instant::now();
     let mut rng = StdRng::seed_from_u64(config.seed);
-    let params = graph.prepare_sgd_params(
+    let prepared = preprocess::prepare(
+        &graph,
         config.iterations,
         config.epsilon,
         config.pivot_count,
@@ -147,12 +146,19 @@ fn main() -> Result<()> {
         &mut rng,
     )?;
     let common_preprocess_time = preprocess_started.elapsed();
+    let params = prepared.params;
     let pivots = params.pivots.clone();
-    let constraint_count = params.pairs.len();
-    let preprocess_sha256 = sparse_preprocess_sha256(&params);
+    let constraint_count = prepared.constraint_count;
+    let preprocess_sha256 = prepared.fingerprint;
 
     let setup_started = Instant::now();
-    let schedule = build_schedule(&graph, &params, config.seed)?;
+    let schedule = build_prepared_schedule(
+        &graph,
+        &params,
+        prepared.one_sided,
+        prepared.one_sided_count,
+        config.seed,
+    )?;
     let method_setup_time = setup_started.elapsed();
 
     let runtime_started = Instant::now();
@@ -283,28 +289,6 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn sparse_preprocess_sha256(params: &SgdParams) -> String {
-    let mut fingerprint = FingerprintBuilder::new("sparse-preprocess-v1");
-    fingerprint.usize(params.pivots.len());
-    for &pivot in &params.pivots {
-        fingerprint.usize(pivot);
-    }
-    fingerprint.usize(params.etas.len());
-    for &eta in &params.etas {
-        fingerprint.f64(eta);
-    }
-    fingerprint.usize(params.pairs.len());
-    for pair in &params.pairs {
-        fingerprint
-            .usize(pair.u)
-            .usize(pair.v)
-            .f64(pair.dij)
-            .f64(pair.weight_u)
-            .f64(pair.weight_v);
-    }
-    fingerprint.finish()
-}
-
 fn output_prefix(config: &Config) -> PathBuf {
     let suffix = if config.common.run_id == "manual" {
         format!("manual-{}", Local::now().format("%Y%m%d_%H%M%S_%3f"))
@@ -328,7 +312,7 @@ fn save_result(
     constraint_count: usize,
     vertex_map_path: &Path,
 ) -> Result<()> {
-    let mut file = File::create(path)?;
+    let mut file = BufWriter::with_capacity(1024 * 1024, File::create(path)?);
     writeln!(file, "# Rust GPU Result (sparse-sgd-gpu) - {stage}")?;
     writeln!(file, "# Dataset: {}", config.input.display())?;
     writeln!(file, "# Node count: {}", graph.node_size)?;
@@ -366,14 +350,16 @@ fn save_result(
     for position in positions {
         writeln!(file, "{} {}", position[0], position[1])?;
     }
+    file.flush()?;
     Ok(())
 }
 
 fn save_vertex_map(path: &Path, graph: &Graph) -> Result<()> {
-    let mut file = File::create(path)?;
+    let mut file = BufWriter::with_capacity(1024 * 1024, File::create(path)?);
     for (local_id, &original_id) in graph.component_info.original_vertex_ids.iter().enumerate() {
         writeln!(file, "{local_id} {original_id}")?;
     }
+    file.flush()?;
     Ok(())
 }
 

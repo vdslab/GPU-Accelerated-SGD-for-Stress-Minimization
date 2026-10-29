@@ -1,5 +1,6 @@
-// CPU preprocessing is intentionally shared with the verified reference implementation.
-// This keeps graph parsing, MaxMinRandomSP pivot selection, regions and weights identical.
+// Graph parsing and the independent CPU reference are shared.
+// preprocess streams equivalent constraints into the compact RR representation;
+// tests compare its values, ordering and RNG state against this reference.
 #[path = "../../baseline-sparse-sgd-non-gpu/src/graph.rs"]
 pub mod graph;
 
@@ -9,3 +10,5 @@ pub mod schedule;
 #[cfg(test)]
 #[path = "../../baseline-sparse-sgd-non-gpu/src/algorithm.rs"]
 pub mod cpu_reference;
+
+pub mod preprocess;

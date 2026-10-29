@@ -654,10 +654,12 @@ impl GpuContext {
                     pass.dispatch_workgroups(round.len() as u32, 1, 1);
                 }
                 self.queue.submit([encoder.finish()]);
-                self.device
-                    .poll(wgpu::PollType::wait_indefinitely())
-                    .unwrap();
             }
+            // Queue writes and submissions retain round order. Synchronize once
+            // per epoch so iteration timing includes completed GPU work.
+            self.device
+                .poll(wgpu::PollType::wait_indefinitely())
+                .unwrap();
             if timestamp_resources.is_some() {
                 timestamp_index += 2;
             }

@@ -10,10 +10,8 @@ struct Uniforms {
 }
 
 struct OneSidedEntry {
-    pivot: u32,
     dij: f32,
     weight: f32,
-    pad: u32,
 }
 
 struct Pair {
@@ -62,23 +60,45 @@ fn one_sided_phase(@builtin(global_invocation_id) gid: vec3<u32>) {
         return;
     }
     var local_position = positions[vertex];
+    var changed = false;
     let rotation = hash32(vertex ^ uniforms.seed ^ uniforms.iteration) % uniforms.pivot_count;
-    for (var k = 0u; k < uniforms.pivot_count; k++) {
-        let pivot_index = pivot_permutation[(k + rotation) % uniforms.pivot_count];
+    var stride = 1u;
+    if uniforms.pad != 0u && uniforms.pivot_count > 1u {
+        stride = 1u + hash32(vertex ^ uniforms.seed ^ (uniforms.iteration * 0x9e3779b9u)) % (uniforms.pivot_count - 1u);
+        loop {
+            var a = stride;
+            var b = uniforms.pivot_count;
+            loop {
+                if b == 0u { break; }
+                let t = a % b;
+                a = b;
+                b = t;
+            }
+            if a == 1u { break; }
+            stride = stride % (uniforms.pivot_count - 1u) + 1u;
+        }
+    }
+    for (var k = uniforms.start; k < uniforms.start + uniforms.count; k++) {
+        let pivot_index = pivot_permutation[(k * stride + rotation) % uniforms.pivot_count];
         let entry = one_sided[vertex * uniforms.pivot_count + pivot_index];
         if entry.weight > 0.0 {
-            let pivot_position = positions[entry.pivot];
+            let pivot = pivot_permutation[uniforms.pivot_count + pivot_index];
+            let pivot_position = positions[pivot];
+            changed = true;
             let delta = displacement(
                 local_position,
                 pivot_position,
                 entry.dij,
-                vertex ^ entry.pivot ^ uniforms.seed ^ uniforms.iteration,
+                vertex ^ pivot ^ uniforms.seed ^ uniforms.iteration,
             );
             let mu = min(entry.weight * uniforms.eta, 1.0);
             local_position += mu * delta;
         }
     }
-    positions[vertex] = local_position;
+    // Pivot rows have no positive one-sided entries: never write their coordinates.
+    if changed {
+        positions[vertex] = local_position;
+    }
 }
 
 // The host guarantees that each dispatched slice is a matching, so both endpoint

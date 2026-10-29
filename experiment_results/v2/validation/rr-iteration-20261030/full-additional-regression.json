@@ -1,0 +1,50 @@
+[
+  {
+    "graph": "USpowerGrid",
+    "seed": 0,
+    "tile": 127,
+    "workgroup": 64,
+    "memory": "shared",
+    "exact_match": true
+  },
+  {
+    "graph": "USpowerGrid",
+    "seed": 3,
+    "tile": 127,
+    "workgroup": 64,
+    "memory": "shared",
+    "exact_match": true
+  },
+  {
+    "graph": "EVA",
+    "seed": 0,
+    "tile": 32,
+    "workgroup": 32,
+    "memory": "global",
+    "exact_match": true
+  },
+  {
+    "graph": "EVA",
+    "seed": 3,
+    "tile": 32,
+    "workgroup": 32,
+    "memory": "global",
+    "exact_match": true
+  },
+  {
+    "graph": "1138_bus",
+    "seed": 0,
+    "tile": 1024,
+    "workgroup": 256,
+    "memory": "shared",
+    "exact_match": true
+  },
+  {
+    "graph": "1138_bus",
+    "seed": 3,
+    "tile": 1024,
+    "workgroup": 256,
+    "memory": "shared",
+    "exact_match": true
+  }
+]

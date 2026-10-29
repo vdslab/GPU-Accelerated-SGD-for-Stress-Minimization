@@ -7,10 +7,8 @@ use std::collections::{HashMap, HashSet};
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Pod, Zeroable)]
 pub struct OneSidedEntry {
-    pub pivot: u32,
     pub dij: f32,
     pub weight: f32,
-    pub _pad: u32,
 }
 
 #[repr(C)]
@@ -76,13 +74,25 @@ fn key(u: usize, v: usize) -> (usize, usize) {
 /// Builds a conflict-free two-phase schedule. Each one-sided invocation owns exactly
 /// one writable vertex; every two-sided round is a matching.
 pub fn build_schedule(graph: &Graph, prepared: &SgdParams, seed: u64) -> Result<Schedule> {
-    Ok(build_schedule_compact(graph, prepared, seed)?.0)
+    Ok(build_schedule_compact(graph, prepared, seed, None)?.0)
+}
+
+/// Build the same matching order from a streamed preprocessing result.
+pub fn build_prepared_schedule(
+    graph: &Graph,
+    prepared: &SgdParams,
+    one_sided: Vec<OneSidedEntry>,
+    one_sided_count: usize,
+    seed: u64,
+) -> Result<Schedule> {
+    Ok(build_schedule_compact(graph, prepared, seed, Some((one_sided, one_sided_count)))?.0)
 }
 
 fn build_schedule_compact(
     graph: &Graph,
     prepared: &SgdParams,
     seed: u64,
+    prebuilt: Option<(Vec<OneSidedEntry>, usize)>,
 ) -> Result<(Schedule, usize)> {
     let n = graph.node_size;
     let h = prepared.pivots.len();
@@ -105,15 +115,13 @@ fn build_schedule_compact(
     let dense_len = n
         .checked_mul(h)
         .context("one-sided dense schedule length overflow")?;
-    let mut one_sided = vec![OneSidedEntry::default(); dense_len];
-    for vertex in 0..n {
-        for (pivot_index_in_list, &pivot) in prepared.pivots.iter().enumerate() {
-            one_sided[vertex * h + pivot_index_in_list].pivot =
-                u32::try_from(pivot).context("pivot endpoint exceeds u32")?;
-        }
-    }
-
-    let mut one_sided_count = 0_usize;
+    let (mut one_sided, initial_count) =
+        prebuilt.unwrap_or_else(|| (vec![OneSidedEntry::default(); dense_len], 0));
+    ensure!(
+        one_sided.len() == dense_len,
+        "invalid dense one-sided length"
+    );
+    let mut one_sided_count = initial_count;
     let mut pivot_pair_indices = HashMap::<(usize, usize), usize>::new();
     let mut graph_pair_indices = Vec::<usize>::new();
     for (pair_index_in_prepared, edge) in prepared.pairs.iter().enumerate() {
@@ -129,10 +137,8 @@ fn build_schedule_compact(
             (true, false) if pivot_set.contains(&edge.v) => {
                 let pivot_slot = pivot_index[&edge.v];
                 one_sided[edge.u * h + pivot_slot] = OneSidedEntry {
-                    pivot: u32::try_from(edge.v).context("pivot endpoint exceeds u32")?,
                     dij: edge.dij as f32,
                     weight: edge.weight_u as f32,
-                    _pad: 0,
                 };
                 one_sided_count = one_sided_count
                     .checked_add(1)
@@ -141,10 +147,8 @@ fn build_schedule_compact(
             (false, true) if pivot_set.contains(&edge.u) => {
                 let pivot_slot = pivot_index[&edge.u];
                 one_sided[edge.v * h + pivot_slot] = OneSidedEntry {
-                    pivot: u32::try_from(edge.u).context("pivot endpoint exceeds u32")?,
                     dij: edge.dij as f32,
                     weight: edge.weight_v as f32,
-                    _pad: 0,
                 };
                 one_sided_count = one_sided_count
                     .checked_add(1)
@@ -251,7 +255,7 @@ fn build_schedule_compact(
         .checked_add(assignments.len())
         .context("classified constraint count overflow")?;
     ensure!(
-        classified_count == prepared.pairs.len(),
+        classified_count == prepared.pairs.len() + initial_count,
         "classified constraints do not cover the prepared constraint set"
     );
 
@@ -578,7 +582,7 @@ mod tests {
         for seed in [0_u64, 1, 19, 77] {
             let mut rng = StdRng::seed_from_u64(seed);
             let params = graph.prepare_sgd_params(3, 0.1, 4, true, &mut rng).unwrap();
-            let (schedule, _) = build_schedule_compact(&graph, &params, seed).unwrap();
+            let (schedule, _) = build_schedule_compact(&graph, &params, seed, None).unwrap();
             let (pairs, offsets, base_rounds) = reference_two_sided(&params, seed);
             assert_eq!(schedule.two_sided, pairs);
             assert_eq!(schedule.round_offsets, offsets);
@@ -619,7 +623,7 @@ mod tests {
         let params = graph
             .prepare_sgd_params(1, 0.1, 1, false, &mut rng)
             .unwrap();
-        let (schedule, memberships) = build_schedule_compact(&graph, &params, 3).unwrap();
+        let (schedule, memberships) = build_schedule_compact(&graph, &params, 3, None).unwrap();
         assert_eq!(schedule.round_count(), delta);
         assert_eq!(schedule.two_sided.len(), delta);
         assert_eq!(memberships, schedule.two_sided.len() * 2);

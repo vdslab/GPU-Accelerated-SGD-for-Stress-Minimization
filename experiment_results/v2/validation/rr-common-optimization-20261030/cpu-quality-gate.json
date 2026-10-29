@@ -1,0 +1,159 @@
+{
+  "results": [
+    {
+      "graph": "EVA",
+      "seed": 0,
+      "exact_match": true
+    },
+    {
+      "graph": "EVA",
+      "seed": 1,
+      "exact_match": true
+    },
+    {
+      "graph": "EVA",
+      "seed": 3,
+      "exact_match": true
+    },
+    {
+      "graph": "USpowerGrid",
+      "seed": 0,
+      "exact_match": true
+    },
+    {
+      "graph": "USpowerGrid",
+      "seed": 1,
+      "exact_match": true
+    },
+    {
+      "graph": "USpowerGrid",
+      "seed": 3,
+      "exact_match": true
+    },
+    {
+      "graph": "coAuthorsCiteseer",
+      "seed": 0,
+      "exact_match": true,
+      "cpu_stress_ratio": 1.2725704989257884
+    },
+    {
+      "graph": "coAuthorsCiteseer",
+      "seed": 1,
+      "exact_match": true,
+      "cpu_stress_ratio": 1.1675778074564043
+    },
+    {
+      "graph": "coAuthorsCiteseer",
+      "seed": 3,
+      "exact_match": true,
+      "cpu_stress_ratio": 1.337420937710314
+    },
+    {
+      "graph": "luxembourg_osm",
+      "seed": 0,
+      "exact_match": true,
+      "cpu_stress_ratio": 1.0017306581103587
+    },
+    {
+      "graph": "luxembourg_osm",
+      "seed": 1,
+      "exact_match": true,
+      "cpu_stress_ratio": 1.0067631563475654
+    },
+    {
+      "graph": "luxembourg_osm",
+      "seed": 3,
+      "exact_match": true,
+      "cpu_stress_ratio": 1.0049019911474426
+    },
+    {
+      "graph": "preferentialAttachment",
+      "seed": 0,
+      "exact_match": true,
+      "cpu_stress_ratio": 1.196655508666213
+    },
+    {
+      "graph": "preferentialAttachment",
+      "seed": 1,
+      "exact_match": true,
+      "cpu_stress_ratio": 1.2094188724336614
+    },
+    {
+      "graph": "preferentialAttachment",
+      "seed": 3,
+      "exact_match": true,
+      "cpu_stress_ratio": 1.1318906720426585
+    },
+    {
+      "graph": "smallworld",
+      "seed": 0,
+      "exact_match": true,
+      "cpu_stress_ratio": 1.0806138124149167
+    },
+    {
+      "graph": "smallworld",
+      "seed": 1,
+      "exact_match": true,
+      "cpu_stress_ratio": 1.4197003910988204
+    },
+    {
+      "graph": "smallworld",
+      "seed": 3,
+      "exact_match": true,
+      "cpu_stress_ratio": 1.19141420789101
+    },
+    {
+      "graph": "web-NotreDame",
+      "seed": 0,
+      "exact_match": true,
+      "cpu_stress_ratio": 1.0822250679236367
+    },
+    {
+      "graph": "web-NotreDame",
+      "seed": 1,
+      "exact_match": true,
+      "cpu_stress_ratio": 1.1571426657938508
+    },
+    {
+      "graph": "web-NotreDame",
+      "seed": 3,
+      "exact_match": true,
+      "cpu_stress_ratio": 1.442364045639826
+    },
+    {
+      "graph": "web-Stanford",
+      "seed": 0,
+      "exact_match": true,
+      "cpu_stress_ratio": 1.231939021760498
+    },
+    {
+      "graph": "web-Stanford",
+      "seed": 1,
+      "exact_match": true,
+      "cpu_stress_ratio": 1.4071689570468164
+    },
+    {
+      "graph": "web-Stanford",
+      "seed": 3,
+      "exact_match": true,
+      "cpu_stress_ratio": 0.8274625097425666
+    }
+  ],
+  "cpu_comparisons": 18,
+  "failures": [
+    "optimized-coAuthorsCiteseer-s0.jsonl: CPU ratio 1.272570 > 1.05",
+    "optimized-coAuthorsCiteseer-s1.jsonl: CPU ratio 1.167578 > 1.05",
+    "optimized-coAuthorsCiteseer-s3.jsonl: CPU ratio 1.337421 > 1.05",
+    "optimized-preferentialAttachment-s0.jsonl: CPU ratio 1.196656 > 1.05",
+    "optimized-preferentialAttachment-s1.jsonl: CPU ratio 1.209419 > 1.05",
+    "optimized-preferentialAttachment-s3.jsonl: CPU ratio 1.131891 > 1.05",
+    "optimized-smallworld-s0.jsonl: CPU ratio 1.080614 > 1.05",
+    "optimized-smallworld-s1.jsonl: CPU ratio 1.419700 > 1.05",
+    "optimized-smallworld-s3.jsonl: CPU ratio 1.191414 > 1.05",
+    "optimized-web-NotreDame-s0.jsonl: CPU ratio 1.082225 > 1.05",
+    "optimized-web-NotreDame-s1.jsonl: CPU ratio 1.157143 > 1.05",
+    "optimized-web-NotreDame-s3.jsonl: CPU ratio 1.442364 > 1.05",
+    "optimized-web-Stanford-s0.jsonl: CPU ratio 1.231939 > 1.05",
+    "optimized-web-Stanford-s1.jsonl: CPU ratio 1.407169 > 1.05"
+  ]
+}

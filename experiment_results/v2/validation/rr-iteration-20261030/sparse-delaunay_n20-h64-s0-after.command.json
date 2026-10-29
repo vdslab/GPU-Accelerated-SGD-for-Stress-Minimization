@@ -1,0 +1,12 @@
+{
+  "command": [
+    "implementations/sparse/sparse-sgd-gpu/target/release/examples/quality_probe",
+    "data/delaunay_n20.mtx",
+    "64",
+    "0",
+    "cpu",
+    "1"
+  ],
+  "binary_sha256": "a84f3587ecda3dece8e3674cd3dcba2374dfa48011a926909a19413e4e0b1f5a",
+  "input_sha256": "b8026eaeae55edf947b264635afa86dd68410be2e4ca84488586984968692db0"
+}
