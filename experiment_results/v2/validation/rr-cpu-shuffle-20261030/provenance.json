@@ -1,0 +1,23 @@
+{
+  "binary": "implementations/sparse/sparse-sgd-gpu/target/release/examples/cpu_shuffle_probe",
+  "binary_sha256": "26d700edda4a9a2a65aed53d88affd4d88c12e61b36c46ee32b098505e03825f",
+  "source": "implementations/sparse/sparse-sgd-gpu/examples/cpu_shuffle_probe.rs",
+  "commands": [
+    [
+      "implementations/sparse/sparse-sgd-gpu/target/release/examples/cpu_shuffle_probe",
+      "data/EVA.mtx",
+      "1",
+      "20"
+    ],
+    [
+      "implementations/sparse/sparse-sgd-gpu/target/release/examples/cpu_shuffle_probe",
+      "data/EVA.mtx",
+      "11",
+      "20"
+    ]
+  ],
+  "iterations": 15,
+  "epsilon": 0.1,
+  "pivots": 200,
+  "evaluation": "exact f64, all unordered vertex pairs"
+}

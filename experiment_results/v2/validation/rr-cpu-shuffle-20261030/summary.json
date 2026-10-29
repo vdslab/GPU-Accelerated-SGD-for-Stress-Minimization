@@ -1,0 +1,24 @@
+[
+  {
+    "preparation_seed": 1,
+    "gpu_exact": 1121936.437258006,
+    "cpu_production_exact": 1111264.6622654626,
+    "gpu_cpu_ratio": 1.009603270359365,
+    "cpu_order_trials": 20,
+    "cpu_order_min": 1080356.2796845392,
+    "cpu_order_max": 1360289.2571783685,
+    "cpu_order_median": 1131644.180849718,
+    "cpu_trials_better_than_gpu": 8
+  },
+  {
+    "preparation_seed": 11,
+    "gpu_exact": 1074915.3994606542,
+    "cpu_production_exact": 1163137.5604826051,
+    "gpu_cpu_ratio": 0.9241515672614458,
+    "cpu_order_trials": 20,
+    "cpu_order_min": 1091337.5583697767,
+    "cpu_order_max": 1216967.2146930806,
+    "cpu_order_median": 1132202.1252667021,
+    "cpu_trials_better_than_gpu": 0
+  }
+]
