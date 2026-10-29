@@ -1,0 +1,21 @@
+{
+  "datasets": [
+    "delaunay_n17",
+    "loc-Gowalla",
+    "delaunay_n18",
+    "com-Amazon",
+    "delaunay_n19"
+  ],
+  "seeds": [
+    0
+  ],
+  "iterations": 15,
+  "pivots": 200,
+  "epsilon": 0.1,
+  "git_head": "48e31ef2233f9b62f55623de0af373107a8ac356",
+  "binary_sha256": {
+    "cpu": "91a492d21549c181e1bc33082082ad3a088cdcb2907e438cae5698081dd00d22",
+    "gpu_shuffle": "c3905a2057b7cc9db1851a3b3f01fb8707c6226177fb8cd387c7138b7aaaba05",
+    "gpu_no_shuffle": "c3905a2057b7cc9db1851a3b3f01fb8707c6226177fb8cd387c7138b7aaaba05"
+  }
+}

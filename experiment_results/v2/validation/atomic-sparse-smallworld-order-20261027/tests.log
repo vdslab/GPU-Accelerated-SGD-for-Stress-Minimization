@@ -1,0 +1,63 @@
+   Compiling vram-lock-sparse v0.1.0 (/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/vram-lock-sparse)
+   Compiling sparse-audit v0.1.0 (/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/sparse-audit)
+warning: field `device_name` is never read
+  --> src/bin/../probe_metal.rs:23:9
+   |
+19 | pub struct MetalContext {
+   |            ------------ field in this struct
+...
+23 |     pub device_name: String,
+   |         ^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: fields `initial_positions`, `method_setup_time`, `upload_time`, `readback_time`, and `postprocess_time` are never read
+  --> src/bin/../probe_metal.rs:27:9
+   |
+26 | pub struct MetalRunResult {
+   |            -------------- fields in this struct
+27 |     pub initial_positions: Vec<[f64; 2]>,
+   |         ^^^^^^^^^^^^^^^^^
+28 |     pub positions: Vec<[f64; 2]>,
+29 |     pub method_setup_time: Duration,
+   |         ^^^^^^^^^^^^^^^^^
+30 |     pub upload_time: Duration,
+   |         ^^^^^^^^^^^
+31 |     pub iteration_time: Duration,
+32 |     pub readback_time: Duration,
+   |         ^^^^^^^^^^^^^
+33 |     pub postprocess_time: Duration,
+   |         ^^^^^^^^^^^^^^^^
+
+warning: method `execute_sgd` is never used
+  --> src/bin/../probe_metal.rs:69:12
+   |
+40 | impl MetalContext {
+   | ----------------- method in this implementation
+...
+69 |     pub fn execute_sgd<R: Rng + ?Sized>(
+   |            ^^^^^^^^^^^
+
+warning: `sparse-audit` (bin "order-probe" test) generated 3 warnings
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.57s
+     Running unittests src/bin/order-probe.rs (tools/diagnostics/sparse-audit/target/debug/deps/order_probe-92fad5f48bc2760c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (tools/diagnostics/sparse-audit/target/debug/deps/sparse_audit-010a31ce2b645a3d)
+
+running 9 tests
+test cpu::tests::coincident_positions_remain_finite ... ok
+test cpu::tests::complete_pipeline_is_reproducible_for_same_seed ... ok
+test cpu::tests::complete_run_centers_the_result ... ok
+test cpu::tests::directional_weights_move_endpoints_by_different_amounts ... ok
+test cpu::tests::each_directional_mu_is_clamped_to_one ... ok
+test cpu::tests::symmetric_update_moves_endpoints_equally_in_opposite_directions ... ok
+test cpu::tests::zero_directional_weight_keeps_that_endpoint_fixed ... ok
+test tests::moving_shared_endpoint_tracks_serial_recurrence ... ok
+test tests::preprocessing_matches_bruteforce_paper_definition ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.77s
+

@@ -1,0 +1,16 @@
+fenced-trace {"attempted":307168290,"completed":307168290,"dispatches":650,"seconds":58.943853292}
+
+before-batch65536 {"attempted":307168290,"completed":307168290,"dispatches":4753,"seconds":8.493963}
+
+fenced-batch65536 {"attempted":307168290,"completed":307168290,"dispatches":5708,"seconds":8.562703042}
+
+before-batch16384 {"attempted":307168290,"completed":307168290,"dispatches":37500,"seconds":11.865997083}
+
+fenced-batch16384 {"attempted":307168290,"completed":307168290,"dispatches":37604,"seconds":12.427796542}
+
+{"baseline":"/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v2/validation/atomic-sparse-smallworld-order-20261027/fenced-trace.positions.txt","evaluation_seed":20261027,"file":"/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v2/validation/atomic-sparse-smallworld-order-20261027/fenced-trace.positions.txt","paired_difference":0.0,"paired_difference_95ci":[0.0,0.0],"samples":4096,"stress":2095186708.8797703}
+{"baseline":"/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v2/validation/atomic-sparse-smallworld-order-20261027/fenced-trace.positions.txt","evaluation_seed":20261027,"file":"/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v2/validation/atomic-sparse-smallworld-order-20261027/before-batch65536.positions.txt","paired_difference":-1115046741.805911,"paired_difference_95ci":[-1136290420.912158,-1093803062.699664],"samples":4096,"stress":980139967.073854}
+{"baseline":"/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v2/validation/atomic-sparse-smallworld-order-20261027/fenced-trace.positions.txt","evaluation_seed":20261027,"file":"/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v2/validation/atomic-sparse-smallworld-order-20261027/fenced-batch65536.positions.txt","paired_difference":-1112461879.5477955,"paired_difference_95ci":[-1133532542.0428972,-1091391217.0526938],"samples":4096,"stress":982724829.3319677}
+{"baseline":"/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v2/validation/atomic-sparse-smallworld-order-20261027/fenced-trace.positions.txt","evaluation_seed":20261027,"file":"/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v2/validation/atomic-sparse-smallworld-order-20261027/before-batch16384.positions.txt","paired_difference":-1110519720.0047014,"paired_difference_95ci":[-1131799049.0623226,-1089240390.9470801],"samples":4096,"stress":984666988.8750622}
+{"baseline":"/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v2/validation/atomic-sparse-smallworld-order-20261027/fenced-trace.positions.txt","evaluation_seed":20261027,"file":"/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v2/validation/atomic-sparse-smallworld-order-20261027/fenced-batch16384.positions.txt","paired_difference":-1120285168.8370173,"paired_difference_95ci":[-1141324399.5740635,-1099245938.099971],"samples":4096,"stress":974901540.0427498}
+

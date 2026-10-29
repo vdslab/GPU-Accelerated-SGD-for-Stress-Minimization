@@ -1,0 +1,140 @@
+{
+  "description": "Local artifacts excluded from Git; files retained on disk. Hashes do not contain or recover file contents.",
+  "files": [
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-before-repeat0.final.txt",
+      "bytes": 9704621,
+      "sha256": "186ee5a02372537e376fd311abef8cb1d90e3f7b54b453bba5a5a0bc333d12a5"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-before-repeat0.initial.txt",
+      "bytes": 9921936,
+      "sha256": "b081eb6ccd193dafaf795026ea4c35397f8724674451085a0be58b9b604d0275"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-before-repeat0.vertex-map.txt",
+      "bytes": 1177780,
+      "sha256": "87ea98ea15f2640464b2591eef9895240b8664eba813fe26ec5bff7692279c29"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-before-repeat1.final.txt",
+      "bytes": 9707458,
+      "sha256": "c0b8227724054b6b07a0b8d16903a21463c3bc83701a152f0acd7d1b7c7d87ae"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-before-repeat1.initial.txt",
+      "bytes": 9921936,
+      "sha256": "351ef7f06102d0437ce14bc3f19c0d269263b3024128a3b3ac542d6348f705b1"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-before-repeat1.vertex-map.txt",
+      "bytes": 1177780,
+      "sha256": "87ea98ea15f2640464b2591eef9895240b8664eba813fe26ec5bff7692279c29"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-before-repeat2.final.txt",
+      "bytes": 9702075,
+      "sha256": "3cfb8e60e97061bb09aebbc83b2dc0c63000d49b47cd1f288af2e05ad89bcad4"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-before-repeat2.initial.txt",
+      "bytes": 9921936,
+      "sha256": "21c96a161cf0ce278311cb6b5f9656b1a7eba30307f838b917869212b83f41d1"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-before-repeat2.vertex-map.txt",
+      "bytes": 1177780,
+      "sha256": "87ea98ea15f2640464b2591eef9895240b8664eba813fe26ec5bff7692279c29"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-fenced-repeat0.final.txt",
+      "bytes": 9703218,
+      "sha256": "499414be1d07bc802cb3e4010b4ed6c1b3ee147fb9cc1b92ad5916b0361d341a"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-fenced-repeat0.initial.txt",
+      "bytes": 9921936,
+      "sha256": "c24076318332af02c6c3e07917fb36ec8ee62b94fed95399e6964383d9eb4eae"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-fenced-repeat0.vertex-map.txt",
+      "bytes": 1177780,
+      "sha256": "87ea98ea15f2640464b2591eef9895240b8664eba813fe26ec5bff7692279c29"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-fenced-repeat1.final.txt",
+      "bytes": 9703475,
+      "sha256": "80ee477a26ff92e1466d78606f784861cb665888e1d7ceb5a97661e845db688f"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-fenced-repeat1.initial.txt",
+      "bytes": 9921936,
+      "sha256": "76f6c6d4bf55d292d1714a4b200c1a91f6a5b32faa9de335a011543fceba465e"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-fenced-repeat1.vertex-map.txt",
+      "bytes": 1177780,
+      "sha256": "87ea98ea15f2640464b2591eef9895240b8664eba813fe26ec5bff7692279c29"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-fenced-repeat2.final.txt",
+      "bytes": 9696267,
+      "sha256": "ce9874de5e6fa59d51cca203561acf923b2608af0b483afdad2f5052d08f6405"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-fenced-repeat2.initial.txt",
+      "bytes": 9921936,
+      "sha256": "3be1ba49dcb060af75023ae878fabf50a6eb1c1263637acffdd4f92b3f87e704"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-fenced-repeat2.vertex-map.txt",
+      "bytes": 1177780,
+      "sha256": "87ea98ea15f2640464b2591eef9895240b8664eba813fe26ec5bff7692279c29"
+    },
+    {
+      "path": "before-batch16384.positions.txt",
+      "bytes": 3822677,
+      "sha256": "dbda1087431178fbb4ddbf1d65ea8a9f072c0fa3583ec2decabc9555f464d009"
+    },
+    {
+      "path": "before-batch65536.positions.txt",
+      "bytes": 3818390,
+      "sha256": "2c122eb210fa725f9f1041ec46f8be15cd8568d755f6514a7a7ee95cd920a27d"
+    },
+    {
+      "path": "binaries/order-probe-used",
+      "bytes": 753120,
+      "sha256": "ec2a1b9ed1f8c308f66c850f3468c63994be9fdef0ead8d43644b7879b2f2558"
+    },
+    {
+      "path": "fenced-batch16384.positions.txt",
+      "bytes": 3822382,
+      "sha256": "4a807eaef291bb73c507b70d27db01f34c69d950b16f5e455dce111fbfb681c4"
+    },
+    {
+      "path": "fenced-batch65536.positions.txt",
+      "bytes": 3819304,
+      "sha256": "de5d8c35bbf7d17700bab55aaa107ea31ad994eaa108a50ca9067841ada2fb42"
+    },
+    {
+      "path": "fenced-trace.positions.txt",
+      "bytes": 3890259,
+      "sha256": "01eb7de9596928a41fe7a3299e36af6d9459c17ade70a68f76b0d7897c5162aa"
+    },
+    {
+      "path": "full-fence0.positions.txt",
+      "bytes": 3812914,
+      "sha256": "46525a46e5c98d9c149676d919f608564a409358fd638fe88e02e346c58d7036"
+    },
+    {
+      "path": "full-fence1.positions.txt",
+      "bytes": 3805810,
+      "sha256": "90e23a7dc73f6662926591104a80eea39f78f860f6d0f24b94c8d69268875dd8"
+    },
+    {
+      "path": "validator-control-0.positions.txt",
+      "bytes": 15846,
+      "sha256": "1781338b44eaf1e1d3fd93c3bb7c6d7b82f25a1d108b650844f110a66241416e"
+    }
+  ]
+}

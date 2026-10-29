@@ -1,0 +1,230 @@
+{
+  "description": "Local artifacts excluded from Git; files retained on disk. Hashes do not contain or recover file contents.",
+  "files": [
+    {
+      "path": "artifacts/atomic-sparse-sgd-bcsstk31-bcsstk31-s0-gpu_no_shuffle.final.txt",
+      "bytes": 7861841,
+      "sha256": "f1a2a983e6c49ba5864fe28a7f5063458eb5e52e8e7b32cc01710f398b5539b4"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-bcsstk31-bcsstk31-s0-gpu_no_shuffle.initial.txt",
+      "bytes": 7946791,
+      "sha256": "a3470ccd916fe69a9d8ff19d4677a68250a52d55d7d3b86b47b5f1a94837ade2"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-bcsstk31-bcsstk31-s0-gpu_no_shuffle.vertex-map.txt",
+      "bytes": 404814,
+      "sha256": "693ec108c1d51f5e0d6c393035f782b12a0c48a8c3cb9707e5a2f7795d478a38"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-bcsstk31-bcsstk31-s0-gpu_shuffle.final.txt",
+      "bytes": 7863775,
+      "sha256": "e0bb8ce7fe0ba5dfd6de1852726f62ae66a78506fe1d374d997f131b1168b7c3"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-bcsstk31-bcsstk31-s0-gpu_shuffle.initial.txt",
+      "bytes": 7946787,
+      "sha256": "fb884d8ee825d155dba31d1d76ab5b74866c583ded4e67234c0261715484f00b"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-bcsstk31-bcsstk31-s0-gpu_shuffle.vertex-map.txt",
+      "bytes": 404814,
+      "sha256": "693ec108c1d51f5e0d6c393035f782b12a0c48a8c3cb9707e5a2f7795d478a38"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n14-delaunay_n14-s0-gpu_no_shuffle.final.txt",
+      "bytes": 1146920,
+      "sha256": "9efc9d61b7f53d1559a0fa3291d5b94313e9d7862c1b7d20b5e911cd0429b200"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n14-delaunay_n14-s0-gpu_no_shuffle.initial.txt",
+      "bytes": 1184561,
+      "sha256": "55d7f7a168f4abf9d12c4d4e7fd4ab020a59a8f2b27b22341f3febd45c05b5bc"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n14-delaunay_n14-s0-gpu_no_shuffle.vertex-map.txt",
+      "bytes": 174388,
+      "sha256": "a499d9c6854adfe270b493b20044ec3b812434d534f1159b052dbd6d4856257d"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n14-delaunay_n14-s0-gpu_shuffle.final.txt",
+      "bytes": 1146981,
+      "sha256": "9e9417e57ca599bd9668920350eaf19d8bd247c05e1b8fcec2288e8bf73afe93"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n14-delaunay_n14-s0-gpu_shuffle.initial.txt",
+      "bytes": 1184557,
+      "sha256": "52ea3eee08114263d8ac3c1608b4507d1f18c9bbf57cf4a3ab43009f95d124a1"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n14-delaunay_n14-s0-gpu_shuffle.vertex-map.txt",
+      "bytes": 174388,
+      "sha256": "a499d9c6854adfe270b493b20044ec3b812434d534f1159b052dbd6d4856257d"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-fe_4elt2-fe_4elt2-s0-gpu_no_shuffle.final.txt",
+      "bytes": 753323,
+      "sha256": "0ade38bfa38969f71b5abc5c3858e42a9f7e8c86bf455307f3e2800ec05b1a09"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-fe_4elt2-fe_4elt2-s0-gpu_no_shuffle.initial.txt",
+      "bytes": 780199,
+      "sha256": "9d560b3038de7a45becca6769d94f91fdf499db4a499fef34d1658939daaaad6"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-fe_4elt2-fe_4elt2-s0-gpu_no_shuffle.vertex-map.txt",
+      "bytes": 111496,
+      "sha256": "73cc5d828213f6a02b2a34c47fa6a4320cd62c612aafa38f77cd4399bf0c6c14"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-fe_4elt2-fe_4elt2-s0-gpu_shuffle.final.txt",
+      "bytes": 753782,
+      "sha256": "21551cd38d7b7411fc7517b75c64bc72d907d0a69cb392b15e6e10ee3d68d2d8"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-fe_4elt2-fe_4elt2-s0-gpu_shuffle.initial.txt",
+      "bytes": 780195,
+      "sha256": "2f49706320a4c9bd5388363d42edfdd7bdc5cf67a452fb3ce0c5f682bc9efa67"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-fe_4elt2-fe_4elt2-s0-gpu_shuffle.vertex-map.txt",
+      "bytes": 111496,
+      "sha256": "73cc5d828213f6a02b2a34c47fa6a4320cd62c612aafa38f77cd4399bf0c6c14"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-gpu_no_shuffle.final.txt",
+      "bytes": 9692966,
+      "sha256": "4ffaed6da7004c3c3c77402f9077774dfa0889f995eb1c182cdb7f9f00bdb0b0"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-gpu_no_shuffle.initial.txt",
+      "bytes": 9921937,
+      "sha256": "7cfb2e616647d7ba56d53c7aed0c9d3174d310e34f23fb71cdf44611f6bacb04"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-gpu_no_shuffle.vertex-map.txt",
+      "bytes": 1177780,
+      "sha256": "87ea98ea15f2640464b2591eef9895240b8664eba813fe26ec5bff7692279c29"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-gpu_shuffle.final.txt",
+      "bytes": 9712999,
+      "sha256": "93a86b51661b58b1318a4280cb2fb257705e404373a35761064d21893d875d53"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-gpu_shuffle.initial.txt",
+      "bytes": 9921933,
+      "sha256": "3dd7315bc8db6931eb970e44c2bdf1b44492fa9d7de4a14ece273bc90525ecaa"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-smallworld-smallworld-s0-gpu_shuffle.vertex-map.txt",
+      "bytes": 1177780,
+      "sha256": "87ea98ea15f2640464b2591eef9895240b8664eba813fe26ec5bff7692279c29"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-venkat50-venkat50-s0-gpu_no_shuffle.final.txt",
+      "bytes": 12008386,
+      "sha256": "a0d40ff67edfdb2ae317e3cfe8cd69bacb19dbc6c5f7e767662ab63c1b2c42e5"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-venkat50-venkat50-s0-gpu_no_shuffle.initial.txt",
+      "bytes": 12155684,
+      "sha256": "2aca558185b4d4de7fdc239025c7e9d3b1389601c64a1647d30de1b7fd474913"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-venkat50-venkat50-s0-gpu_no_shuffle.vertex-map.txt",
+      "bytes": 726868,
+      "sha256": "6ae1185c8b6204059db2235c1954f45b4fae4be975975308b990432576182ea2"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-venkat50-venkat50-s0-gpu_shuffle.final.txt",
+      "bytes": 12002266,
+      "sha256": "3ffbf61511d07f41da55e0a324fc66a7a23fc9a7aaed18f77fe60ff88de5fd71"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-venkat50-venkat50-s0-gpu_shuffle.initial.txt",
+      "bytes": 12155680,
+      "sha256": "579f4667cd6a033a04e782ebda3b7967d476627311868fe8db0c89c452338e08"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-venkat50-venkat50-s0-gpu_shuffle.vertex-map.txt",
+      "bytes": 726868,
+      "sha256": "6ae1185c8b6204059db2235c1954f45b4fae4be975975308b990432576182ea2"
+    },
+    {
+      "path": "artifacts/sparse-sgd-bcsstk31-bcsstk31-s0-cpu.final.txt",
+      "bytes": 7864040,
+      "sha256": "0d235dbd9d748446054874e657dc27c16f272f8a7ca1bfa34054a232d856facd"
+    },
+    {
+      "path": "artifacts/sparse-sgd-bcsstk31-bcsstk31-s0-cpu.initial.txt",
+      "bytes": 7946763,
+      "sha256": "d79ba66743f8aa37c0dfb78757a99ce6a87e401cb2ab2afc5a684d7476127295"
+    },
+    {
+      "path": "artifacts/sparse-sgd-bcsstk31-bcsstk31-s0-cpu.vertex-map.txt",
+      "bytes": 404814,
+      "sha256": "693ec108c1d51f5e0d6c393035f782b12a0c48a8c3cb9707e5a2f7795d478a38"
+    },
+    {
+      "path": "artifacts/sparse-sgd-delaunay_n14-delaunay_n14-s0-cpu.final.txt",
+      "bytes": 1146595,
+      "sha256": "474427e5d0a5b7f8c5483f98988960479f4f12325bfe6bf45f7f42a91b2b8d77"
+    },
+    {
+      "path": "artifacts/sparse-sgd-delaunay_n14-delaunay_n14-s0-cpu.initial.txt",
+      "bytes": 1184533,
+      "sha256": "01821b3636d1a0309501d8028741e011fcf793cdec6d8a5511bbe52e24153cf2"
+    },
+    {
+      "path": "artifacts/sparse-sgd-delaunay_n14-delaunay_n14-s0-cpu.vertex-map.txt",
+      "bytes": 174388,
+      "sha256": "a499d9c6854adfe270b493b20044ec3b812434d534f1159b052dbd6d4856257d"
+    },
+    {
+      "path": "artifacts/sparse-sgd-fe_4elt2-fe_4elt2-s0-cpu.final.txt",
+      "bytes": 753228,
+      "sha256": "ea0d58a5ed357a7fc77f36c312bf836c77b35db6f1c6ca9ffa2500ed3567f745"
+    },
+    {
+      "path": "artifacts/sparse-sgd-fe_4elt2-fe_4elt2-s0-cpu.initial.txt",
+      "bytes": 780171,
+      "sha256": "0765019eac700255d8146d7c1b59370e70a7bdd1ec1cbbf758c2c1d7831a94be"
+    },
+    {
+      "path": "artifacts/sparse-sgd-fe_4elt2-fe_4elt2-s0-cpu.vertex-map.txt",
+      "bytes": 111496,
+      "sha256": "73cc5d828213f6a02b2a34c47fa6a4320cd62c612aafa38f77cd4399bf0c6c14"
+    },
+    {
+      "path": "artifacts/sparse-sgd-smallworld-smallworld-s0-cpu.final.txt",
+      "bytes": 9704821,
+      "sha256": "b42cba701282cb4d4411a119f6f9703b2b356db533f99ed6006c359d37930358"
+    },
+    {
+      "path": "artifacts/sparse-sgd-smallworld-smallworld-s0-cpu.initial.txt",
+      "bytes": 9921909,
+      "sha256": "632d666eed24b8431911f8322f2c9e78893c2fc8483827085a8f57c1f9a0316d"
+    },
+    {
+      "path": "artifacts/sparse-sgd-smallworld-smallworld-s0-cpu.vertex-map.txt",
+      "bytes": 1177780,
+      "sha256": "87ea98ea15f2640464b2591eef9895240b8664eba813fe26ec5bff7692279c29"
+    },
+    {
+      "path": "artifacts/sparse-sgd-venkat50-venkat50-s0-cpu.final.txt",
+      "bytes": 12003768,
+      "sha256": "7f86e83d2f0464a45470ec8947a0d048345b89b31f91cf12f6cde262497c7e62"
+    },
+    {
+      "path": "artifacts/sparse-sgd-venkat50-venkat50-s0-cpu.initial.txt",
+      "bytes": 12155656,
+      "sha256": "e9c70dc4440a884c0e4b7c557e4aae7ff9a91a65e7fab17e7b17af50b0366ed6"
+    },
+    {
+      "path": "artifacts/sparse-sgd-venkat50-venkat50-s0-cpu.vertex-map.txt",
+      "bytes": 726868,
+      "sha256": "6ae1185c8b6204059db2235c1954f45b4fae4be975975308b990432576182ea2"
+    }
+  ]
+}

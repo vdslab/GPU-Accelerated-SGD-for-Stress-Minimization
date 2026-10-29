@@ -1,0 +1,95 @@
+{
+  "description": "Local artifacts excluded from Git; files retained on disk. Hashes do not contain or recover file contents.",
+  "files": [
+    {
+      "path": "delaunay_n17/s0-cpu_f32_fixed.positions.txt",
+      "bytes": 4934232,
+      "sha256": "d138f16d1d02b44fe76eb9cfa65fddfecf780a6108a963c71305be2a01a6b82f"
+    },
+    {
+      "path": "delaunay_n17/s0-cpu_f32_shuffle.positions.txt",
+      "bytes": 4942087,
+      "sha256": "712c30f29283941b66a4ea14ffd7e9d6fd6941294117593a935814588a1e3506"
+    },
+    {
+      "path": "delaunay_n17/s0-cpu_fixed.positions.txt",
+      "bytes": 4928816,
+      "sha256": "3a6c329c2dea7782b50b4df45087bc4b390a4510ad82d3d81d9ad396365ac627"
+    },
+    {
+      "path": "delaunay_n17/s0-cpu_shuffle.positions.txt",
+      "bytes": 4938614,
+      "sha256": "f63cf7c1e58c5a817ad9b7d27c078b7d2502edc32376678f0e2af1e0d42763ea"
+    },
+    {
+      "path": "delaunay_n17/s0-gpu_fixed.positions.txt",
+      "bytes": 4942786,
+      "sha256": "ecd013f0976a387167401e9c5d35cceef020c6e93a6fc860427ead780e9a1998"
+    },
+    {
+      "path": "delaunay_n17/s0-gpu_shuffle.positions.txt",
+      "bytes": 4943422,
+      "sha256": "3f816f72afcc59e8af451d5ca8d710e80ef017d3a626f02e2f2f24d89da9cbef"
+    },
+    {
+      "path": "delaunay_n17/s1-cpu_f32_fixed.positions.txt",
+      "bytes": 4939177,
+      "sha256": "8fc969a04e3f0c1e1c3d2cfae93194fd63a632744486ae4e18d54fd134e8fb16"
+    },
+    {
+      "path": "delaunay_n17/s1-cpu_f32_shuffle.positions.txt",
+      "bytes": 4937248,
+      "sha256": "a107e5987fb1ef9e70ae71e4b97660bc9da79102e1b95d04a14ca0627bcffea7"
+    },
+    {
+      "path": "delaunay_n17/s1-cpu_fixed.positions.txt",
+      "bytes": 4942528,
+      "sha256": "4376758f36bc6e24c6477dbd878ea7a350c1ac78d06de6f6d3d7ec5f03da314d"
+    },
+    {
+      "path": "delaunay_n17/s1-cpu_shuffle.positions.txt",
+      "bytes": 4934605,
+      "sha256": "ae3410f6a84de6c4124ee2074266781a7e2f6ac7339abcf49dc81737d88bf3d6"
+    },
+    {
+      "path": "delaunay_n17/s1-gpu_fixed.positions.txt",
+      "bytes": 4941824,
+      "sha256": "028071589b807089834332085503cf639ee082cedb9ebeed3ce7cc4039d2b440"
+    },
+    {
+      "path": "delaunay_n17/s1-gpu_shuffle.positions.txt",
+      "bytes": 4928675,
+      "sha256": "da91ecd4e8dd49ace0a6a295964f10d36691d5ba57ebea2819dfb67e255672ef"
+    },
+    {
+      "path": "delaunay_n17/s2-cpu_f32_fixed.positions.txt",
+      "bytes": 4941737,
+      "sha256": "0ed34a408296a93aa93d6734ed4be6066f172e32fa37ee3ceb3ea9dea5eddcc7"
+    },
+    {
+      "path": "delaunay_n17/s2-cpu_f32_shuffle.positions.txt",
+      "bytes": 4920937,
+      "sha256": "beb52db74dffa1b9780b52b92327b33d5324ea10501931fd9e86352e2d6f090f"
+    },
+    {
+      "path": "delaunay_n17/s2-cpu_fixed.positions.txt",
+      "bytes": 4946563,
+      "sha256": "f1e45a945de955413568c14722d5aa31d395064f93e921dc567ba8e056910373"
+    },
+    {
+      "path": "delaunay_n17/s2-cpu_shuffle.positions.txt",
+      "bytes": 4926116,
+      "sha256": "64cfdc6e344d311575053d0adbae2c031f311e8254e42c744df05a3811a006a0"
+    },
+    {
+      "path": "delaunay_n17/s2-gpu_fixed.positions.txt",
+      "bytes": 4946252,
+      "sha256": "d2ee4d22f6fa13b2a32865be278b621effd0256bb43b1b33b5abe06b0901e53b"
+    },
+    {
+      "path": "delaunay_n17/s2-gpu_shuffle.positions.txt",
+      "bytes": 4920567,
+      "sha256": "bbbbc873b49c345bc0eb6eb716181a54f16a7477c8b2d3ca30fafe690c863f90"
+    }
+  ]
+}

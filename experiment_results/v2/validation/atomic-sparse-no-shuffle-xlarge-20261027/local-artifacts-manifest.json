@@ -1,0 +1,230 @@
+{
+  "description": "Local artifacts excluded from Git; files retained on disk. Hashes do not contain or recover file contents.",
+  "files": [
+    {
+      "path": "artifacts/atomic-sparse-sgd-com-Amazon-com-Amazon-s0-gpu_no_shuffle.final.txt",
+      "bytes": 24729394,
+      "sha256": "eb6cc373279f3a573e97695d8da9e25a30f30b2624f610e59cee98fc754c3e65"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-com-Amazon-com-Amazon-s0-gpu_no_shuffle.initial.txt",
+      "bytes": 25569733,
+      "sha256": "988925a5a5136e89639734a3fe2114bea6fc721e4aa2efe2cb899b35bc523d21"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-com-Amazon-com-Amazon-s0-gpu_no_shuffle.vertex-map.txt",
+      "bytes": 4465862,
+      "sha256": "2f9ae43ca069298a0a64d6ea01636270975c971663fbd777b9c3e82fd98c1af1"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-com-Amazon-com-Amazon-s0-gpu_shuffle.final.txt",
+      "bytes": 24692644,
+      "sha256": "29e78841e3f31686e44a35556912a1bdd0f521494db72529c47d7a0053d8496c"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-com-Amazon-com-Amazon-s0-gpu_shuffle.initial.txt",
+      "bytes": 25569729,
+      "sha256": "e432c4fd29007b8240d387f8f556f245a01992933ff9a14bfddae3ad4ec05407"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-com-Amazon-com-Amazon-s0-gpu_shuffle.vertex-map.txt",
+      "bytes": 4465862,
+      "sha256": "2f9ae43ca069298a0a64d6ea01636270975c971663fbd777b9c3e82fd98c1af1"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n17-delaunay_n17-s0-gpu_no_shuffle.final.txt",
+      "bytes": 9766476,
+      "sha256": "dff87b8106fde917a44ed6694b6f19d7d01545644489278c778a90dc9c475031"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n17-delaunay_n17-s0-gpu_no_shuffle.initial.txt",
+      "bytes": 10124294,
+      "sha256": "19cc8111d46717f0c047db1195ad5018a69d118e49bce62b99ab1465cb12b5cc"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n17-delaunay_n17-s0-gpu_no_shuffle.vertex-map.txt",
+      "bytes": 1612788,
+      "sha256": "6d3320ad7220a157f4f5e721e0e2f24834c9afd7e03814af8f45a913c67ee114"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n17-delaunay_n17-s0-gpu_shuffle.final.txt",
+      "bytes": 9773743,
+      "sha256": "d585b3e4f1588b54e7742d15aa9fd6e55feb6886d7aa31ea9f809a5155ce10eb"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n17-delaunay_n17-s0-gpu_shuffle.initial.txt",
+      "bytes": 10124290,
+      "sha256": "168aba48e3428ef90f25db66debaf45e4d160754b985af8b771a5b5b24d70158"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n17-delaunay_n17-s0-gpu_shuffle.vertex-map.txt",
+      "bytes": 1612788,
+      "sha256": "6d3320ad7220a157f4f5e721e0e2f24834c9afd7e03814af8f45a913c67ee114"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n18-delaunay_n18-s0-gpu_no_shuffle.final.txt",
+      "bytes": 20166556,
+      "sha256": "47bba6453646260ff7505c84a88437c5c35703011b38f60de3f0149f8f33d236"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n18-delaunay_n18-s0-gpu_no_shuffle.initial.txt",
+      "bytes": 20914222,
+      "sha256": "7038e35cf35e3e03bb7e33a96be980b43fcb0affe2a57d54be96137b4403fa12"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n18-delaunay_n18-s0-gpu_no_shuffle.vertex-map.txt",
+      "bytes": 3447796,
+      "sha256": "0f8be17b2f2a1717feb3055a2dcdeed2aa3b884ed56729348cbde2efc59700d0"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n18-delaunay_n18-s0-gpu_shuffle.final.txt",
+      "bytes": 20168579,
+      "sha256": "7ba8bbdfabdd21d48b0d3b4d598854aaadacb4512839124aa9dc279103483477"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n18-delaunay_n18-s0-gpu_shuffle.initial.txt",
+      "bytes": 20914218,
+      "sha256": "eaa541534a3db8262467df4e0725dbe225a6e52dad7e215ef2833aa671be2119"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n18-delaunay_n18-s0-gpu_shuffle.vertex-map.txt",
+      "bytes": 3447796,
+      "sha256": "0f8be17b2f2a1717feb3055a2dcdeed2aa3b884ed56729348cbde2efc59700d0"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n19-delaunay_n19-s0-gpu_no_shuffle.final.txt",
+      "bytes": 41093935,
+      "sha256": "59721d38db1c84e93d8c6c70526256614a7d35ccc60f150def76ffea8bf47977"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n19-delaunay_n19-s0-gpu_no_shuffle.initial.txt",
+      "bytes": 42497246,
+      "sha256": "bd5c968a6edfbba807ae1accb25684fcbecd99af878f9e9f87b2c73ff7df8c96"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n19-delaunay_n19-s0-gpu_no_shuffle.vertex-map.txt",
+      "bytes": 7117812,
+      "sha256": "f916d5b2279522c8f814a3782639c1ff631319efb6292859c14e0e20ee7ee24a"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n19-delaunay_n19-s0-gpu_shuffle.final.txt",
+      "bytes": 41181706,
+      "sha256": "ae4f41e01a40934c61cb84d1ed478c03501055e475bc013f69e0d780f9e4c5cd"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n19-delaunay_n19-s0-gpu_shuffle.initial.txt",
+      "bytes": 42497242,
+      "sha256": "8cdaf2bb31c330d0af06443e1c36d82e75dff41f3eec21b3c0a988735dc0d122"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-delaunay_n19-delaunay_n19-s0-gpu_shuffle.vertex-map.txt",
+      "bytes": 7117812,
+      "sha256": "f916d5b2279522c8f814a3782639c1ff631319efb6292859c14e0e20ee7ee24a"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-loc-Gowalla-loc-Gowalla-s0-gpu_no_shuffle.final.txt",
+      "bytes": 18656526,
+      "sha256": "badd9b84796abaec7fff1629ef45c5e2e7764c470107cf695306d56bdf9e6006"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-loc-Gowalla-loc-Gowalla-s0-gpu_no_shuffle.initial.txt",
+      "bytes": 18987595,
+      "sha256": "ec6a5aadfca6385dbcfd4bb1aebc0fc2582a849871b9f18a56fd8797d9a7e4df"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-loc-Gowalla-loc-Gowalla-s0-gpu_no_shuffle.vertex-map.txt",
+      "bytes": 2530054,
+      "sha256": "3f7a14fdeb7d3bd1fbe4e4ee23b4fe070fc2947171eb690fa9034a969617d5f9"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-loc-Gowalla-loc-Gowalla-s0-gpu_shuffle.final.txt",
+      "bytes": 18620975,
+      "sha256": "394ba080498884a9f8d068a6589913c133bd31a2c6ddc436085dd721bee04f71"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-loc-Gowalla-loc-Gowalla-s0-gpu_shuffle.initial.txt",
+      "bytes": 18987591,
+      "sha256": "54cd2e06eee77ace0902f7ebdffdbf0c0137b5e9d9ef5281071d897d5e2cc9e1"
+    },
+    {
+      "path": "artifacts/atomic-sparse-sgd-loc-Gowalla-loc-Gowalla-s0-gpu_shuffle.vertex-map.txt",
+      "bytes": 2530054,
+      "sha256": "3f7a14fdeb7d3bd1fbe4e4ee23b4fe070fc2947171eb690fa9034a969617d5f9"
+    },
+    {
+      "path": "artifacts/sparse-sgd-com-Amazon-com-Amazon-s0-cpu.final.txt",
+      "bytes": 24697650,
+      "sha256": "f9b1454049c2cbb71dbca6446867f89f0e8b86a41582a57e86f1b9536b454035"
+    },
+    {
+      "path": "artifacts/sparse-sgd-com-Amazon-com-Amazon-s0-cpu.initial.txt",
+      "bytes": 25569705,
+      "sha256": "925e9abf5dfdd651a444d1ad9585d4e18859c859eb5ea89eb58b94f807a06b21"
+    },
+    {
+      "path": "artifacts/sparse-sgd-com-Amazon-com-Amazon-s0-cpu.vertex-map.txt",
+      "bytes": 4465862,
+      "sha256": "2f9ae43ca069298a0a64d6ea01636270975c971663fbd777b9c3e82fd98c1af1"
+    },
+    {
+      "path": "artifacts/sparse-sgd-delaunay_n17-delaunay_n17-s0-cpu.final.txt",
+      "bytes": 9777332,
+      "sha256": "78c85f3e504bf0a49e8abf07f599438dcf6fbaa7d754e02f8d9985c84861b085"
+    },
+    {
+      "path": "artifacts/sparse-sgd-delaunay_n17-delaunay_n17-s0-cpu.initial.txt",
+      "bytes": 10124266,
+      "sha256": "5a39d6e6ff2c1836a3b3620003ce55e77f10da0c8963120328301c68480ecb83"
+    },
+    {
+      "path": "artifacts/sparse-sgd-delaunay_n17-delaunay_n17-s0-cpu.vertex-map.txt",
+      "bytes": 1612788,
+      "sha256": "6d3320ad7220a157f4f5e721e0e2f24834c9afd7e03814af8f45a913c67ee114"
+    },
+    {
+      "path": "artifacts/sparse-sgd-delaunay_n18-delaunay_n18-s0-cpu.final.txt",
+      "bytes": 20168116,
+      "sha256": "52f400e316ee4c380756ee48060ef6125d683360a1753a0fcdc47e7b1dba3a13"
+    },
+    {
+      "path": "artifacts/sparse-sgd-delaunay_n18-delaunay_n18-s0-cpu.initial.txt",
+      "bytes": 20914194,
+      "sha256": "b9bd20952a5472740081eadaab740a7d09b3142a44130bdb3e951d5808089926"
+    },
+    {
+      "path": "artifacts/sparse-sgd-delaunay_n18-delaunay_n18-s0-cpu.vertex-map.txt",
+      "bytes": 3447796,
+      "sha256": "0f8be17b2f2a1717feb3055a2dcdeed2aa3b884ed56729348cbde2efc59700d0"
+    },
+    {
+      "path": "artifacts/sparse-sgd-delaunay_n19-delaunay_n19-s0-cpu.final.txt",
+      "bytes": 41156137,
+      "sha256": "81402bc7c5993da4f6f60427c880cd34ff6f5afa4db6c34a8ce9b68e3f426e61"
+    },
+    {
+      "path": "artifacts/sparse-sgd-delaunay_n19-delaunay_n19-s0-cpu.initial.txt",
+      "bytes": 42497218,
+      "sha256": "85d39ce30f7ccc19fc7c26da8a74aacb54faac8abd5898d4d0236941c468fb5a"
+    },
+    {
+      "path": "artifacts/sparse-sgd-delaunay_n19-delaunay_n19-s0-cpu.vertex-map.txt",
+      "bytes": 7117812,
+      "sha256": "f916d5b2279522c8f814a3782639c1ff631319efb6292859c14e0e20ee7ee24a"
+    },
+    {
+      "path": "artifacts/sparse-sgd-loc-Gowalla-loc-Gowalla-s0-cpu.final.txt",
+      "bytes": 18625531,
+      "sha256": "d8e4ea1c3e61d06c97f23a99a1fe54f3cd2dd15b723d2db0043bc75c99cb313e"
+    },
+    {
+      "path": "artifacts/sparse-sgd-loc-Gowalla-loc-Gowalla-s0-cpu.initial.txt",
+      "bytes": 18987567,
+      "sha256": "92c4ca860d4332a943e000b20b79f4cff00d1a007f600beb375792f9d5de0a8a"
+    },
+    {
+      "path": "artifacts/sparse-sgd-loc-Gowalla-loc-Gowalla-s0-cpu.vertex-map.txt",
+      "bytes": 2530054,
+      "sha256": "3f7a14fdeb7d3bd1fbe4e4ee23b4fe070fc2947171eb690fa9034a969617d5f9"
+    }
+  ]
+}

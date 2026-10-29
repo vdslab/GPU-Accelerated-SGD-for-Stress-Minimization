@@ -1,0 +1,35 @@
+{
+  "configs": [
+    [
+      "fenced-trace",
+      1,
+      20477886,
+      1
+    ],
+    [
+      "before-batch65536",
+      0,
+      65536,
+      0
+    ],
+    [
+      "fenced-batch65536",
+      1,
+      65536,
+      0
+    ],
+    [
+      "before-batch16384",
+      0,
+      16384,
+      0
+    ],
+    [
+      "fenced-batch16384",
+      1,
+      16384,
+      0
+    ]
+  ],
+  "binary_sha256": "ec2a1b9ed1f8c308f66c850f3468c63994be9fdef0ead8d43644b7879b2f2558"
+}

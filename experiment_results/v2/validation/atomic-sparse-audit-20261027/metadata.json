@@ -1,0 +1,20 @@
+{
+  "git_head": "48e31ef2233f9b62f55623de0af373107a8ac356",
+  "production_changes_this_audit": false,
+  "audit_seeds": [
+    0,
+    1,
+    2
+  ],
+  "iterations": 15,
+  "pivots": 200,
+  "epsilon": 0.1,
+  "reevaluation_sources": [
+    64,
+    1024,
+    4096
+  ],
+  "paired_eval_seed": 20261027,
+  "test_result": "9 tests passed; includes 45 brute-force preprocessing cases and 20 moving-hub GPU cases",
+  "binary_sha256": "980d5a65c30dc434c652928033f69aaf297ffdd62b516c839f6801abf6efaf7c"
+}

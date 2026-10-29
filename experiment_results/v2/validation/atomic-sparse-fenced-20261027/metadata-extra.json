@@ -1,0 +1,26 @@
+{
+  "groups": [
+    [
+      "smallworld",
+      1
+    ],
+    [
+      "smallworld",
+      2
+    ]
+  ],
+  "iterations": 15,
+  "pivots": 200,
+  "epsilon": 0.1,
+  "stress_samples": 4096,
+  "stress_seed": 20261027,
+  "git_head": "48e31ef2233f9b62f55623de0af373107a8ac356",
+  "binary_sha256": {
+    "cpu": "91a492d21549c181e1bc33082082ad3a088cdcb2907e438cae5698081dd00d22",
+    "before_shuffle": "c3905a2057b7cc9db1851a3b3f01fb8707c6226177fb8cd387c7138b7aaaba05",
+    "before_fixed": "c3905a2057b7cc9db1851a3b3f01fb8707c6226177fb8cd387c7138b7aaaba05",
+    "fenced_shuffle": "f3dc67b5c3936d409a4d7759b6f2dc834750fff9acf025a0519fad471eaa195b",
+    "fenced_fixed": "f3dc67b5c3936d409a4d7759b6f2dc834750fff9acf025a0519fad471eaa195b"
+  },
+  "audit_sha256": "494bf54c141c2c4538afa0f87b1910d549e019937f6fee7d54c3b85be8f822de"
+}

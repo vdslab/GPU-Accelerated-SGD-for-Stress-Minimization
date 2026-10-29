@@ -1,0 +1,239 @@
+diff --git a/implementations/sparse/vram-lock-sparse/README.md b/implementations/sparse/vram-lock-sparse/README.md
+index 74d7a2a..da9a24f 100644
+--- a/implementations/sparse/vram-lock-sparse/README.md
++++ b/implementations/sparse/vram-lock-sparse/README.md
+@@ -2,7 +2,7 @@
+ 
+ CPU Sparse SGDの制約ペアをMetal GPUへ転送し、両端点をatomicロックして更新する。
+ `vram-lock-native` と同じく、32スレッドのthreadgroupにつき1スレッドが1ペアを処理する。
+-macOSと、既存のnative atomic SGDが動作するMetal GPUが必要。
++Metal 3.2以降のdevice-scope atomic fenceが使えるApple silicon環境が必要（検証環境：macOS 15.7.2、M4 Pro）。対応しない言語版ではshaderコンパイル時に明示的に失敗する。
+ 
+ ## 実行
+ 
+@@ -24,9 +24,11 @@ method IDは `atomic_sparse_sgd`。既存の `experiments/run_experiments.py` 
+ ## 更新と競合処理
+ 
+ - CPU Sparse版の `graph.rs` を共有し、pivot・領域・距離・制約・方向別重み・学習率・初期配置を一致させる。
+-- 各反復でCPU版と同じRNGの続きからペアをシャッフルする。GPUの実際の更新順は非決定的。
++- 標準動作では各反復のペア投入順を固定し、CPUシャッフルを行わない（Atomic Fullと同じ方針）。更新順はGPUのロック獲得順に依存し、一様ランダムな順序は保証しない。
++- 比較用の `--cpu-shuffle` を指定した場合のみ、従来どおり各反復でCPU版と同じRNGの続きからペアをシャッフルする。出力座標ファイルの `CPU shuffle` ヘッダーに設定を保存する。JSONのmethod IDは共通なので、比較時はrun IDにも方式を明記する。
+ - ペアの両端点を頂点番号の小さい順にロックする。片側の重みが0でも、座標の読取りを保護するため両端をロックする。
+-- ロック取得後に両端の座標を読み、`mu_u=min(eta*weight_u,1)` と `mu_v=min(eta*weight_v,1)` を用いて別々の移動量をatomic加算する。
++- 両端のロック取得後にdevice-scopeのseq_cst acquire fenceを置き、座標更新後・ロック解放前に同scopeのrelease fenceを置く。Metal 3.2の `atomic_thread_fence` を使い、座標の可視性をロックの引継ぎに同期させる。
++- ロック取得・fence後に両端の座標を読み、`mu_u=min(eta*weight_u,1)` と `mu_v=min(eta*weight_v,1)` を用いて別々の移動量をatomic加算する。
+ - 座標と学習率はGPU上ではf32。出力・centering・共通stress評価はf64。
+ - 座標が一致した場合はnative atomic SGDと同じ固定方向へ微小変位を作る。CPU版のランダム方向とは異なる。
+ 
+@@ -38,7 +40,7 @@ GPU完了後、ホストが未完了ペアだけを再投入する。完了し
+ 成功時の `retry_failures`（未完了数）は0となる。これはロック競合がなかったという意味ではない。
+ 再投入は `dispatches` に含め、`--verbose` で各反復の投入回数を確認できる。
+ 
+-時間区間は既存の共通形式に従う。`iteration_time_ms` にCPUシャッフル、反復内の転送、GPU投入、待機、未完了ペアの抽出と再投入を含める。
++時間区間は既存の共通形式に従う。`iteration_time_ms` にCPUシャッフル（指定時のみ）、反復内の転送、GPU投入、待機、未完了ペアの抽出と再投入を含める。
+ 最初のバッファ転送は `upload_time_ms`、最終座標の取得は `readback_time_ms`、centeringは `postprocess_time_ms`。
+ GPU timestampの個別計測は未対応。
+ 
+diff --git a/implementations/sparse/vram-lock-sparse/src/main.rs b/implementations/sparse/vram-lock-sparse/src/main.rs
+index f986c2b..6b939d5 100644
+--- a/implementations/sparse/vram-lock-sparse/src/main.rs
++++ b/implementations/sparse/vram-lock-sparse/src/main.rs
+@@ -28,6 +28,7 @@ struct Config {
+     epsilon: f64,
+     seed: u64,
+     center: bool,
++    cpu_shuffle: bool,
+ }
+ 
+ impl Default for Config {
+@@ -40,6 +41,7 @@ impl Default for Config {
+             epsilon: 0.1,
+             seed: 0,
+             center: true,
++            cpu_shuffle: false,
+         }
+     }
+ }
+@@ -79,6 +81,7 @@ impl Config {
+                 }
+                 "--verbose" => config.common.verbose = true,
+                 "--no-center" => config.center = false,
++                "--cpu-shuffle" => config.cpu_shuffle = true,
+                 "--largest-component" => {}
+                 value if !value.starts_with('-') && !positional => {
+                     config.input = value.into();
+@@ -118,7 +121,7 @@ fn print_help() {
+         "Usage: vram-lock-sparse [INPUT] [--run-id ID] [--input PATH] [--output-dir PATH] \
+          [--pivots N] [--iterations N] [--epsilon F] [--seed N] \
+          [--output-format human|json] [--run-mode benchmark|diagnostic] \
+-         [--verbose] [--no-center]"
++         [--verbose] [--no-center] [--cpu-shuffle]"
+     );
+ }
+ 
+@@ -155,11 +158,12 @@ fn main() -> Result<()> {
+     let runtime_init_time = runtime_started.elapsed();
+     config.log(format!("GPU: {} ({})", context.device_name, "Metal"));
+ 
+-    let run = context.execute_sgd(
++    let run = context.execute_sgd_with_cpu_shuffle(
+         params,
+         &mut rng,
+         config.common.verbose,
+         config.common.output_format,
++        config.cpu_shuffle,
+     )?;
+ 
+     let edges: Vec<_> = graph
+@@ -337,6 +341,7 @@ fn save_result(
+     writeln!(file, "# Iterations: {}", config.iterations)?;
+     writeln!(file, "# Epsilon: {}", config.epsilon)?;
+     writeln!(file, "# Seed: {}", config.seed)?;
++    writeln!(file, "# CPU shuffle: {}", config.cpu_shuffle)?;
+     writeln!(file, "# Pivot selection: {PIVOT_SELECTION}")?;
+     writeln!(file, "# Weight model: {WEIGHT_MODEL}")?;
+     writeln!(file, "# Pivot count: {}", pivots.len())?;
+@@ -404,6 +409,12 @@ mod tests {
+         assert_eq!(config.common.output_dir, PathBuf::from("out"));
+     }
+ 
++    #[test]
++    fn cpu_shuffle_is_opt_in() {
++        assert!(!Config::from_iter(Vec::<String>::new()).unwrap().cpu_shuffle);
++        assert!(Config::from_iter(["--cpu-shuffle".to_owned()]).unwrap().cpu_shuffle);
++    }
++
+     #[test]
+     fn historical_largest_component_flag_is_a_compatible_no_op() {
+         assert!(Config::from_iter(["--largest-component"].into_iter().map(str::to_owned)).is_ok());
+diff --git a/implementations/sparse/vram-lock-sparse/src/metal.rs b/implementations/sparse/vram-lock-sparse/src/metal.rs
+index 2845af0..8b5f241 100644
+--- a/implementations/sparse/vram-lock-sparse/src/metal.rs
++++ b/implementations/sparse/vram-lock-sparse/src/metal.rs
+@@ -72,6 +72,18 @@ impl MetalContext {
+         rng: &mut R,
+         verbose: bool,
+         format: OutputFormat,
++    ) -> Result<MetalRunResult> {
++        self.execute_sgd_with_cpu_shuffle(params, rng, verbose, format, false)
++    }
++
++    /// Explicit CPU permutation is opt-in; by default lock acquisition determines update order.
++    pub fn execute_sgd_with_cpu_shuffle<R: Rng + ?Sized>(
++        &self,
++        params: SgdParams,
++        rng: &mut R,
++        verbose: bool,
++        format: OutputFormat,
++        cpu_shuffle: bool,
+     ) -> Result<MetalRunResult> {
+         let setup = Instant::now();
+         ensure!(
+@@ -150,8 +162,12 @@ impl MetalContext {
+         let mut completed_updates = 0u64;
+         let mut dispatches = 0u64;
+         for (iteration, eta) in etas.iter().enumerate() {
+-            // Retain the previous permutation, just as CPU Sparse shuffles in place.
+-            all_pending.shuffle(rng);
++            // Fixed submission order by default, matching Atomic Full. GPU lock
++            // acquisition determines update order; it is not a uniform shuffle.
++            if cpu_shuffle {
++                // Preserve the historical in-place CPU permutation for comparisons.
++                all_pending.shuffle(rng);
++            }
+             let mut pending = all_pending.clone();
+             let mut passes = 0;
+             while !pending.is_empty() {
+@@ -281,6 +297,56 @@ mod tests {
+     use crate::{cpu_reference::apply_constraint, graph::EdgeInfo};
+     use rand::{rngs::StdRng, SeedableRng};
+ 
++    #[test]
++    fn moving_shared_endpoint_tracks_serial_recurrence() {
++        let context = MetalContext::new().unwrap();
++        let count = 4096;
++        let eta = 0.0001;
++        let mut expected = 0.0f32;
++        for _ in 0..count {
++            let diff = 3.0 - expected;
++            let r = ((diff - 1.0) / (2.0 * diff)) * diff;
++            expected += eta as f32 * r;
++        }
++        for seed in 0..20 {
++            let mut positions = vec![[3.0, 0.0]; count + 1];
++            positions[0] = [0.0, 0.0];
++            let pairs = (1..=count)
++                .map(|v| EdgeInfo {
++                    u: 0,
++                    v,
++                    dij: 1.0,
++                    weight_u: 1.0,
++                    weight_v: 0.0,
++                })
++                .collect();
++            let params = SgdParams {
++                positions,
++                pairs,
++                etas: vec![eta],
++                pivots: vec![0],
++                center: false,
++            };
++            let r = context
++                .execute_sgd_with_cpu_shuffle(
++                    params,
++                    &mut StdRng::seed_from_u64(seed),
++                    false,
++                    OutputFormat::Json,
++                    seed % 2 == 1,
++                )
++                .unwrap();
++            assert_eq!(r.completed_updates, count as u64);
++            assert!(
++                (r.positions[0][0] - expected as f64).abs() < 0.0001,
++                "{} != {}",
++                r.positions[0][0],
++                expected
++            );
++            assert_eq!(r.positions[0][1], 0.0);
++            assert!(r.positions[1..].iter().all(|&p| p == [3.0, 0.0]));
++        }
++    }
+     #[test]
+     fn gpu_directional_updates_match_cpu_reference() {
+         let context = MetalContext::new().unwrap();
+diff --git a/implementations/sparse/vram-lock-sparse/src/shader.metal b/implementations/sparse/vram-lock-sparse/src/shader.metal
+index 72ee80a..01ecb72 100644
+--- a/implementations/sparse/vram-lock-sparse/src/shader.metal
++++ b/implementations/sparse/vram-lock-sparse/src/shader.metal
+@@ -1,6 +1,10 @@
+ #include <metal_stdlib>
+ using namespace metal;
+ 
++#if __METAL_VERSION__ < 320
++#error "Atomic Sparse requires Metal 3.2+ for device-scope atomic_thread_fence"
++#endif
++
+ struct SparsePair {
+     uint u;
+     uint v;
+@@ -48,6 +52,10 @@ kernel void sparse_sgd(
+     }
+     if (!acquired) return;
+ 
++    // Acquire fence: observe coordinate writes published by the previous lock
++    // holder's release fence + relaxed unlock. Both locks are held here.
++    atomic_thread_fence(mem_flags::mem_device, memory_order_seq_cst, thread_scope_device);
++
+     float2 a = float2(
+         atomic_load_explicit(&positions[pair.u * 2u], memory_order_relaxed),
+         atomic_load_explicit(&positions[pair.u * 2u + 1u], memory_order_relaxed));
+@@ -68,6 +76,9 @@ kernel void sparse_sgd(
+     atomic_fetch_add_explicit(&positions[pair.u * 2u + 1u], du.y, memory_order_relaxed);
+     atomic_fetch_add_explicit(&positions[pair.v * 2u], -dv.x, memory_order_relaxed);
+     atomic_fetch_add_explicit(&positions[pair.v * 2u + 1u], -dv.y, memory_order_relaxed);
++    // Release fence: publish all four coordinate updates before either lock
++    // becomes available. Atomicity of the float adds alone is insufficient.
++    atomic_thread_fence(mem_flags::mem_device, memory_order_seq_cst, thread_scope_device);
+     unlock(locks, second);
+     unlock(locks, first);
+     completed[slot] = 1u;

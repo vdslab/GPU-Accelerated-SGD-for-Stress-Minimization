@@ -1,0 +1,1035 @@
+
+PAGE 1
+1
+Graph Drawing by Stochastic Gradient Descent
+Jonathan X. Zheng, Samraat Pawar, Dan F . M. Goodman
+Abstract—A popular method of force-directed graph drawing is multidimensional scaling using graph-theoretic distances as input. We
+present an algorithm to minimize its energy function, known as stress, by using stochastic gradient descent (SGD) to move a single
+pair of vertices at a time. Our results show that SGD can reach lower stress levels faster and more consistently than majorization,
+without needing help from a good initialization. We then show how the unique properties of SGD make it easier to produce constrained
+layouts than previous approaches. We also show how SGD can be directly applied within the sparse stress approximation of Ortmann
+et al. [1], making the algorithm scalable up to large graphs.
+Index Terms—Graph drawing, multidimensional scaling, constraints, relaxation, stochastic gradient descent
+!
+1 I NTRODUCTION
+G
+RAPHS are a common data structure, used to describe
+everything from social networks to food webs, from
+metabolic pathways to internet trafﬁc. Any set of pairwise
+relationships between entities can be described by a graph,
+and the ever increasing amount of data being collected
+means that visualizing graphs for exploratory analysis has
+become an important task.
+Node-link diagrams are an intuitive representation of
+graphs, where vertices are represented by dots, and edges
+by lines connecting them. A primary task is then to ﬁnd
+suitable coordinates for these dots that represent the data
+faithfully. However this is far from trivial, and the difﬁculty
+behind ﬁnding a good layout can be illustrated through a
+simple example. If we consider the problem of drawing
+a tetrahedron in 2D space, it is easy to see that no ideal
+layout exists where all edges have equal lengths. Even for
+such a small graph with only four vertices, there are too
+few dimensions available to provide sufﬁcient degrees of
+freedom. The next logical question is: what layout gets as
+close as possible to this ideal?
+Multidimensional scaling (MDS) is a technique to solve
+exactly this type of problem, that attempts to minimize
+the disparity between ideal and low-dimensional distances.
+This is done by deﬁning an equation to quantify the error in
+a layout, and then minimizing it. While this equation comes
+in many forms [2], distance scaling is most commonly used
+for graphs [3], where the error is deﬁned as
+stress(X) =
+∑
+i<j
+wij(||Xi − Xj|| −dij)2 (1)
+where X contains the coordinates of each vertex in low-
+dimensional space, and d is the ideal distance between
+them. A weighting factor w is used to either emphasize or
+dampen the importance of certain pairs. For the problem
+of graph layout, the most common approach is to set dij
+• Jonathan Zheng is with Department of Electrical and Electronic Engineer-
+ing, Imperial College London.
+E-mail: jxz12@ic.ac.uk
+• Samraat Pawar is with Department of Life Sciences, Imperial College
+London.
+• Dan Goodman is with Department of Electrical and Electronic Engineer-
+ing, Imperial College London.
+to the shortest path distance between vertices i andj, with
+wij = d−2
+ij to offset the extra weight given to longer paths
+due to squaring the difference [3].
+This deﬁnition was popularized for graph layout by
+Kamada and Kawai [4] who minimized the function using
+a localized 2D Newton-Raphson method, while within the
+MDS community Kruskal [5] originally used gradient de-
+scent [6]. This was later improved upon by De Leeuw [7]
+with a method known as majorization, which minimizes a
+complicated function by iteratively ﬁnding the true minima
+of a series of simpler functions, each of which touches the
+original function and is an upper bound for it [2]. This was
+applied to graph layout by Gansner et al. [8] and has been
+the state-of-the-art for the past decade. For larger graphs,
+fully computing stress is not feasible, and so we review
+approximation methods in Section 4.3.
+This paper describes a method of minimizing stress by
+using stochastic gradient descent (SGD), which approxi-
+mates the gradient of a sum of functions using the gradient
+of its individual terms. In our case this corresponds to mov-
+ing a single pair of vertices at a time. The simplicity of each
+term in Equation (1) also allows for some modiﬁcations to
+the step size which, combined with the added stochasticity,
+help to avoid local minima. We show the beneﬁts of SGD
+over majorization through experiment.
+The structure of this paper is as follows: the algorithm
+is described and its subtleties are explored; an experimental
+study of its performance compared to majorization is pre-
+sented; some real-world applications are shown that make
+use of the unique properties of SGD, including a method
+of making SGD scalable to large graphs by adapting the
+sparse approximation of Ortmann et al. [1]; and ﬁnally, we
+end with a discussion and ideas for future work.
+1.1 Constraint Relaxation
+The origin of our method is rooted in constrained graph
+layout, where a relaxation algorithm has gained popularity
+due to its simplicity and versatility [9], [10]. It was ﬁrst
+introduced in video game engines as a technique to quickly
+approximate the behavior of cloth, which is modeled as a
+planar mesh of vertices that maintains its edges at a ﬁxed
+arXiv:1710.04626v3  [cs.CG]  28 Jun 2018
+
+PAGE 2
+2
+Xi
+Xj-r
+r
+di j
+Fig. 1. Satisfaction of the distance constraint described by Equation (2).
+length. A full physics simulation would represent each edge
+as a stiff spring, summing up and integrating over the
+resulting forces, but a realistic piece of cloth contains too
+many edges for this to be feasible. To avoid this bottleneck,
+Jakobsen [11] introduced the idea of considering each edge
+independently, moving a single pair of vertices at a time.
+While this is a rather simple and perhaps naive idea, in
+practice the solution converges in very few iterations.
+This was utilized by Dwyer [9], who used the method
+in conjunction with a force-directed layout to achieve effects
+such as making edges point downwards, or ﬁxing cycles
+around the edge of a wheel. To deﬁne it properly in the case
+of maintaining a distance dij between two vertices Xi and
+Xj, this movement, known henceforth as a constraint, can
+be written as
+||Xi − Xj|| ← dij (2)
+and is satisﬁed by moving Xi and Xj in opposite directions
+by a vector
+r = ||Xi − Xj|| −dij
+2
+Xi − Xj
+||Xi − Xj||. (3)
+This can be seen as a diagram in Figure 1, and is analogous
+to decompressing an inﬁnitely stiff spring of length dij.
+Rewriting Equation (1) as
+stress(X) =
+∑
+i<j
+Qij(X), (4)
+Qij(X) =wij(||Xi − Xj|| −dij)2, (5)
+it can be seen that if every term Qij in the summation is
+satisﬁed as a constraint (2), then the total stress is zero,
+corresponding to an ideal layout. This is exactly the idea
+behind our method—we replace the force-directed compo-
+nent by instead placing a constraint on every possible pair
+of vertices, satisfying them one by one as above. However
+zero stress is almost always impossible, for the same reasons
+that the aforementioned tetrahedron cannot be embedded in
+2D. In such situations, simply satisfying constraints as above
+does not lead to convergence, but we will now describe an
+extension that does.
+2 S TOCHASTIC GRADIENT DESCENT
+Our modiﬁcations to the algorithm described above can be
+understood by ﬁrst noticing that satisfying a constraint is
+equivalent to moving both vertices in the direction of the
+gradient of a stress term Qij
+∂Qij
+∂Xi
+= ∂
+∂Xi
+wij(||Xi − Xj|| −dij)2 = 4wijr. (6)
+Fig. 2. Plots of stress for SGD and majorization on the graphs1138_bus
+and dwt_1005, each initialized randomly within a 1 ×1 square. The
+circles and crosses show stress on each iteration over 10 runs, with
+the line running through the mean. Initial stress values are omitted.
+SGD is clearly more consistent, always reaching lower stress levels
+than majorization ever manages in hundreds of iterations on1138_bus.
+They both reach the same overall minimum on the more mesh-like
+dwt_1005, but majorization often gets stuck on a particularly dangerous
+local minimum, shown by its diverging paths. A more detailed timing
+analysis on a wide variety of other examples can be seen in Section 3.
+We can compute the full gradient∂Qij/∂X as
+∂Qij
+∂Xk
+=
+
+
+
+4wijr ifk =i
+−4wijr ifk =j
+0 otherwise.
+(7)
+Directly applying stochastic gradient descent to minimize
+stress would involve repeatedly randomly selecting a term
+Qij and applying the iterative formula X ← X−η∇Qij(X),
+whereη is a step size that tends towards 0 as the iteration
+number increases. Note that since the gradient is zero with
+respect to all Xk other than Xi and Xj, it sufﬁces to update
+the positions of Xi and Xj by
+[
+Xi
+Xj
+]
+←
+[
+Xi
+Xj
+]
++
+[
+∆Xi
+∆Xj
+]
+=
+[
+Xi
+Xj
+]
+− 4wijη
+[
+r
+−r
+]
+. (8)
+The constraint relaxation of the previous section is there-
+fore equivalent to a special case of SGD where wij = 1 and
+η = 1/4. Writing µ = 4wijη as the coefﬁcient of r we can
+see that Qij ← 0 whenµ = 1 and decreases monotonically
+from µ = 0 to µ = 1 . Since we have this extra geometric
+structure that is not normally available in SGD settings, we
+investigated a modiﬁed SGD algorithm in which we set a
+hard upper limit of µ ≤ 1:
+∆Xi = −∆Xj = −µ r,
+µ = min{wijη, 1 }. (9)
+This modiﬁed algorithm makes updates that are identical to
+standard SGD whenη is sufﬁciently small,
+η < 1
+wmax
+. (10)
+Since this will always eventually be the case, it has the
+same asymptotic convergence properties as standard SGD,
+which we discuss in Section 2.1.2. However, we ﬁnd that
+introducing this upper limit on µ allows for much larger
+initial step sizes than standard SGD, yielding much faster
+convergence without getting stuck in local minima. We
+show by experiment that this is true for a wide range of
+graphs (except for a single speciﬁc case, see Section 3.1).
+In addition, we use random reshufﬂing of terms unless
+otherwise stated (see Section 2.2). We deﬁne a full pass
+
+PAGE 3
+3
+Algorithm 1: Stochastic Gradient Descent
+1 SGD (G):
+inputs : graphG = (V,E )
+output:k-dimensional layout X withn vertices
+2 d{i,j} ←ShortestPaths (G)
+3 X ←RandomMatrix (n,k )
+4 forη in annealing schedule :
+5 foreach {i,j :i<j } in random order :
+6 µ ←wijη
+7 ifµ> 1 :
+8 µ ← 1
+9 r ←||Xi−Xj||−dij
+2
+Xi−Xj
+||Xi−Xj||
+10 Xi ← Xi −µ r
+11 Xj ← Xj +µ r
+Fig. 3. Pseudocode for the algorithm described in Section 2. The results
+in this paper initialize positions randomly within a 1×1 square on line 3.
+The annealing schedule on line 4 is explained in Section 2.1.
+through all the terms Qij as a single iteration, while a single
+application of Equation (8) will be known as as a step. From
+now on, we will refer to our modiﬁed SGD algorithm simply
+as SGD.
+Plots of stress achieved using SGD compared to ma-
+jorization are presented brieﬂy in Figure 2, and in more
+detail in Section 3. Pseudocode is shown in Algorithm 1
+(Figure 3). All results in this paper have vertex positions
+initialized uniformly randomly within a 1×1 square. Unless
+stated otherwise, graph data is from the SuiteSparse Matrix
+Collection [12]. Tests were performed using C# running in
+Visual Studio, on an Intel Core i7-4790 CPU with 16GB of
+RAM.
+2.1 Step Size Annealing
+Choosing a good step size η is crucial to the performance
+of SGD [13], and a typical implementation can involve
+complex algorithms for tuning the step size to the problem
+at hand [14]. Most of these methods do not apply here
+for two reasons. First, due to the limit on the step size in
+Equation (9), we can and do use much larger step sizes than
+standard SGD would allow. Second, many of these methods
+use previous gradients to inform the step size; we only
+update the positions of the two vertices directly involved,
+so storing and applying previous gradients is inefﬁcient to
+the point of increasing the asymptotic complexity of the
+algorithm.
+Even ignoring such adaptive methods, the full space of
+possible annealing schedules is too large to investigate in
+full, and the results can differ depending on the graph. We
+therefore investigated a limited subset of possible schedules,
+taking the mean ﬁnal stress across a wide range of graphs as
+the performance criterion (the full set of graphs considered
+in Section 3). We consider two use cases: one where time is
+a limiting factor and so the number of iterations is predeter-
+mined, and another where the algorithm may continue until
+the layout has converged to within a desired accuracy.
+Fig. 4. Plots of mean stress against iterations over 25 runs for the
+annealing schedules discussed in Section 2.1, with tmax = 15 and
+ε = 0.1 in all cases. The exact schedules used are shown in the top right
+of every plot. To approximate behavior given unlimited time, schedules
+were run for 500 iterations. 1138_bus shows the typical behavior of
+η =ae−bt reaching lower stress andη =a/(1+bt) never quite catching
+up; lesmis shows that this applies to smaller graphs as well;dwt_1005
+emphasizes the importance of larger step sizes, as the constant η = 1
+struggles to jump over large local minima. Note that on this easier graph
+η =a/(1 +bt) is enough to reach good minima in very few iterations.
+2.1.1 Fixed Number of Iterations
+We consider a step size that starts at a maximum value η =
+ηmax at the ﬁrst iterationt = 0, and decreases monotonically
+toη =ηmin at the ﬁnal iteration t =tmax − 1. Large values
+of η result in all µ capped at 1, and very small values will
+result in little to no movement of vertices. Because we wish
+to work within the useful range in between these extremes,
+we set
+ηmax = 1
+wmin
+, η min = ε
+wmax
+. (11)
+In our case wij = d−2
+ij sowmin is inversely proportional to
+the diameter of the graph dmax, and wmax to the smallest
+edge lengthdmin. This choice of ηmax ensures that all µ = 1
+for the ﬁrst iteration, which appears to be desirable in order
+to avoid local minima, while the choice of ηmin ensures that
+even the strongest constraints reach a small value of µ = ε
+for the ﬁnal iteration.
+We computed the performance for various schedules
+η(t) wheret is the iteration number, constrained to η(0) =
+ηmax and η(tmax − 1) = ηmin (except for the special case
+η(t) = 1 ). In each panel of Figure 4 we vary the form of
+the function η(t) for a ﬁxed choice of tmax and ε. The best
+form of η(t) appears to be the exponential decay given by
+the equation
+η1(t) =ηmaxe−λt. (12)
+In addition we varied the parameters tmax and ε for this
+η(t) (see Figure 5). Increasing tmax always improves the
+quality but also increases computation time, so we chose
+tmax = 15 as a reasonable compromise between speed and
+quality. The choiceε = 0.1 appears to be close to optimal for
+this tmax. With this number of iterations most of the gains
+
+PAGE 4
+4
+Fig. 5. Plots of mean stress over 25 runs on all graphs in Section 3
+when varying the parameterstmax orε on Equation (12), normalized to
+the best values from Figure 7. There are clear diminishing returns when
+increasingtmax, so we chose tmax = 15 as a trade-off between speed
+and quality.ε = 0.1 is close to optimum for this value.
+had already been made and further ones gave diminishing
+returns, although for particular applications another choice
+may be more appropriate.
+It is common in SGD to use a schedule η = Θ(1/t) [13],
+however for the small number of iterations considered here,
+the large initial step sizes cause η to decay too quickly in
+the beginning, leading to worse local minima. Exponential
+decay drops faster than 1/t ast → ∞ , but 1/t drops faster
+in early iterations given ﬁxed values atη(0) andη(tmax −1),
+as shown by the inset panels in Figure 4.
+2.1.2 Unlimited Iterations/Convergence
+The schedule described above works well in practice for a
+ﬁxed number of iterations, but given more time it can be
+desirable to let the algorithm run for longer to produce an
+optimal layout. Here we describe a schedule that is guar-
+anteed to converge, and a stopping criterion to prevent the
+algorithm from wasting iterations on negligible movements.
+A proof of convergence for SGD is well known in the
+machine learning literature [15], and requires an annealing
+schedule that satisﬁes
+∞∑
+t=0
+η(t) = ∞ and
+∞∑
+t=0
+η(t)2 < ∞. (13)
+This is guaranteed to reach global minima under conditions
+slightly weaker than convexity [16]. Intuitively, the ﬁrst
+summation ensures the decay is slow enough to reach the
+minimum no matter how far away we initialize, and the
+second ensures fast enough decay to converge to, rather
+than bounce around the minimum [17]. In the context of
+non-convex functions, like the stress equation considered
+in this paper, such a proof only holds for convergence to
+a stationary point that may be a saddle [16]. There is also
+recent work proving convergence to local minima in speciﬁc
+classes of non-convex functions [18].
+Since we cannot guarantee a global minimum with any
+choice of schedule, the best we can do is to choose a
+schedule that will converge to a stationary point. A com-
+monly used schedule that guarantees this is η = Θ(1/t),
+as this satisﬁes Equation (13). However, in the previous
+section we noted that this schedule gets stuck in poor local
+minima. We therefore use a mixed schedule. When t is
+small,η(t) = η1(t) follows the exponential schedule of the
+previous section, because in practice this avoids poor local
+minima. Whent is large we then switch to a 1/t schedule to
+guarantee convergence to a stationary point:
+η2(t +τ) = w−1
+max
+1 +λt when t>τ : η1(τ) =w−1
+max. (14)
+The cross-over value τ is the iteration at which the limit in
+Equation (9) stops capping µ and our algorithm becomes
+standard SGD. Since we have more iterations to work with,
+we also choose tmax = 30 in order to further improve
+avoidance of local minima. This choice is sufﬁcient to give
+even or better mean performance than majorization after
+convergence across every graph we tested except for one
+(see Section 3.1), but again depending on the application
+another choice may be more suitable.
+Finally, we introduce a suitable stopping criterion.
+Since SGD does not guarantee the monotonic decrease of
+stress [13], we cannot use the majorization heuristic adopted
+by Gansner et al. [8], which stops when the relative change
+in stress drops below a certain threshold. However we
+can guarantee that each time a constraint is satisﬁed, its
+corresponding term within the summation does decrease.
+We therefore estimate how close we are to convergence by
+tracking the maximum distance a vertex is moved by a
+single step over the previous iteration, and stop when this
+crosses a threshold
+max ||∆X||<δ. (15)
+We ﬁnd that a value ofδ = 0.03 works well in practice.
+Thus we have designed two schedules: one for a ﬁxed
+number of iterations, and one that continues until conver-
+gence. Results using both of these are presented in Section 3.
+It is important to note that these schedules use simple
+heuristics, and the exact nature of the data will affect the
+results. However we ﬁnd that they are robust across a wide
+variety of graphs, as all the results shown in this paper use
+these two schedules.
+2.2 Randomization
+An important consideration is the order in which constraints
+are satisﬁed, as naive iteration can introduce biases that
+cause the algorithm to get caught in local minima. The
+original method behind SGD proposed by Robbins and
+Monro [19] randomizes with replacement, meaning that a
+random term is picked every time with no guarantee as to
+how often a term will be picked. Some variants perform
+random reshufﬂing (RR) which guarantees that every term
+is processed once on each iteration. Under certain conditions
+it can be proven analytically that RR converges faster [20],
+and our results support this.
+Unfortunately adding randomness incurs a penalty in
+speed, due to the cost of both random number generation
+and reduced data cache prefetching. We found that this
+overhead is non-trivial, with iterations taking up to 60%
+longer with random reshufﬂing compared to looping in
+order. We explored the trade-offs between more randomness
+for better convergence but slower iterations, versus less
+randomness for slower convergence but faster iterations. We
+tried ﬁve different degrees of randomness: shufﬂing only
+the indices themselves, which removes any bias inherent
+to the data but still makes use of the cache by iterating in
+
+PAGE 5
+5
+Fig. 6. Stress against time taken using different degrees of randomiza-
+tion, over 50 runs from different random starting conﬁgurations. Markers
+indicate mean stress, with vertical bars ranging from best to worst over
+all runs. Both stress and time are normalized to the absolute minimum
+and maximum respectively over any run
+order; randomizing with replacement; shufﬂing the order of
+terms once; shufﬂing twice and alternating between the two
+orders; and shufﬂing on every iteration. The results can be
+seen in Figure 6.
+We selected ﬁve different graphs, each with around 1000
+vertices, and show a corresponding good layout for each
+to visualize the differences between them. More mesh-like
+graphs such as dwt_1005 do not beneﬁt much from added
+randomness, and receive large gains in speed for a small hit
+to quality. As graphs get more difﬁcult to draw, shufﬂing
+only indices quickly becomes ineffective, with mean stress
+levels off by orders of magnitude on the plots with broken
+axes. The graph email is a social network, which tend to
+be very difﬁcult to draw as their global minima are difﬁcult
+to ﬁnd. The drop in quality when reducing the randomness
+reﬂects this. G47 is a random graph and has the highest
+stress, but is easier to draw since there are many minima
+close to global that are all relatively easy to ﬁnd.
+Although RR is the most expensive method, it is only
+slightly more expensive and consistently performs best.
+However if speed is the most important concern, alternating
+between two random shufﬂes gives stress levels that are in
+many cases almost as good, at a slightly reduced cost. We
+use RR for the rest of the results here.
+3 E XPERIMENTAL COMPARISON
+To test the effectiveness of our algorithm, we follow Khoury
+et al. [21] and use symmetric sparse matrices from the
+SuiteSparse Matrix Collection [12] as a benchmark. We ran
+both SGD and majorization on every graph with 1000 or
+fewer vertices, and compared the range of stress levels
+reached after 15 iterations and until convergence, using the
+two schedules described Section 2.1. These results can be
+seen in Figure 7. We also chose a representative selection of
+larger graphs for more detailed timing results, showing mul-
+tiple implementations of majorization and the time course of
+convergence, which can be seen in Figure 10.
+3.1 Quality
+We can see from Figure 7 that SGD reaches the same low
+stress levels on almost every run. While majorization is
+proven to monotonically decrease stress [8], it can often
+struggle with local minima. This can be clearly seen in Fig-
+ure 8, as majorization consistently shows larger variance in
+its stress trajectories from different starting conﬁgurations.
+The layouts displayed in Figure 7 were chosen to high-
+light the effects of different types of graphs. From left to
+right, top then bottom: G15 is a random graph with nodes
+decreasing in mean degree. These random graphs reach
+consistent stress levels with both algorithms, as their lack of
+structure results in many minima close to global. dwt_66 is
+an example of a graph that majorization struggles with, as it
+is very long and often has multiple twists that majorization
+cannot unravel. orbitRaising_2 is a similar example,
+but in this case majorization also never reaches the global
+minimum, even after convergence. celegans_metabolic
+is a metabolic pathway that is around as densely packed as
+a graph worth drawing gets. SGD consistently outperforms
+majorization here too. Many of the largest ranges in the plot
+are from graphs similar to ex2; grids are difﬁcult to fully
+unfold, and majorization often struggles with their many
+local minima.
+On the other hand, dwt_307 is the one graph (of the 243
+we investigated) where majorization reaches lower stress
+than SGD as a result of our modiﬁcations to standard SGD
+(Figure 9).
+494_bus is an example of the type of graph where
+Equation (1) produces better layouts than other popular
+models. Its symmetry is clear here, whereas other force-
+directed algorithms can fail to show this due to theperipheral
+effect [23]. dwt_361 is an example of the type of graph
+that both SGD and majorization struggle with: long graphs
+that can twist. A twist in a graph constitutes a deep local
+minimum that iterative methods struggle with in general,
+and SGD is still susceptible to this issue. Sandi_authors
+is a small graph, but with some densely packed sections
+that can become stuck behind each other, something that
+majorization often struggles with. And ﬁnally, S10PI_n1 is
+a long graph that does not get twisted and so SGD deals
+with it perfectly well, but its long strands still tend to give
+majorization problems.
+3.2 Speed
+Our results show that SGD converges to low stress levels
+in far fewer iterations than majorization. Graphs are laid
+out in only 15 iterations in the top plot in Figure 7, and
+there is not much improvement to be gained from using
+the convergent schedule to let the algorithm run for longer.
+This indicates that most global minima can be found in
+very few iterations, making SGD especially suited for real-
+time applications such as interactive layout. Our stopping
+criterion for majorization was for relative decrease in stress
+to be less than 10−5, which is ten times more forgiving than
+originally suggested by Gansner et al. [8], as we found 10−4
+was not lenient enough to be conﬁdent that it had settled
+completely. Given enough time, majorization does ﬁnd good
+minima more often than not, but can still settle in local
+minima and in some cases never ﬁnds the best conﬁguration
+
+PAGE 6
+6
+Fig. 7. Stress achieved over 25 runs on every symmetric matrix with 1000 or fewer vertices in the SparseSuite Matrix Collection [12], comprising 243
+graphs in total. Markers indicate the mean over all runs, with bars ranging from minimum to maximum on any run. The top plot shows values reached
+after 15 iterations, and the bottom after convergence. Stress values are normalized to the lowest value achieved on all runs for either algorithm,
+as a baseline ‘correct’ layout. Each graph in the collection is also assigned to a group as metadata, and graphs that share a group tend to have
+similar topologies; we keep groups together, ordered alphabetically, and within each group sort by difference in mean stress after convergence.
+Thus both plots have the same order. Groups are demarcated by the alternating shaded background. Layouts shown are, from left to right, top
+then bottom: G15, dwt_66, orbitRaising_2, celegans_metabolic, ex2, dwt_307, 494_bus, dwt_361, Sandi_authors, S10PI_n1. An
+animated version of the top plot is included in the supplemental material.
+Fig. 8. Scatter plots of mean stress relative to the best achieved, against
+the spread of the stress, measured as the coefﬁcient of variation (stan-
+dard deviation over mean), using the same results as Figure 7. The
+shaded regions on the top and right of each panel show the density
+of the mean (right) and spread (top) of the stress, computed using the
+gaussian_kde function of SciPy [22].
+regardless of initialization. Majorization also takes many
+more iterations to converge than SGD, with means of 237
+and 106 iterations respectively.
+The real-world time per iteration must also be con-
+sidered, even though both share a complexity O(n2). We
+adapted the Cholesky factorization routine from Numerical
+Recipes [24] to C#, and found that iterations are around
+40% faster than SGD. However the initial decomposition
+before back-substitution requires n3/6 iterations involving
+a multiply and a subtract [24], so the total time quickly
+tips in favor of SGD. Conjugate gradient (CG), with tol-
+erance 0.1 and max iterations 10 as in [25], is an iterative
+method itself to solve the majorizing function and so iter-
+ates slower than Cholesky and SGD, but often beats out
+Cholesky overall when fewer iterations are necessary. CG
+and Cholesky also both beneﬁt from optimized matrix mul-
+tiplication routines [8] that we did not try here. Localized
+majorization, which is used to majorize the sparse model in
+Section 4.3, iterates fastest of all but converges slower. It is
+Fig. 9. Layouts from dwt_307, the only one of the 243 graphs consid-
+ered where majorization (left) yields lower stress than SGD (right).
+also worth noting that over-shooting has been used before
+in the context of majorization to achieve an average of 1.5
+times speedup [26]. Plots of stress against real time can be
+seen in Figure 10.
+4 A PPLICATIONS
+Some of the properties of SGD, in particular the fact that
+each edge is considered separately along with the ability
+to consistently avoid local minima well, make SGD well
+suited to variants such as constrained layout. We will now
+describe some recipes for examples of this, each applied to
+various real-world graphs in order to show the merits of
+their use. Note that these applications are also possible with
+majorization, but can require more drastic modiﬁcations in
+order to apply them successfully.
+4.1 Focusing on a Vertex
+It is often the case that a user will want to examine speciﬁc
+vertices in a graph, especially in an interactive setting. It
+is therefore important to be able to emphasize distances
+
+PAGE 7
+7
+Fig. 10. Graphs of stress against time for all three implementations of majorization, and SGD using the 15 iteration annealing schedule. 10 runs
+were used for each graph, and the line plots run through the mean stress and time per iteration. Graphs were considered as unweighted and layouts
+were initialized randomly within a 1×1 square. The graph btree9 is a binary tree of depth 9. Initial stress values are omitted, which is the cause of
+the horizontal offset to Cholesky due to its longer initialization time. Note that if we remove the time for the ﬁrst iteration Cholesky outperforms the
+other implementations of majorization, but still does not ever drop below the curve for SGD. The layouts show examples of what the graphs look
+like after 15 iterations, with Cholesky on top and SGD on bottom.
+
+PAGE 8
+8
+Fig. 11. The London Underground map with a focus on Green Park,
+created using the method described in Section 4.1. The distances are
+based on travel time rather than real world distance. Data from [27].
+involving certain vertices. Brandes and Pich [28] presented a
+general method of doing this in the context of majorization,
+by interpolating between two stress summations represent-
+ing general and constrained weights separately.
+For SGD, emphasizing speciﬁc distances is as simple as
+weighting the corresponding constraints more heavily. For
+example to focus on vertex 3, we simply set the relevant
+weights to inﬁnity
+wij ← ∞ ifi = 3 orj = 3. (16)
+This causes only the remaining constraints to decay, but the
+system still converges in this case as there are no conﬂicts
+between the ones emphasized. Setting weights to inﬁnity
+when using majorization results in the algorithm becoming
+instantly very stuck, which is why the more complicated
+interpolation [28] is necessary.
+These emphasized distances can also be modiﬁed from
+their graph-theoretic values if a speciﬁc separation is de-
+sired, for example to constrain in a circle using the distances
+introduced by Dwyer [9]. Additional constraints such as
+directed edges or non-overlap boundaries [9] can also be
+added just as easily by changing the objective function as
+desired.
+4.2 Color and Interactivity
+Highly connected and small-world graphs such as social
+networks can often produce dense, entangled layouts col-
+loquially termed ‘hairballs’. In this case, it is often useful
+to try to uncover some other form of information, such as
+revealing clusters of similar vertices. Since color is simply a
+linear mix of red, green, and blue (RGB), it can be used as
+a three-dimensional space in which Euclidean distances can
+be embedded, where each color corresponds to a separate
+axis. Figure 12 shows an example of vertices colored by their
+Jaccard similarity index, deﬁned as
+dij = 1 − |N(i) ∩N(j)|
+|N(i) ∪N(j)| (17)
+Fig. 12. Co-appearances of characters in Les Miserables by Victor
+Hugo. Groups of similarly colored vertices indicate clustering based on
+Jaccard similarity.
+where N(i) are the neighbors of vertex i. Since dij is
+bounded between 0 and 1, embedded distances ﬁt perfectly
+within the similarly bounded axes of color. This means that
+vertices not only have coordinates within normal Euclidean
+space, but also within RGB space.
+This process can help to reveal groupings, but can also
+produce ambiguity when applied to larger graphs due to the
+lack of distinct color combinations, again a problem caused
+by a lack of output dimensions. One possibility in this case
+would be to use an interactive form of visualization in which
+the user selects a smaller group of vertices at a time, and the
+algorithm embeds only their selection in an RGB space, by
+considering dissimilarities only between selected vertices.
+Interaction could also allow the user to manually adjust
+the step size η from Equation (8), allowing them to ‘shake’
+the graph out of local minima themselves. The step size
+annealing from Section 2.1 is the most ad hoc and data-
+dependent component of SGD so handing control over to
+the user can be useful, especially in dynamical situations
+where the structure of the graph changes with time. Ad-
+ditionally, if frame rate becomes an issue in an interactive
+setting, the application does not have to wait until the end
+of an entire iteration before rendering an updated layout
+because vertices are continually being moved, keeping the
+user interface smooth and responsive.
+4.3 Large Graphs
+To understand how many layout algorithms tackle scaling
+to larger graphs, it is convenient to rewrite Equation (1)
+by splitting the summation into two parts: paths that tra-
+verse one edge, and paths that traverse multiple. With
+σij = (||Xi − Xj|| −dij)2 this is
+stress(X) =
+∑
+{i,j}∈E
+wijσij +
+∑
+{i,j}/∈E
+wijσij (18)
+where E is the set of edges in the graph. Just considering
+the preprocessing stage for now, it is clear that we can
+
+PAGE 9
+9
+easily compute d andw for the ﬁrst half of the summation
+directly from the graph. Real-world graphs are also usually
+sparse, so for a graph with n vertices andm edges,m ≪n2
+making the space required to store these values tolerable.
+However the second half is not so easy—an all-pairs shortest
+paths (APSP) calculation takes O(m +n) time per vertex
+for an unweighted graph with a breadth-ﬁrst search, or
+O(m +n logn) for a weighted graph using Dijkstra’s algo-
+rithm [29]. Combined with requiringO(n2) space to store all
+the values of dij, this makes the preprocessing stage alone
+intractable for large graphs.
+The second stage is iteration, where the layout is gradu-
+ally improved towards a good minimum. Again, computing
+the ﬁrst summation is tolerable, but the number of longer
+distance contributions quickly grows out of control. Many
+notable attempts have been made at tackling this second
+half. A common approach is to ignore dij, and to ap-
+proximate the summation as an n-body repulsion problem,
+which can be efﬁciently well approximated using k-d trees
+[30]. Hu [23] and independently Hachul and J ¨unger [31]
+used this in the context of the force-directed model of
+Fruchterman and Reingold [32], along with a multilevel
+coarsening scheme to avoid local minima. Gansner et al. [25]
+use it with majorization by summing over −α log ||Xi −Xj||
+instead. Brandes and Pich [33] even ignore the second half
+completely and capture the long-range structure by ﬁrst
+initializing with a fast approximation to classical scaling [3],
+which minimizes the inner product rather than Euclidean
+distance.
+There are a couple of issues with this idea, one being
+that treating all long-range forces equally is unfaithful to
+graph-theoretic distances, and another being that the rela-
+tive strength of these forces depends on an extra parameter
+that can strongly affect the ﬁnal layout of the graph [23].
+Keeping these dependent on their graph-theoretic distance
+sidesteps both of these issues, but brings back the problem
+of computing and storing shortest paths. One approach to
+maintaining this dependence comes from Khoury et al. [21],
+who use a low-rank approximation of the distance matrix
+based on its singular value decomposition. This can work
+extremely well, but still requires APSP unless wij =d−1
+ij .
+4.3.1 Sparse Approximation
+The approach we use is that of Ortmann et al. [1], who
+pick a set of pivots whose shortest paths are used as an
+approximation for the shortest paths of vertices close to
+them. Since this approach actually reduces the number of
+terms in the summation, using it in the context of SGD also
+reduces the amount of work per iteration.
+To approximate the full model well it is important to
+choose pivots that are well distributed over the graph, and
+in their original paper Ortmann et al. [1] present an experi-
+mental evaluation of various methods for doing so. Our im-
+plementation uses max/min random sp to select pivots. Non-
+random max/min sp starts by picking one or more pivots and
+computing their shortest paths to all other vertices, with
+subsequent pivots chosen by picking the vertex with the
+maximum shortest path to any pivot chosen so far [34]. The
+random extension instead samples for subsequent pivots
+with a probability proportional to this shortest path to any
+pivot, rather than simply always picking the maximum.
+Algorithm 2: Sparse SGD
+1 SparseSGD (G,h ):
+inputs : graphG = (V,E ), number of pivots h
+output:k-dimensional layout X withn vertices
+2 P ←MaxMinRandomSP (G,h )
+3 d{p,i} ←SparseShortestPaths (G,P )
+4 w′
+{p,i} ← 0
+5 foreach {p,i :p /∈N(i)} ∈ (P ×V ) :
+6 s ← |{j ∈R(p) :dpj ≤dpi/2}|
+7 w′
+ip ←swip
+8 foreach {i,j } ∈ E :
+9 w′
+ij ←w′
+ji ←wij
+10 X ←RandomMatrix (n,k )
+11 forη in annealing schedule :
+12 foreach {i,j } ∈ E ∪ (V ×P ) in random order :
+13 µi ←Min(w′
+ijη, 1)
+14 µj ←Min(w′
+jiη, 1)
+15 r ←||Xi−Xj||−dij
+2
+Xi−Xj
+||Xi−Xj||
+16 Xi ← Xi −µir
+17 Xj ← Xj +µjr
+Fig. 13. Pseudocode for performing SGD on the sparse stress approx-
+imation described in Section 4.3.1. Note that all R(p) and w′
+ip can
+be constructed over the course of shortest path calculations without
+increasing the asymptotic complexity [1].
+These pivotsp ∈P are then each assigned a regionR(p),
+which is the set of vertices closer to that pivot than any other.
+The relevant weightswip are then adapted depending on the
+composition of the region, resulting in a new decomposed
+second half of the summation
+stress(X) =
+∑
+{i,j}∈E
+wijσij +
+∑
+i∈V
+∑
+p∈P\N (i)
+w′
+ipσij (19)
+whereN(i) are the neighbors of i to prevent overlap with
+any edges in the ﬁrst summation. The adapted weight w′
+ip
+is then set to sipwip, where sip is the number of vertices in
+R(p) at least as close to p as toi:
+sip = |{j ∈R(p) :djp ≤dip/2}| (20)
+The reason the weight on vertex i is increased like this is
+because its contribution acts as an approximation for the
+stress to all vertices in R(p), and (20) is required to prevent
+the weight on closer vertices from being overestimated. It is
+important to note that if both verticesp andq are pivots then
+w′
+pq may not equalw′
+qp and if onlyp is a pivot thenw′
+pq = 0
+as q should not contribute to the position of p. Resulting
+layouts are presented in Figures 14 and 15, and pseudocode
+can be seen in Algorithm 2 (Figure 13).
+5 D ISCUSSION
+One of the major reasons why previous force-directed algo-
+rithms, such as in [4], [9], [32], have become popular is how
+simple and intuitive the concept is. The idea of a physical
+system pushing and pulling vertices, modeled as sets of
+springs and electrical forces, makes them easy to understand
+and quick to implement for practical use.
+
+PAGE 10
+10
+Fig. 14. Examples of sparse relaxation on the graphs USPowerGrid, EVA, and 3elt. From left to right: layouts from 10 pivots, 50, 200, full stress,
+and plots showing stress over 25 runs for each number of pivots. We use the 15 iteration annealing schedule from Section 2.1.1 for SGD, and
+allow majorization to run for 100 iterations. Layouts shown contain the minimum stress achieved for that number of pivots. EVA is the least well
+approximated by the sparse model, likely due to its low diameter and high degree distribution. The mesh-like3elt is very well approximated by the
+model itself, but the performance of majorization declines as the number of pivots exceeds∼100, likely due to the increased number of terms in the
+summation that introduce more local minima that majorization struggles to jump over. Note that we did not use PivotMDS [33] to initialize as done
+by Ortmann et al. [1], and instead initialize randomly within a 1×1 square as before.
+Fig. 15. Some larger graphs, each approximated with 200 pivots, also using the 15 iteration schedule from Section 2.1.1. From left to right, top row
+then bottom: pesa (11,738 vertices), bcsstk31 (35,588), commanche_dual (7,920) and its original layout, finance256 (37,376), bcsstk32
+(44,609), luxembourg_osm (114,599) and its original layout. The right-hand graphs have path lengths weighted according to distances calculated
+from the original layouts.
+
+PAGE 11
+11
+The geometric interpretation of the SGD algorithm we
+have presented shares these qualities, as the concept of
+moving pairs of vertices one by one towards an ideal
+distance is just as simple. In fact the stress formulation (1)
+is commonly known as the spring model [4], [23], and the
+physical analogy of decompressing one spring at a time
+very naturally ﬁts this intuition. The implementation also
+requires no equation solver, and there is no need to consider
+smart initialization, which can often be just as complex a
+task [3]. Considering only a single pair of vertices at a time
+also makes further constrained layouts easy to implement,
+and allows an appropriate sparse approximation to grant
+scalability up to large graphs.
+But perhaps the most important beneﬁt of SGD is its
+consistency regardless of initialization, despite being non-
+deterministic due to the shufﬂing of the order of terms. By
+contrast, the plots in Section 3 clearly show how vastly the
+results from majorization can differ depending on initial-
+ization, especially when restricted to a limited number of
+iterations. This reliability of SGD can be crucial for real-time
+applications with ﬁxed limits on computation time, such as
+within an interactive visualization.
+However there are still situations where SGD can strug-
+gle with local minima, such as dwt_2680 which is sus-
+ceptible to twisting in the middle. This can be seen in
+Figure 10 where we purposefully included a twisted layout
+to illustrate this pitfall. A potential solution to this is over-
+shooting, or in other words allowing values of 0<µ< 2 in
+Equation (9). This greatly reduces the chance of a twist, but
+results in poorer local minima in most other cases and can
+also bring back the problem of divergence, so is a potential
+avenue for future work, perhaps to be used in conjunction
+with an adaptive annealing schedule to further optimize
+performance depending on the input data.
+5.1 Conclusion
+In this paper we have presented a modiﬁed version of
+stochastic gradient descent (SGD) to minimize stress as
+deﬁned by Equation (1). An investigation comparing the
+method to majorization shows consistently faster conver-
+gence to lower stress levels, and the fact that only a sin-
+gle pair of vertices is considered at a time makes it well
+suited for variants such as constrained layout or the pivot-
+based approximation of Ortmann et al. [1]. This improved
+performance—combined with a simplicity that forgoes an
+equation solver or smart initialization—makes SGD a strong
+candidate for general graph layout applications.
+Code used for timing experiments, along with some
+example Jupyter notebooks, is open source and available
+at www.github.com/jxz12/s gd2.
+ACKNOWLEDGMENTS
+We thank Tim Davis and Yifan Hu for maintaining the
+SuiteSparse Matrix Collection [12], where most of the graph
+data used in this paper was obtained. We are also grateful
+to the anonymous reviewers whose comments helped us to
+improve the paper.
+REFERENCES
+[1] M. Ortmann, M. Klimenta, and U. Brandes, “A sparse stress
+model,” Journal of Graph Algorithms and Applications , vol. 21, no. 5,
+pp. 791–821, 2017.
+[2] T. F. Cox and M. A. A. Cox, Multidimensional Scaling. CRC press,
+2000.
+[3] U. Brandes and C. Pich, “An experimental study on distance-based
+graph drawing,” in Graph Drawing. Springer, 2009, pp. 218–229.
+[4] T. Kamada and S. Kawai, “An algorithm for drawing general
+undirected graphs,” Information Processing Letters , vol. 31, no. 1,
+pp. 7–15, 1989.
+[5] J. B. Kruskal, “Multidimensional scaling by optimizing goodness
+of ﬁt to a nonmetric hypothesis,” Psychometrika, vol. 29, no. 1, pp.
+1–27, 1964.
+[6] ——, “Nonmetric multidimensional scaling: a numerical method,”
+Psychometrika, vol. 29, no. 2, pp. 115–129, 1964.
+[7] J. De Leeuw, “Convergence of the majorization method for mul-
+tidimensional scaling,” Journal of Classiﬁcation , vol. 5, no. 2, pp.
+163–180, 1988.
+[8] E. R. Gansner, Y. Koren, and S. North, “Graph drawing by stress
+majorization,” in Graph Drawing. Springer, 2005, pp. 239–250.
+[9] T. Dwyer, “Scalable, versatile and simple constrained graph lay-
+out,” in Computer Graphics Forum , vol. 28, no. 3. Wiley Online
+Library, 2009, pp. 991–998.
+[10] M. Bostock, V . Ogievetsky, and J. Heer, “D 3 data-driven docu-
+ments,” IEEE Transactions on Visualization and Computer Graphics ,
+vol. 17, no. 12, pp. 2301–2309, 2011.
+[11] T. Jakobsen, “Advanced character physics,” in Game Developers
+Conference, vol. 3, 2001, pp. 383–401.
+[12] T. A. Davis and Y. Hu, “The University of Florida sparse matrix
+collection,” ACM Transactions on Mathematical Software (TOMS) ,
+vol. 38, no. 1, pp. 1:1–1:25, 2011.
+[13] C. Darken, J. Chang, and J. Moody, “Learning rate schedules for
+faster stochastic gradient search,” in Neural Networks for Signal
+Processing II Proceedings of the 1992 IEEE Workshop . IEEE, 1992,
+pp. 3–12.
+[14] S. Ruder, “An overview of gradient descent optimization algo-
+rithms,” arXiv:1609.04747, 2016.
+[15] L. Bottou, “Stochastic gradient descent tricks,” in Neural Networks:
+Tricks of the Trade. Springer, 2012, pp. 421–436.
+[16] ——, “Online learning and stochastic approximations,” in On-line
+Learning in Neural Networks . Cambridge University Press, 1999,
+pp. 9–42.
+[17] M. Welling and Y. W. Teh, “Bayesian learning via stochastic
+gradient langevin dynamics,” in Proceedings of the 28th International
+Conference on Machine Learning, 2011, pp. 681–688.
+[18] R. Ge, F. Huang, C. Jin, and Y. Yuan, “Escaping from saddle
+points—online stochastic gradient for tensor decomposition,” in
+Conference on Learning Theory, 2015, pp. 797–842.
+[19] H. Robbins and S. Monro, “A stochastic approximation method,”
+The Annals of Mathematical Statistics , vol. 22, no. 3, pp. 400–407,
+1951.
+[20] M. G ¨urb ¨uzbalaban, A. Ozdaglar, and P . Parrilo, “Why random
+reshufﬂing beats stochastic gradient descent,” arXiv:1510.08560,
+2015.
+[21] M. Khoury, Y. Hu, S. Krishnan, and C. Scheidegger, “Drawing
+large graphs by low-rank stress majorization,” in Computer Graph-
+ics Forum, vol. 31, no. 3pt1. Wiley Online Library, 2012, pp. 975–
+984.
+[22] E. Jones, T. Oliphant, P . Peterson et al. , “SciPy: Open source
+scientiﬁc tools for Python,” 2001–, accessed 10/04/2018. [Online].
+Available: http://www.scipy.org/
+[23] Y. Hu, “Efﬁcient, high-quality force-directed graph drawing,”
+Mathematica Journal, vol. 10, no. 1, pp. 37–71, 2005.
+[24] W. H. Press, S. A. Teukolsky, W. T. Vetterling, and B. P . Flannery,
+Numerical recipes in C. Cambridge University Press, 1996.
+[25] E. R. Gansner, Y. Hu, and S. North, “A maxent-stress model for
+graph layout,” in IEEE Transactions on Visualization and Computer
+Graphics, vol. 19, no. 6. IEEE, 2013, pp. 927–940.
+[26] Y. Wang and Z. Wang, “A fast successive over-relaxation algorithm
+for force-directed network graph drawing,” Science China Informa-
+tion Sciences, vol. 55, no. 3, pp. 677–688, 2012.
+[27] P . Trotman, “London underground travel time map,” 2016,
+accessed 28/08/2017. [Online]. Available: https://github.com/
+petertrotman/london-underground-travel-time-map
+[28] U. Brandes and C. Pich, “More ﬂexible radial layout,” Journal of
+Graph Algorithms and Applications, vol. 15, no. 1, pp. 157–173, 2011.
+
+PAGE 12
+12
+[29] T. H. Cormen, Introduction to algorithms. MIT press, 2009.
+[30] J. Barnes and P . Hut, “A hierarchicalO(N logN ) force-calculation
+algorithm,” Nature, vol. 324, pp. 446–449, 1986.
+[31] S. Hachul and M. J ¨unger, “Drawing large graphs with a potential-
+ﬁeld-based multilevel algorithm.” in Graph Drawing . Springer,
+2005, pp. 285–295.
+[32] T. M. J. Fruchterman and E. M. Reingold, “Graph drawing by
+force-directed placement,” Software: Practice and Experience, vol. 21,
+no. 11, pp. 1129–1164, 1991.
+[33] U. Brandes and C. Pich, “Eigensolver methods for progres-
+sive multidimensional scaling of large data,” in Graph Drawing .
+Springer, 2007, pp. 42–53.
+[34] V . De Silva and J. B. Tenenbaum, “Sparse multidimensional scaling
+using landmark points,” Stanford University, Tech. Rep., 2004.
+Jonathan X. Zheng (corresponding author) is
+a PhD student in the Department of Electri-
+cal and Electronic Engineering, Imperial College
+London. His interests lie in the visualization of
+complex networks, along with its application to
+serious games to crowdsource research through
+public engagement. Zheng received his MEng in
+Electronic Information Engineering from Imperial
+College London.
+Samraat Pawar is a Senior Lecturer in the De-
+partment of Life Sciences, Imperial College Lon-
+don. His main research interests are in computa-
+tional and theoretical biology, with particular fo-
+cus on the dynamics of complex ecosystems and
+underlying interaction networks. Pawar received
+his PhD in Biology from the University of Texas
+at Austin.
+Dan F . M. Goodman is a Lecturer in the De-
+partment of Electrical and Electronic Engineer-
+ing, Imperial College London. His main research
+interests are in computational neuroscience, and
+he is also interested in studying dynamically
+evolving network structures such as ecosys-
+tems. Goodman received his PhD in Mathemat-
+ics from the University of Warwick.
