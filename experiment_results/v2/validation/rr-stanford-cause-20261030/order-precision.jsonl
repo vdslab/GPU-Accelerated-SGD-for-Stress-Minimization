@@ -1,0 +1,6 @@
+{"graph":"data/web-Stanford.mtx","initial_sha256":"4cc58ff9c79074b2a25830817c7a4a590bb83dc8390abc9dc4bb5580596b4697","one_sided":51011197,"pivots":200,"rounds":38625,"seed":0,"two_sided":1961826}
+{"final_sha256":"59428dcf988a0b1311ddd7c4caf1df15ef3294f6e76c2bb81502bc94fa09ae0e","method":"rr_order_cpu_f64","stress256":5192270837.386037,"stress64":5167165220.064563,"tiny_fallbacks":93}
+{"final_sha256":"552b3e7ed3a62b454c639b7420acff1b114428eb1edc114c8b0fb1f68b218123","method":"rr_order_cpu_f32","stress256":7534045003.492723,"stress64":7298772930.607603,"tiny_fallbacks":181}
+{"final_sha256":"b781df2bd626400f07683608e0b985035862a0128265d87bf74f8e60f618f20c","method":"global_shuffle_cpu_f32","stress256":5028527163.129017,"stress64":4757446143.207101,"tiny_fallbacks":0}
+{"final_sha256":"3663f6cf86301fd7f95d4b4768085f3ec873fae0927e7c4baaa9959d3d14c8c6","method":"rr_gpu","stress256":6286796052.030184,"stress64":6212335104.264862,"tiny_fallbacks":null}
+{"final_sha256":"dd13c3610f115c15b354e5394f541dfe9dfa5a1f279e953e81de28fc383f3efa","method":"global_shuffle_cpu_f64","stress256":5103171456.527175,"stress64":5092620939.589907,"tiny_fallbacks":null}

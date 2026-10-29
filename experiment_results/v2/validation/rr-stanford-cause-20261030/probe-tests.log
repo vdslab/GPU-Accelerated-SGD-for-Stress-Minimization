@@ -1,0 +1,16 @@
+   Compiling sparse-sgd-gpu v0.1.0 (/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu)
+    Finished `release` profile [optimized] target(s) in 1.16s
+     Running unittests examples/order_precision_probe.rs (implementations/sparse/sparse-sgd-gpu/target/release/examples/order_precision_probe-5a3c31735bfc69f9)
+
+running 8 tests
+test cpu::tests::coincident_positions_remain_finite ... ok
+test cpu::tests::directional_weights_move_endpoints_by_different_amounts ... ok
+test cpu::tests::complete_run_centers_the_result ... ok
+test cpu::tests::each_directional_mu_is_clamped_to_one ... ok
+test cpu::tests::zero_directional_weight_keeps_that_endpoint_fixed ... ok
+test cpu::tests::complete_pipeline_is_reproducible_for_same_seed ... ok
+test cpu::tests::symmetric_update_moves_endpoints_equally_in_opposite_directions ... ok
+test tests::serial_replay_matches_gpu_for_non_degenerate_updates ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
