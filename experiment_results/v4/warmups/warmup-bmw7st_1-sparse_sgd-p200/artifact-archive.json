@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-bmw7st_1-sparse_sgd-p200/sparse-sgd-bmw7st_1-warmup-bmw7st_1-sparse_sgd-p200.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-bmw7st_1-sparse_sgd-p200/sparse-sgd-bmw7st_1-warmup-bmw7st_1-sparse_sgd-p200.final.txt.gz",
+      "original_sha256": "258ddb92a7237e46f5414fa86d63b00d39d9d29783285f66f27d60b771218b29",
+      "decompressed_sha256": "258ddb92a7237e46f5414fa86d63b00d39d9d29783285f66f27d60b771218b29",
+      "compressed_sha256": "ba84d1c29b91e70bf1d57ff197d25c6d70ccdc6d530d63e78a63861a90f5c736",
+      "original_bytes": 49837617,
+      "compressed_bytes": 12319805,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-bmw7st_1-sparse_sgd-p200/sparse-sgd-bmw7st_1-warmup-bmw7st_1-sparse_sgd-p200.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-bmw7st_1-sparse_sgd-p200/sparse-sgd-bmw7st_1-warmup-bmw7st_1-sparse_sgd-p200.initial.txt.gz",
+      "original_sha256": "796088c53da8c30ff35d95c633afad41e3a2a79ce6e86416e3d1307e71b0fc3b",
+      "decompressed_sha256": "796088c53da8c30ff35d95c633afad41e3a2a79ce6e86416e3d1307e71b0fc3b",
+      "compressed_sha256": "263370f47f8c672ebd3482f673c0ccbf9a95f2e1304514f2e297543739bd2aee",
+      "original_bytes": 50173919,
+      "compressed_bytes": 12452016,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-bmw7st_1-sparse_sgd-p200/sparse-sgd-bmw7st_1-warmup-bmw7st_1-sparse_sgd-p200.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-bmw7st_1-sparse_sgd-p200/sparse-sgd-bmw7st_1-warmup-bmw7st_1-sparse_sgd-p200.vertex-map.txt.gz",
+      "original_sha256": "475fe1f0e9712cf34bd334375dc273721d48c9088182474712e04d6ca799c04c",
+      "decompressed_sha256": "475fe1f0e9712cf34bd334375dc273721d48c9088182474712e04d6ca799c04c",
+      "compressed_sha256": "9699dcd283dfde6e7b0d2212e118d7e88f747ee37805b74c7954d5f869026767",
+      "original_bytes": 1756624,
+      "compressed_bytes": 604383,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

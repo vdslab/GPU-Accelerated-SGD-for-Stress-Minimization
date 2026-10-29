@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-usroads-rr_sparse_sgd-p200/rr-sparse-sgd-usroads-warmup-usroads-rr_sparse_sgd-p200.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-usroads-rr_sparse_sgd-p200/rr-sparse-sgd-usroads-warmup-usroads-rr_sparse_sgd-p200.final.txt.gz",
+      "original_sha256": "c8762b5ab6b86e78f2ac131d633e934059f475bda930f21af980a87366087c89",
+      "decompressed_sha256": "c8762b5ab6b86e78f2ac131d633e934059f475bda930f21af980a87366087c89",
+      "compressed_sha256": "4868111a5b3c3e23e6a95bc57dc69736d289a7e494141da77d5d7e42184a6667",
+      "original_bytes": 6757727,
+      "compressed_bytes": 3144833,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-usroads-rr_sparse_sgd-p200/rr-sparse-sgd-usroads-warmup-usroads-rr_sparse_sgd-p200.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-usroads-rr_sparse_sgd-p200/rr-sparse-sgd-usroads-warmup-usroads-rr_sparse_sgd-p200.initial.txt.gz",
+      "original_sha256": "9af99d52bffb370f394c762671e751e4769b2c94ab0825ef4f715d681965f421",
+      "decompressed_sha256": "9af99d52bffb370f394c762671e751e4769b2c94ab0825ef4f715d681965f421",
+      "compressed_sha256": "ce0cc4521bb977c065deef4f4b28206520dcf5058666cdfea18d3ed920148d74",
+      "original_bytes": 7069107,
+      "compressed_bytes": 3234024,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-usroads-rr_sparse_sgd-p200/rr-sparse-sgd-usroads-warmup-usroads-rr_sparse_sgd-p200.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-usroads-rr_sparse_sgd-p200/rr-sparse-sgd-usroads-warmup-usroads-rr_sparse_sgd-p200.vertex-map.txt.gz",
+      "original_sha256": "e575f8e243d5fb7d6f9eeecba1324be05105a7460c9bda7337718bb7f905f9aa",
+      "decompressed_sha256": "e575f8e243d5fb7d6f9eeecba1324be05105a7460c9bda7337718bb7f905f9aa",
+      "compressed_sha256": "3661b8513068fde9b5bc907a2588fa49ad72175ee9ebe87b5c9f786a07772faa",
+      "original_bytes": 1543824,
+      "compressed_bytes": 535928,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

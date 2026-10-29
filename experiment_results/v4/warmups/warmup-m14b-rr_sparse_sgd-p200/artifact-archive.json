@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-m14b-rr_sparse_sgd-p200/rr-sparse-sgd-m14b-warmup-m14b-rr_sparse_sgd-p200.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-m14b-rr_sparse_sgd-p200/rr-sparse-sgd-m14b-warmup-m14b-rr_sparse_sgd-p200.final.txt.gz",
+      "original_sha256": "9266d0ad86c70c5833b747a8f9aa613ae13b47918c0184a7ada141b2f363735e",
+      "decompressed_sha256": "9266d0ad86c70c5833b747a8f9aa613ae13b47918c0184a7ada141b2f363735e",
+      "compressed_sha256": "afd987b60ea7e9e1d07032302d108ad60992d1bdf224af170f2c4d780805ad82",
+      "original_bytes": 29947145,
+      "compressed_bytes": 11271570,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-m14b-rr_sparse_sgd-p200/rr-sparse-sgd-m14b-warmup-m14b-rr_sparse_sgd-p200.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-m14b-rr_sparse_sgd-p200/rr-sparse-sgd-m14b-warmup-m14b-rr_sparse_sgd-p200.initial.txt.gz",
+      "original_sha256": "95efc3ca365dc04a6d3cea2de7fc016388a6bd4af97c3c686372802875979423",
+      "decompressed_sha256": "95efc3ca365dc04a6d3cea2de7fc016388a6bd4af97c3c686372802875979423",
+      "compressed_sha256": "ad321047de774fe3e8bf77a82544618279952181a509b76d900746258bbe708d",
+      "original_bytes": 30442245,
+      "compressed_bytes": 11365668,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-m14b-rr_sparse_sgd-p200/rr-sparse-sgd-m14b-warmup-m14b-rr_sparse_sgd-p200.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-m14b-rr_sparse_sgd-p200/rr-sparse-sgd-m14b-warmup-m14b-rr_sparse_sgd-p200.vertex-map.txt.gz",
+      "original_sha256": "ba53ae49fddfc9b1edc9420369c4092d798099f64cbbc9d99a1c99c9fccb7b3d",
+      "decompressed_sha256": "ba53ae49fddfc9b1edc9420369c4092d798099f64cbbc9d99a1c99c9fccb7b3d",
+      "compressed_sha256": "e74656d2b38454bdbea974a8ff9e449fe7570716c0ad8675e642ca6ba05f1e9d",
+      "original_bytes": 2784490,
+      "compressed_bytes": 935542,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

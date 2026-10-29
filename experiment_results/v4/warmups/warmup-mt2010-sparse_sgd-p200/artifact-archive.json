@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-mt2010-sparse_sgd-p200/sparse-sgd-mt2010-warmup-mt2010-sparse_sgd-p200.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-mt2010-sparse_sgd-p200/sparse-sgd-mt2010-warmup-mt2010-sparse_sgd-p200.final.txt.gz",
+      "original_sha256": "a251af94e82f7cc8a6c4e8da532f0c56d3abcc92ee810c3701060bdbf8bb0817",
+      "decompressed_sha256": "a251af94e82f7cc8a6c4e8da532f0c56d3abcc92ee810c3701060bdbf8bb0817",
+      "compressed_sha256": "7930bf7c7e4a3e3df3e08b7932d59a6df46cc86443078b0a3763b7188b3ed660",
+      "original_bytes": 8943242,
+      "compressed_bytes": 3948997,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-mt2010-sparse_sgd-p200/sparse-sgd-mt2010-warmup-mt2010-sparse_sgd-p200.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-mt2010-sparse_sgd-p200/sparse-sgd-mt2010-warmup-mt2010-sparse_sgd-p200.initial.txt.gz",
+      "original_sha256": "6b91f47dd6cabd0190ab9d10a558fb248eecac0a5c4b6bb97df07e2cf4d38710",
+      "decompressed_sha256": "6b91f47dd6cabd0190ab9d10a558fb248eecac0a5c4b6bb97df07e2cf4d38710",
+      "compressed_sha256": "f1ed8832a8effd9807617d9e7b525395b6ad76c94f26bd535d43277f485147ee",
+      "original_bytes": 9268546,
+      "compressed_bytes": 4019729,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-mt2010-sparse_sgd-p200/sparse-sgd-mt2010-warmup-mt2010-sparse_sgd-p200.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-mt2010-sparse_sgd-p200/sparse-sgd-mt2010-warmup-mt2010-sparse_sgd-p200.vertex-map.txt.gz",
+      "original_sha256": "2fa19c4bcfe537fa2007a5968ee3e4ac39fa7e04512fb94de4837dcd288e26be",
+      "decompressed_sha256": "2fa19c4bcfe537fa2007a5968ee3e4ac39fa7e04512fb94de4837dcd288e26be",
+      "compressed_sha256": "18fefb3735e411a14eaaa56806ef79a74861d5c8e03433cadcc2f12d800f2fda",
+      "original_bytes": 1629812,
+      "compressed_bytes": 563685,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

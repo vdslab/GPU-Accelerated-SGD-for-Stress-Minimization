@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-Linux_call_graph-rr_sparse_sgd-p200/rr-sparse-sgd-Linux_call_graph-warmup-Linux_call_graph-rr_sparse_sgd-p200.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-Linux_call_graph-rr_sparse_sgd-p200/rr-sparse-sgd-Linux_call_graph-warmup-Linux_call_graph-rr_sparse_sgd-p200.final.txt.gz",
+      "original_sha256": "804ef63ceec1f6b90c676e917e7eee82592d2f3811da843044c4801a79959c57",
+      "decompressed_sha256": "804ef63ceec1f6b90c676e917e7eee82592d2f3811da843044c4801a79959c57",
+      "compressed_sha256": "d414104d8d07e3f5afa14f524f8ee3987209c7fcd530734987f0f1d8ae460682",
+      "original_bytes": 26938816,
+      "compressed_bytes": 10954164,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-Linux_call_graph-rr_sparse_sgd-p200/rr-sparse-sgd-Linux_call_graph-warmup-Linux_call_graph-rr_sparse_sgd-p200.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-Linux_call_graph-rr_sparse_sgd-p200/rr-sparse-sgd-Linux_call_graph-warmup-Linux_call_graph-rr_sparse_sgd-p200.initial.txt.gz",
+      "original_sha256": "b808ca56870006e0be7f2571bbb7112880802a712e9ca9c0f906e36bfa358283",
+      "decompressed_sha256": "b808ca56870006e0be7f2571bbb7112880802a712e9ca9c0f906e36bfa358283",
+      "compressed_sha256": "01e79345715d45281a7fe72d0a643dd39e89e9be592f2654fa2f3df3f4b12f65",
+      "original_bytes": 27508530,
+      "compressed_bytes": 11023399,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-Linux_call_graph-rr_sparse_sgd-p200/rr-sparse-sgd-Linux_call_graph-warmup-Linux_call_graph-rr_sparse_sgd-p200.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-Linux_call_graph-rr_sparse_sgd-p200/rr-sparse-sgd-Linux_call_graph-warmup-Linux_call_graph-rr_sparse_sgd-p200.vertex-map.txt.gz",
+      "original_sha256": "359ea33df963384a92f70a603f2bae7e512e3ed1ad8589ee5a8d333279c38ad7",
+      "decompressed_sha256": "359ea33df963384a92f70a603f2bae7e512e3ed1ad8589ee5a8d333279c38ad7",
+      "compressed_sha256": "e1b0ff5efc9f35b3ad611d546a0b307fb3334ea36df7f5b433d99fe105e8a597",
+      "original_bytes": 4228744,
+      "compressed_bytes": 1400200,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

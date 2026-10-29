@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-delaunay_n17-atomic_sparse_sgd-p200/atomic-sparse-sgd-delaunay_n17-warmup-delaunay_n17-atomic_sparse_sgd-p200.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-delaunay_n17-atomic_sparse_sgd-p200/atomic-sparse-sgd-delaunay_n17-warmup-delaunay_n17-atomic_sparse_sgd-p200.final.txt.gz",
+      "original_sha256": "303c11fcd1f909fcabdff7c201e05482b28c4a1531279d4cbe75dfa19605ca62",
+      "decompressed_sha256": "303c11fcd1f909fcabdff7c201e05482b28c4a1531279d4cbe75dfa19605ca62",
+      "compressed_sha256": "8adb557d7745503fa7f3d389d062b0dc2230cd132f2bcc833854b8625e2356f9",
+      "original_bytes": 9763072,
+      "compressed_bytes": 3930268,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-delaunay_n17-atomic_sparse_sgd-p200/atomic-sparse-sgd-delaunay_n17-warmup-delaunay_n17-atomic_sparse_sgd-p200.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-delaunay_n17-atomic_sparse_sgd-p200/atomic-sparse-sgd-delaunay_n17-warmup-delaunay_n17-atomic_sparse_sgd-p200.initial.txt.gz",
+      "original_sha256": "394075ae5ce122a9578e3c483de0d8b184e7d633015d9e720bb15490e17eaadb",
+      "decompressed_sha256": "394075ae5ce122a9578e3c483de0d8b184e7d633015d9e720bb15490e17eaadb",
+      "compressed_sha256": "1d85495a08f7dda94e037a6e12fc12a025d70227737f8dd85388aba03bde3706",
+      "original_bytes": 10124302,
+      "compressed_bytes": 4082219,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-delaunay_n17-atomic_sparse_sgd-p200/atomic-sparse-sgd-delaunay_n17-warmup-delaunay_n17-atomic_sparse_sgd-p200.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-delaunay_n17-atomic_sparse_sgd-p200/atomic-sparse-sgd-delaunay_n17-warmup-delaunay_n17-atomic_sparse_sgd-p200.vertex-map.txt.gz",
+      "original_sha256": "6d3320ad7220a157f4f5e721e0e2f24834c9afd7e03814af8f45a913c67ee114",
+      "decompressed_sha256": "6d3320ad7220a157f4f5e721e0e2f24834c9afd7e03814af8f45a913c67ee114",
+      "compressed_sha256": "e9ee9d37255d63360a07661029e3dbe863defd4c78ad5e01e138360bc0700b85",
+      "original_bytes": 1612788,
+      "compressed_bytes": 558204,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

@@ -27,7 +27,9 @@ def main():
  ap=argparse.ArgumentParser();ap.add_argument('--images',type=Path,required=True);ap.add_argument('--paper-source',type=Path,required=True);ap.add_argument('--results-source',type=Path,required=True);a=ap.parse_args()
  audit=json.loads((BASE/'tables/audit.json').read_text());assert audit['completed']==audit['planned'] and audit['convergence_evaluated']
  images=json.loads(a.images.read_text());paper_source=a.paper_source.read_text();results_source=a.results_source.read_text()
- baseline=(BASE/'reference/paper-before-v4/論文_日本語草稿.md').read_text();assert normalize_prose(baseline)==normalize_prose(paper_source),'esa prose changed during measurements; merge it before applying generated manuscript'
+ baselinepath=BASE/'reference/paper-latest-before-v4/論文_日本語草稿.md'
+ if not baselinepath.exists():baselinepath=BASE/'reference/paper-before-v4/論文_日本語草稿.md'
+ baseline=baselinepath.read_text();assert normalize_prose(baseline)==normalize_prose(paper_source),'esa prose changed during measurements; merge it before applying generated manuscript'
  for num,name in [(1,'fig01_atomic.png'),(2,'fig02_rr_full.png'),(4,'fig04_tile_size.png')]:
   found=re.search(r'!\[図'+str(num)+r'[^\]]*\]\((https://[^\s)]+)\)',paper_source);assert found,(num,'missing existing image');images[name]=found.group(1)
  required=['fig01_atomic.png','fig02_rr_full.png','fig03_rr_sparse.png','fig04_tile_size.png','fig05_comparison.png','fig06_convergence.png','fig07_large_layouts.png','sparse_speed_stress.png'];assert all(images.get(n,'').startswith('https://img.esa.io/') for n in required)

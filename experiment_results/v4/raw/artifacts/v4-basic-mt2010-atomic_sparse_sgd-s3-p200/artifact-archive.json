@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/raw/artifacts/v4-basic-mt2010-atomic_sparse_sgd-s3-p200/atomic-sparse-sgd-mt2010-v4-basic-mt2010-atomic_sparse_sgd-s3-p200.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/raw/artifacts/v4-basic-mt2010-atomic_sparse_sgd-s3-p200/atomic-sparse-sgd-mt2010-v4-basic-mt2010-atomic_sparse_sgd-s3-p200.final.txt.gz",
+      "original_sha256": "a5f786024dc99263f6bef2c056d392d5b2ed60128a259db36593a47d403682e4",
+      "decompressed_sha256": "a5f786024dc99263f6bef2c056d392d5b2ed60128a259db36593a47d403682e4",
+      "compressed_sha256": "ddb0d81277ade78cea7e6407e6872d1544d85f29e9f7ee1a78adeba97ea4ede5",
+      "original_bytes": 8941935,
+      "compressed_bytes": 3905871,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/raw/artifacts/v4-basic-mt2010-atomic_sparse_sgd-s3-p200/atomic-sparse-sgd-mt2010-v4-basic-mt2010-atomic_sparse_sgd-s3-p200.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/raw/artifacts/v4-basic-mt2010-atomic_sparse_sgd-s3-p200/atomic-sparse-sgd-mt2010-v4-basic-mt2010-atomic_sparse_sgd-s3-p200.initial.txt.gz",
+      "original_sha256": "b6c4aebb7788a952bcc2acb62428d204597cbc9c2759a41083452d509210aacc",
+      "decompressed_sha256": "b6c4aebb7788a952bcc2acb62428d204597cbc9c2759a41083452d509210aacc",
+      "compressed_sha256": "0ca817496211b9031e665abec075260d4e12219ec383fca632049560768ee742",
+      "original_bytes": 9268579,
+      "compressed_bytes": 4020083,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/raw/artifacts/v4-basic-mt2010-atomic_sparse_sgd-s3-p200/atomic-sparse-sgd-mt2010-v4-basic-mt2010-atomic_sparse_sgd-s3-p200.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/raw/artifacts/v4-basic-mt2010-atomic_sparse_sgd-s3-p200/atomic-sparse-sgd-mt2010-v4-basic-mt2010-atomic_sparse_sgd-s3-p200.vertex-map.txt.gz",
+      "original_sha256": "2fa19c4bcfe537fa2007a5968ee3e4ac39fa7e04512fb94de4837dcd288e26be",
+      "decompressed_sha256": "2fa19c4bcfe537fa2007a5968ee3e4ac39fa7e04512fb94de4837dcd288e26be",
+      "compressed_sha256": "18fefb3735e411a14eaaa56806ef79a74861d5c8e03433cadcc2f12d800f2fda",
+      "original_bytes": 1629812,
+      "compressed_bytes": 563685,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

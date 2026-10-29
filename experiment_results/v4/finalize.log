@@ -1,0 +1,41 @@
+Starting summarize_v4.py
+Evaluated convergence v4-convergence-luxembourg_osm-rr_sparse_sgd-s0-p200
+Evaluated convergence v4-convergence-luxembourg_osm-rr_sparse_sgd-s1-p200
+Evaluated convergence v4-convergence-luxembourg_osm-rr_sparse_sgd-s2-p200
+Evaluated convergence v4-convergence-luxembourg_osm-rr_sparse_sgd-s3-p200
+Evaluated convergence v4-convergence-luxembourg_osm-rr_sparse_sgd-s4-p200
+Evaluated convergence v4-convergence-luxembourg_osm-rr_sparse_sgd-s5-p200
+Evaluated convergence v4-convergence-luxembourg_osm-rr_sparse_sgd-s6-p200
+Evaluated convergence v4-convergence-luxembourg_osm-rr_sparse_sgd-s7-p200
+Evaluated convergence v4-convergence-luxembourg_osm-rr_sparse_sgd-s8-p200
+Evaluated convergence v4-convergence-luxembourg_osm-rr_sparse_sgd-s9-p200
+Evaluated convergence v4-convergence-coAuthorsCiteseer-rr_sparse_sgd-s0-p200
+Evaluated convergence v4-convergence-coAuthorsCiteseer-rr_sparse_sgd-s1-p200
+Evaluated convergence v4-convergence-coAuthorsCiteseer-rr_sparse_sgd-s2-p200
+Evaluated convergence v4-convergence-coAuthorsCiteseer-rr_sparse_sgd-s3-p200
+Evaluated convergence v4-convergence-coAuthorsCiteseer-rr_sparse_sgd-s4-p200
+Evaluated convergence v4-convergence-coAuthorsCiteseer-rr_sparse_sgd-s5-p200
+Evaluated convergence v4-convergence-coAuthorsCiteseer-rr_sparse_sgd-s6-p200
+Evaluated convergence v4-convergence-coAuthorsCiteseer-rr_sparse_sgd-s7-p200
+Evaluated convergence v4-convergence-coAuthorsCiteseer-rr_sparse_sgd-s8-p200
+Evaluated convergence v4-convergence-coAuthorsCiteseer-rr_sparse_sgd-s9-p200
+Evaluated convergence v4-convergence-kron_g500-logn18-rr_sparse_sgd-s0-p200
+Evaluated convergence v4-convergence-kron_g500-logn18-rr_sparse_sgd-s1-p200
+Evaluated convergence v4-convergence-kron_g500-logn18-rr_sparse_sgd-s2-p200
+Evaluated convergence v4-convergence-kron_g500-logn18-rr_sparse_sgd-s3-p200
+Evaluated convergence v4-convergence-kron_g500-logn18-rr_sparse_sgd-s4-p200
+Evaluated convergence v4-convergence-kron_g500-logn18-rr_sparse_sgd-s5-p200
+Evaluated convergence v4-convergence-kron_g500-logn18-rr_sparse_sgd-s6-p200
+Evaluated convergence v4-convergence-kron_g500-logn18-rr_sparse_sgd-s7-p200
+Evaluated convergence v4-convergence-kron_g500-logn18-rr_sparse_sgd-s8-p200
+Evaluated convergence v4-convergence-kron_g500-logn18-rr_sparse_sgd-s9-p200
+{'convergence_evaluated': True, 'scope': 'RR only', 'planned': 220, 'completed': 220, 'statuses': {'success': 220}, 'reference_records': 440, 'comparison_statuses': {'success': 641, 'timeout': 3, 'memory_limit': 6, 'warmup_failed': 10}, 'excluded_auxiliary_v4_records': 111, 'basic_graphs': 38, 'convergence_graphs': 3, 'rr_comparable': 37, 'rr_faster': 37, 'rr_quality_within_5pct': 36}
+Starting plot_v4.py
+Generated figures 5–7 and Sparse quality supplement; Full data inherited from v3
+Starting report_v4.py
+Wrote /Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/report/RESULTS.md
+Starting paper_v4.py
+Merged v4 evidence into the latest six-subsection manuscript.
+/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/report/論文_日本語草稿_v4.md
+Starting diagram_v4.py
+Analysis and local drafts ready for visual inspection; esa has not been changed.

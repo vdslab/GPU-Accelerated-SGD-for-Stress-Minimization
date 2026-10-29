@@ -1,5 +1,17 @@
 # v4 RR Sparse SGD：論文図の再実験
 
+## 完了結果（2026年10月30日）
+
+RR220/220条件が完了した（基本190・収束30）。CPUと対応比較できた37グラフすべてで反復時間が短く、グラフ別速度比中央値は6.136〜55.053倍。37グラフ中36グラフのstress比中央値は1.05以下で、例外のcnr-2000は1.067だった。stressは固定256始点の推定値。
+
+- [実測結果](report/RESULTS.md)・[最終監査](validation/final-audit.json)
+- [esa 実験結果](https://vdslab.esa.io/posts/9029)（revision12）
+- [esa 論文](https://vdslab.esa.io/posts/9028)（revision34）
+- RR収束の最終保存点30件はnative評価に対して相対差最大2.23e-15で一致。RRの観測最大RSSは3.297GiB
+- ローカル論文の最新章構成を保持してv4結果を統合し、図3・5・6・7と補足図を更新。既存Full図1・2・4はSHA照合で変更なし
+- 公開先で保存本文と新画像参照を再読して照合済み（report/publication.json）。継続用の一時自動フォローアップは削除済み
+
+
 RR Sparseのみ現行の通常f32実装で再測定する。CPU・Atomic Sparseは既存v3の記録を一貫して参照する。Fullもv3の値を継承する。
 
 ## 対象と条件
@@ -38,6 +50,8 @@ RR Sparseのみ現行の通常f32実装で再測定する。CPU・Atomic Sparse�
 - reference/full-v3/: Fullの既存値と出所
 - reference/sparse-v3/: CPU・Atomicの既存値と出所
 - validation/: traceによる配置不変性・集計監査
+
+座標gzip・checkpoint・距離cacheは大容量のためGit対象外とし、v4内へローカル保持する。Gitには検証SHA・記録・集計・図を保存する。
 
 ## 再開と集計
 

@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/raw/artifacts/v4-basic-kron_g500-logn17-atomic_sparse_sgd-s3-p200/atomic-sparse-sgd-kron_g500-logn17-v4-basic-kron_g500-logn17-atomic_sparse_sgd-s3-p200.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/raw/artifacts/v4-basic-kron_g500-logn17-atomic_sparse_sgd-s3-p200/atomic-sparse-sgd-kron_g500-logn17-v4-basic-kron_g500-logn17-atomic_sparse_sgd-s3-p200.final.txt.gz",
+      "original_sha256": "c2bfdeb20518d51631fd0d1dda46009ca9764932d37cd9f9c82456a10fe83c6a",
+      "decompressed_sha256": "c2bfdeb20518d51631fd0d1dda46009ca9764932d37cd9f9c82456a10fe83c6a",
+      "compressed_sha256": "003cd58672d26e71b94888b952381dd3b40c6c0dfbe0d1c7084dd4fa62b3ee15",
+      "original_bytes": 65159566,
+      "compressed_bytes": 21849293,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/raw/artifacts/v4-basic-kron_g500-logn17-atomic_sparse_sgd-s3-p200/atomic-sparse-sgd-kron_g500-logn17-v4-basic-kron_g500-logn17-atomic_sparse_sgd-s3-p200.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/raw/artifacts/v4-basic-kron_g500-logn17-atomic_sparse_sgd-s3-p200/atomic-sparse-sgd-kron_g500-logn17-v4-basic-kron_g500-logn17-atomic_sparse_sgd-s3-p200.initial.txt.gz",
+      "original_sha256": "3f40239b712ef166fd5c0994f3308786f68c3652b9e68fca3f3540b50d783cb3",
+      "decompressed_sha256": "3f40239b712ef166fd5c0994f3308786f68c3652b9e68fca3f3540b50d783cb3",
+      "compressed_sha256": "340417f5fab7c2a831f48466f9205144a9ce15ace911e18dbd4ca8b58d5410ac",
+      "original_bytes": 65322875,
+      "compressed_bytes": 21890728,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/raw/artifacts/v4-basic-kron_g500-logn17-atomic_sparse_sgd-s3-p200/atomic-sparse-sgd-kron_g500-logn17-v4-basic-kron_g500-logn17-atomic_sparse_sgd-s3-p200.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/raw/artifacts/v4-basic-kron_g500-logn17-atomic_sparse_sgd-s3-p200/atomic-sparse-sgd-kron_g500-logn17-v4-basic-kron_g500-logn17-atomic_sparse_sgd-s3-p200.vertex-map.txt.gz",
+      "original_sha256": "45dd03fe98aad2e1fb6c18c42ab45701a6c77032544f11f1d3bbe721e27a3734",
+      "decompressed_sha256": "45dd03fe98aad2e1fb6c18c42ab45701a6c77032544f11f1d3bbe721e27a3734",
+      "compressed_sha256": "c5161d4c69349258387a84ee4f51ac45588dfd319d5a8f56b8b8ec5908875bfb",
+      "original_bytes": 1288394,
+      "compressed_bytes": 453749,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

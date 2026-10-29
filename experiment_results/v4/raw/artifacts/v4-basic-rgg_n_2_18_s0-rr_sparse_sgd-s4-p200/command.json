@@ -1,0 +1,35 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/sparse-sgd-gpu",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v4_lcc/rgg_n_2_18_s0.mtx",
+    "--seed",
+    "4",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--output-format",
+    "json",
+    "--run-id",
+    "v4-basic-rgg_n_2_18_s0-rr_sparse_sgd-s4-p200",
+    "--run-mode",
+    "benchmark",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/raw/artifacts/v4-basic-rgg_n_2_18_s0-rr_sparse_sgd-s4-p200",
+    "--pivots",
+    "200"
+  ],
+  "environment": {
+    "SGD_STRESS_SAMPLES": "256"
+  },
+  "limits": {
+    "timeout_seconds": 120,
+    "max_rss_bytes": 8589934592,
+    "min_free_disk_bytes": 8589934592,
+    "timeout_scope": "whole child process: input, preprocessing, initialization, SGD, stress evaluation and output",
+    "measurement_policy": "sequential; one warmup per graph/method/pivots/tile setting; successful runs only; failed warmup blocks formal seeds with explicit unexecuted records",
+    "rationale": "Keep v3 resource monitoring unchanged; rerun only Sparse graphs shown in paper figures. Basic runs have no trace instrumentation; convergence traces are separate.",
+    "artifact_policy": "Buffered native text exports; after the child exits, text and f64 checkpoints are losslessly gzip level1 archived with CRC and SHA verification outside native timing. Initial interrupted 662 conditions excluded."
+  }
+}

@@ -58,5 +58,8 @@ def main():
  replace('以上は、今回の条件でCPU','これらは今回の資源監視条件下での観測であり、普遍的な容量優位や安定した完了を保証しない。単一機種、RSS監視の粒度、固定反復、推定stressという条件の下で、全工程の時間、最大メモリ、完了率を併せて解釈する。')
  replace('v3ではFull RRが',f'Full RRのv3測定では比較可能19グラフすべて、Sparse RRのv4測定では比較可能{len(rr)}グラフ中{nfast}グラフでCPUより速かった。速度と最終stressは別々に評価する必要があり、同じ更新式でも順序と数値精度が異なれば同じ最終配置は保証されない。タイルサイズによる品質の変化も残り、有効性は速度・品質・完了率を併せて判断する。')
  replace('今後は、RR-Sparseのpivot','今後は、精度と更新順の影響を分離し、同一品質までの全体時間、前処理とメモリの改善、異なるGPUでの再現性を検証する。Sparse v4では通常のf32とCPUと同じ反復数で比較したが、固定256始点によるstress推定値であり、微小な優劣や全頂点対での順位を保証するものではない。')
- out=BASE/'report/論文_日本語草稿_v4.md';out.parent.mkdir(exist_ok=True);out.write_text(text);print(out)
+ out=BASE/'report/論文_日本語草稿_v4.md';out.parent.mkdir(exist_ok=True);out.write_text(text)
+ from merge_latest_paper_v4 import merge
+ merge(BASE)
+ print(out)
 if __name__=='__main__':main()

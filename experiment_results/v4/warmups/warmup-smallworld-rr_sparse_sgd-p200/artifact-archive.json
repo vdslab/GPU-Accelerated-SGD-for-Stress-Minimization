@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-smallworld-rr_sparse_sgd-p200/rr-sparse-sgd-smallworld-warmup-smallworld-rr_sparse_sgd-p200.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-smallworld-rr_sparse_sgd-p200/rr-sparse-sgd-smallworld-warmup-smallworld-rr_sparse_sgd-p200.final.txt.gz",
+      "original_sha256": "c5d1e0d0526fcb10dd69685cca2df32bdc88af0b62aa4f3692aea4f279ef6ae2",
+      "decompressed_sha256": "c5d1e0d0526fcb10dd69685cca2df32bdc88af0b62aa4f3692aea4f279ef6ae2",
+      "compressed_sha256": "4cf713c162963441254be0cc6d10fee7cb8afb1b55d73613f2c700687bddb067",
+      "original_bytes": 9705170,
+      "compressed_bytes": 3703550,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-smallworld-rr_sparse_sgd-p200/rr-sparse-sgd-smallworld-warmup-smallworld-rr_sparse_sgd-p200.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-smallworld-rr_sparse_sgd-p200/rr-sparse-sgd-smallworld-warmup-smallworld-rr_sparse_sgd-p200.initial.txt.gz",
+      "original_sha256": "0bc9f7c1bb536e1a5e461e1def79583e4b117dc62abb203bced6a97887a2ac7c",
+      "decompressed_sha256": "0bc9f7c1bb536e1a5e461e1def79583e4b117dc62abb203bced6a97887a2ac7c",
+      "compressed_sha256": "cc3ca7fa48d0b7815ed3558896f1571d577bb5e28a74fd2e27765423dc263131",
+      "original_bytes": 9922024,
+      "compressed_bytes": 3736250,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-smallworld-rr_sparse_sgd-p200/rr-sparse-sgd-smallworld-warmup-smallworld-rr_sparse_sgd-p200.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-smallworld-rr_sparse_sgd-p200/rr-sparse-sgd-smallworld-warmup-smallworld-rr_sparse_sgd-p200.vertex-map.txt.gz",
+      "original_sha256": "87ea98ea15f2640464b2591eef9895240b8664eba813fe26ec5bff7692279c29",
+      "decompressed_sha256": "87ea98ea15f2640464b2591eef9895240b8664eba813fe26ec5bff7692279c29",
+      "compressed_sha256": "9ccb71a00334ef6d988a267435126b8d323faef57faf0c3fdda97170e6052afb",
+      "original_bytes": 1177780,
+      "compressed_bytes": 417199,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

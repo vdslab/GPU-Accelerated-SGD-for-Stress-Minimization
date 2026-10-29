@@ -1,0 +1,22 @@
+{
+  "convergence_evaluated": true,
+  "scope": "RR only",
+  "planned": 220,
+  "completed": 220,
+  "statuses": {
+    "success": 220
+  },
+  "reference_records": 440,
+  "comparison_statuses": {
+    "success": 641,
+    "timeout": 3,
+    "memory_limit": 6,
+    "warmup_failed": 10
+  },
+  "excluded_auxiliary_v4_records": 111,
+  "basic_graphs": 38,
+  "convergence_graphs": 3,
+  "rr_comparable": 37,
+  "rr_faster": 37,
+  "rr_quality_within_5pct": 36
+}

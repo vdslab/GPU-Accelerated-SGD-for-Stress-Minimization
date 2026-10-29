@@ -1,0 +1,12 @@
+{
+  "started": "2026-10-30T05:55:54.770172+09:00",
+  "policy": "RR-only continuation requested by user; earlier CPU/Atomic v4 records retained as excluded auxiliary measurements. Comparisons use labeled v3 CPU/Atomic references.",
+  "git_commit": "3eb792c1e38b9c7b15a8e579f93440f436bab751",
+  "driver_sha256": "39948dafbc7b174e64b4fd86c5753546eaf8d014f5f6990c668faf9c6995dc22",
+  "plan_sha256": "1a50f59a33e7555932f598c483bdd2524b8795281eb64ad792b1b7a78ad0f65b",
+  "binary_sha256": {
+    "sparse_sgd": "98a9c54ebc4872375db5f211d5425bec8e298cac50bc5e61a236792bc4b4c570",
+    "atomic_sparse_sgd": "3e3122422c5aca438f1f3b3521f85fa4e825b8c8c0bdc3512760ce9f93a4957e",
+    "rr_sparse_sgd": "06f83cedc240d02b3aa02fb4a02bf4143dfbc5397b043c0f64bd587812b75035"
+  }
+}

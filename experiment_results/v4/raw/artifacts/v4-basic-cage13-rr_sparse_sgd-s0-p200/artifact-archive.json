@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/raw/artifacts/v4-basic-cage13-rr_sparse_sgd-s0-p200/rr-sparse-sgd-cage13-v4-basic-cage13-rr_sparse_sgd-s0-p200.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/raw/artifacts/v4-basic-cage13-rr_sparse_sgd-s0-p200/rr-sparse-sgd-cage13-v4-basic-cage13-rr_sparse_sgd-s0-p200.final.txt.gz",
+      "original_sha256": "ba135baf4f9dce1c8a6d5394ccb1e290d6229f18b03713a611d78434b76f4afd",
+      "decompressed_sha256": "ba135baf4f9dce1c8a6d5394ccb1e290d6229f18b03713a611d78434b76f4afd",
+      "compressed_sha256": "e187584c7629b70a409030346f458bc2264e85c84d70b3d06ba9e097704622ce",
+      "original_bytes": 64868492,
+      "compressed_bytes": 23118743,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/raw/artifacts/v4-basic-cage13-rr_sparse_sgd-s0-p200/rr-sparse-sgd-cage13-v4-basic-cage13-rr_sparse_sgd-s0-p200.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/raw/artifacts/v4-basic-cage13-rr_sparse_sgd-s0-p200/rr-sparse-sgd-cage13-v4-basic-cage13-rr_sparse_sgd-s0-p200.initial.txt.gz",
+      "original_sha256": "c746384faa25f1402331618811413dbaef151d03cf69468c2081011b521785c9",
+      "decompressed_sha256": "c746384faa25f1402331618811413dbaef151d03cf69468c2081011b521785c9",
+      "compressed_sha256": "1c164994d71a95830f7a24f1b6e619f448bc4f4ae60b6e8c73716ea7bee976c1",
+      "original_bytes": 65966925,
+      "compressed_bytes": 23308175,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/raw/artifacts/v4-basic-cage13-rr_sparse_sgd-s0-p200/rr-sparse-sgd-cage13-v4-basic-cage13-rr_sparse_sgd-s0-p200.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/raw/artifacts/v4-basic-cage13-rr_sparse_sgd-s0-p200/rr-sparse-sgd-cage13-v4-basic-cage13-rr_sparse_sgd-s0-p200.vertex-map.txt.gz",
+      "original_sha256": "7a2448423b75754cab38fc792d59da93050d8a57f754cd24f038a1d835b169c1",
+      "decompressed_sha256": "7a2448423b75754cab38fc792d59da93050d8a57f754cd24f038a1d835b169c1",
+      "compressed_sha256": "6050b026a5ce666ddac07a1222656cf4ac0883f35f8b377006b680ec91c12158",
+      "original_bytes": 6012190,
+      "compressed_bytes": 1974734,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

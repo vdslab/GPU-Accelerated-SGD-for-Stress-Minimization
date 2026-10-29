@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-luxembourg_osm-sparse_sgd-p200/sparse-sgd-luxembourg_osm-warmup-luxembourg_osm-sparse_sgd-p200.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-luxembourg_osm-sparse_sgd-p200/sparse-sgd-luxembourg_osm-warmup-luxembourg_osm-sparse_sgd-p200.final.txt.gz",
+      "original_sha256": "5c9a3232684e9ed903b7accb57823d83de6d3b7911b7933a8baaf09beecb063c",
+      "decompressed_sha256": "5c9a3232684e9ed903b7accb57823d83de6d3b7911b7933a8baaf09beecb063c",
+      "compressed_sha256": "74a5bae6adab3ce889b404824943db5db205e6489487c4842362247d14e8928f",
+      "original_bytes": 5776119,
+      "compressed_bytes": 2737248,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-luxembourg_osm-sparse_sgd-p200/sparse-sgd-luxembourg_osm-warmup-luxembourg_osm-sparse_sgd-p200.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-luxembourg_osm-sparse_sgd-p200/sparse-sgd-luxembourg_osm-warmup-luxembourg_osm-sparse_sgd-p200.initial.txt.gz",
+      "original_sha256": "7c4595230ed43fb94e2c65485e1c4c550d0422934e677cb55f3828394fffc031",
+      "decompressed_sha256": "7c4595230ed43fb94e2c65485e1c4c550d0422934e677cb55f3828394fffc031",
+      "compressed_sha256": "144a5a87caa9ea4651486279b166304e096b3effcdc6e2bf00d93e30fd71f9c9",
+      "original_bytes": 6063434,
+      "compressed_bytes": 2799120,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-luxembourg_osm-sparse_sgd-p200/sparse-sgd-luxembourg_osm-warmup-luxembourg_osm-sparse_sgd-p200.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v4/warmups/warmup-luxembourg_osm-sparse_sgd-p200/sparse-sgd-luxembourg_osm-warmup-luxembourg_osm-sparse_sgd-p200.vertex-map.txt.gz",
+      "original_sha256": "2a4d686e5d9ed6815b423f30f0cd964f87d952d34c7e64e2ae523df37a8fcddf",
+      "decompressed_sha256": "2a4d686e5d9ed6815b423f30f0cd964f87d952d34c7e64e2ae523df37a8fcddf",
+      "compressed_sha256": "2cee3cae09c457a4422e9d18c29dd4bf7d3606a61def2897368d4f8eea3d7a29",
+      "original_bytes": 1382166,
+      "compressed_bytes": 484161,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

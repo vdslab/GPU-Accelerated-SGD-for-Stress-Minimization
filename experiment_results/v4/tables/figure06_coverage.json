@@ -1,0 +1,110 @@
+[
+  {
+    "graph": "dwt_2680",
+    "method": "sgd",
+    "seeds": 10,
+    "normalization": "method median / corresponding CPU final median"
+  },
+  {
+    "graph": "dwt_2680",
+    "method": "atomic_sgd",
+    "seeds": 10,
+    "normalization": "method median / corresponding CPU final median"
+  },
+  {
+    "graph": "dwt_2680",
+    "method": "rr_sgd",
+    "seeds": 10,
+    "normalization": "method median / corresponding CPU final median"
+  },
+  {
+    "graph": "wiki-Vote",
+    "method": "sgd",
+    "seeds": 10,
+    "normalization": "method median / corresponding CPU final median"
+  },
+  {
+    "graph": "wiki-Vote",
+    "method": "atomic_sgd",
+    "seeds": 10,
+    "normalization": "method median / corresponding CPU final median"
+  },
+  {
+    "graph": "wiki-Vote",
+    "method": "rr_sgd",
+    "seeds": 10,
+    "normalization": "method median / corresponding CPU final median"
+  },
+  {
+    "graph": "EVA",
+    "method": "sgd",
+    "seeds": 10,
+    "normalization": "method median / corresponding CPU final median"
+  },
+  {
+    "graph": "EVA",
+    "method": "atomic_sgd",
+    "seeds": 10,
+    "normalization": "method median / corresponding CPU final median"
+  },
+  {
+    "graph": "EVA",
+    "method": "rr_sgd",
+    "seeds": 10,
+    "normalization": "method median / corresponding CPU final median"
+  },
+  {
+    "graph": "luxembourg_osm",
+    "method": "sparse_sgd",
+    "seeds": 10,
+    "normalization": "method median / corresponding CPU final median"
+  },
+  {
+    "graph": "luxembourg_osm",
+    "method": "atomic_sparse_sgd",
+    "seeds": 10,
+    "normalization": "method median / corresponding CPU final median"
+  },
+  {
+    "graph": "luxembourg_osm",
+    "method": "rr_sparse_sgd",
+    "seeds": 10,
+    "normalization": "method median / corresponding CPU final median"
+  },
+  {
+    "graph": "kron_g500-logn18",
+    "method": "sparse_sgd",
+    "seeds": 10,
+    "normalization": "method median / corresponding CPU final median"
+  },
+  {
+    "graph": "kron_g500-logn18",
+    "method": "atomic_sparse_sgd",
+    "seeds": 10,
+    "normalization": "method median / corresponding CPU final median"
+  },
+  {
+    "graph": "kron_g500-logn18",
+    "method": "rr_sparse_sgd",
+    "seeds": 10,
+    "normalization": "method median / corresponding CPU final median"
+  },
+  {
+    "graph": "coAuthorsCiteseer",
+    "method": "sparse_sgd",
+    "seeds": 10,
+    "normalization": "method median / corresponding CPU final median"
+  },
+  {
+    "graph": "coAuthorsCiteseer",
+    "method": "atomic_sparse_sgd",
+    "seeds": 10,
+    "normalization": "method median / corresponding CPU final median"
+  },
+  {
+    "graph": "coAuthorsCiteseer",
+    "method": "rr_sparse_sgd",
+    "seeds": 10,
+    "normalization": "method median / corresponding CPU final median"
+  }
+]

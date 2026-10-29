@@ -1,53 +1,25 @@
-# v4 completion work
+# 実施記録：完了
 
-The user requested rerunning only Sparse experiments currently plotted in the paper, organizing v4, then updating esa results and figures. Full remains v3. Commits authorized, no push requested. Do not spawn agents.
+2026年10月30日、RR Sparse v4の220条件を完走し、集計・図・ローカル論文・esa更新を完了した。現在の状態と再現手順はREADME.md、数値はreport/RESULTS.md、監査はvalidation/final-audit.jsonを参照。
 
-## Running jobs
+## 計画と記録の推移
 
-Main repo: `/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization`, branch main.
-- Serial benchmark: `python3 experiments/run_v4.py`, originally PID 98464, exec session 38640. Log `runner.log`, progress `checkpoint.json`.
-- Completion worker: `python3 experiments/finalize_v4.py --wait-pid 98464`, exec session 85947, log `finalize.log`. It waits for the benchmark, then runs summarize, plot, report, manuscript draft and schematic scripts. It does NOT publish or install manuscript files.
-- Do not rebuild binaries or change run_v4.py/config plans during measurement. Native binary SHA and runner SHA are frozen. Execution source commit 7dbf14a0cdb09acce1a73973c0b498922dbb20b6.
-- Do not run other benchmarks or heavy analysis in parallel. Current benchmark is serial and may take several hours. Inspect logs/checkpoint; resume same runner only if stopped after identifying cause.
-- 660 planned records: 38 graphs ×3 methods×5 seeds basic =570; 3 graphs ×3 methods×10 seeds convergence=90. Warmups separate. Failure/warmup_failed is a result, not a reason to tune parameters or selectively rerun.
-- GPU plain single f32, CPU f64, all15 iterations, epsilon .1, pivots200. No compensation, extra iterations, graph-specific schemes. RR vertex-specific permutation +4 chunks. Atomic current default no CPU preshuffle (changed from v3, disclosed).
-- Sampled full stress uses256 fixed sources, seed0. CPU/GPU initial/input/preprocess SHA checked. All38 are >100k nodes. RSS8GiB/process120s/minfree8GiB monitoring retained.
+1. 当初は3手法660条件を計画した。元のconfig/plan.json・execution.json・ソースSHAは変更せず保持した。
+2. モデル切替で元runnerが59件記録後に終了した。親の記録処理が失われたRR1attemptはinterruptions/model-switch-*へ隔離し、品質値で選別せず同条件を再実行した。
+3. 166件（RR55、CPU56、Atomic55）を記録した時点で、ユーザー指示によりRRのみへ絞った。停止したAtomic warmupはinterruptions/scope-change-rr-onlyへ保存した。
+4. experiments/run_v4_rr_only.pyはRR55件を引き継ぎ、新計画config/rr-only-plan.jsonの220件を完了した。raw/results.jsonlは計331件で、CPU・Atomic111件は補助として残した。正式比較は一貫してv3のCPU・Atomic440参照を使う。
+5. 固定した同じ入力・初期配置・15反復・epsilon0.1・pivot200で照合した。通常f32、精度補償なし。CPU56補助件はv3と初期SHA・最終stressが完全一致した。
+6. 最新論文側で導入・章構成・wgpu説明・参考文献の編集が並行して入っていたため、reference/paper-latest-before-v4へ保存し、v4のSparse根拠だけを統合した。変更しない節の一致をコードで検査した。
+7. esa9029 revision12、esa9028 revision34として保存し、保存後の本文と新画像URLを再読照合した。
 
-## On measurement completion
+## 主なスクリプト
 
-1. Confirm all660 unique IDs accounted for, archive_status success, no pending. Check finalize.log. If worker fails, fix only analysis and rerun needed scripts serially. Distance evaluation cache under cache/ is ignored. Recomputed final checkpoint stress must match native result to1e-10 relative; never bypass an unexplained mismatch.
-2. Inspect `tables/audit.json`, `summary.csv`, `paired-ratios.csv`, `missing.csv`, `arrivals.csv`, `convergence.csv`, `figure06_coverage.json`.
-3. View and verify figures in figures/: fig03_rr_sparse, fig05_comparison, fig06_convergence, fig07_large_layouts, sparse_speed_stress (PNG/PDF/SVG). Ensure labels/axes/errors aren't clipped, no incorrect N/A interpretation. Full numeric data are separately inherited in reference/full-v3. Fig4 must remain unchanged.
-4. Review report/RESULTS.md and report/論文_日本語草稿_v4.md. Draft generator verified unique paragraph replacements using a temporary incomplete-data fixture; final counts must still be inspected. Delaunay_n19 CPU completion is dynamic; never assert CPU failed if it succeeded. Missing reasons need clear readable Japanese, improve if raw status dictionary is awkward.
-5. Install manuscript and updated figures to `/Users/kose/Library/Mobile Documents/iCloud~md~obsidian/Documents/sakamoti55/11_大学院研究/02_論文フェーズ/`. Main draft: 論文_日本語草稿.md, figures: 図表/. Copy3/5/6/7; Full1/2/4 unchanged. Update 図表/README.md and make_figures.py so regeneration uses current v4 scripts, not overwrites v4 with old v3 Sparse. Old script saved reference/paper-before-v4/make_figures.py. Formal TeX repo is a skeleton; no need edit.
-6. Update esa result page9029 and manuscript9028, including new uploaded figures. Read fresh versions first and preserve user edits. Backups from this run are reference/paper-before-v4/esa9028-before-v4.md and esa9029-before-v4.md. Full sections unchanged; the new result page can lead with the v4 report and retain existing Full sections plus explicitly folded v3 history. Clearly state v4 covers paper's38graphs, NOT all78 historical candidates/pivot sweeps. Do not silently present old Sparse charts as current. Use updated composite paperfigures5/6/7 and Sparse speed/stress supplement; methodfigure3 reflects current4chunk ordering.
-7. Verify saved esa pages display current counts/images. Save final esa Markdown and image URL map under report/ and publication audit JSON with URLs/revisions.
-8. Update README final status/reproduction commands. Commit scripts, small raw metadata, tables, figures, reports. Coordinate archives remain local ignored, with SHA manifests; Full4 copied coordinate archives under reference/full-v3/coordinates/ are likewise ignored. Do not push without instruction. Report results/limitations + paths + esa links + commit.
+- run_v4_rr_only.py：完了済みRR計画の再開（既存結果は再実行しない）
+- summarize_v4.py：v3参照との対応監査、集計、途中stress
+- plot_v4.py / diagram_v4.py：図の再生成
+- report_v4.py / paper_v4.py / merge_latest_paper_v4.py：結果本文と最新構成への統合
+- install_v4.py：ローカル論文・図への反映、Full図の不変性検査
+- prepare_esa_v4.py：アップロード済みURLと変更前本文からesa用Markdownを構成
+- progress_v4.py：実行中に用いた過去所要時間に基づく残り時間の概算
 
-## esa access
-
-- https://vdslab.esa.io/posts/9028 (paper) and https://vdslab.esa.io/posts/9029 (results).
-- mcp__esa is configured ONLY for team spookies, not vdslab. It cannot read/write vdslab (confirmed access error). DO NOT write to spookies9028, unrelated post.
-- Use existing logged-in native Chrome via mcp__cua_repl. No Chrome browser provider; cua inventory has iab/mcpapps only. Do not use HTTP credential extraction/AppleScript/UI bypass.
-- Persistent Cua binding `chrome = await cua.getApp('com.google.Chrome')` exists. After compaction call `await cua.rewriteDocumentation()` before continuing.
-- App binding follows active Chrome window; user has unrelated Chrome profiles. Select correct esa window through Window/ウィンドウ menu using fresh AX state, then choose title 実験結果のまとめ or 一旦書く. Don't act on unrelated Gmail/PDF windows. IDs change each observation.
-- Native edit UI has text input area with complete Markdown in AX. Read full AX and extract body until next indented numbered AX element. Strip trailing ` (showing 0-100 of N items)` AX annotation if present.
-- Read-only backups used cua+fs ordinary file writes. Editor opened and closed WITHOUT publishing. Current page9028 display. No edits to esa yet.
-- Upload via Attach Files (up to10MB), mac file dialog path entry. User explicitly authorized esa/figure replacement, so no extra confirmation needed. Use fresh AX after actions; do not guess indices. `chrome.paste(markdown,{format:'text'})` can insert prepared file text after focusing correct editor and selecting all; verify before Ship It.
-- Existing images1/2/4 can be retained by extracting their remote Markdown links from fresh9028 source; local draft has relative 図表/ paths. New3/5/6/7 should be uploaded and mapped.9028 backup currently has latest Full fig4 rawstress (not old ratio); initial cached AX had older version but edit source confirmed latest.
-
-## Validation already done
-
-Release builds and tests for RR/alltargets, Atomic and shared common passed; CPU release built. Three-method trace smoke passed (CPU/RR bit-identical final coordinates trace on/off, Atomic validated coverage). Small synthetic Python checkpoint evaluator checks passed. Summary partial pairing/SHA checks passed. Report generation and manuscript paragraph replacements passed in temporary fixture. No formal results claimed yet.
-
-## Model-switch recovery (2026-10-30 05:23 JST)
-
-The model switch terminated the original benchmark parent and waiter after59 persisted records. The isolated native child completed without parent bookkeeping; its entire folder was moved to interruptions/model-switch-* with a reason record, before quality inspection. Same frozen condition was repeated once. A detached runner PID37897 and finalizer PID37898 now continue; use processes.json and actual process state rather than old IDs. The15minute heartbeat sparse-v4-esa was PAUSED while this active chat handles completion, to avoid duplicate publication. User explicitly requested staying active through completion and including estimated remaining time in progress comments. progress_v4.py estimates remaining graph-dependent duration using historical v3 times calibrated to completed v4 runs. Initial range about6–10hours including downstream work, not a deadline.
-
-## Latest scope: RR ONLY (user instruction 2026-10-30 05:55 JST)
-
-The user stopped the three-method repetition and explicitly requested only RR Sparse reruns. This supersedes all older660-new-run instructions above.
-Original runner and finalizer were stopped; completed166 records retained (RR55, CPU/Atomic111). Interrupted Atomic bmw7st_1 warmup moved to interruptions/scope-change-rr-only. Current driver experiments/run_v4_rr_only.py imports the immutable original helper, executes220 RR jobs, reuses55 completed RR, and appends to original raw JSONL without deleting111auxiliary records. Current runner PID78179 (use processes.json, no old PID assumptions). RR driver source SHA and RR-plan SHA are frozen in config/rr-only-execution.json.
-All CPU/Atomic comparison rows now consistently come from copied reference/sparse-v3/runs.csv (440 records) and convergence.csv (480points). Existing111 v4 baseline measurements are excluded from paper comparison (tables/excluded-auxiliary-v4.csv); CPU56 matched v3 stress exactly and initial SHA all equal. Atomic v3 had CPU preshuffle; label it as historical v3 reference, NOT current-default Atomic.
-Summary, figures, report and paper generators were adapted to RR-only+v3 references. Audit planned/completed refer to220 RR jobs; reference_records440 separate. New tables/runs.csv has up to660 analysis rows with sourceversion, while rawnativeJSONL has up to331 records (220RR+111aux).
-Progress estimate now about1–2.5hours including summaries and esa, not6–10hours. User asks progress comments with remaining time. Finalizer must be launched again against current RR runner after analysis generators are ready. Update new figures and both esa posts as previously authorized; Full unchanged. Heartbeat remains PAUSED while active chat continues.
+一時heartbeat sparse-v4-esaは完了後に削除した。計測・後処理のプロセスは終了済みであり、esa更新を再実行する必要はない。

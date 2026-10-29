@@ -10,8 +10,10 @@ def main():
  a=json.loads((BASE/'tables/audit.json').read_text());assert a['completed']==a['planned'] and a['convergence_evaluated']
  figures=PAPER/'図表';full_before={str(p):digest(p) for n in ['fig01_atomic','fig02_rr_full','fig04_tile_size'] for p in figures.glob(n+'.*') if p.suffix in ['.png','.pdf','.svg']}
  if not args.figures_only:
-  old=BASE/'reference/paper-before-v4/論文_日本語草稿.md';target=PAPER/'論文_日本語草稿.md'
-  assert digest(old)==digest(target),'Local manuscript changed during measurement; merge the user changes before installation'
+  old=BASE/'reference/paper-latest-before-v4/論文_日本語草稿.md'
+  if not old.exists():old=BASE/'reference/paper-before-v4/論文_日本語草稿.md'
+  target=PAPER/'論文_日本語草稿.md'
+  assert digest(target) in {digest(old),digest(BASE/'report/論文_日本語草稿_v4.md')},'Local manuscript changed; merge user changes before installation'
   shutil.copy2(BASE/'report/論文_日本語草稿_v4.md',target)
  for name in ['fig03_rr_sparse','fig05_comparison','fig06_convergence','fig07_large_layouts','sparse_speed_stress']:
   for ext in ['png','pdf','svg']:shutil.copy2(BASE/'figures'/f'{name}.{ext}',figures/f'{name}.{ext}')
