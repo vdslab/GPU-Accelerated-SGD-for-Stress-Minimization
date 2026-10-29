@@ -43,7 +43,9 @@ pub struct GpuRunResult {
     pub readback_time: Duration,
     pub postprocess_time: Duration,
     pub gpu_device_time: Option<Duration>,
+    /// Per-iteration capacity bound for delayed diagnostics; exact for production.
     pub dispatches_per_iteration: usize,
+    /// Per-iteration capacity bound for delayed diagnostics; exact for production.
     pub submissions_per_iteration: usize,
 }
 
@@ -116,6 +118,31 @@ impl GpuContext {
         output_format: OutputFormat,
         phase_chunks: usize,
         vertex_stride: bool,
+    ) -> Result<GpuRunResult> {
+        self.execute_quality_diagnostic(
+            params,
+            schedule,
+            seed,
+            verbose,
+            output_format,
+            phase_chunks,
+            vertex_stride,
+            0,
+        )
+    }
+
+    /// Delay interleaving until a fixed iteration, identically for all graphs.
+    #[allow(clippy::too_many_arguments)]
+    pub fn execute_quality_diagnostic(
+        &self,
+        params: SgdParams,
+        schedule: &Schedule,
+        seed: u64,
+        verbose: bool,
+        output_format: OutputFormat,
+        phase_chunks: usize,
+        vertex_stride: bool,
+        interleave_start: usize,
     ) -> Result<GpuRunResult> {
         let upload_start = Instant::now();
         let n = params.positions.len();
@@ -325,6 +352,11 @@ impl GpuContext {
 
             let one_first = rng.random_bool(0.5);
             invocations.clear();
+            let phase_chunks = if iteration < interleave_start {
+                1
+            } else {
+                phase_chunks
+            };
             for chunk in 0..phase_chunks {
                 let start = chunk * h / phase_chunks;
                 let end = (chunk + 1) * h / phase_chunks;
@@ -368,6 +400,9 @@ impl GpuContext {
             self.queue.write_buffer(&uniform_buffer, 0, &uniform_bytes);
 
             for batch_range in &submission_ranges {
+                if batch_range.start >= invocations.len() {
+                    break;
+                }
                 let mut encoder =
                     self.device
                         .create_command_encoder(&wgpu::CommandEncoderDescriptor {
@@ -381,8 +416,13 @@ impl GpuContext {
                         label: Some("Sparse SGD ordered dispatches"),
                         timestamp_writes: None,
                     });
-                    for slot in batch_range.clone() {
-                        let round = invocations[slot].0;
+                    for (slot, invocation) in invocations
+                        .iter()
+                        .enumerate()
+                        .take(batch_range.end)
+                        .skip(batch_range.start)
+                    {
+                        let round = invocation.0;
                         let count = round.map(|ri| schedule.round_range(ri).len()).unwrap_or(n);
                         if count == 0 {
                             continue;
@@ -570,6 +610,87 @@ mod tests {
             }
         }
         stress
+    }
+
+    #[test]
+    fn delayed_interleaving_does_not_execute_unused_dispatch_slots() {
+        let graph = Graph::try_from_edges(
+            8,
+            &[
+                (0, 1),
+                (1, 2),
+                (2, 3),
+                (3, 4),
+                (4, 5),
+                (5, 6),
+                (6, 7),
+                (7, 0),
+            ],
+        )
+        .unwrap();
+        let seed = 91;
+        let params = graph
+            .prepare_sgd_params(3, 0.1, 4, true, &mut StdRng::seed_from_u64(seed))
+            .unwrap();
+        let schedule = build_schedule(&graph, &params, seed).unwrap();
+        let copy = || SgdParams {
+            positions: params.positions.clone(),
+            etas: params.etas.clone(),
+            pairs: params.pairs.clone(),
+            pivots: params.pivots.clone(),
+            center: params.center,
+        };
+        let context = GpuContext::new().unwrap();
+        let baseline = context
+            .execute(copy(), &schedule, seed, false, OutputFormat::Json)
+            .unwrap();
+        // Allocates extra slots but must never execute them before the switch.
+        let delayed = context
+            .execute_quality_diagnostic(
+                copy(),
+                &schedule,
+                seed,
+                false,
+                OutputFormat::Json,
+                4,
+                false,
+                3,
+            )
+            .unwrap();
+        assert_eq!(baseline.positions, delayed.positions);
+        let immediate = context
+            .execute_quality_diagnostic(
+                copy(),
+                &schedule,
+                seed,
+                false,
+                OutputFormat::Json,
+                4,
+                false,
+                0,
+            )
+            .unwrap();
+        let original = context
+            .execute_with_phase_chunks(copy(), &schedule, seed, false, OutputFormat::Json, 4)
+            .unwrap();
+        assert_eq!(immediate.positions, original.positions);
+        let switched = context
+            .execute_quality_diagnostic(
+                copy(),
+                &schedule,
+                seed,
+                false,
+                OutputFormat::Json,
+                4,
+                false,
+                1,
+            )
+            .unwrap();
+        assert!(switched
+            .positions
+            .iter()
+            .flatten()
+            .all(|value| value.is_finite()));
     }
 
     #[test]

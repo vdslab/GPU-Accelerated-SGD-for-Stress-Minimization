@@ -1,0 +1,59 @@
+{
+  "runs": 64,
+  "max_stress_ratio": 1.0424927386802851,
+  "median_stress_ratio": 0.9804523229588049,
+  "regressions_over_2_percent": [
+    {
+      "graph": "preferentialAttachment",
+      "seed": 3,
+      "nodes": 100000,
+      "pivots": 200,
+      "variant": "4@10",
+      "before_stress": 1077886094.3202298,
+      "after_stress": 1112413537.9189582,
+      "stress_ratio": 1.0320325531432921,
+      "before_seconds": 0.151266959,
+      "after_seconds": 0.160044,
+      "time_ratio": 1.0580235172176629
+    },
+    {
+      "graph": "preferentialAttachment",
+      "seed": 3,
+      "nodes": 100000,
+      "pivots": 200,
+      "variant": "200@10",
+      "before_stress": 1077886094.3202298,
+      "after_stress": 1123022051.08967,
+      "stress_ratio": 1.0418745143918988,
+      "before_seconds": 0.151266959,
+      "after_seconds": 0.1701745,
+      "time_ratio": 1.1249945204491087
+    },
+    {
+      "graph": "coAuthorsCiteseer",
+      "seed": 7,
+      "nodes": 227320,
+      "pivots": 200,
+      "variant": "4@10",
+      "before_stress": 4688393958.71665,
+      "after_stress": 4887616658.034624,
+      "stress_ratio": 1.0424927386802851,
+      "before_seconds": 0.27843675,
+      "after_seconds": 0.278485583,
+      "time_ratio": 1.000175382739527
+    },
+    {
+      "graph": "coAuthorsCiteseer",
+      "seed": 7,
+      "nodes": 227320,
+      "pivots": 200,
+      "variant": "200@10",
+      "before_stress": 4688393958.71665,
+      "after_stress": 4848584857.300703,
+      "stress_ratio": 1.034167542231861,
+      "before_seconds": 0.27843675,
+      "after_seconds": 0.284765875,
+      "time_ratio": 1.0227309254256127
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "runs": 32,
+  "max_stress_ratio": 1.1618246527745466,
+  "median_stress_ratio": 0.9364006196867447,
+  "regressions_over_2_percent": [
+    {
+      "graph": "web-Stanford",
+      "seed": 3,
+      "nodes": 255265,
+      "pivots": 200,
+      "variant": "200@5",
+      "before_stress": 4927578315.0095005,
+      "after_stress": 5724981964.855298,
+      "stress_ratio": 1.1618246527745466,
+      "before_seconds": 1.574691083,
+      "after_seconds": 1.643062292,
+      "time_ratio": 1.0434188074969877
+    },
+    {
+      "graph": "web-Stanford",
+      "seed": 7,
+      "nodes": 255265,
+      "pivots": 200,
+      "variant": "200@5",
+      "before_stress": 5359589365.664974,
+      "after_stress": 5676150817.528954,
+      "stress_ratio": 1.059064497346002,
+      "before_seconds": 1.6131972079999999,
+      "after_seconds": 1.633407041,
+      "time_ratio": 1.0125278130285482
+    }
+  ]
+}
