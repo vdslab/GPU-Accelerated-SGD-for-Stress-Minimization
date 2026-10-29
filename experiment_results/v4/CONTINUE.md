@@ -39,3 +39,7 @@ Main repo: `/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization`, bra
 ## Validation already done
 
 Release builds and tests for RR/alltargets, Atomic and shared common passed; CPU release built. Three-method trace smoke passed (CPU/RR bit-identical final coordinates trace on/off, Atomic validated coverage). Small synthetic Python checkpoint evaluator checks passed. Summary partial pairing/SHA checks passed. Report generation and manuscript paragraph replacements passed in temporary fixture. No formal results claimed yet.
+
+## Model-switch recovery (2026-10-30 05:23 JST)
+
+The model switch terminated the original benchmark parent and waiter after59 persisted records. The isolated native child completed without parent bookkeeping; its entire folder was moved to interruptions/model-switch-* with a reason record, before quality inspection. Same frozen condition was repeated once. A detached runner PID37897 and finalizer PID37898 now continue; use processes.json and actual process state rather than old IDs. The15minute heartbeat sparse-v4-esa was PAUSED while this active chat handles completion, to avoid duplicate publication. User explicitly requested staying active through completion and including estimated remaining time in progress comments. progress_v4.py estimates remaining graph-dependent duration using historical v3 times calibrated to completed v4 runs. Initial range about6–10hours including downstream work, not a deadline.
