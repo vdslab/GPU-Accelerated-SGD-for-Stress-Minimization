@@ -260,7 +260,7 @@ def main(argv: list[str] | None = None) -> int:
             for index, stage in enumerate(("before", "after")):
                 metadata["stage"] = f"render_{stage}"
                 image = run_dir / f"{timestamp}_{index}.png"
-                command = [str(renderer), str(layouts[stage]), str(image), "--size", args.image_size, "--stress", "off"]
+                command = [str(renderer), str(layouts[stage]), str(image), "--size", args.image_size, "--stress", "off", "--palette", "sunset"]
                 logged_command(command, working_dir / f"render-{stage}.log")
                 if not image.is_file() or image.stat().st_size == 0:
                     raise SingleRunError(f"画像が生成されませんでした: {image}")

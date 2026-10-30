@@ -26,7 +26,7 @@ output_path = Path(sys.argv[2])
 with open(os.environ["SINGLE_CALLS"], "a") as log:
     log.write(json.dumps({"program": "renderer", "args": sys.argv[1:]}) + "\n")
 assert input_path.is_file()
-assert sys.argv[3:] == ["--size", "2048x2048", "--stress", "off"]
+assert sys.argv[3:] == ["--size", "2048x2048", "--stress", "off", "--palette", "sunset"]
 if os.environ.get("SINGLE_RENDER_FAIL") == "after" and output_path.stem.endswith("_1"):
     raise SystemExit("renderer failure")
 output_path.write_bytes(b"\x89PNG\r\n\x1a\nfixture")

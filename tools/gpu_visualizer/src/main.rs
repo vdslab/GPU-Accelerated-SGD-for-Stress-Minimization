@@ -23,6 +23,7 @@ struct Config {
     stress_seed: u64,
     node_radius: Option<f32>,
     max_edges: Option<usize>,
+    palette: String,
 }
 
 #[derive(Default)]
@@ -103,12 +104,19 @@ fn main() -> Result<()> {
         "Rendering {}×{} px (node_r={:.2}px) ...",
         config.width, config.height, node_radius
     );
+    let colors = if config.palette == "density" {
+        renderer::density_colors(&graph.positions)
+    } else {
+        renderer::topology_colors(graph.node_count, &graph.edges, config.palette == "sunset")
+    };
     let rendered = gpu.render(
         &graph.positions,
         &selected_edges,
         config.width,
         config.height,
         node_radius,
+        &colors,
+        config.palette != "blue",
     )?;
     timings.gpu_prepare = rendered.prepare_time;
     timings.gpu_execute_readback = rendered.execute_readback_time;
@@ -156,6 +164,7 @@ where
         stress_seed: stress::DEFAULT_SEED,
         node_radius: None,
         max_edges: None,
+        palette: "blue".into(),
     };
     let mut positional = Vec::new();
     let mut i = 0;
@@ -222,6 +231,13 @@ where
                 );
                 config.node_radius = Some(radius);
             }
+            "--palette" => {
+                anyhow::ensure!(
+                    matches!(value.as_str(), "blue" | "sunset" | "density"),
+                    "--palette は blue / sunset / density"
+                );
+                config.palette = value.clone();
+            }
             "--max-edges" => {
                 let max: usize = value
                     .parse()
@@ -243,7 +259,7 @@ where
 }
 
 fn print_help() {
-    println!("gpu-visualizer [INPUT] [OUTPUT] [options]\n\n  -2 | -4 | -8 | -16\n  --size WxH\n  --stress auto|exact|sampled|off\n  --stress-samples K\n  --stress-seed SEED\n  --node-radius PX\n  --max-edges N");
+    println!("gpu-visualizer [INPUT] [OUTPUT] [options]\n\n  -2 | -4 | -8 | -16\n  --size WxH\n  --stress auto|exact|sampled|off\n  --stress-samples K\n  --stress-seed SEED\n  --node-radius PX\n  --max-edges N\n  --palette blue|sunset|density");
 }
 
 fn print_stress(result: &stress::StressResult, elapsed: Duration, resolved: stress::StressMode) {

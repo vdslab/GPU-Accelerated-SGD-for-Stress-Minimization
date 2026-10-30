@@ -74,6 +74,8 @@ impl GpuRenderer {
         width: u32,
         height: u32,
         node_radius_px: f32,
+        colors: &[f32],
+        sunset: bool,
     ) -> Result<RenderOutput> {
         let prepare_started = Instant::now();
         let indices = build_edge_indices(edges)?;
@@ -88,7 +90,7 @@ impl GpuRenderer {
             max_y: max_y + pad_y,
             node_r_x: node_radius_px * 2.0 / width as f32,
             node_r_y: node_radius_px * 2.0 / height as f32,
-            _pad0: 0.0,
+            _pad0: if sunset { 1.0 } else { 0.0 },
             _pad1: 0.0,
         };
 
@@ -111,7 +113,7 @@ impl GpuRenderer {
                 label: None,
                 entries: &[wgpu::BindGroupLayoutEntry {
                     binding: 0,
-                    visibility: wgpu::ShaderStages::VERTEX,
+                    visibility: wgpu::ShaderStages::VERTEX_FRAGMENT,
                     ty: wgpu::BindingType::Buffer {
                         ty: wgpu::BufferBindingType::Uniform,
                         has_dynamic_offset: false,
@@ -146,6 +148,7 @@ impl GpuRenderer {
             offset: 0,
             shader_location: 1,
         }];
+        let color_attr = wgpu::vertex_attr_array![2 => Float32];
         let target = || {
             Some(wgpu::ColorTargetState {
                 format: texture_format,
@@ -202,6 +205,11 @@ impl GpuRenderer {
                             step_mode: wgpu::VertexStepMode::Instance,
                             attributes: &attr1,
                         },
+                        wgpu::VertexBufferLayout {
+                            array_stride: 4,
+                            step_mode: wgpu::VertexStepMode::Instance,
+                            attributes: &color_attr,
+                        },
                     ],
                     compilation_options: Default::default(),
                 },
@@ -227,6 +235,13 @@ impl GpuRenderer {
             .create_buffer_init(&wgpu::util::BufferInitDescriptor {
                 label: Some("shared_positions"),
                 contents: bytemuck::cast_slice(positions),
+                usage: wgpu::BufferUsages::VERTEX,
+            });
+        let color_buf = self
+            .device
+            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("topology_colors"),
+                contents: bytemuck::cast_slice(colors),
                 usage: wgpu::BufferUsages::VERTEX,
             });
         let index_storage = if indices.is_empty() {
@@ -310,6 +325,7 @@ impl GpuRenderer {
             pass.set_pipeline(&node_pipeline);
             pass.set_vertex_buffer(0, quad_buf.slice(..));
             pass.set_vertex_buffer(1, position_buf.slice(..));
+            pass.set_vertex_buffer(2, color_buf.slice(..));
             pass.draw(0..QUAD_VERTS.len() as u32, 0..positions.len() as u32);
         }
         encoder.copy_texture_to_buffer(
@@ -489,5 +505,186 @@ mod tests {
         assert_eq!(indices.len(), EDGES * 2);
         assert_eq!(indices.len() * size_of::<u32>(), EDGES * 8);
         assert_eq!(select_edges(&edges, None, 0).len(), EDGES);
+    }
+}
+
+// One BFS per component, using CSR adjacency: O(V+E) time and memory.
+// Independent of coordinates and edge order, so before/after retain node identity.
+pub fn topology_colors(n: usize, edges: &[(usize, usize)], enabled: bool) -> Vec<f32> {
+    let mut colors = vec![0.5; n];
+    if !enabled {
+        return colors;
+    }
+    let mut offsets = vec![0usize; n + 1];
+    for &(a, b) in edges {
+        offsets[a + 1] += 1;
+        offsets[b + 1] += 1;
+    }
+    for i in 0..n {
+        offsets[i + 1] += offsets[i];
+    }
+    let mut cursor = offsets[..n].to_vec();
+    let mut neighbors = vec![0usize; offsets[n]];
+    for &(a, b) in edges {
+        neighbors[cursor[a]] = b;
+        cursor[a] += 1;
+        neighbors[cursor[b]] = a;
+        cursor[b] += 1;
+    }
+    let mut distance = vec![usize::MAX; n];
+    let mut queue = Vec::new();
+    for root in 0..n {
+        if distance[root] != usize::MAX {
+            continue;
+        }
+        queue.clear();
+        queue.push(root);
+        distance[root] = 0;
+        let mut head = 0;
+        let mut max_distance = 0;
+        while head < queue.len() {
+            let a = queue[head];
+            head += 1;
+            for &b in &neighbors[offsets[a]..offsets[a + 1]] {
+                if distance[b] == usize::MAX {
+                    distance[b] = distance[a] + 1;
+                    max_distance = max_distance.max(distance[b]);
+                    queue.push(b);
+                }
+            }
+        }
+        for &v in &queue {
+            colors[v] = if max_distance == 0 {
+                0.5
+            } else {
+                distance[v] as f32 / max_distance as f32
+            };
+        }
+    }
+    colors
+}
+
+#[cfg(test)]
+mod palette_tests {
+    use super::topology_colors;
+
+    #[test]
+    fn colors_follow_hops_and_handle_disconnected_and_isolated_nodes() {
+        let edges = [(0, 1), (1, 2), (3, 4)];
+        assert_eq!(
+            topology_colors(6, &edges, true),
+            vec![0.0, 0.5, 1.0, 0.0, 1.0, 0.5]
+        );
+        let reversed = [(4, 3), (2, 1), (1, 0)];
+        assert_eq!(
+            topology_colors(6, &edges, true),
+            topology_colors(6, &reversed, true)
+        );
+        assert_eq!(topology_colors(6, &edges, false), vec![0.5; 6]);
+    }
+}
+
+/// Layout-space density on a fixed normalized grid, independent of output resolution.
+/// A separable Gaussian smooths the histogram; bilinear sampling avoids hard cell borders.
+/// Only the densest ~20% of nodes receive full color. This is not graph degree or stress.
+pub fn density_colors(positions: &[[f32; 2]]) -> Vec<f32> {
+    if positions.is_empty() {
+        return Vec::new();
+    }
+    const SIDE: usize = 512;
+    let (min_x, max_x, min_y, max_y) = bounds(positions);
+    let project = |p: &[f32; 2]| {
+        [
+            ((p[0] - min_x) / (max_x - min_x).max(1e-6) * (SIDE - 1) as f32)
+                .clamp(0.0, (SIDE - 1) as f32),
+            ((p[1] - min_y) / (max_y - min_y).max(1e-6) * (SIDE - 1) as f32)
+                .clamp(0.0, (SIDE - 1) as f32),
+        ]
+    };
+    let mut grid = vec![0.0f32; SIDE * SIDE];
+    for p in positions {
+        let [x, y] = project(p);
+        grid[y.round() as usize * SIDE + x.round() as usize] += 1.0;
+    }
+    let weights = [1.0, 4.0, 6.0, 4.0, 1.0];
+    let mut temp = vec![0.0f32; grid.len()];
+    for horizontal in [true, false] {
+        for y in 0..SIDE {
+            for x in 0..SIDE {
+                let mut sum = 0.0;
+                for (k, w) in weights.iter().enumerate() {
+                    let delta = k as isize - 2;
+                    let xx = x as isize + if horizontal { delta } else { 0 };
+                    let yy = y as isize + if horizontal { 0 } else { delta };
+                    if (0..SIDE as isize).contains(&xx) && (0..SIDE as isize).contains(&yy) {
+                        sum += grid[yy as usize * SIDE + xx as usize] * w;
+                    }
+                }
+                temp[y * SIDE + x] = sum / 16.0;
+            }
+        }
+        std::mem::swap(&mut grid, &mut temp);
+    }
+    let density: Vec<f32> = positions
+        .iter()
+        .map(|p| {
+            let [x, y] = project(p);
+            let (ix, iy) = (x as usize, y as usize);
+            let (jx, jy) = ((ix + 1).min(SIDE - 1), (iy + 1).min(SIDE - 1));
+            let (fx, fy) = (x - ix as f32, y - iy as f32);
+            let a = grid[iy * SIDE + ix] * (1.0 - fx) + grid[iy * SIDE + jx] * fx;
+            let b = grid[jy * SIDE + ix] * (1.0 - fx) + grid[jy * SIDE + jx] * fx;
+            (a * (1.0 - fy) + b * fy).ln_1p()
+        })
+        .collect();
+    let mut sorted = density.clone();
+    sorted.sort_unstable_by(f32::total_cmp);
+    let low = sorted[(sorted.len() - 1) * 70 / 100];
+    let threshold = sorted[(sorted.len() - 1) * 80 / 100];
+    let high = sorted[(sorted.len() - 1) * 995 / 1000];
+    if high - low < 1e-5 {
+        return vec![-1.0; positions.len()];
+    }
+    density
+        .iter()
+        .map(|&d| {
+            if d <= low {
+                -1.0
+            } else if d < threshold {
+                -1.0 + (d - low) / (threshold - low).max(1e-5)
+            } else {
+                ((d - threshold) / (high - threshold).max(1e-5)).clamp(0.0, 1.0)
+            }
+        })
+        .collect()
+}
+
+#[cfg(test)]
+mod density_tests {
+    use super::density_colors;
+    #[test]
+    fn dense_cluster_is_colored_and_sparse_nodes_are_gray() {
+        let mut points: Vec<_> = (0..900)
+            .map(|i| [(i % 30) as f32, (i / 30) as f32])
+            .collect();
+        points.extend((0..100).map(|i| {
+            [
+                14.0 + (i % 10) as f32 * 0.001,
+                14.0 + (i / 10) as f32 * 0.001,
+            ]
+        }));
+        let colors = density_colors(&points);
+        assert!(colors[..900].iter().filter(|&&c| c < 0.0).count() > 600);
+        assert!(colors[950] > 0.5);
+        assert!(colors
+            .iter()
+            .all(|c| c.is_finite() && *c >= -1.0 && *c <= 1.0));
+        let scaled: Vec<_> = points.iter().map(|p| [p[0] * 2.0, p[1] * 2.0]).collect();
+        assert_eq!(colors, density_colors(&scaled));
+    }
+    #[test]
+    fn coincident_nodes_do_not_invent_density_contrast() {
+        assert_eq!(density_colors(&[[1.0, 1.0]; 10]), vec![-1.0; 10]);
+        assert!(density_colors(&[]).is_empty());
     }
 }
