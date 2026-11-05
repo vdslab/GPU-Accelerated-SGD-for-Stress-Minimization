@@ -39,10 +39,10 @@ pub fn apply_constraint<R: Rng + ?Sized>(
     positions[pair.v][1] -= mu_v * displacement[1];
 }
 
-pub fn execute_sgd_iterations<R: Rng + ?Sized>(
+pub fn execute_sgd_iterations_timed<R: Rng + ?Sized>(
     sgd_params: SgdParams,
     rng: &mut R,
-) -> Vec<[f64; 2]> {
+) -> (Vec<[f64; 2]>, Vec<std::time::Duration>) {
     let mut positions = sgd_params.positions;
     let mut pairs = sgd_params.pairs;
 
@@ -50,17 +50,23 @@ pub fn execute_sgd_iterations<R: Rng + ?Sized>(
     if let Some(trace) = &mut trace {
         trace.record(0, std::time::Duration::ZERO, || positions.clone());
     }
+    let mut iteration_times = Vec::with_capacity(sgd_params.etas.len());
     for (iteration, eta) in sgd_params.etas.into_iter().enumerate() {
-        let started = trace.as_ref().map(|_| std::time::Instant::now());
+        let started = std::time::Instant::now();
         pairs.shuffle(rng);
         for &pair in &pairs {
             apply_constraint(&mut positions, pair, eta, rng);
         }
-        if let (Some(trace), Some(started)) = (&mut trace, started) {
+        iteration_times.push(started.elapsed());
+        if let Some(trace) = &mut trace {
             trace.record(iteration + 1, started.elapsed(), || positions.clone());
         }
     }
-    positions
+    (positions, iteration_times)
+}
+
+pub fn execute_sgd_iterations<R: Rng + ?Sized>(params: SgdParams, rng: &mut R) -> Vec<[f64; 2]> {
+    execute_sgd_iterations_timed(params, rng).0
 }
 
 pub fn execute_sgd<R: Rng + ?Sized>(sgd_params: SgdParams, rng: &mut R) -> Vec<[f64; 2]> {

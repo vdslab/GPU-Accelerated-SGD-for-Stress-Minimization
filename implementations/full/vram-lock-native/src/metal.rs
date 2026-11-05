@@ -1,3 +1,5 @@
+#[path = "../../../../shared/gpu-timing/metal.rs"]
+mod timing;
 use crate::graph;
 use anyhow::{ensure, Result};
 use experiment_common::OutputFormat;
@@ -28,6 +30,10 @@ pub struct MetalRunResult {
     pub positions: Vec<[f32; 2]>,
     pub method_setup_time: Duration,
     pub upload_time: Duration,
+    pub preparation_time: Duration,
+    pub time_to_result: Duration,
+    pub result_ready_monotonic_ms: f64,
+    pub iteration_times: Option<Vec<Duration>>,
     pub iteration_time: Duration,
     pub readback_time: Duration,
     pub attempted_updates: u64,
@@ -74,6 +80,7 @@ impl MetalContext {
         verbose: bool,
         output_format: OutputFormat,
     ) -> Result<MetalRunResult> {
+        let execution_started = Instant::now();
         let method_setup_started = Instant::now();
         ensure!(
             !params.pairs.is_empty() && !params.etas.is_empty(),
@@ -118,51 +125,88 @@ impl MetalContext {
         let positions_before: Vec<[f32; 4]> = vec![[0.0; 4]; num_pairs];
         let method_setup_time = method_setup_started.elapsed();
 
-        let upload_started = Instant::now();
-        let etas_buffer = self.device.new_buffer_with_data(
-            gpu_etas.as_ptr() as *const _,
+        let preparation_started = Instant::now();
+        let etas_buffer = self.device.new_buffer(
             (gpu_etas.len() * mem::size_of::<f32>()) as u64,
             MTLResourceOptions::StorageModeShared,
         );
-        let positions_buffer = self.device.new_buffer_with_data(
-            positions_flat.as_ptr() as *const _,
+        let positions_buffer = self.device.new_buffer(
             (positions_flat.len() * mem::size_of::<f32>()) as u64,
             MTLResourceOptions::StorageModeShared,
         );
-        let pairs_buffer = self.device.new_buffer_with_data(
-            gpu_pairs.as_ptr() as *const _,
+        let pairs_buffer = self.device.new_buffer(
             (gpu_pairs.len() * mem::size_of::<GpuEdgeInfo>()) as u64,
             MTLResourceOptions::StorageModeShared,
         );
-        let lock_buffer = self.device.new_buffer_with_data(
-            locks.as_ptr() as *const _,
+        let lock_buffer = self.device.new_buffer(
             (locks.len() * mem::size_of::<u32>()) as u64,
             MTLResourceOptions::StorageModeShared,
         );
-        let updated_pairs_buffer = self.device.new_buffer_with_data(
-            updated_pairs.as_ptr() as *const _,
+        let updated_pairs_buffer = self.device.new_buffer(
             (updated_pairs.len() * mem::size_of::<u32>()) as u64,
             MTLResourceOptions::StorageModeShared,
         );
-        let updated_count_buffer = self.device.new_buffer_with_data(
-            updated_count.as_ptr() as *const _,
+        let updated_count_buffer = self.device.new_buffer(
             mem::size_of::<u32>() as u64,
             MTLResourceOptions::StorageModeShared,
         );
-        let positions_before_buffer = self.device.new_buffer_with_data(
-            positions_before.as_ptr() as *const _,
+        let positions_before_buffer = self.device.new_buffer(
             (positions_before.len() * mem::size_of::<[f32; 4]>()) as u64,
             MTLResourceOptions::StorageModeShared,
         );
 
         // Num pairs buffer (for bounds checking in shader)
-        let num_pairs_buffer = self.device.new_buffer_with_data(
-            &(num_pairs as u32) as *const _ as *const _,
+        let num_pairs_buffer = self.device.new_buffer(
             mem::size_of::<u32>() as u64,
             MTLResourceOptions::StorageModeShared,
         );
+        let preparation_time = preparation_started.elapsed();
+        let upload_started = Instant::now();
+        unsafe {
+            std::ptr::copy_nonoverlapping(
+                (gpu_etas.as_ptr() as *const _) as *const u8,
+                etas_buffer.contents().cast::<u8>(),
+                ((gpu_etas.len() * mem::size_of::<f32>()) as u64) as usize,
+            );
+            std::ptr::copy_nonoverlapping(
+                (positions_flat.as_ptr() as *const _) as *const u8,
+                positions_buffer.contents().cast::<u8>(),
+                ((positions_flat.len() * mem::size_of::<f32>()) as u64) as usize,
+            );
+            std::ptr::copy_nonoverlapping(
+                (gpu_pairs.as_ptr() as *const _) as *const u8,
+                pairs_buffer.contents().cast::<u8>(),
+                ((gpu_pairs.len() * mem::size_of::<GpuEdgeInfo>()) as u64) as usize,
+            );
+            std::ptr::copy_nonoverlapping(
+                (locks.as_ptr() as *const _) as *const u8,
+                lock_buffer.contents().cast::<u8>(),
+                ((locks.len() * mem::size_of::<u32>()) as u64) as usize,
+            );
+            std::ptr::copy_nonoverlapping(
+                (updated_pairs.as_ptr() as *const _) as *const u8,
+                updated_pairs_buffer.contents().cast::<u8>(),
+                ((updated_pairs.len() * mem::size_of::<u32>()) as u64) as usize,
+            );
+            std::ptr::copy_nonoverlapping(
+                (updated_count.as_ptr() as *const _) as *const u8,
+                updated_count_buffer.contents().cast::<u8>(),
+                (mem::size_of::<u32>() as u64) as usize,
+            );
+            std::ptr::copy_nonoverlapping(
+                (positions_before.as_ptr() as *const _) as *const u8,
+                positions_before_buffer.contents().cast::<u8>(),
+                ((positions_before.len() * mem::size_of::<[f32; 4]>()) as u64) as usize,
+            );
+            std::ptr::copy_nonoverlapping(
+                (&(num_pairs as u32) as *const _ as *const _) as *const u8,
+                num_pairs_buffer.contents().cast::<u8>(),
+                (mem::size_of::<u32>() as u64) as usize,
+            );
+        }
         let upload_time = upload_started.elapsed();
 
+        let mut iteration_times = Some(Vec::with_capacity(num_iterations));
         let iteration_start = Instant::now();
         let mut completed_updates = 0_u64;
         for iteration in 0..num_iterations {
@@ -218,6 +262,13 @@ impl MetalContext {
 
             command_buffer.commit();
             command_buffer.wait_until_completed();
+            match (
+                iteration_times.as_mut(),
+                timing::command_time(command_buffer),
+            ) {
+                (Some(times), Some(duration)) => times.push(duration),
+                _ => iteration_times = None,
+            }
 
             ensure!(
                 command_buffer.status() == MTLCommandBufferStatus::Completed,
@@ -266,12 +317,18 @@ impl MetalContext {
             "Non-finite final coordinates"
         );
         let readback_time = readback_started.elapsed();
+        let time_to_result = execution_started.elapsed();
+        let result_ready_monotonic_ms = experiment_common::monotonic_time_ms();
 
         Ok(MetalRunResult {
             initial_positions,
             positions: final_positions,
             method_setup_time,
             upload_time,
+            preparation_time,
+            time_to_result,
+            result_ready_monotonic_ms,
+            iteration_times,
             iteration_time,
             readback_time,
             attempted_updates: (num_pairs as u64) * (num_iterations as u64),

@@ -85,3 +85,11 @@ dialog::backdrop { background: rgb(0 0 0 / .55); }
 @media (max-height: 700px) and (min-width: 721px) { .fields { gap: 6px; } select { height: 29px; margin-top: 2px; } }
 @media (max-width: 1000px) and (min-width: 721px) { .app-layout { grid-template-columns: 250px minmax(0, 1fr); } .result-grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 10px; } th, td { padding: 5px 4px; } }
 @media (max-width: 720px) { .app-shell { height: auto; min-height: 100dvh; overflow: visible; } .app-header { align-items: flex-start; } h1 { font-size: 16px; } .app-layout { grid-template-columns: 1fr; } .fields { grid-template-columns: 1fr 1fr; } .graph-field, .fields > label:first-of-type { grid-column: 1 / -1; } .settings-panel { overflow: visible; } .work-area { grid-template-rows: auto 240px; } .graph-list-panel { height: 320px; } .result-grid { min-height: 240px; } .measurements { overflow: visible; } }
+
+.measurements h3 { font-size: 13px; margin: 8px 0; }
+.timing-group th { padding-top: 18px; color: #57677a; font-weight: 600; font-size: 11px; border-bottom: 2px solid #dce5ee; }
+.timing-primary { background: #eef5fc; }
+.timing-primary th, .timing-primary td { font-weight: 600; padding-top: 10px; padding-bottom: 10px; }
+#metrics td { white-space: normal; min-width: 110px; }
+#metrics summary { cursor: pointer; }
+#metrics ol { max-height: 180px; overflow: auto; padding-left: 24px; font-weight: 400; }

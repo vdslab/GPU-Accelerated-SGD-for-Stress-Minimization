@@ -118,6 +118,10 @@ fn main() -> Result<()> {
         &colors,
         config.palette != "blue",
     )?;
+    println!(
+        "FRAME_READY_MONOTONIC_MS={:.6}",
+        rendered.frame_ready_monotonic_ms
+    );
     timings.gpu_prepare = rendered.prepare_time;
     timings.gpu_execute_readback = rendered.execute_readback_time;
 

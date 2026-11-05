@@ -140,6 +140,7 @@ fn main() -> Result<()> {
     let runtime_init_time = runtime_started.elapsed();
     config.log(format!("GPU: {} (Metal)", context.device_name));
 
+    let before_execution = input_started.elapsed();
     let mut run =
         context.execute_sgd(params, config.common.verbose, config.common.output_format)?;
 
@@ -197,13 +198,28 @@ fn main() -> Result<()> {
         },
         environment_metadata(Some(context.device_name.clone()), Some("Metal".to_owned())),
         TimingBreakdown {
+            result_ready_monotonic_ms: Some(run.result_ready_monotonic_ms),
+            iteration_times_ms: run
+                .iteration_times
+                .as_ref()
+                .map(|times| times.iter().copied().map(ms).collect()),
+            preprocess_time_ms: Some(ms(input_time
+                + common_preprocess_time
+                + run.method_setup_time)),
+            gpu_prepare_time_ms: Some(ms(runtime_init_time + run.preparation_time)),
+            sgd_time_ms: Some(ms(run.iteration_time)),
+            total_compute_time_ms: Some(ms(before_execution + run.time_to_result)),
+
             input_time_ms: Some(ms(input_time)),
             common_preprocess_time_ms: Some(ms(common_preprocess_time)),
             method_setup_time_ms: Some(ms(run.method_setup_time)),
-            runtime_init_time_ms: Some(ms(runtime_init_time)),
+            runtime_init_time_ms: Some(ms(runtime_init_time + run.preparation_time)),
             upload_time_ms: Some(ms(run.upload_time)),
             iteration_time_ms: Some(ms(run.iteration_time)),
-            gpu_device_time_ms: None,
+            gpu_device_time_ms: run
+                .iteration_times
+                .as_ref()
+                .map(|times| ms(times.iter().copied().sum())),
             readback_time_ms: Some(ms(run.readback_time)),
             postprocess_time_ms: Some(ms(postprocess_time)),
             ..TimingBreakdown::default()

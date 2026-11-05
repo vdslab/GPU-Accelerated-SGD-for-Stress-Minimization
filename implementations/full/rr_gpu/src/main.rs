@@ -73,6 +73,9 @@ impl Config {
                 }
                 "--verbose" => config.common.verbose = true,
                 "--no-center" => config.center = false,
+                "--phase-chunks" => {
+                    config.kernel.phase_chunks = next(&mut args, "--phase-chunks")?.parse()?;
+                }
                 "--tile-size" => {
                     config.kernel.tile_size = next(&mut args, "--tile-size")?.parse()?
                 }
@@ -123,7 +126,7 @@ fn print_help() {
         "Usage: rr-gpu [INPUT] [--run-id ID] [--input PATH] [--iterations N] \
          [--epsilon F] [--seed N] [--output-format human|json] [--output-dir PATH] \
          [--run-mode benchmark|diagnostic] [--verbose] [--no-center] \
-         [--tile-size 1..1024] [--workgroup-size 1..1024] \
+         [--phase-chunks N] [--tile-size 1..1024] [--workgroup-size 1..1024] \
          [--coordinate-memory shared|global] [--no-outer-shuffle] [--no-inner-shuffle]"
     );
 }
@@ -169,6 +172,7 @@ fn main() -> Result<()> {
         config.kernel.memory_mode.as_str()
     ));
 
+    let before_execution = input_started.elapsed();
     let mut run = context.execute_sgd(
         params,
         &schedule,
@@ -233,10 +237,23 @@ fn main() -> Result<()> {
             Some(context.backend.clone()),
         ),
         TimingBreakdown {
+            result_ready_monotonic_ms: Some(run.result_ready_monotonic_ms),
+            iteration_times_ms: run
+                .iteration_times
+                .as_ref()
+                .map(|times| times.iter().copied().map(ms).collect()),
+            preprocess_time_ms: Some(ms(input_time
+                + common_preprocess_time
+                + method_setup_time
+                + run.data_setup_time)),
+            gpu_prepare_time_ms: Some(ms(runtime_init_time + run.preparation_time)),
+            sgd_time_ms: Some(ms(run.iteration_time)),
+            total_compute_time_ms: Some(ms(before_execution + run.time_to_result)),
+
             input_time_ms: Some(ms(input_time)),
             common_preprocess_time_ms: Some(ms(common_preprocess_time)),
-            method_setup_time_ms: Some(ms(method_setup_time)),
-            runtime_init_time_ms: Some(ms(runtime_init_time)),
+            method_setup_time_ms: Some(ms(method_setup_time + run.data_setup_time)),
+            runtime_init_time_ms: Some(ms(runtime_init_time + run.preparation_time)),
             upload_time_ms: Some(ms(run.upload_time)),
             iteration_time_ms: Some(ms(run.iteration_time)),
             gpu_device_time_ms: run.gpu_device_time.map(ms),
@@ -262,6 +279,11 @@ fn main() -> Result<()> {
         OutputFormat::Json => {
             // Extend only this method's output; the shared v1 schema stays compatible.
             let mut value = serde_json::to_value(&record)?;
+            value["rr_phase_chunks"] = config
+                .kernel
+                .phase_chunks
+                .min(config.kernel.tile_size)
+                .into();
             value["rr_tile_size"] = config.kernel.tile_size.into();
             value["rr_workgroup_size"] = config.kernel.workgroup_size.into();
             value["rr_memory_mode"] = config.kernel.memory_mode.as_str().into();

@@ -23,9 +23,11 @@ from typing import Any
 from urllib.parse import quote, unquote, urlsplit
 
 try:
+    from timing import timing_lines
     from artifact_paths import resolve_artifact_path
     from experiment_plan import METHODS, REPO_ROOT
 except ModuleNotFoundError:
+    from experiments.timing import timing_lines
     from experiments.artifact_paths import resolve_artifact_path
     from experiments.experiment_plan import METHODS, REPO_ROOT
 
@@ -437,15 +439,7 @@ class ExperimentService:
         ]
         if record:
             lines.append(f"頂点数: {record.get('nodes')} / 辺数: {record.get('edges')} / 制約数: {record.get('constraints')}")
-            lines.append("時間（ビルド・画像生成・ストレス評価を除く）")
-            for key, label in (
-                ("iteration_time_ms", "SGD反復（全反復の合計）"),
-                ("algorithm_time_cold_ms", "処理全体（初期化を含む・入力読込を除く）"),
-                ("algorithm_time_warm_ms", "処理全体（初期化を除く・差引値）"),
-                ("cli_total_time_cold_ms", "入力読込＋処理全体（初期化を含む）"),
-            ):
-                value = record.get(key)
-                lines.append(f"  {label}: {value:.3f} ms" if isinstance(value, (int, float)) else f"  {label}: 未計測")
+            lines.extend(timing_lines(record))
             lines.append(f"Stress: {record.get('stress_value')} ({record.get('stress_kind')})")
         if job.error:
             lines.append(f"エラー ({result.get('stage', 'run')}): {job.error}")
@@ -564,7 +558,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         elif path.startswith("/api/runs/"):
             snapshot = service.snapshot(path[len("/api/runs/"):])
             self.json_response(200 if snapshot else 404, snapshot or {"error": "実験がありません"})
-        elif path in {"/", "/index.html", "/app.js", "/styles.css"}:
+        elif path in {"/", "/index.html", "/app.js", "/styles.css", "/timing-diagram.png"}:
             filename = "index.html" if path in {"/", "/index.html"} else path[1:]
             self.file_response(service.root / "tools/single_run" / filename)
         elif path.startswith("/output/"):

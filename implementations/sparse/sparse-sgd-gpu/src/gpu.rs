@@ -1,3 +1,5 @@
+#[path = "../../../../shared/gpu-timing/wgpu.rs"]
+mod timing;
 use crate::graph::{center_inplace, SgdParams};
 use crate::schedule::Schedule;
 use anyhow::{ensure, Context, Result};
@@ -7,6 +9,7 @@ use rand::{rngs::StdRng, seq::SliceRandom, Rng, SeedableRng};
 use std::num::NonZeroU64;
 use std::ops::Range;
 use std::time::{Duration, Instant};
+#[cfg(test)]
 use wgpu::util::DeviceExt;
 
 const WORKGROUP_SIZE: u32 = 256;
@@ -39,6 +42,11 @@ pub struct GpuRunResult {
     pub initial_positions: Vec<[f64; 2]>,
     pub positions: Vec<[f64; 2]>,
     pub upload_time: Duration,
+    pub preparation_time: Duration,
+    pub data_setup_time: Duration,
+    pub time_to_result: Duration,
+    pub result_ready_monotonic_ms: f64,
+    pub iteration_times: Option<Vec<Duration>>,
     pub compute_time: Duration,
     pub readback_time: Duration,
     pub postprocess_time: Duration,
@@ -75,7 +83,7 @@ impl GpuContext {
         let info = adapter.get_info();
         let (device, queue) = pollster::block_on(adapter.request_device(&wgpu::DeviceDescriptor {
             label: Some("Sparse SGD GPU device"),
-            required_features: wgpu::Features::empty(),
+            required_features: adapter.features() & wgpu::Features::TIMESTAMP_QUERY,
             required_limits: adapter.limits(),
             experimental_features: wgpu::ExperimentalFeatures::disabled(),
             memory_hints: wgpu::MemoryHints::MemoryUsage,
@@ -161,7 +169,7 @@ impl GpuContext {
         vertex_stride: bool,
         interleave_start: usize,
     ) -> Result<GpuRunResult> {
-        let upload_start = Instant::now();
+        let execution_started = Instant::now();
         let n = params.positions.len();
         let h = params.pivots.len();
         ensure!(
@@ -212,33 +220,32 @@ impl GpuContext {
         position_data.push(CANARY);
         position_data.push(CANARY);
 
-        let positions_buffer = self
-            .device
-            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
-                label: Some("positions with canaries"),
-                contents: bytemuck::cast_slice(&position_data),
-                usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_SRC,
-            });
-        let one_buffer = self
-            .device
-            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
-                label: Some("one-sided dense CSR"),
-                contents: bytemuck::cast_slice(&schedule.one_sided),
-                usage: wgpu::BufferUsages::STORAGE,
-            });
+        let data_setup_time = execution_started.elapsed();
+        let preparation_started = Instant::now();
+        let positions_buffer = timing::buffer(
+            &self.device,
+            Some("positions with canaries"),
+            (bytemuck::cast_slice::<_, u8>(&position_data)).len(),
+            wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_SRC,
+        );
+        let one_buffer = timing::buffer(
+            &self.device,
+            Some("one-sided dense CSR"),
+            (bytemuck::cast_slice::<_, u8>(&schedule.one_sided)).len(),
+            wgpu::BufferUsages::STORAGE,
+        );
         let dummy_pair = [crate::schedule::GpuPair::default()];
         let pair_data = if schedule.two_sided.is_empty() {
             &dummy_pair[..]
         } else {
             &schedule.two_sided[..]
         };
-        let pair_buffer = self
-            .device
-            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
-                label: Some("two-sided pairs"),
-                contents: bytemuck::cast_slice(pair_data),
-                usage: wgpu::BufferUsages::STORAGE,
-            });
+        let pair_buffer = timing::buffer(
+            &self.device,
+            Some("two-sided pairs"),
+            (bytemuck::cast_slice::<_, u8>(pair_data)).len(),
+            wgpu::BufferUsages::STORAGE,
+        );
         let permutation_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
             label: Some("pivot permutation"),
             size: (2 * h.max(1) * std::mem::size_of::<u32>()) as u64,
@@ -247,11 +254,6 @@ impl GpuContext {
         });
 
         let pivot_ids: Vec<u32> = params.pivots.iter().map(|&p| p as u32).collect();
-        self.queue.write_buffer(
-            &permutation_buffer,
-            (h * 4) as u64,
-            bytemuck::cast_slice(&pivot_ids),
-        );
 
         let alignment = self.device.limits().min_uniform_buffer_offset_alignment as usize;
         let slot_size = std::mem::size_of::<Uniforms>().div_ceil(alignment) * alignment;
@@ -343,7 +345,24 @@ impl GpuContext {
             });
         let one_pipeline = self.create_pipeline(&pipeline_layout, "one_sided_phase");
         let two_pipeline = self.create_pipeline(&pipeline_layout, "two_sided_round");
-        let upload_time = upload_start.elapsed();
+        let mut timer =
+            timing::PassTimer::new(&self.device, params.etas.len() * submission_ranges.len());
+        let preparation_time = preparation_started.elapsed();
+        let upload_started = Instant::now();
+        self.queue
+            .write_buffer(&positions_buffer, 0, bytemuck::cast_slice(&position_data));
+        self.queue
+            .write_buffer(&one_buffer, 0, bytemuck::cast_slice(&schedule.one_sided));
+        self.queue
+            .write_buffer(&pair_buffer, 0, bytemuck::cast_slice(pair_data));
+        self.queue.write_buffer(
+            &permutation_buffer,
+            (h * 4) as u64,
+            bytemuck::cast_slice(&pivot_ids),
+        );
+        self.queue.submit([]);
+        self.device.poll(wgpu::PollType::wait_indefinitely())?;
+        let upload_time = upload_started.elapsed();
 
         let mut trace = experiment_common::trace::IterationTrace::from_env();
         if let Some(trace) = &mut trace {
@@ -442,7 +461,7 @@ impl GpuContext {
                     // Keep batches bounded to limit command recording overhead.
                     let mut pass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
                         label: Some("Sparse SGD ordered dispatches"),
-                        timestamp_writes: None,
+                        timestamp_writes: timer.next(),
                     });
                     for (slot, invocation) in invocations
                         .iter()
@@ -471,6 +490,7 @@ impl GpuContext {
             self.device
                 .poll(wgpu::PollType::wait_indefinitely())
                 .context("GPU iteration failed")?;
+            timer.end_iteration();
             if let (Some(trace), Some(started)) = (&mut trace, trace_started) {
                 trace.record(iteration + 1, started.elapsed(), || {
                     trace_positions(
@@ -526,6 +546,12 @@ impl GpuContext {
             "GPU結果にNaNまたはInfがあります"
         );
         let readback_time = readback_start.elapsed();
+        let time_to_result = execution_started.elapsed();
+        let result_ready_monotonic_ms = experiment_common::monotonic_time_ms();
+        let iteration_times = timer.finish(&self.device, &self.queue)?;
+        let gpu_device_time = iteration_times
+            .as_ref()
+            .map(|times| times.iter().copied().sum());
         let postprocess_start = Instant::now();
         if params.center {
             center_inplace(&mut positions);
@@ -535,10 +561,15 @@ impl GpuContext {
             initial_positions,
             positions,
             upload_time,
+            preparation_time,
+            data_setup_time,
+            time_to_result,
+            result_ready_monotonic_ms,
+            iteration_times,
             compute_time,
             readback_time,
             postprocess_time,
-            gpu_device_time: None,
+            gpu_device_time,
             dispatches_per_iteration: invocation_count,
             submissions_per_iteration: submission_ranges.len(),
         })

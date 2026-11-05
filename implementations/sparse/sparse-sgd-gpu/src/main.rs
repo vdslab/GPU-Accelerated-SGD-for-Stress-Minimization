@@ -171,6 +171,7 @@ fn main() -> Result<()> {
         context.adapter_name, context.backend
     ));
 
+    let before_execution = input_started.elapsed();
     let run = context.execute_with_phase_chunks(
         params,
         &schedule,
@@ -253,10 +254,23 @@ fn main() -> Result<()> {
             Some(context.backend.clone()),
         ),
         TimingBreakdown {
+            result_ready_monotonic_ms: Some(run.result_ready_monotonic_ms),
+            iteration_times_ms: run
+                .iteration_times
+                .as_ref()
+                .map(|times| times.iter().copied().map(ms).collect()),
+            preprocess_time_ms: Some(ms(input_time
+                + common_preprocess_time
+                + method_setup_time
+                + run.data_setup_time)),
+            gpu_prepare_time_ms: Some(ms(runtime_init_time + run.preparation_time)),
+            sgd_time_ms: Some(ms(run.compute_time)),
+            total_compute_time_ms: Some(ms(before_execution + run.time_to_result)),
+
             input_time_ms: Some(ms(input_time)),
             common_preprocess_time_ms: Some(ms(common_preprocess_time)),
-            method_setup_time_ms: Some(ms(method_setup_time)),
-            runtime_init_time_ms: Some(ms(runtime_init_time)),
+            method_setup_time_ms: Some(ms(method_setup_time + run.data_setup_time)),
+            runtime_init_time_ms: Some(ms(runtime_init_time + run.preparation_time)),
             upload_time_ms: Some(ms(run.upload_time)),
             iteration_time_ms: Some(ms(run.compute_time)),
             gpu_device_time_ms: run.gpu_device_time.map(ms),

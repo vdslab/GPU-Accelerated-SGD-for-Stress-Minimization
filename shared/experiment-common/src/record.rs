@@ -124,6 +124,14 @@ pub struct EnvironmentMetadata {
 
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct TimingBreakdown {
+    pub result_ready_monotonic_ms: Option<f64>,
+    /// Per-iteration CPU work, or sum of GPU compute-pass timestamps.
+    pub iteration_times_ms: Option<Vec<f64>>,
+    pub iteration_total_time_ms: Option<f64>,
+    pub preprocess_time_ms: Option<f64>,
+    pub gpu_prepare_time_ms: Option<f64>,
+    pub sgd_time_ms: Option<f64>,
+    pub total_compute_time_ms: Option<f64>,
     pub input_time_ms: Option<f64>,
     pub common_preprocess_time_ms: Option<f64>,
     pub method_setup_time_ms: Option<f64>,
@@ -140,6 +148,13 @@ pub struct TimingBreakdown {
 
 impl TimingBreakdown {
     pub fn derive_totals(&mut self) -> Result<()> {
+        if let Some(times) = &self.iteration_times_ms {
+            ensure!(
+                times.iter().all(|t| t.is_finite() && *t >= 0.0),
+                "Invalid iteration times"
+            );
+            self.iteration_total_time_ms = Some(times.iter().sum());
+        }
         for (name, value) in self.stage_values() {
             if let Some(value) = value {
                 ensure!(
@@ -174,6 +189,36 @@ impl TimingBreakdown {
     }
 
     pub fn validate(&self) -> Result<()> {
+        for value in [
+            self.result_ready_monotonic_ms,
+            self.iteration_total_time_ms,
+            self.preprocess_time_ms,
+            self.gpu_prepare_time_ms,
+            self.sgd_time_ms,
+            self.total_compute_time_ms,
+        ] {
+            ensure!(
+                value.is_none_or(|t| t.is_finite() && t >= 0.0),
+                "Invalid measured interval"
+            );
+        }
+        if let Some(times) = &self.iteration_times_ms {
+            ensure!(
+                times.iter().all(|t| t.is_finite() && *t >= 0.0),
+                "Invalid iteration times"
+            );
+            ensure_close(
+                "iteration_total_time_ms",
+                self.iteration_total_time_ms
+                    .ok_or_else(|| anyhow::anyhow!("Missing iteration total"))?,
+                times.iter().sum(),
+            )?;
+        } else {
+            ensure!(
+                self.iteration_total_time_ms.is_none(),
+                "Iteration total requires measured iterations"
+            );
+        }
         for (name, value) in self.all_values() {
             if let Some(value) = value {
                 ensure!(
@@ -370,6 +415,12 @@ impl ExperimentRecord {
             ensure!(
                 self.parameters.pivots.is_some_and(|value| value > 0),
                 "Sparse手法には正のpivotsが必要です"
+            );
+        }
+        if let Some(times) = &self.timings.iteration_times_ms {
+            ensure!(
+                times.len() == self.parameters.iterations,
+                "Iteration sample count mismatch"
             );
         }
         self.timings.validate()?;

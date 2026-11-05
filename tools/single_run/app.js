@@ -358,23 +358,59 @@ function renderJob(job) {
     $("metric-rows").replaceChildren();
     $("metrics").hidden = !record;
     if (record) {
-      const time = (value) => Number.isFinite(value) ? `${value.toFixed(3)} ms` : "n/a";
+      const time = (value) => Number.isFinite(value) ? `${value.toFixed(3)} ms` : "未計測";
+      const cpu = ["sgd", "sparse_sgd"].includes(record.method);
+      const iterations = record.iteration_times_ms;
+      const iterationText = Array.isArray(iterations) && iterations.length
+        ? `平均 ${time(iterations.reduce((a, b) => a + b, 0) / iterations.length)}（${iterations.length}反復）`
+        : "未計測";
       const rows = [
+        ["主要な計測", null, "group"],
+        ["反復時間", iterationText, "iterations"],
+        ["反復時間合計", time(record.iteration_total_time_ms), "primary"],
+        ["総計算時間", time(record.total_compute_time_ms), "primary"],
+        ["内訳・描画", null, "group"],
+        ["前処理時間", time(record.preprocess_time_ms)],
+        ...(!cpu ? [
+          ["初期転送時間", time(record.upload_time_ms)],
+          ["GPU準備時間", time(record.gpu_prepare_time_ms)],
+        ] : []),
+        [cpu ? "SGD実行時間" : "SGD実行時間（反復時間合計＋GPU計算外の経過時間）", time(record.sgd_time_ms)],
+        ...(!cpu ? [["結果取得時間", time(record.readback_time_ms)]] : []),
+        ["描画時間", time(record.draw_time_ms)],
+        ["総計算時間（描画込み）", time(record.total_with_draw_time_ms)],
+        ["グラフ・品質", null, "group"],
         ["頂点数 / 辺数", `${record.nodes.toLocaleString()} / ${record.edges.toLocaleString()}`],
-        ["SGD反復（全反復の合計）", time(record.iteration_time_ms)],
-        ["処理全体（読込除外・初期化込み）", time(record.algorithm_time_cold_ms)],
-        ["処理全体（初期化を除く・差引値）", time(record.algorithm_time_warm_ms)],
-        ["入力読込＋処理全体（初期化込み）", time(record.cli_total_time_cold_ms)],
         ["Stress", record.stress_value == null ? "n/a" : `${record.stress_value} (${record.stress_kind})`],
       ];
-      for (const [label, value] of rows) {
+      for (const [label, value, kind] of rows) {
         const row = document.createElement("tr");
         const heading = document.createElement("th");
         heading.scope = "row";
         heading.textContent = label;
         const cell = document.createElement("td");
         cell.textContent = value;
-        row.append(heading, cell);
+        if (kind === "group") {
+          row.className = "timing-group";
+          heading.colSpan = 2;
+          row.append(heading);
+        } else {
+          if (kind === "primary" || kind === "iterations") row.className = "timing-primary";
+          if (kind === "iterations" && Array.isArray(iterations) && iterations.length) {
+            const details = document.createElement("details");
+            const summary = document.createElement("summary");
+            summary.textContent = value;
+            const values = document.createElement("ol");
+            for (const duration of iterations) {
+              const item = document.createElement("li");
+              item.textContent = time(duration);
+              values.append(item);
+            }
+            details.append(summary, values);
+            cell.replaceChildren(details);
+          }
+          row.append(heading, cell);
+        }
         $("metric-rows").append(row);
       }
     }
@@ -578,6 +614,12 @@ for (const stage of ["before", "after"]) {
     $("image-dialog").showModal();
   });
 }
+$("show-timing-diagram").addEventListener("click", () => {
+  $("expanded-image").src = (jobApiUrl || apiUrl) + "/timing-diagram.png";
+  $("expanded-image").alt = "実行時間の計測区間。総計算時間はAからF、描画込みはAからG。";
+  $("image-title").textContent = "計測時間の定義";
+  $("image-dialog").showModal();
+});
 $("close-image").addEventListener("click", () => $("image-dialog").close());
 $("image-dialog").addEventListener("click", (event) => {
   if (event.target !== $("image-dialog")) return;

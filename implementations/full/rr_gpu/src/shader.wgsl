@@ -8,6 +8,9 @@ struct Uniforms {
     eta: f32,
     full_self_perm_offset: u32,
     partial_self_perm_offset: u32,
+    chunk: u32,
+    chunks: u32,
+    padding: vec2<u32>,
 }
 
 @group(0) @binding(0) var<uniform> uniforms: Uniforms;
@@ -46,7 +49,7 @@ fn sgd_rr(
         // Both sides are padded to T. The cyclic offset is a bijection on T,
         // so every subround is a disjoint matching even for a partial last tile.
         // Skipping dummies still visits every real cross pair exactly once.
-        for (var s = 0u; s < BLOCK_T; s++) {
+        for (var s = uniforms.chunk * BLOCK_T / uniforms.chunks; s < (uniforms.chunk + 1u) * BLOCK_T / uniforms.chunks; s++) {
             let offset = inner_perm[s];
             for (var local = tx; local < li; local += WORKGROUP_SIZE) {
                 let other = (local + offset) % BLOCK_T;
@@ -77,7 +80,7 @@ fn sgd_rr(
         let rounds = effective_len - 1u;
         let perm_offset = select(uniforms.full_self_perm_offset,
                                  uniforms.partial_self_perm_offset, li < BLOCK_T);
-        for (var s = 0u; s < rounds; s++) {
+        for (var s = uniforms.chunk * rounds / uniforms.chunks; s < (uniforms.chunk + 1u) * rounds / uniforms.chunks; s++) {
             let r = inner_perm[perm_offset + s];
             for (var slot = tx; slot < effective_len / 2u; slot += WORKGROUP_SIZE) {
                 var lu = effective_len - 1u;

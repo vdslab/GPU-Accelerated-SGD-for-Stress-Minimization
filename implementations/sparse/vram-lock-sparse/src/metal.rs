@@ -1,3 +1,5 @@
+#[path = "../../../../shared/gpu-timing/metal.rs"]
+mod timing;
 use crate::graph::{center_inplace, SgdParams};
 use anyhow::{bail, ensure, Result};
 use experiment_common::OutputFormat;
@@ -28,6 +30,10 @@ pub struct MetalRunResult {
     pub positions: Vec<[f64; 2]>,
     pub method_setup_time: Duration,
     pub upload_time: Duration,
+    pub preparation_time: Duration,
+    pub time_to_result: Duration,
+    pub result_ready_monotonic_ms: f64,
+    pub iteration_times: Option<Vec<Duration>>,
     pub iteration_time: Duration,
     pub readback_time: Duration,
     pub postprocess_time: Duration,
@@ -58,14 +64,6 @@ impl MetalContext {
         })
     }
 
-    fn buffer<T>(&self, data: &[T]) -> Buffer {
-        self.device.new_buffer_with_data(
-            data.as_ptr().cast(),
-            mem::size_of_val(data) as u64,
-            MTLResourceOptions::StorageModeShared,
-        )
-    }
-
     pub fn execute_sgd<R: Rng + ?Sized>(
         &self,
         params: SgdParams,
@@ -85,6 +83,7 @@ impl MetalContext {
         format: OutputFormat,
         cpu_shuffle: bool,
     ) -> Result<MetalRunResult> {
+        let execution_started = Instant::now();
         let setup = Instant::now();
         ensure!(
             !params.pairs.is_empty() && !params.etas.is_empty(),
@@ -150,12 +149,58 @@ impl MetalContext {
         let mut all_pending = (0..pairs.len() as u32).collect::<Vec<_>>();
         let method_setup_time = setup.elapsed();
 
+        let locks = vec![0u32; initial_positions.len()];
+        let completed = vec![0u32; pairs.len()];
+        let preparation_started = Instant::now();
+        let position_buffer = self.device.new_buffer(
+            mem::size_of_val(positions.as_slice()) as u64,
+            MTLResourceOptions::StorageModeShared,
+        );
+        let pair_buffer = self.device.new_buffer(
+            mem::size_of_val(pairs.as_slice()) as u64,
+            MTLResourceOptions::StorageModeShared,
+        );
+        let lock_buffer = self.device.new_buffer(
+            mem::size_of_val(locks.as_slice()) as u64,
+            MTLResourceOptions::StorageModeShared,
+        );
+        let pending_buffer = self.device.new_buffer(
+            mem::size_of_val(all_pending.as_slice()) as u64,
+            MTLResourceOptions::StorageModeShared,
+        );
+        let completed_buffer = self.device.new_buffer(
+            mem::size_of_val(completed.as_slice()) as u64,
+            MTLResourceOptions::StorageModeShared,
+        );
+        let preparation_time = preparation_started.elapsed();
         let upload = Instant::now();
-        let position_buffer = self.buffer(&positions);
-        let pair_buffer = self.buffer(&pairs);
-        let lock_buffer = self.buffer(&vec![0u32; initial_positions.len()]);
-        let pending_buffer = self.buffer(&all_pending);
-        let completed_buffer = self.buffer(&vec![0u32; pairs.len()]);
+        unsafe {
+            std::ptr::copy_nonoverlapping(
+                positions.as_ptr().cast::<u8>(),
+                position_buffer.contents().cast::<u8>(),
+                mem::size_of_val(positions.as_slice()),
+            );
+            std::ptr::copy_nonoverlapping(
+                pairs.as_ptr().cast::<u8>(),
+                pair_buffer.contents().cast::<u8>(),
+                mem::size_of_val(pairs.as_slice()),
+            );
+            std::ptr::copy_nonoverlapping(
+                locks.as_ptr().cast::<u8>(),
+                lock_buffer.contents().cast::<u8>(),
+                mem::size_of_val(locks.as_slice()),
+            );
+            std::ptr::copy_nonoverlapping(
+                all_pending.as_ptr().cast::<u8>(),
+                pending_buffer.contents().cast::<u8>(),
+                mem::size_of_val(all_pending.as_slice()),
+            );
+            std::ptr::copy_nonoverlapping(
+                completed.as_ptr().cast::<u8>(),
+                completed_buffer.contents().cast::<u8>(),
+                mem::size_of_val(completed.as_slice()),
+            );
+        }
         let upload_time = upload.elapsed();
 
         let mut trace = experiment_common::trace::IterationTrace::from_env();
@@ -168,6 +213,7 @@ impl MetalContext {
             });
         }
         let initial_trace_overhead = trace.as_ref().map(|t| t.overhead()).unwrap_or_default();
+        let mut iteration_times = Some(Vec::with_capacity(etas.len()));
         let start = Instant::now();
         let mut completed_updates = 0u64;
         let mut dispatches = 0u64;
@@ -181,6 +227,7 @@ impl MetalContext {
             }
             let mut pending = all_pending.clone();
             let mut passes = 0;
+            let mut gpu_time = Duration::ZERO;
             while !pending.is_empty() {
                 // The previous command is complete before shared buffers are overwritten.
                 unsafe {
@@ -232,6 +279,11 @@ impl MetalContext {
                 encoder.end_encoding();
                 command.commit();
                 command.wait_until_completed();
+                if let Some(duration) = timing::command_time(command) {
+                    gpu_time += duration;
+                } else {
+                    iteration_times = None;
+                }
                 ensure!(
                     command.status() == MTLCommandBufferStatus::Completed,
                     "Metal command failed at iteration {}",
@@ -255,6 +307,9 @@ impl MetalContext {
                 if !pending.is_empty() && (pending.len() == before || passes >= 1024) {
                     bail!("Sparse lock retries stalled: iteration={}, remaining={} (no successful result emitted)", iteration + 1, pending.len());
                 }
+            }
+            if let Some(times) = &mut iteration_times {
+                times.push(gpu_time);
             }
             if let (Some(trace), Some(started)) = (&mut trace, trace_started) {
                 trace.record(iteration + 1, started.elapsed(), || unsafe {
@@ -298,6 +353,8 @@ impl MetalContext {
             "Non-finite final coordinates"
         );
         let readback_time = readback.elapsed();
+        let time_to_result = execution_started.elapsed();
+        let result_ready_monotonic_ms = experiment_common::monotonic_time_ms();
         let postprocess = Instant::now();
         if params.center {
             center_inplace(&mut positions);
@@ -308,6 +365,10 @@ impl MetalContext {
             positions,
             method_setup_time,
             upload_time,
+            preparation_time,
+            time_to_result,
+            result_ready_monotonic_ms,
+            iteration_times,
             iteration_time,
             readback_time,
             postprocess_time,

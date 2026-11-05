@@ -28,6 +28,7 @@ const QUAD_VERTS: [[f32; 2]; 6] = [
 ];
 
 pub struct RenderOutput {
+    pub frame_ready_monotonic_ms: f64,
     pub pixels: Vec<u8>,
     pub prepare_time: Duration,
     pub execute_readback_time: Duration,
@@ -328,6 +329,18 @@ impl GpuRenderer {
             pass.set_vertex_buffer(2, color_buf.slice(..));
             pass.draw(0..QUAD_VERTS.len() as u32, 0..positions.len() as u32);
         }
+        // G: the first final-coordinate frame has completed on the GPU.
+        // Image download and PNG encoding happen after this boundary.
+        self.queue.submit([encoder.finish()]);
+        self.device
+            .poll(wgpu::PollType::wait_indefinitely())
+            .context("GPU render completion failed")?;
+        let frame_ready_monotonic_ms = experiment_common::monotonic_time_ms();
+        let mut encoder = self
+            .device
+            .create_command_encoder(&wgpu::CommandEncoderDescriptor {
+                label: Some("image download"),
+            });
         encoder.copy_texture_to_buffer(
             texture.as_image_copy(),
             wgpu::TexelCopyBufferInfo {
@@ -359,6 +372,7 @@ impl GpuRenderer {
         }
         let execute_readback_time = execute_started.elapsed();
         Ok(RenderOutput {
+            frame_ready_monotonic_ms,
             pixels,
             prepare_time,
             execute_readback_time,

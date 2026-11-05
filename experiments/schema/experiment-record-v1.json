@@ -21,6 +21,15 @@
     "error_message", "exit_code", "stderr_log_path"
   ],
   "properties": {
+    "iteration_total_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "preprocess_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "gpu_prepare_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "sgd_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "total_compute_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "draw_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "total_with_draw_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "iteration_times_ms": {"type": ["array", "null"], "items": {"type": "number", "minimum": 0}},
+    "result_ready_monotonic_ms": {"$ref": "#/$defs/timeOrNull"},
     "schema_version": { "const": 1 },
     "run_id": { "type": "string", "minLength": 1 },
     "run_mode": { "enum": ["benchmark", "diagnostic"] },
@@ -85,14 +94,22 @@
     "rr_outer_shuffle": {"type": "boolean"},
     "rr_inner_shuffle": {"type": "boolean"},
     "rr_pivot_order": {"const": "per-vertex-feistel4-cyclewalk"},
-    "rr_phase_chunks": {"type": "integer", "minimum": 1, "maximum": 4},
+    "rr_phase_chunks": {"type": "integer", "minimum": 1, "maximum": 1024},
     "rr_step_cap": {"type": "number", "const": 1},
     "rr_arithmetic": {"const": "f32"}
   },
   "allOf": [
     {
+      "if": {"required": ["rr_phase_chunks"], "properties": {"method": {"not": {"const": "rr_sparse_sgd"}}}},
+      "then": {
+        "properties": {"method": {"const": "rr_sgd"}},
+        "required": ["rr_tile_size", "rr_workgroup_size", "rr_memory_mode", "rr_shared_bytes", "rr_outer_shuffle", "rr_inner_shuffle"]
+      }
+    },
+    {
       "if": {"anyOf": [
-        {"required": ["rr_pivot_order"]}, {"required": ["rr_phase_chunks"]},
+        {"required": ["rr_pivot_order"]},
+        {"required": ["rr_phase_chunks"], "properties": {"method": {"const": "rr_sparse_sgd"}}},
         {"required": ["rr_step_cap"]}, {"required": ["rr_arithmetic"]}
       ]},
       "then": {
@@ -151,6 +168,15 @@
           "rr_inner_shuffle"
         ],
         "properties": {
+    "iteration_total_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "preprocess_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "gpu_prepare_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "sgd_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "total_compute_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "draw_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "total_with_draw_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "iteration_times_ms": {"type": ["array", "null"], "items": {"type": "number", "minimum": 0}},
+    "result_ready_monotonic_ms": {"$ref": "#/$defs/timeOrNull"},
           "method": {
             "const": "rr_sgd"
           }
@@ -163,6 +189,15 @@
           "rr_memory_mode"
         ],
         "properties": {
+    "iteration_total_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "preprocess_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "gpu_prepare_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "sgd_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "total_compute_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "draw_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "total_with_draw_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "iteration_times_ms": {"type": ["array", "null"], "items": {"type": "number", "minimum": 0}},
+    "result_ready_monotonic_ms": {"$ref": "#/$defs/timeOrNull"},
           "rr_memory_mode": {
             "const": "global"
           }
@@ -170,6 +205,15 @@
       },
       "then": {
         "properties": {
+    "iteration_total_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "preprocess_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "gpu_prepare_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "sgd_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "total_compute_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "draw_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "total_with_draw_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "iteration_times_ms": {"type": ["array", "null"], "items": {"type": "number", "minimum": 0}},
+    "result_ready_monotonic_ms": {"$ref": "#/$defs/timeOrNull"},
           "rr_shared_bytes": {
             "const": 0
           }
@@ -182,6 +226,15 @@
           "rr_memory_mode"
         ],
         "properties": {
+    "iteration_total_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "preprocess_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "gpu_prepare_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "sgd_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "total_compute_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "draw_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "total_with_draw_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "iteration_times_ms": {"type": ["array", "null"], "items": {"type": "number", "minimum": 0}},
+    "result_ready_monotonic_ms": {"$ref": "#/$defs/timeOrNull"},
           "rr_memory_mode": {
             "const": "shared"
           }
@@ -189,6 +242,15 @@
       },
       "then": {
         "properties": {
+    "iteration_total_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "preprocess_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "gpu_prepare_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "sgd_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "total_compute_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "draw_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "total_with_draw_time_ms": {"$ref": "#/$defs/timeOrNull"},
+    "iteration_times_ms": {"type": ["array", "null"], "items": {"type": "number", "minimum": 0}},
+    "result_ready_monotonic_ms": {"$ref": "#/$defs/timeOrNull"},
           "rr_shared_bytes": {
             "minimum": 16,
             "multipleOf": 16

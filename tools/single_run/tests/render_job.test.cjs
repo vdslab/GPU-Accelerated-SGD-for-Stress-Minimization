@@ -227,7 +227,7 @@ test("switching API origins or clearing a job refreshes otherwise identical arti
   ui.clear();
   ui.render(job);
   assert.equal(ui.element("result-text").value, job.summary);
-  assert.equal(ui.element("metric-rows").children.length, 6);
+  assert.equal(ui.element("metric-rows").children.length, 15);
   assert.equal(ui.element("before-link").hidden, false);
 });
 
@@ -243,4 +243,34 @@ test("restoring an unchanged failed job shows its error after reconnection clear
   assert.equal(ui.element("error").textContent, job.error);
   assert.equal(ui.element("error").hidden, false);
   assert.equal(ui.element("log-details").open, true);
+});
+
+
+test("timings prioritize per-iteration values and totals and omit GPU-only CPU rows", () => {
+  const ui = harness();
+  const job = runningJob();
+  Object.assign(job.result.record, {method: "sgd", iteration_times_ms: [1, 2],
+    iteration_total_time_ms: 3, total_compute_time_ms: 9, preprocess_time_ms: 5,
+    sgd_time_ms: 4, draw_time_ms: 6, total_with_draw_time_ms: 15});
+  ui.render(job);
+  const rows = ui.element("metric-rows").children;
+  assert.deepEqual(rows.slice(0, 5).map(r => r.children[0].textContent),
+    ["主要な計測", "反復時間", "反復時間合計", "総計算時間", "内訳・描画"]);
+  assert.equal(rows[1].children[1].children[0].children[1].children.length, 2);
+  assert.equal(rows[2].children[1].textContent, "3.000 ms");
+  const names = rows.map(r => r.children[0].textContent);
+  for (const name of ["初期転送時間", "GPU準備時間", "結果取得時間"]) assert.ok(!names.includes(name));
+  assert.ok(names.includes("総計算時間（描画込み）"));
+});
+
+test("missing GPU timestamps are not replaced by historical wall time", () => {
+  const ui = harness();
+  const job = runningJob();
+  job.result.record.method = "rr_sgd";
+  ui.render(job);
+  const rows = ui.element("metric-rows").children;
+  assert.equal(rows[1].children[1].textContent, "未計測");
+  assert.equal(rows[2].children[1].textContent, "未計測");
+  const names = rows.map(r => r.children[0].textContent);
+  assert.ok(names.indexOf("初期転送時間") < names.indexOf("GPU準備時間"));
 });

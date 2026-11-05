@@ -111,8 +111,9 @@
           <p id="error" role="alert" hidden></p>
           <div id="results" class="result-grid" hidden>
             <div class="measurements">
+              <div class="actions"><h3>計測時間</h3><button id="show-timing-diagram" type="button">計測区間の図を見る</button></div>
               <table id="metrics" hidden><tbody id="metric-rows"></tbody></table>
-              <p class="timing-note">時間はビルド・画像生成・stress評価を除く</p>
+              <p class="timing-note">反復時間はCPU版ではCPU処理、GPU版ではGPU計算区間。総計算時間は入力読込からCPU座標取得まで。描画時間は座標取得から最終配置のGPU描画完了まで（受渡し・stress評価を含む）。ビルド、Before画像、PNG保存、ブラウザへの表示待ちは含みません。</p>
               <p id="artifact-links" class="actions"></p>
               <details id="log-details" hidden>
                 <summary>実行ログ</summary>

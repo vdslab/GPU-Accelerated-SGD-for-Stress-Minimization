@@ -21,3 +21,15 @@ pub use stress::{
 };
 
 pub mod trace;
+
+/// System-wide monotonic clock, comparable between the solver and renderer.
+/// Unlike a wall clock this is unaffected by clock synchronization.
+pub fn monotonic_time_ms() -> f64 {
+    let mut value = libc::timespec {
+        tv_sec: 0,
+        tv_nsec: 0,
+    };
+    let result = unsafe { libc::clock_gettime(libc::CLOCK_MONOTONIC, &mut value) };
+    assert_eq!(result, 0, "monotonic clock unavailable");
+    value.tv_sec as f64 * 1000.0 + value.tv_nsec as f64 / 1_000_000.0
+}

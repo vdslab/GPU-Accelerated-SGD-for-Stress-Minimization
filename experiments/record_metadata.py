@@ -46,6 +46,15 @@ RR_SPARSE_METADATA_FIELDS = (
 def validate_rr_metadata(record: Mapping[str, Any]) -> None:
     """Validate optional Full and Sparse RR blocks; keep legacy records valid."""
     validate_full_rr_metadata(record)
+    if record.get("method") == "rr_sgd" and "rr_phase_chunks" in record:
+        if not set(RR_METADATA_FIELDS).issubset(record):
+            raise ValueError("Full RR phase chunks require the Full RR metadata block")
+        if set(RR_SPARSE_METADATA_FIELDS).difference({"rr_phase_chunks"}).intersection(record):
+            raise ValueError("Sparse RR metadata is only permitted for rr_sparse_sgd")
+        chunks = record["rr_phase_chunks"]
+        if isinstance(chunks, bool) or not isinstance(chunks, int) or not 1 <= chunks <= record["rr_tile_size"]:
+            raise ValueError("Full RR phase chunks must be an integer from 1 to tile size")
+        return
     present = set(RR_SPARSE_METADATA_FIELDS).intersection(record)
     if not present:
         return

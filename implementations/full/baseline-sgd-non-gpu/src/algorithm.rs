@@ -37,19 +37,21 @@ pub fn center_inplace(positions: &mut [[f64; 2]]) {
 ///   - `r = ((||xv-xu|| - dij)/2) * (diff / ||diff||)`
 ///   - `mu = min(wij * eta, 1)`
 ///   - `xu += mu * r`, `xv -= mu * r`
-pub fn execute_sgd(
+pub fn execute_sgd_timed(
     sgd_params: graph::SgdParams,
     seed: u64,
     verbose: bool,
     output_format: OutputFormat,
-) -> Vec<[f64; 2]> {
+) -> (Vec<[f64; 2]>, Vec<std::time::Duration>) {
     let mut rng = rng_for_stream(seed, FULL_UPDATE_STREAM);
     let mut positions = sgd_params.positions.clone();
     let mut pairs = sgd_params.pairs.clone();
 
+    let mut iteration_times = Vec::with_capacity(sgd_params.etas.len());
     let tiny = 1e-12_f64;
 
     for (iteration, &eta) in sgd_params.etas.iter().enumerate() {
+        let started = std::time::Instant::now();
         pairs.shuffle(&mut rng);
 
         for pair in &pairs {
@@ -80,6 +82,7 @@ pub fn execute_sgd(
             positions[v][1] -= mu * r[1];
         }
 
+        iteration_times.push(started.elapsed());
         if verbose {
             match output_format {
                 OutputFormat::Json => eprintln!("Iteration: {}", iteration + 1),
@@ -88,5 +91,16 @@ pub fn execute_sgd(
         }
     }
 
-    positions
+    (positions, iteration_times)
+}
+
+/// Compatibility entry point for diagnostic callers that only need coordinates.
+#[allow(dead_code)]
+pub fn execute_sgd(
+    params: graph::SgdParams,
+    seed: u64,
+    verbose: bool,
+    output_format: OutputFormat,
+) -> Vec<[f64; 2]> {
+    execute_sgd_timed(params, seed, verbose, output_format).0
 }

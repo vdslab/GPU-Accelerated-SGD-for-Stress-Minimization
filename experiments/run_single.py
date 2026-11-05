@@ -17,11 +17,13 @@ from typing import Any, TextIO
 from zoneinfo import ZoneInfo
 
 try:
+    from timing import timing_lines
     from experiment_plan import METHODS, REPO_ROOT, Dataset, RunDefinition
     from run_experiments import (
         RunnerError, command_for, file_sha256, parse_and_validate_success,
     )
 except ModuleNotFoundError:
+    from experiments.timing import timing_lines
     from experiments.experiment_plan import METHODS, REPO_ROOT, Dataset, RunDefinition
     from experiments.run_experiments import (
         RunnerError, command_for, file_sha256, parse_and_validate_success,
@@ -29,12 +31,6 @@ except ModuleNotFoundError:
 
 TOKYO = ZoneInfo("Asia/Tokyo")
 RENDERER = "tools/gpu_visualizer/target/release/gpu-visualizer"
-TIMINGS = {
-    "iteration_time_ms": "Iteration",
-    "algorithm_time_cold_ms": "Algorithm (cold)",
-    "algorithm_time_warm_ms": "Algorithm (warm)",
-    "cli_total_time_cold_ms": "CLI total (cold)",
-}
 
 
 class SingleRunError(RuntimeError):
@@ -160,10 +156,7 @@ def write_config(output: TextIO, config: dict[str, Any]) -> None:
 
 
 def write_speed(output: TextIO, record: dict[str, Any]) -> None:
-    output.write("Speed (SGD; build, render, and stress evaluation excluded)\n")
-    for field, label in TIMINGS.items():
-        value = record.get(field)
-        output.write(f"  {label}: {value:.3f} ms\n" if value is not None else f"  {label}: n/a\n")
+    output.write("\n".join(timing_lines(record)) + "\n")
     if record.get("stress_value") is not None:
         output.write(f"Stress: {record['stress_value']} ({record.get('stress_kind')})\n")
 
@@ -214,6 +207,25 @@ def write_info(path: Path, metadata: dict[str, Any], layout: Path | None = None)
             append_layout(output, layout, record)
 
 
+def attach_render_timing(record: dict[str, Any], log: str) -> None:
+    """F→G across processes on the same machine's monotonic clock.
+
+    Includes the actual handoff (centering, stress evaluation, coordinate I/O,
+    process startup and renderer preparation). Excludes before-image rendering,
+    final-image download/PNG encoding and browser image delivery.
+    """
+    ready = record.get("result_ready_monotonic_ms")
+    total = record.get("total_compute_time_ms")
+    matches = re.findall(r"^FRAME_READY_MONOTONIC_MS=([0-9.]+)$", log, re.MULTILINE)
+    if ready is None or total is None or not matches:
+        return
+    draw = float(matches[-1]) - ready
+    if not math.isfinite(draw) or draw < 0:
+        raise SingleRunError("描画完了時刻が座標取得時刻より前です")
+    record["draw_time_ms"] = draw
+    record["total_with_draw_time_ms"] = total + draw
+
+
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     input_path = args.input.expanduser().resolve()
@@ -257,7 +269,7 @@ def main(argv: list[str] | None = None) -> int:
             layouts = layout_paths(record, working_dir)
             record["final_positions_path"] = str(info_path)
             record["vertex_map_path"] = None
-            for index, stage in enumerate(("before", "after")):
+            for index, stage in ((1, "after"), (0, "before")):
                 metadata["stage"] = f"render_{stage}"
                 image = run_dir / f"{timestamp}_{index}.png"
                 command = [str(renderer), str(layouts[stage]), str(image), "--size", args.image_size, "--stress", "off", "--palette", "sunset"]
@@ -265,6 +277,8 @@ def main(argv: list[str] | None = None) -> int:
                 if not image.is_file() or image.stat().st_size == 0:
                     raise SingleRunError(f"画像が生成されませんでした: {image}")
                 metadata["artifacts"][f"{stage}_image"] = str(image)
+                if stage == "after":
+                    attach_render_timing(record, (working_dir / "render-after.log").read_text())
             metadata.update(status="success", stage="complete")
             code = 0
         except KeyboardInterrupt:
@@ -284,6 +298,7 @@ def main(argv: list[str] | None = None) -> int:
                 code = 1
             save_json(result_path, metadata)
     if code == 0:
+        write_speed(sys.stdout, metadata["record"])
         print(f"Saved: {run_dir}", flush=True)
     return code
 

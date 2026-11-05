@@ -295,6 +295,25 @@ def parse_and_validate_success(
 
 
 def validate_timing(record: dict[str, Any]) -> None:
+    for field in ("iteration_total_time_ms", "preprocess_time_ms", "gpu_prepare_time_ms",
+                  "sgd_time_ms", "total_compute_time_ms", "result_ready_monotonic_ms",
+                  "draw_time_ms", "total_with_draw_time_ms"):
+        value = record.get(field)
+        if value is not None and (isinstance(value, bool) or not isinstance(value, (int, float))
+                                  or not math.isfinite(value) or value < 0):
+            raise RunnerError(f"{field}はnullまたは有限な非負値です")
+    times = record.get("iteration_times_ms")
+    if times is not None:
+        if not isinstance(times, list) or len(times) != record["iterations"] or any(
+            isinstance(t, bool) or not isinstance(t, (int, float)) or not math.isfinite(t) or t < 0
+            for t in times
+        ):
+            raise RunnerError("反復時間は反復数と一致する非負の実測値配列です")
+        if record.get("iteration_total_time_ms") is None:
+            raise RunnerError("反復時間合計が必要です")
+        assert_close("iteration_total_time_ms", record["iteration_total_time_ms"], sum(times))
+    elif record.get("iteration_total_time_ms") is not None:
+        raise RunnerError("反復時間合計には各反復の計測値が必要です")
     stage_fields = (
         "input_time_ms",
         "common_preprocess_time_ms",

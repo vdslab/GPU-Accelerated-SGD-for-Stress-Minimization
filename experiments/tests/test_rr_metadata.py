@@ -57,6 +57,16 @@ class RRMetadataCompatibilityTests(unittest.TestCase):
                 self.assertEqual(self.parse(record), record)
                 self.check_aggregation(record)
 
+    def test_full_phase_chunks_are_not_mistaken_for_sparse_metadata(self):
+        record = dict(self.record, **METADATA, rr_phase_chunks=8)
+        self.assertEqual(self.parse(record), record)
+        self.check_aggregation(record)
+        if importlib.util.find_spec("jsonschema"):
+            import jsonschema
+            jsonschema.validate(record, json.loads(run_experiments.SCHEMA_PATH.read_text()))
+        for chunks in (0, 1025, True, 1.5):
+            self.reject_both(dict(record, rr_phase_chunks=chunks))
+
     def test_rr_metadata_on_another_method_is_rejected(self):
         self.reject_both(dict(self.record, method="sgd", **METADATA), "sgd")
         self.reject_both(dict(self.record, method="atomic_sgd", **METADATA), "atomic_sgd")

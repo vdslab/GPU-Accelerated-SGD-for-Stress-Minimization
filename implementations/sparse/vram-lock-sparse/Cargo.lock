@@ -275,6 +275,7 @@ name = "experiment-common"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "libc",
  "rand",
  "serde",
  "serde_json",
@@ -836,6 +837,7 @@ dependencies = [
  "env_logger",
  "experiment-common",
  "metal",
+ "objc",
  "rand",
  "serde_json",
  "tempfile",

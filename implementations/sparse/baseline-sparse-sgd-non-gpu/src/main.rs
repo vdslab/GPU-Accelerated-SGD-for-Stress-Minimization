@@ -172,8 +172,11 @@ fn main() -> Result<()> {
     let center = params.center;
 
     let iteration_started = Instant::now();
-    let mut final_positions = algorithm::execute_sgd_iterations(params, &mut rng);
+    let (mut final_positions, iteration_times) =
+        algorithm::execute_sgd_iterations_timed(params, &mut rng);
     let iteration_time = iteration_started.elapsed();
+    let total_compute_time = input_started.elapsed();
+    let result_ready_monotonic_ms = experiment_common::monotonic_time_ms();
 
     let postprocess_started = Instant::now();
     if center {
@@ -242,6 +245,12 @@ fn main() -> Result<()> {
         },
         environment_metadata(None, None),
         TimingBreakdown {
+            result_ready_monotonic_ms: Some(result_ready_monotonic_ms),
+            iteration_times_ms: Some(iteration_times.iter().copied().map(ms).collect()),
+            preprocess_time_ms: Some(ms(iteration_started.duration_since(input_started))),
+            sgd_time_ms: Some(ms(iteration_time)),
+            total_compute_time_ms: Some(ms(total_compute_time)),
+
             input_time_ms: Some(ms(input_time)),
             common_preprocess_time_ms: Some(ms(common_preprocess_time)),
             method_setup_time_ms: None,
