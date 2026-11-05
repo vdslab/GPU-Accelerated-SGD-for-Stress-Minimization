@@ -57,7 +57,7 @@ impl Default for KernelConfig {
             memory_mode: MemoryMode::Shared,
             outer_shuffle: true,
             inner_shuffle: true,
-            phase_chunks: 16,
+            phase_chunks: 1,
         }
     }
 }

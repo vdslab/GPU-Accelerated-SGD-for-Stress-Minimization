@@ -73,5 +73,5 @@ def validate_rr_metadata(record: Mapping[str, Any]) -> None:
     pivots = record.get("pivots")
     if isinstance(pivots, bool) or not isinstance(pivots, int) or pivots < 1:
         raise ValueError("Sparse RR metadata requires a positive pivot count")
-    if isinstance(chunks, bool) or not isinstance(chunks, int) or chunks != min(4, pivots):
-        raise ValueError("Sparse RR phase chunks must equal min(4, pivots)")
+    if isinstance(chunks, bool) or not isinstance(chunks, int) or chunks not in (1, min(4, pivots)):
+        raise ValueError("Sparse RR phase chunks must be 1 or legacy min(4, pivots)")

@@ -8,7 +8,7 @@ cargo build --release --locked --manifest-path implementations/full/rr_gpu/Cargo
 
 | 引数 | 意味 | 既定値 |
 |---|---|---|
-| `--phase-chunks C` | 内側のshuffle済み列を連続区間に分割し、区間ごとに全外側ラウンドを巡回。実効値はmin(C,T)、C>=1 | 16 |
+| `--phase-chunks C` | 内側のshuffle済み列を連続区間に分割し、区間ごとに全外側ラウンドを巡回。実効値はmin(C,T)、C>=1 | 1 |
 | `--tile-size T` | 1ブロックの頂点数。2ブロック間のペア集合がタイル。1–1024 | 1024 |
 | `--workgroup-size W` | 1 workgroupのスレッド数。1–1024、GPUの制限内 | 1024 |
 | `--coordinate-memory MODE` | `shared`で座標を再利用するか、`global`で更新するか | shared |
@@ -42,8 +42,8 @@ JSONにはT・W・メモリ方式・shared容量・shuffle設定の`rr_*`項目�
 
 ## 内側ラウンドの分割と交互実行（2026-11-05）
 
-標準は16分割。内側・外側のshuffle済み順序を生成し、内側列の第0区間について全外側ラウンド、第1区間について全外側ラウンド、という順に実行する。各区間では座標を共有メモリへ読み、区間内のmatchingを処理して書き戻す。全頂点対を1反復に一度ずつ処理し、更新式・学習率・反復数を維持する。更新順は分割前と異なり、最終座標の一致は意図しない。
+標準は分割なし（`--phase-chunks 1`）。内側・外側のshuffleを維持し、各外側ラウンドのタイル内matchingをまとめて処理する。全頂点対を1反復に一度ずつ処理する。
 
-`--phase-chunks 1`は分割前の更新順、CPU完了待ちはいずれも反復末尾。JSONの`rr_phase_chunks`に実効分割数を記録する。品質診断用の`SGD_TRACE_DIR`／`SGD_TRACE_CHECKPOINTS`による座標保存費用は反復時間から除外する。
+CPU完了待ちは反復末尾。JSONの`rr_phase_chunks`に実効分割数を記録する。品質診断用の`SGD_TRACE_DIR`／`SGD_TRACE_CHECKPOINTS`による座標保存費用は反復時間から除外する。
 
-再測定は `experiment_results/full16/`。基本比較と収束、次数の偏りを持つBA入力での同期間CPU・分割前・16分割比較を保存する。タイルサイズの再測定は今回の対象外。
+分割オプションは過去の診断を再現するために保持する。`experiment_results/full16/`および専用の旧実験ランナーは16分割の過去条件の記録であり、現在の標準設定の評価には流用しない。

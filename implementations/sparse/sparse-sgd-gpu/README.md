@@ -20,8 +20,8 @@ PNGの描画ができます。
 - two-sided相: pivot完全グラフをcircle methodで分解し、実辺を空きへ詰めたmatchingを順に実行する
 
 各反復で相順、matching round順、共通pivot順をseedから再現可能にシャッフルします。
-CLIの標準実行では、さらに頂点ごとに独立したpivot順を作り、片側更新とmatching roundを
-4分割して交互に処理します（pivotが4個未満ならその個数）。各制約の処理は1反復につき1回です。
+CLIの標準実行では、さらに頂点ごとに独立したpivot順を作ります。片側相と両側相は
+分割せずに処理します（phase_chunks=1）。各制約の処理は1反復につき1回です。
 
 頂点別の順序には4段Feistel置換とcycle walkingを使います。pivot数が2の累乗でなくても
 重複・欠落がなく、追加の頂点×pivot順序表は不要です。グラフの種類・次数で切り替えません。
@@ -48,7 +48,7 @@ JSONには`rr_pivot_order`、`rr_phase_chunks`、`rr_step_cap`、`rr_arithmetic`
 
 前処理の同値性と反復高速化を保ち、標準の更新順序を上記の方式へ変更しています。
 反復数・epsilon・pivot数は指定値のままです。CPUと同じ15反復で比較し、追加反復は行いません。
-[現在のf32品質検証・CPU比較](../../../experiment_results/v2/validation/rr-f32-compensated-20261030/README.md)には
+[過去の4分割＋pivot順序変更の品質検証・CPU比較](../../../experiment_results/v2/validation/rr-f32-compensated-20261030/README.md)には
 8グラフ×4seed、選択後の未使用seed、Stanfordの4,096始点評価、時間比較を記録しています。
 CPUと完全に同じstressや、未検証の全グラフ・seedでの改善を保証するものではありません。
 
@@ -57,12 +57,13 @@ CPUと完全に同じstressや、未検証の全グラフ・seedでの改善を�
 
 ## 品質の診断
 
-CLI標準の対照実験には`quality_search`の`shuffle`と`4@0`を指定します。
-`4@0`は最初から4分割する指定です。`standard`と`1@0`は旧RR順序を再生します。
+CLI標準の対照実験には`quality_search`の`shuffle`と`1@0`を指定します。
+`1@0`は分割なしです。`standard`と`1@0`の組み合わせは旧RR順序を再生します。
+過去の4分割の品質検証は現在の標準条件とは異なります。
 `cpu`を付けると独立したCPU前処理とのSHA一致も確認します。
 
 ```sh
-cargo run --release --manifest-path implementations/sparse/sparse-sgd-gpu/Cargo.toml --example quality_search -- data/web-NotreDame.mtx 3 '4@0' 256 200 shuffle cpu
+cargo run --release --manifest-path implementations/sparse/sparse-sgd-gpu/Cargo.toml --example quality_search -- data/web-NotreDame.mtx 3 '1@0' 256 200 shuffle cpu
 ```
 
 評価は固定256始点（上記コマンドの場合）のsampled full stressです。小規模グラフでもsampledなので、

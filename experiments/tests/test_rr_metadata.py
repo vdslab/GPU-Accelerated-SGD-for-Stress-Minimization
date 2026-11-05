@@ -164,6 +164,7 @@ class RRMetadataCompatibilityTests(unittest.TestCase):
         record_metadata.validate_rr_metadata(valid)
         for pivots in (1, 2, 3, 4, 200):
             record_metadata.validate_rr_metadata(dict(valid, pivots=pivots, rr_phase_chunks=min(4, pivots)))
+            record_metadata.validate_rr_metadata(dict(valid, pivots=pivots, rr_phase_chunks=1))
         bad_records = [dict(valid, **change) for change in (
             {"method": "rr_sgd"}, {"rr_phase_chunks": 3}, {"rr_phase_chunks": 4.0},
             {"rr_step_cap": True}, {"rr_step_cap": 0.9}, {"rr_arithmetic": "f64"},
@@ -177,6 +178,8 @@ class RRMetadataCompatibilityTests(unittest.TestCase):
             import jsonschema
             validator = jsonschema.Draft202012Validator(json.loads(run_experiments.SCHEMA_PATH.read_text()))
             validator.validate(dict(self.record, **valid))
+            for pivots in (1, 2, 3, 4, 200):
+                validator.validate(dict(self.record, **dict(valid, pivots=pivots, rr_phase_chunks=1)))
             for bad in bad_records:
                 # JSON Schema treats integral floats as integers; Python consumers are stricter.
                 if isinstance(bad.get("rr_phase_chunks"), float):

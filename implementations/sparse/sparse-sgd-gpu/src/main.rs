@@ -18,7 +18,7 @@ use std::time::{Duration, Instant};
 const PIVOT_SELECTION: &str = "max-min-random-sp-distance-proportional";
 const WEIGHT_MODEL: &str = "ortmann-region-directed-weight";
 const RR_PIVOT_ORDER: &str = "per-vertex-feistel4-cyclewalk";
-const RR_PHASE_CHUNKS: usize = 4;
+const RR_PHASE_CHUNKS: usize = 1;
 
 #[derive(Debug, Clone, PartialEq)]
 struct Config {
