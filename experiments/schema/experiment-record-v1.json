@@ -87,6 +87,8 @@
     "error_message": { "type": ["string", "null"] },
     "exit_code": { "type": ["integer", "null"] },
     "stderr_log_path": { "type": ["string", "null"] },
+    "atomic_schedule": {"const": "full-style-device-retry-v1"},
+    "atomic_pair_order": {"enum": ["cpu-shuffle-once-at-setup", "cpu-shuffle-each-iteration"]},
     "rr_tile_size": {"type": "integer", "minimum": 1, "maximum": 1024},
     "rr_workgroup_size": {"type": "integer", "minimum": 1, "maximum": 1024},
     "rr_memory_mode": {"enum": ["shared", "global"]},
@@ -99,6 +101,13 @@
     "rr_arithmetic": {"const": "f32"}
   },
   "allOf": [
+    {
+      "if": {"anyOf": [{"required": ["atomic_schedule"]}, {"required": ["atomic_pair_order"]}]},
+      "then": {
+        "required": ["atomic_schedule", "atomic_pair_order"],
+        "properties": {"method": {"const": "atomic_sparse_sgd"}}
+      }
+    },
     {
       "if": {"required": ["rr_phase_chunks"], "properties": {"method": {"not": {"const": "rr_sparse_sgd"}}}},
       "then": {

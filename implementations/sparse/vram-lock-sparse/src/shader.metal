@@ -15,10 +15,17 @@ struct SparsePair {
 
 inline bool try_lock(device atomic_uint* locks, uint node) {
     uint expected = 0u;
-    return atomic_compare_exchange_weak_explicit(
+    bool acquired = atomic_compare_exchange_weak_explicit(
         &locks[node], &expected, 1u, memory_order_relaxed, memory_order_relaxed);
+    // Establish visibility on every successful acquisition, including rollback paths.
+    if (acquired) {
+        atomic_thread_fence(mem_flags::mem_device, memory_order_seq_cst, thread_scope_device);
+    }
+    return acquired;
 }
 inline void unlock(device atomic_uint* locks, uint node) {
+    // Publish before every unlock, including a failed second-lock attempt.
+    atomic_thread_fence(mem_flags::mem_device, memory_order_seq_cst, thread_scope_device);
     atomic_store_explicit(&locks[node], 0u, memory_order_relaxed);
 }
 
@@ -30,6 +37,7 @@ kernel void sparse_sgd(
     device uint* completed [[buffer(4)]],
     constant uint& count [[buffer(5)]],
     constant float& eta [[buffer(6)]],
+    constant uint& epoch [[buffer(7)]],
     uint3 local_id [[thread_position_in_threadgroup]],
     uint3 group_id [[threadgroup_position_in_grid]]
 ) {
@@ -40,8 +48,9 @@ kernel void sparse_sgd(
     uint first = min(pair.u, pair.v);
     uint second = max(pair.u, pair.v);
     bool acquired = false;
-    // Bound spinning. The host resubmits only unfinished pairs after GPU completion.
-    for (uint retry = 0u; retry < 128u; ++retry) {
+    // Match Atomic Full: one active SIMD lane per group retries on-device.
+    // Release the first lock on rollback, so no group holds a lock while waiting.
+    while (true) {
         if (try_lock(locks, first)) {
             if (try_lock(locks, second)) {
                 acquired = true;
@@ -51,10 +60,6 @@ kernel void sparse_sgd(
         }
     }
     if (!acquired) return;
-
-    // Acquire fence: observe coordinate writes published by the previous lock
-    // holder's release fence + relaxed unlock. Both locks are held here.
-    atomic_thread_fence(mem_flags::mem_device, memory_order_seq_cst, thread_scope_device);
 
     float2 a = float2(
         atomic_load_explicit(&positions[pair.u * 2u], memory_order_relaxed),
@@ -76,10 +81,7 @@ kernel void sparse_sgd(
     atomic_fetch_add_explicit(&positions[pair.u * 2u + 1u], du.y, memory_order_relaxed);
     atomic_fetch_add_explicit(&positions[pair.v * 2u], -dv.x, memory_order_relaxed);
     atomic_fetch_add_explicit(&positions[pair.v * 2u + 1u], -dv.y, memory_order_relaxed);
-    // Release fence: publish all four coordinate updates before either lock
-    // becomes available. Atomicity of the float adds alone is insufficient.
-    atomic_thread_fence(mem_flags::mem_device, memory_order_seq_cst, thread_scope_device);
     unlock(locks, second);
     unlock(locks, first);
-    completed[slot] = 1u;
+    completed[slot] = epoch;
 }

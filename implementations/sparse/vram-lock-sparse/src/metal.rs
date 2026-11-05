@@ -1,7 +1,7 @@
 #[path = "../../../../shared/gpu-timing/metal.rs"]
 mod timing;
 use crate::graph::{center_inplace, SgdParams};
-use anyhow::{bail, ensure, Result};
+use anyhow::{ensure, Result};
 use experiment_common::OutputFormat;
 use metal::*;
 use rand::{seq::SliceRandom, Rng};
@@ -74,7 +74,7 @@ impl MetalContext {
         self.execute_sgd_with_cpu_shuffle(params, rng, verbose, format, false)
     }
 
-    /// Explicit CPU permutation is opt-in; by default lock acquisition determines update order.
+    /// Shuffle once at setup; optional per-iteration CPU shuffle preserves the legacy RNG stream.
     pub fn execute_sgd_with_cpu_shuffle<R: Rng + ?Sized>(
         &self,
         params: SgdParams,
@@ -86,7 +86,9 @@ impl MetalContext {
         let execution_started = Instant::now();
         let setup = Instant::now();
         ensure!(
-            !params.pairs.is_empty() && !params.etas.is_empty(),
+            !params.pairs.is_empty()
+                && !params.etas.is_empty()
+                && params.etas.len() <= u32::MAX as usize,
             "Empty Sparse workload"
         );
         ensure!(
@@ -105,7 +107,7 @@ impl MetalContext {
                 .all(|x| (*x as f32).is_finite()),
             "Invalid initial coordinates"
         );
-        let pairs = params
+        let mut pairs = params
             .pairs
             .iter()
             .map(|p| {
@@ -132,6 +134,11 @@ impl MetalContext {
                 })
             })
             .collect::<Result<Vec<_>>>()?;
+        // Scatter adjacent constraints once, outside the timed iterations.
+        // Keep the legacy per-iteration permutation stream unchanged when requested.
+        if !cpu_shuffle {
+            pairs.shuffle(rng);
+        }
         let etas = params
             .etas
             .iter()
@@ -219,95 +226,87 @@ impl MetalContext {
         let mut dispatches = 0u64;
         for (iteration, eta) in etas.iter().enumerate() {
             let trace_started = trace.as_ref().map(|_| Instant::now());
-            // Fixed submission order by default, matching Atomic Full. GPU lock
-            // acquisition determines update order; it is not a uniform shuffle.
+            // Reuse the initial scattered order by default. As in Atomic Full,
+            // GPU lock acquisition determines the actual update order.
             if cpu_shuffle {
                 // Preserve the historical in-place CPU permutation for comparisons.
                 all_pending.shuffle(rng);
             }
-            let mut pending = all_pending.clone();
-            let mut passes = 0;
-            let mut gpu_time = Duration::ZERO;
-            while !pending.is_empty() {
-                // The previous command is complete before shared buffers are overwritten.
+            // Shared buffers are only changed after the previous command completes.
+            if cpu_shuffle {
                 unsafe {
                     std::ptr::copy_nonoverlapping(
-                        pending.as_ptr(),
+                        all_pending.as_ptr(),
                         pending_buffer.contents().cast::<u32>(),
-                        pending.len(),
+                        all_pending.len(),
                     );
-                    std::ptr::write_bytes(
-                        completed_buffer.contents().cast::<u32>(),
-                        0,
-                        pending.len(),
-                    );
-                }
-                let count = pending.len() as u32;
-                let command = self.queue.new_command_buffer();
-                let encoder = command.new_compute_command_encoder();
-                encoder.set_compute_pipeline_state(&self.pipeline);
-                for (slot, buffer) in [
-                    &position_buffer,
-                    &pair_buffer,
-                    &lock_buffer,
-                    &pending_buffer,
-                    &completed_buffer,
-                ]
-                .iter()
-                .enumerate()
-                {
-                    encoder.set_buffer(slot as u64, Some(buffer), 0);
-                }
-                encoder.set_bytes(
-                    5,
-                    mem::size_of::<u32>() as u64,
-                    (&count as *const u32).cast(),
-                );
-                encoder.set_bytes(6, mem::size_of::<f32>() as u64, (eta as *const f32).cast());
-                encoder.dispatch_thread_groups(
-                    MTLSize {
-                        width: (count as u64).min(65535),
-                        height: (count as u64).div_ceil(65535),
-                        depth: 1,
-                    },
-                    MTLSize {
-                        width: 32,
-                        height: 1,
-                        depth: 1,
-                    },
-                );
-                encoder.end_encoding();
-                command.commit();
-                command.wait_until_completed();
-                if let Some(duration) = timing::command_time(command) {
-                    gpu_time += duration;
-                } else {
-                    iteration_times = None;
-                }
-                ensure!(
-                    command.status() == MTLCommandBufferStatus::Completed,
-                    "Metal command failed at iteration {}",
-                    iteration + 1
-                );
-                dispatches += 1;
-                let flags = unsafe {
-                    std::slice::from_raw_parts(
-                        completed_buffer.contents().cast::<u32>(),
-                        pending.len(),
-                    )
-                };
-                let before = pending.len();
-                pending = pending
-                    .iter()
-                    .zip(flags)
-                    .filter_map(|(&pair, &done)| (done == 0).then_some(pair))
-                    .collect();
-                completed_updates += (before - pending.len()) as u64;
-                passes += 1;
-                if !pending.is_empty() && (pending.len() == before || passes >= 1024) {
-                    bail!("Sparse lock retries stalled: iteration={}, remaining={} (no successful result emitted)", iteration + 1, pending.len());
                 }
             }
+            let mut gpu_time = Duration::ZERO;
+            let count = pairs.len() as u32;
+            let epoch = (iteration + 1) as u32;
+            let command = self.queue.new_command_buffer();
+            let encoder = command.new_compute_command_encoder();
+            encoder.set_compute_pipeline_state(&self.pipeline);
+            for (slot, buffer) in [
+                &position_buffer,
+                &pair_buffer,
+                &lock_buffer,
+                &pending_buffer,
+                &completed_buffer,
+            ]
+            .iter()
+            .enumerate()
+            {
+                encoder.set_buffer(slot as u64, Some(buffer), 0);
+            }
+            encoder.set_bytes(
+                5,
+                mem::size_of::<u32>() as u64,
+                (&count as *const u32).cast(),
+            );
+            encoder.set_bytes(6, mem::size_of::<f32>() as u64, (eta as *const f32).cast());
+            encoder.set_bytes(
+                7,
+                mem::size_of::<u32>() as u64,
+                (&epoch as *const u32).cast(),
+            );
+            encoder.dispatch_thread_groups(
+                MTLSize {
+                    width: (count as u64).min(65535),
+                    height: (count as u64).div_ceil(65535),
+                    depth: 1,
+                },
+                MTLSize {
+                    width: 32,
+                    height: 1,
+                    depth: 1,
+                },
+            );
+            encoder.end_encoding();
+            command.commit();
+            command.wait_until_completed();
+            if let Some(duration) = timing::command_time(command) {
+                gpu_time += duration;
+            } else {
+                iteration_times = None;
+            }
+            ensure!(
+                command.status() == MTLCommandBufferStatus::Completed,
+                "Metal command failed at iteration {}",
+                iteration + 1
+            );
+            dispatches += 1;
+            // Epoch stamps reject missing updates even after earlier iterations completed.
+            let flags = unsafe {
+                std::slice::from_raw_parts(completed_buffer.contents().cast::<u32>(), pairs.len())
+            };
+            ensure!(
+                flags.iter().all(|&done| done == epoch),
+                "Incomplete Sparse iteration {} (no successful result emitted)",
+                iteration + 1
+            );
+            completed_updates += pairs.len() as u64;
             if let Some(times) = &mut iteration_times {
                 times.push(gpu_time);
             }
@@ -324,7 +323,7 @@ impl MetalContext {
             }
             if verbose {
                 let message = format!(
-                    "Iteration {} - Updated {} pairs, dispatches={passes}",
+                    "Iteration {} - Updated {} pairs, dispatches=1",
                     iteration + 1,
                     pairs.len()
                 );
@@ -384,6 +383,48 @@ mod tests {
     use super::*;
     use crate::{cpu_reference::apply_constraint, graph::EdgeInfo};
     use rand::{rngs::StdRng, SeedableRng};
+
+    #[test]
+    fn stale_completion_from_previous_iteration_is_rejected() {
+        let mut context = MetalContext::new().unwrap();
+        // Negative control: publish completion only in the first iteration.
+        let source = include_str!("shader.metal").replace(
+            "completed[slot] = epoch;",
+            "if (epoch == 1u) completed[slot] = epoch;",
+        );
+        let library = context
+            .device
+            .new_library_with_source(&source, &CompileOptions::new())
+            .unwrap();
+        let kernel = library.get_function("sparse_sgd", None).unwrap();
+        context.pipeline = context
+            .device
+            .new_compute_pipeline_state_with_function(&kernel)
+            .unwrap();
+        let result = context.execute_sgd(
+            SgdParams {
+                positions: vec![[0.0, 0.0], [4.0, 0.0]],
+                pairs: vec![EdgeInfo {
+                    u: 0,
+                    v: 1,
+                    dij: 2.0,
+                    weight_u: 1.0,
+                    weight_v: 1.0,
+                }],
+                etas: vec![0.5; 2],
+                pivots: vec![0],
+                center: false,
+            },
+            &mut StdRng::seed_from_u64(0),
+            false,
+            OutputFormat::Json,
+        );
+        assert!(result
+            .err()
+            .unwrap()
+            .to_string()
+            .contains("Incomplete Sparse iteration 2"));
+    }
 
     #[test]
     fn moving_shared_endpoint_tracks_serial_recurrence() {
@@ -538,7 +579,7 @@ mod tests {
                             weight_v: 1.0,
                         })
                         .collect(),
-                    etas: vec![1.0],
+                    etas: vec![1.0; 3],
                     pivots: vec![0],
                     center: false,
                 },
@@ -547,8 +588,8 @@ mod tests {
                 OutputFormat::Json,
             )
             .unwrap();
-        assert_eq!(run.completed_updates, count as u64);
-        assert_eq!(run.dispatches, 1);
+        assert_eq!(run.completed_updates, count as u64 * 3);
+        assert_eq!(run.dispatches, 3);
         for pair in run.positions.chunks_exact(2) {
             assert_eq!(pair, &[[1.0, 0.0], [3.0, 0.0]]);
         }

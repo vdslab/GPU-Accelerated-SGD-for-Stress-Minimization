@@ -444,7 +444,7 @@ struct TraceRecord {
 }
 fn shader_source() -> String {
     let mut s =
-        include_str!("../../../../implementations/sparse/vram-lock-sparse/src/shader.metal")
+        include_str!("order_probe.metal")
             .to_string();
     if std::env::var("PROBE_FENCE").as_deref() == Ok("0") {
         s=s.replace("atomic_thread_fence(mem_flags::mem_device, memory_order_seq_cst, thread_scope_device);", "");

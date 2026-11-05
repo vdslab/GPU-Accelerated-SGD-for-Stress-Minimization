@@ -44,7 +44,8 @@ unweighted, undirected graph model used by the repository.
 ## Smallworld order/visibility probe
 
 `order-probe` is a diagnostic host fork of the production Metal runner. It compiles
-production `shader.metal`, optionally removes its two fences, or injects tracing.
+the frozen pre-2026-11-06 `order_probe.metal`, optionally removes its two fences, or injects tracing.
+This historical diagnostic retains bounded retries and the original two-fence protocol; it is not the current production schedule.
 It uses seed 0, 200 pivots, 15 iterations, epsilon 0.1, and CPU shuffle enabled.
 
 ```sh
@@ -78,3 +79,19 @@ input coordinate on the CPU after the GPU finishes the first iteration. With
 tracing enabled, the validator must reject that log with `inconsistent position
 history`. It does not alter GPU positions. The normal and corrupted-log controls
 were run on `dwt_419`; both produced their expected pass/fail outcomes.
+
+## Atomic speed probe (2026-11-06)
+
+`speed-probe INPUT SEED MODES [STRESS_SOURCES]` prepares one shared workload and
+runs comma-separated `cpu`, `production`, `v3-each`, `full`, or `full-once` modes.
+`production` calls the production runner; the other GPU modes use the frozen
+bounded-retry host in `speed_metal.rs` and shaders saved in
+`experiment_results/validation/atomic-sparse-20261106/sources`.
+`v3-each` reproduces the v3 shader and per-iteration CPU index shuffle.
+`full-once` is the initial candidate (full-style device retry, shuffled once),
+with the old host overhead; it differs from the final production host.
+CPU uses the actual f64 reference iteration routine, including its shuffle.
+Iteration times exclude preparation and stress evaluation; setup is also recorded.
+The workload copies can use more memory than standalone production execution.
+Run from the repository root. See `experiments/run_atomic_sparse_probe.py` for
+sequential paired runs, bounds, raw results, and resumability.

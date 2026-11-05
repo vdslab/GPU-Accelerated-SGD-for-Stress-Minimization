@@ -1,0 +1,15 @@
+{
+  "implementations/sparse/vram-lock-sparse/src/metal.rs": "8e3e78584c9b0fb891b3c32e6f904809a6be72b86b78bcb529e93c67ca950b65",
+  "implementations/sparse/vram-lock-sparse/src/shader.metal": "94178f68315cbf6ab5361b9b2bdce67ff43d1ee6f1729a092f5f88f542c0ad08",
+  "implementations/sparse/vram-lock-sparse/src/main.rs": "ddb55ff6b35a58f8d0b42e2e822bd31f33d8a4e58e84e26b34feeeccfc613096",
+  "tools/diagnostics/sparse-audit/src/speed_metal.rs": "75158b17a6b5d68d9a5f50222e6daca2286052253ddeeec7010475ebdea0e71b",
+  "tools/diagnostics/sparse-audit/src/bin/speed-probe.rs": "b189089c9bae3835c75e982f44663bf87480cf4526ea80190554deed2afc4358",
+  "implementations/sparse/baseline-sparse-sgd-non-gpu/src/algorithm.rs": "8e27a5dedecacde5957f93d834fe4e16f484b91c1979cea7daeb934e227f08b2",
+  "implementations/sparse/baseline-sparse-sgd-non-gpu/src/graph.rs": "58fbb42107c3bdbd20b423311769595ade6cd91559556db2c24cb06f1271f503",
+  "machine": "Hardware:\n\n    Hardware Overview:\n\n      Model Name: MacBook Pro\n      Model Identifier: Mac16,7\n      Model Number: MX2T3J/A\n      Chip: Apple M4 Pro\n      Total Number of Cores: 14 (10 performance and 4 efficiency)\n      Memory: 24 GB\n      System Firmware Version: 13822.41.1\n      OS Loader Version: 11881.140.96\n      Activation Lock Status: Enabled\n\nGraphics/Displays:\n\n    Apple M4 Pro:\n\n      Chipset Model: Apple M4 Pro\n      Type: GPU\n      Bus: Built-In\n      Total Number of Cores: 20\n      Vendor: Apple (0x106b)\n      Metal Support: Metal 3\n      Displays:\n        Color LCD:\n          Display Type: Built-in Liquid Retina XDR Display\n          Resolution: 3456 x 2234 Retina\n          Main Display: Yes\n          Mirror: Off\n          Online: Yes\n          Automatically Adjust Brightness: Yes\n          Connection Type: Internal\n        LG Ultra HD:\n          Resolution: 3840 x 2160 (2160p/4K UHD 1 - Ultra High Definition)\n          UI Looks like: 1920 x 1080 @ 60.00Hz\n          Mirror: Off\n          Online: Yes\n          Rotation: Supported\n",
+  "os": "ProductName:\t\tmacOS\nProductVersion:\t\t15.7.2\nBuildVersion:\t\t24G325\n",
+  "rustc": "rustc 1.93.1 (01f6ddf75 2026-02-11)\n",
+  "git_commit": "cad373c1d3ce56d89b27f442290b0f2c0f210279",
+  "v3_shader_snapshot_sha256": "033bf4cd84d401ed9b131d7541d55b2745240a7832fb633e70cd702490f05237",
+  "probe_binary_sha256": "c4586bee97762264c1c81a47ba0266757ffb15da543ce12c6a00382832b0cd68"
+}

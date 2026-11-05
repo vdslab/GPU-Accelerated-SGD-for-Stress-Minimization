@@ -1,0 +1,109 @@
+{
+  "completed": 48,
+  "planned": 48,
+  "basic_success": 38,
+  "basic_failures": [],
+  "extra_success": 10,
+  "basic_iteration_speedup": {
+    "min": 2.6328058442941535,
+    "median": 2.798609417929253,
+    "max": 3.374628513280063,
+    "geometric_mean": 2.8429864343249314
+  },
+  "basic_setup_inclusive_speedup": {
+    "min": 2.0515913759686564,
+    "median": 2.2814030986774574,
+    "max": 2.6507923023535795,
+    "geometric_mean": 2.2836851205253508
+  },
+  "basic_preprocessing_inclusive_speedup": {
+    "min": 1.4352221018014366,
+    "median": 1.5615952764268388,
+    "max": 1.6552104915689647,
+    "geometric_mean": 1.5512223859667031
+  },
+  "basic_stress_ratio": {
+    "min": 0.916520884852679,
+    "median": 1.0035443671901225,
+    "max": 1.0719129951012007,
+    "geometric_mean": 0.9944658924884742
+  },
+  "heldout_iteration_speedup": {
+    "min": 2.604475191621759,
+    "median": 2.793413332080249,
+    "max": 3.3797778625507204,
+    "geometric_mean": 2.854025487246124
+  },
+  "heldout_setup_inclusive_speedup": {
+    "min": 2.157511624409614,
+    "median": 2.279306457348368,
+    "max": 2.6696176830890175,
+    "geometric_mean": 2.3199728698508286
+  },
+  "heldout_preprocessing_inclusive_speedup": {
+    "min": 1.4875859464105488,
+    "median": 1.581883687868281,
+    "max": 1.6082811677975992,
+    "geometric_mean": 1.5641746688008347
+  },
+  "heldout_stress_ratio": {
+    "min": 0.9544254523495133,
+    "median": 1.0044927350092236,
+    "max": 1.0377821544577412,
+    "geometric_mean": 1.003977269424216
+  },
+  "quality_followup": [
+    {
+      "graph": "com-DBLP",
+      "seed": 0,
+      "stress_samples": 256,
+      "cpu_ms": 1302.5487860666667,
+      "old_ms": 1433.7513389333333,
+      "new_ms": 463.6403610666666,
+      "cpu_over_new": 2.8093947279955938,
+      "old_over_new": 3.0923781864779776,
+      "old_stress_over_cpu": 0.993133579234046,
+      "new_stress_over_cpu": 0.9966982685022739,
+      "new_stress_over_old": 1.003589335153663
+    },
+    {
+      "graph": "com-DBLP",
+      "seed": 1,
+      "stress_samples": 256,
+      "cpu_ms": 1305.4238751333335,
+      "old_ms": 1410.8585249999999,
+      "new_ms": 466.5614,
+      "cpu_over_new": 2.7979680169283903,
+      "old_over_new": 3.0239503846653406,
+      "old_stress_over_cpu": 0.9757638157447885,
+      "new_stress_over_cpu": 0.9927894654527308,
+      "new_stress_over_old": 1.0174485356325156
+    },
+    {
+      "graph": "kron_g500-logn18",
+      "seed": 0,
+      "stress_samples": 256,
+      "cpu_ms": 1050.7260444,
+      "old_ms": 1061.1283194666667,
+      "new_ms": 304.79088886666665,
+      "cpu_over_new": 3.4473669744755697,
+      "old_over_new": 3.481496193709604,
+      "old_stress_over_cpu": 1.0646557238997616,
+      "new_stress_over_cpu": 1.0077024284350007,
+      "new_stress_over_old": 0.9465054343988826
+    },
+    {
+      "graph": "kron_g500-logn18",
+      "seed": 1,
+      "stress_samples": 256,
+      "cpu_ms": 1058.2026526666668,
+      "old_ms": 1092.4949278,
+      "new_ms": 317.81660279999994,
+      "cpu_over_new": 3.3296015480115972,
+      "old_over_new": 3.437501119120263,
+      "old_stress_over_cpu": 1.0268738984382713,
+      "new_stress_over_cpu": 0.9719987480620644,
+      "new_stress_over_old": 0.9465609648276541
+    }
+  ]
+}

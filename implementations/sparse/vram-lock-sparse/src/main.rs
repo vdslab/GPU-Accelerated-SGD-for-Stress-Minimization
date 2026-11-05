@@ -270,7 +270,17 @@ fn main() -> Result<()> {
     )?;
 
     match config.common.output_format {
-        OutputFormat::Json => println!("{}", record.to_json_line()?),
+        OutputFormat::Json => {
+            let mut value = serde_json::to_value(&record)?;
+            value["atomic_schedule"] = "full-style-device-retry-v1".into();
+            value["atomic_pair_order"] = if config.cpu_shuffle {
+                "cpu-shuffle-each-iteration"
+            } else {
+                "cpu-shuffle-once-at-setup"
+            }
+            .into();
+            println!("{}", serde_json::to_string(&value)?);
+        }
         OutputFormat::Human => {
             println!(
                 "Constraints={}, updated={}/{}, dispatches={}, Iteration={:.3} ms, Algorithm={:.3} ms, CLI total={:.3} ms",
@@ -358,6 +368,16 @@ fn save_result(
     writeln!(file, "# Epsilon: {}", config.epsilon)?;
     writeln!(file, "# Seed: {}", config.seed)?;
     writeln!(file, "# CPU shuffle: {}", config.cpu_shuffle)?;
+    writeln!(file, "# Atomic schedule: full-style-device-retry-v1")?;
+    writeln!(
+        file,
+        "# Pair order: {}",
+        if config.cpu_shuffle {
+            "cpu-shuffle-each-iteration"
+        } else {
+            "cpu-shuffle-once-at-setup"
+        }
+    )?;
     writeln!(file, "# Pivot selection: {PIVOT_SELECTION}")?;
     writeln!(file, "# Weight model: {WEIGHT_MODEL}")?;
     writeln!(file, "# Pivot count: {}", pivots.len())?;

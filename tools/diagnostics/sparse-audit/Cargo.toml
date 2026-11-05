@@ -10,3 +10,4 @@ serde_json = "1"
 vram-lock-sparse = { path = "../../../implementations/sparse/vram-lock-sparse" }
 experiment-common = { path = "../../../shared/experiment-common" }
 metal = "0.30"
+objc = "0.2"

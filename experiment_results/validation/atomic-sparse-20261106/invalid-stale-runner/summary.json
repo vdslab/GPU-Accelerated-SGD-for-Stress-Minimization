@@ -1,0 +1,31 @@
+{
+  "completed": 7,
+  "planned": 48,
+  "basic_success": 7,
+  "basic_failures": [],
+  "extra_success": 0,
+  "basic_iteration_speedup": {
+    "min": 1.5350001641974358,
+    "median": 2.008625581904197,
+    "max": 2.3351876081640572,
+    "geometric_mean": 1.9852728935484345
+  },
+  "basic_setup_inclusive_speedup": {
+    "min": 1.3686311678848921,
+    "median": 1.9112472950004495,
+    "max": 2.1983310026711425,
+    "geometric_mean": 1.8494009755993301
+  },
+  "basic_preprocessing_inclusive_speedup": {
+    "min": 1.1902417328953416,
+    "median": 1.4470259527555254,
+    "max": 1.4995610018678547,
+    "geometric_mean": 1.4032333066747391
+  },
+  "basic_stress_ratio": {
+    "min": 1.0064567220865648,
+    "median": 1.0079921779490706,
+    "max": 1.4024473818776553,
+    "geometric_mean": 1.0917795511208734
+  }
+}

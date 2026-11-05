@@ -1,0 +1,1 @@
+Excluded: a failed Rust build left the previous speed-probe binary in place. It accepted the unknown production label as the full (sorted) diagnostic variant and ignored the stress source argument. None of these records measure the new production runner. The corrected runner rejects unknown modes and validates the requested source count.

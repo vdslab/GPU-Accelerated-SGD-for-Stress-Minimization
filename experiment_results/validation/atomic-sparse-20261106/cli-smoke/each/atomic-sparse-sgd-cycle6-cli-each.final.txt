@@ -1,0 +1,34 @@
+# Rust GPU Result (vram-lock-sparse) - Processed
+# Dataset: experiment_results/validation/atomic-sparse-20261106/cli-smoke/cycle6.mtx
+# Node count: 6
+# Edge count: 6
+# Original node count: 6
+# Original edge count: 6
+# Component count: 1
+# Vertex map file: experiment_results/validation/atomic-sparse-20261106/cli-smoke/each/atomic-sparse-sgd-cycle6-cli-each.vertex-map.txt
+# Iterations: 15
+# Epsilon: 0.1
+# Seed: 7
+# CPU shuffle: true
+# Atomic schedule: full-style-device-retry-v1
+# Pair order: cpu-shuffle-each-iteration
+# Pivot selection: max-min-random-sp-distance-proportional
+# Weight model: ortmann-region-directed-weight
+# Pivot count: 3
+# Constraint count: 14
+
+# Edges (source target)
+0 1
+0 5
+1 2
+2 3
+3 4
+4 5
+
+# Positions (x y)
+0.23955833911895752 -1.0688552061716714
+0.9538844972848892 -0.29726640383402503
+0.8180167526006699 0.7500056823094686
+-0.19728028774261475 1.1536492904027305
+-0.9936097860336304 0.3113410075505575
+-0.8205695152282715 -0.8488743702570597

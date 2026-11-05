@@ -47,6 +47,9 @@ fn json_mode_writes_one_record_and_no_progress_to_stdout() {
     assert!(record["preprocess_sha256"].is_string());
     assert!(record["rounds"].is_null());
     assert_eq!(record["retry_failures"], 0);
+    assert_eq!(record["dispatches"], 2);
+    assert_eq!(record["atomic_schedule"], "full-style-device-retry-v1");
+    assert_eq!(record["atomic_pair_order"], "cpu-shuffle-once-at-setup");
     assert_eq!(record["attempted_updates"], record["completed_updates"]);
     assert_eq!(
         record["completed_updates"].as_u64().unwrap(),
