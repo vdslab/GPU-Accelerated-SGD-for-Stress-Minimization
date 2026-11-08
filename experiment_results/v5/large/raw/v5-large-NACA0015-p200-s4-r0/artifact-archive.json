@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-NACA0015-p200-s4-r0/rr-sparse-sgd-NACA0015-v5-large-NACA0015-p200-s4-r0.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-NACA0015-p200-s4-r0/rr-sparse-sgd-NACA0015-v5-large-NACA0015-p200-s4-r0.final.txt.gz",
+      "original_sha256": "9c516402831e4e21191f60dd101ae072008d78b0c418a01d7ec14bdaf6e92531",
+      "decompressed_sha256": "9c516402831e4e21191f60dd101ae072008d78b0c418a01d7ec14bdaf6e92531",
+      "compressed_sha256": "079bca5094c62e3fb135d9025b835cbe558a889740588d51edf658163890e855",
+      "original_bytes": 82298399,
+      "compressed_bytes": 35455494,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-NACA0015-p200-s4-r0/rr-sparse-sgd-NACA0015-v5-large-NACA0015-p200-s4-r0.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-NACA0015-p200-s4-r0/rr-sparse-sgd-NACA0015-v5-large-NACA0015-p200-s4-r0.initial.txt.gz",
+      "original_sha256": "f901781c78b014eeb6ad79a416781464b0b8ee295352e7e47aae3bf1a02ca327",
+      "decompressed_sha256": "f901781c78b014eeb6ad79a416781464b0b8ee295352e7e47aae3bf1a02ca327",
+      "compressed_sha256": "be7930e438b13c80aec3bac92727a98f783c8223c7dbd36c24a937389f6d3eb2",
+      "original_bytes": 85063834,
+      "compressed_bytes": 36230107,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-NACA0015-p200-s4-r0/rr-sparse-sgd-NACA0015-v5-large-NACA0015-p200-s4-r0.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-NACA0015-p200-s4-r0/rr-sparse-sgd-NACA0015-v5-large-NACA0015-p200-s4-r0.vertex-map.txt.gz",
+      "original_sha256": "8f0683b1a1f9a3810466c13265d254a6cccba61223b40e2b26bb34a009861e42",
+      "decompressed_sha256": "8f0683b1a1f9a3810466c13265d254a6cccba61223b40e2b26bb34a009861e42",
+      "compressed_sha256": "07bc697671a6ac719a867cdc53b5cb2e37b95edea433bbe14cd4d6093a1f9b11",
+      "original_bytes": 14404708,
+      "compressed_bytes": 4654042,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

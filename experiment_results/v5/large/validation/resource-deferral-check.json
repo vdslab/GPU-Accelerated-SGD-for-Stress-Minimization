@@ -1,0 +1,11 @@
+{
+  "at": "2026-11-06T22:53:18+09:00",
+  "passed": true,
+  "checks": [
+    "disk-blocked graph remains pending, no false success/failure",
+    "other feasible graph runs first",
+    "within-graph p100 then p50 retained",
+    "resume measures previously deferred graph",
+    "no duplicated already completed jobs"
+  ]
+}

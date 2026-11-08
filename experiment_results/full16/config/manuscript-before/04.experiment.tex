@@ -1,0 +1,160 @@
+% !TeX root = ../main.tex
+\section{Evaluation}
+\label{sec:evaluation}
+We evaluate whether faster vertex-pair updates reduce the time needed to obtain a layout of comparable stress~\cite{ref46}. The evaluation covers tile-size effects, runtime and final stress relative to sequential CPU and lock-based GPU implementations after 15 iterations, elapsed SGD time to a shared stress target, and preprocessing-inclusive runtime for road networks with millions of vertices.
+
+We ran each implementation separately on an Apple M4 Pro with 24 GiB unified memory and macOS 15.7.2.
+CPU is sequential Rust with f64 arithmetic; Atomic uses native Metal, and both RoundRobin methods use Rust, wgpu, and WGSL~\cite{ref31} with the Metal backend and f32 updates.
+The implementations differ in numerical precision and execution paths, so the measured speedups reflect these differences as well as scheduling.
+Within each family, inputs, seeds, initial layouts, learning rates, and Sparse preprocessing are matched.
+We use 15 iterations with Zheng et al.'s schedule~\cite{ref28}, $\epsilon=0.1$, five seeds for runtime comparisons, and ten for convergence diagnostics.
+We fix Sparse at 200 pivots in the CPU and GPU comparisons so that every method optimizes the same approximation. RoundRobin Full SGD and RoundRobin Sparse SGD workgroups contain 1024 and 256 threads, respectively.
+
+We evaluated Full SGD on 20 graphs and Sparse SGD on 38, using datasets based on the SuiteSparse collection~\cite{ref6}.
+For \graph{com-Amazon}, \graph{com-DBLP}, and \graph{loc-Gowalla}, all compared methods use the same official SNAP inputs.
+We remove directions, weights, numerical zeros, self-loops, and duplicate edges, and verify identical preprocessed largest connected components by SHA hashes.
+The comparisons use a 120-second process threshold and an observed 8-GiB RSS threshold, sampled approximately every 200 ms.
+A stopped preliminary run prevents formal runs for that setting; failed, unlaunched, and unavailable runs are excluded from paired ratios, rather than assigned artificial values.
+RSS monitoring is not a strict instantaneous or dedicated-GPU-memory limit.
+
+SGD time includes shuffling, dispatch, completion waits, and resubmission, but excludes preprocessing, initialization, stress evaluation, and coordinate saving.
+For runtime comparisons we divide the 15-iteration total by 15; the road-network experiment reports the total.
+Algorithm time additionally includes preprocessing, GPU setup, transfers, and postprocessing; process time also includes input, evaluation, and output.
+Quality comparisons use the full stress objective in \eqref{eq:stress}, computed exactly up to 8,000 vertices and otherwise estimated from 256 fixed sources independent of the pivots.
+For jointly successful seeds, speedup is CPU time divided by GPU time, and stress ratio is GPU stress divided by CPU stress.
+We report graph-level medians, with seed minima and maxima rather than confidence intervals.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\linewidth]{fig04_tile_size.pdf}
+\caption{Final stress after 15 RoundRobin Full SGD iterations versus tile size. Points are medians over five seeds; bars show minima and maxima. Horizontal axes are logarithmic and vertical axes linear, starting at zero. Settings stopped before formal runs are omitted.}
+\label{fig:tile}
+\end{figure}
+\subsection{Effect of Tile Size}
+\label{sec:tile-size}
+
+We test six graphs at $T=1,2,4,\ldots,1024$, keeping 1024 threads per workgroup.
+Inner shuffling is disabled at $T=1$.
+Of 66 settings, 61 complete all five seeds; five are not launched after preliminary timeouts.
+\autoref{fig:tile} shows final stress; only \graph{fe_4elt2} requires sampled evaluation.
+
+Tile size affects graphs differently.
+From $T=1$ to 1024, stress increases by 0.48\% for \graph{dwt_2680} and 12.22\% for EVA.
+For \graph{wiki-Vote}, the increase from the smallest completed tile, $T=2$, is 65.69\%.
+The trend is not universally monotonic: \graph{bcsstk16} has stress 165,747, 186,102, and 172,084 at $T=4,32,1024$.
+
+Larger tiles substantially shorten iterations.
+For \graph{dwt_2680}, mean iteration time falls from 3,773.45 to 12.14 ms between $T=1$ and 1024; for EVA, from 7,844.90 to 27.83 ms.
+However, \graph{USpowerGrid}, \graph{fe_4elt2}, and EVA are fastest at $T=512$, taking 21.69, 61.01, and 23.22 ms; the other three are fastest at 1024.
+We use $T=1024$ as a common configuration, not a graph-specific optimum.
+The runtime reductions are consistent with coordinate reuse and fewer outer rounds, but utilization and synchronization costs were not isolated.
+
+\subsection{Comparison with CPU and Atomic}
+\label{sec:comparison}
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{fig05_comparison.pdf}
+\caption{Mean time per iteration for sequential CPU, Atomic GPU, and RoundRobin GPU SGD. For each seed we divide the SGD time by 15. Symbols show the median and bars the range over seeds completed by all three methods (95 Full and 179 Sparse triples). N/A marks graphs without a complete triple. The vertical axis is logarithmic.}
+\label{fig:comparison}
+\end{figure*}
+
+Using $T=1024$ for Full and $p=200$ for Sparse, \autoref{fig:comparison} compares mean iteration times for each graph. We also report final stress ratios to assess layout quality.
+
+RoundRobin Full SGD is faster on all 19 comparable graphs, with median speedups of $1.025$--$15.017\times$.
+For \graph{fe_4elt2}, speedup is $14.955\times$ with a stress ratio of 1.017.
+For \graph{wiki-Vote}, $11.646\times$ speedup accompanies a ratio of 1.671; nine graphs exceed a stress ratio of 1.05.
+Atomic is faster on 13 of 19 graphs, with speedups of $0.064$--$3.365\times$ and stress ratios of 1.001--2.921.
+Its recording of pair-update order and pre-update coordinates contributes work beyond locking, so the difference between RoundRobin and Atomic is not a measurement of lock overhead alone.
+
+\begin{figure}[tb]
+\includegraphics[width=\linewidth]{full_time_to_quality.pdf}
+\caption{Full SGD diagnostic runs, ten seeds per method. Each trace joins saved checkpoints from iteration 1 to 15 for one seed. Stress is relative to that seed's final CPU stress. The horizontal line marks the 1.05 target.}
+\label{fig:full-time}
+\end{figure}
+On \graph{fe_4elt2}, the RoundRobin traces reach the target sooner than CPU in median elapsed SGD time (\autoref{fig:full-time}). On \graph{wiki-Vote}, they exhaust their 15 iterations above the target.
+
+RoundRobin Sparse SGD is faster on all 37 comparable graphs, with speedups of $6.136$--$55.053\times$ and stress ratios of 0.987--1.067.
+Thirty-six graphs combine faster execution with a stress ratio at most 1.05.
+Atomic is faster on two of 37 graphs: its speedups are $0.869$--$1.042\times$ and stress ratios 0.971--1.139.
+Only one graph combines Atomic acceleration with a stress ratio at most 1.05.
+
+Of 100 planned Full runs per method, CPU completed 95 (five memory stops), Atomic completed 95 (five withheld after preliminary failure), and RoundRobin Full SGD completed 99 (one memory stop).
+Of 190 Sparse runs per method, CPU completed 181 and Atomic 180. Both withheld five after preliminary failure and had three memory stops. CPU had one additional timeout and Atomic two. RoundRobin Sparse SGD completed all 190. The pairwise ratios above use every seed completed by CPU and the GPU method under comparison. For the three-way plot in \autoref{fig:comparison}, we require all three methods to complete the same seed.
+
+\subsection{Convergence toward a Quality Target}
+\label{sec:convergence}
+
+The Sparse convergence runs retain the 200 pivots from the timing comparison. Changing the pivot set here would change the objective as well as the trajectory toward the target. We save layouts at iterations 0, 1, 2, 3, 5, 8, 10, and 15 while retaining the same learning-rate schedule.
+The target is at most 1.05 times the same-seed CPU final stress.
+We apply the same threshold to the CPU checkpoints. \autoref{tab:arrival} reports the first saved checkpoint at or below the target for each seed. Times exclude saving and intermediate readback.
+
+In Full SGD the same tile size produced different outcomes: all ten \graph{fe_4elt2} seeds reached the target, whereas no \graph{wiki-Vote} seed did despite an $11.646\times$ iteration speedup in the runtime comparison. Across the six Full graphs, 36 of 60 seeds attained the target. All 30 Sparse seeds attained it and remained within it at iteration 15.
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{fig07_large_layouts.pdf}
+\caption{RoundRobin Sparse SGD layouts of Italy and Germany with 40 pivots, 15 iterations, and seed 0. All vertices and edges are rendered; panels preserve aspect ratio but use independent scales. Color encodes normalized BFS distance from the lowest-ID vertex. Geographic coordinates are not used.}
+\label{fig:large}
+\end{figure*}
+
+\paragraph{Sensitivity to initialization and graph structure.}
+To test whether a favorable seed closes the gap on \graph{wiki-Vote}, we repeated RoundRobin Full SGD with seeds 0--99, $T=1024$, and the same 15-iteration schedule. We evaluated exact full stress for every layout. The median was 5,197,255 and the minimum was 4,244,468 (seed 31). Starting CPU from the same coordinates as this best run gave 3,219,907, a RoundRobin-to-CPU ratio of 1.318. Selecting the best of 100 thus left a 31.8\% gap for that initialization.
+
+We also generated three preferential-attachment graphs with 2,000 vertices and 9,975 edges each (NetworkX Barab\'asi--Albert generator, five attachments per new vertex, graph seeds 0--2). For each graph we ran CPU and RoundRobin Full SGD from five matched initial layouts (seeds 0--4), using the same tile size and iteration budget. In graph-seed order, median iteration speedups were $3.44\times$, $3.24\times$, and $3.37\times$, while median final stress ratios were 1.170, 1.172, and 1.175. None of the 15 layouts finished within 5\% of its CPU counterpart. These results extend the observed speed--quality trade-off to three synthetic graphs, but do not isolate degree distribution from other structural properties or update order.
+
+\begin{table}[tb]\centering
+\caption{Observed attainment within 15 iterations. Each row has ten paired seeds. Hit and End count RoundRobin runs reaching the target at any checkpoint and at iteration 15, respectively. Times are median cumulative SGD seconds at first observed attainment. CPU reached the target on all seeds. The RoundRobin time uses successful seeds only.}
+\label{tab:arrival}
+\small
+\begin{tabular}{@{}lrrrr@{}}\toprule
+Graph & Hit & End & CPU (s) & RR (s)\\ \midrule
+\multicolumn{5}{l}{Full}\\
+\graph{USpowerGrid} &10&10&2.046&0.446\\
+\graph{dwt_2680} &9&9&0.807&0.144\\
+\graph{bcsstk16} &7&7&2.907&0.395\\
+\graph{fe_4elt2} &10&10&11.593&1.124\\
+EVA &0&0&1.678&---\\
+\graph{wiki-Vote} &0&0&6.691&---\\
+\midrule
+\multicolumn{5}{l}{Sparse}\\
+\graph{luxembourg_osm} &10&10&6.722&0.149\\
+\graph{kron_g500-logn18} &10&10&2.138&0.919\\
+\graph{coAuthorsCiteseer} &10&10&13.925&0.391\\
+\bottomrule\end{tabular}
+\end{table}
+\subsection{Scaling to Road Networks with Millions of Vertices}
+\label{sec:large}
+
+
+Beyond the CPU comparisons, we run RoundRobin Sparse SGD on \graph{italy_osm} and \graph{germany_osm}, with 6,686,493 and 11,548,845 vertices and 7,013,978 and 12,369,181 undirected edges, respectively.
+Both runs use 40 pivots, 15 iterations, $\epsilon=0.1$, and seed 0 on the same GPU, without the comparison experiments' stopping thresholds.
+We use the same reduced count for both networks to compare their runtimes under one memory budget. For Germany, storing one 32-bit distance for each vertex and pivot requires 1.72 GiB at 40 pivots, 8.60 GiB at 200, and 44.06 GiB at 1024. The last figure exceeds the laptop's 24 GiB of unified memory even before coordinates and other buffers.
+There are no paired CPU or Atomic runs at these scales.
+
+\begin{table}[!t]
+\centering
+\caption{Road-network runtime in seconds (one run per graph). SGD is the total for 15 iterations; algorithm time also includes preprocessing, setup, transfers, and postprocessing, but excludes input loading, stress evaluation, saving, and rendering.}
+\label{tab:large}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Graph & SGD (s) & Algorithm (s)\\
+\midrule
+\graph{italy_osm} & 2.11 & 43.45\\
+\graph{germany_osm} & 4.48 & 80.32\\
+\bottomrule
+\end{tabular}
+\end{table}
+Both layouts complete (\autoref{fig:large}; \autoref{tab:large}).
+Germany takes 4.48 s for 15 iterations and 80.32 s including preprocessing and other algorithm work, demonstrating a completed layout beyond ten million vertices on one GPU.
+The largest verified input is not a measured capacity limit, and these 40-pivot runs do not establish equivalence to 200-pivot quality or CPU speedups.
+Preprocessing and data handling dominate overall time and remain important optimization targets.
+
+The distinction between SGD time and algorithm time is especially important at this scale.
+SGD accounts for approximately 4.9\% of algorithm time for Italy and 5.6\% for Germany.
+Thus, accelerating the pair-update kernels further would address only a small part of the current time to produce coordinates.
+Common preprocessing alone took 37.50 s for Italy and 68.51 s for Germany. Both runs also evaluated full stress separately using 64 sampled sources, yielding $8.93\times10^{11}$ and $1.46\times10^{12}$, respectively. These absolute values describe different graphs and do not quantify the quality cost of reducing the pivot count. The run records contain no peak-memory measurement for either layout.
+
+The pivot count provides a separate control over the size of the sparse problem.
+With fixed $p$, the $O(m+np)$ term count grows linearly with the numbers of edges and vertices.
+More pivots would represent long-range distances from more reference vertices. A larger-pivot experiment on a graph that fits in memory could test whether this improves full stress enough to justify its cost. Reducing $p$ from 200 to 40 reduces the vertex--pivot term budget by a factor of five, while leaving the actual-edge terms in place.
+It changes the sparse objective as well as storage and work, so the large-road experiment demonstrates feasibility under a stated configuration rather than extrapolating the CPU comparison results.
+The two completed runs establish a concrete operating point beyond ten million vertices; determining a maximum graph size would require a systematic sweep over graph structure, pivot count, and memory use.

@@ -1,0 +1,14 @@
+{
+  "at": "2026-11-07T13:53:10+09:00",
+  "status": "passed",
+  "planned_runs": 350,
+  "native_records_preserved": 130,
+  "group_aggregates_verified": 70,
+  "paired_ratios_verified": 130,
+  "figures_and_vault_copies_verified": 19,
+  "layout_sampling_rules_verified": 10,
+  "frozen_binaries_verified": 6,
+  "all_successful_record_artifact_pointers_verified": true,
+  "archive_validation": "Reporter verifies manifest SHA agreement, CRC evidence and current file sizes; layout rendering decodes ten selected files fully. No redundant decode of all prior-verified archives.",
+  "visual_review_required": true
+}

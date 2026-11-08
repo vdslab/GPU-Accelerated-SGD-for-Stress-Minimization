@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/bin/rr-sparse-w256",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/common/grid17.mtx",
+    "--run-id",
+    "grid17-p200-w256",
+    "--seed",
+    "0",
+    "--iterations",
+    "15",
+    "--epsilon",
+    ".1",
+    "--pivots",
+    "200",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/validation/grid17-p200-w256"
+  ],
+  "binary_sha256": "48338d34a3aef6f934a745b4d5440bab2d3e9bf79f56bbd0992431d395ae1262",
+  "at": "2026-11-07T14:51:44+09:00"
+}

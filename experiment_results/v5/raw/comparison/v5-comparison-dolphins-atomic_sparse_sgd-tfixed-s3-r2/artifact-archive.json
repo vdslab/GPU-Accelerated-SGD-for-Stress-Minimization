@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-dolphins-atomic_sparse_sgd-tfixed-s3-r2/atomic-sparse-sgd-dolphins-v5-comparison-dolphins-atomic_sparse_sgd-tfixed-s3-r2.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-dolphins-atomic_sparse_sgd-tfixed-s3-r2/atomic-sparse-sgd-dolphins-v5-comparison-dolphins-atomic_sparse_sgd-tfixed-s3-r2.final.txt.gz",
+      "original_sha256": "d768e35cfff66fc0b84dc72a9d2612bbe061451be5822816fff66e3fd9357248",
+      "decompressed_sha256": "d768e35cfff66fc0b84dc72a9d2612bbe061451be5822816fff66e3fd9357248",
+      "compressed_sha256": "fb28248f7827ccfcd660f46762c4d2dd882bc0a05bcf9f4c1a93cbc2cf365f99",
+      "original_bytes": 4187,
+      "compressed_bytes": 2247,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-dolphins-atomic_sparse_sgd-tfixed-s3-r2/atomic-sparse-sgd-dolphins-v5-comparison-dolphins-atomic_sparse_sgd-tfixed-s3-r2.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-dolphins-atomic_sparse_sgd-tfixed-s3-r2/atomic-sparse-sgd-dolphins-v5-comparison-dolphins-atomic_sparse_sgd-tfixed-s3-r2.initial.txt.gz",
+      "original_sha256": "75e3e276c53ec25c625ebc93963c18e5145ebbf3140737068be363fdb491a004",
+      "decompressed_sha256": "75e3e276c53ec25c625ebc93963c18e5145ebbf3140737068be363fdb491a004",
+      "compressed_sha256": "aeb69feeb8142dd8a1e03fab8305a737f0d920780d055153de217478345fc843",
+      "original_bytes": 4269,
+      "compressed_bytes": 2249,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-dolphins-atomic_sparse_sgd-tfixed-s3-r2/atomic-sparse-sgd-dolphins-v5-comparison-dolphins-atomic_sparse_sgd-tfixed-s3-r2.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-dolphins-atomic_sparse_sgd-tfixed-s3-r2/atomic-sparse-sgd-dolphins-v5-comparison-dolphins-atomic_sparse_sgd-tfixed-s3-r2.vertex-map.txt.gz",
+      "original_sha256": "9c25445db2ddd4f38a4ddf26d48c5c045b6135a9a49e56a2f25bfc609e925bc9",
+      "decompressed_sha256": "9c25445db2ddd4f38a4ddf26d48c5c045b6135a9a49e56a2f25bfc609e925bc9",
+      "compressed_sha256": "3d89b57b08621aba3d88c327a9bbab9acd086f2a943e623f3f09a498ba5e97a1",
+      "original_bytes": 352,
+      "compressed_bytes": 199,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

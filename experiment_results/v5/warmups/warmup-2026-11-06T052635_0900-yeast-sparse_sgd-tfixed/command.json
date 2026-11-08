@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/baseline-sparse-sgd-non-gpu/target/release/baseline-sparse-sgd-non-gpu",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/common/yeast.mtx",
+    "--run-id",
+    "warmup-2026-11-06T052635_0900-yeast-sparse_sgd-tfixed",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "999",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/warmups/warmup-2026-11-06T052635_0900-yeast-sparse_sgd-tfixed",
+    "--pivots",
+    "200"
+  ],
+  "environment": {
+    "SGD_STRESS_SAMPLES": "256",
+    "SGD_GPU_TIMESTAMPS": "0"
+  },
+  "started_at": "2026-11-06T05:49:39+09:00",
+  "memory_before": {
+    "available_bytes": 11626725376,
+    "used_bytes": 11999182848,
+    "swap_used_bytes": 2069430272,
+    "swap_in_bytes": 186007289856,
+    "swap_out_bytes": 2305966080
+  },
+  "warmup": true
+}

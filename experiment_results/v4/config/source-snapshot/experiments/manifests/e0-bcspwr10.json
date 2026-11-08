@@ -1,0 +1,26 @@
+{
+  "experiment_id": "e0-bcspwr10",
+  "run_mode": "benchmark",
+  "methods": [
+    "sgd",
+    "atomic_sgd",
+    "rr_sgd",
+    "sparse_sgd",
+    "rr_sparse_sgd"
+  ],
+  "datasets": [
+    {
+      "name": "bcspwr10",
+      "path": "data/bcspwr10.mtx",
+      "sha256": "5011d5518a7d96ab054dadb8f0670fded73385548add1cfa75c43742523c3e33"
+    }
+  ],
+  "seeds": [0, 1, 2],
+  "iterations": [15],
+  "epsilon": [0.1],
+  "pivots": [200],
+  "repetitions": 1,
+  "warmups": 1,
+  "timeout_seconds": 3600,
+  "fail_fast": false
+}

@@ -1,0 +1,26 @@
+{
+  "captured_at_utc": "2026-11-05T17:55:11.753516+00:00",
+  "git_commit": "2bf4c24a47b3349620eda360b7d198c6266837d9",
+  "git_dirty": true,
+  "platform": "macOS-15.7.2-arm64-arm-64bit",
+  "machine": "arm64",
+  "python": "3.11.0 (main, May 27 2025, 02:55:14) [Clang 17.0.0 (clang-1700.0.13.3)]",
+  "binary_sha256": {
+    "sgd": "63e81b64ecbc1b507c86416457798121cd44f1cf4af1d01a53628d84799e124a",
+    "atomic_sgd": "8a6974c341291acb82658430f15215d3eed69ab7863069150a4636530d7663c5",
+    "rr_sgd": "e6378204f1c018f3ce0b2b8630be509fcfb506aedb7de20ccd5881b2a6cd9be6",
+    "sparse_sgd": "9c370ee3acc057ca0ea94c78c88e9cff9c4dbb8c04e0d7371a37452087416989",
+    "atomic_sparse_sgd": "0f9c9428a48d09c27425687310dfa50e917241241ec82b27d947308fcd8037bd",
+    "rr_sparse_sgd": "61dd5fcb9ec4235c300242b10c4bda43bf958579380521a612cc1231b5af4092"
+  },
+  "memory": {
+    "available_bytes": 11683676160,
+    "used_bytes": 11673993216,
+    "swap_used_bytes": 2740584448,
+    "swap_in_bytes": 171851464704,
+    "swap_out_bytes": 2071461888
+  },
+  "started_at": "2026-11-06T03:13:53+09:00",
+  "revision": "gpu-timestamps-disabled",
+  "gpu_timestamps": false
+}

@@ -1,0 +1,25 @@
+{
+  "stage": "tile",
+  "graph": "email",
+  "method": "rr_sgd",
+  "tile_size": 4,
+  "seed": 999,
+  "repetition": 0,
+  "run_id": "warmup-2026-11-06T025549_0900-email-rr_sgd-t4",
+  "status": "error",
+  "process_wall_seconds": 0.21739375000470318,
+  "peak_rss_bytes": 0,
+  "memory_after": {
+    "available_bytes": 11430838272,
+    "used_bytes": 11925110784,
+    "swap_used_bytes": 2740584448,
+    "swap_in_bytes": 171897880576,
+    "swap_out_bytes": 2071461888
+  },
+  "completed_at": "2026-11-06T02:55:49+09:00",
+  "warmup": true,
+  "error": "RunnerError('process exit code 101')",
+  "archive_manifest_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/warmups/warmup-2026-11-06T025549_0900-email-rr_sgd-t4/artifact-archive.json",
+  "archive_seconds": 0.0005639169976348057,
+  "archive_status": "success"
+}

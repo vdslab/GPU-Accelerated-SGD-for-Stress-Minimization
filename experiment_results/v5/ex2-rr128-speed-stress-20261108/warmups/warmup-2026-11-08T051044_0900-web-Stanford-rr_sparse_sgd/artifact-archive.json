@@ -1,0 +1,46 @@
+{
+  "format": "shared-gzip",
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/warmups/warmup-2026-11-08T051044_0900-web-Stanford-rr_sparse_sgd/rr-sparse-sgd-web-Stanford-warmup-2026-11-08T051044_0900-web-Stanford-rr_sparse_sgd.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/warmups/warmup-2026-11-08T051044_0900-web-Stanford-rr_sparse_sgd/rr-sparse-sgd-web-Stanford-warmup-2026-11-08T051044_0900-web-Stanford-rr_sparse_sgd.initial.shared.txt.gz",
+      "original_sha256": "78e0497cf0d4b9cf479a16c13844c2adbc9bbe7caa03f9a36a3ed961cd082109",
+      "decompressed_sha256": "78e0497cf0d4b9cf479a16c13844c2adbc9bbe7caa03f9a36a3ed961cd082109",
+      "original_bytes": 35822622,
+      "compressed_sha256": "bba80555c33511b3ad4a4e5192eb487c76ad370d9f41251c76866bd97e9d40ba",
+      "compressed_bytes": 14174897,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/shared-edges/rr_sparse_sgd/afa585aee053734cef871ca579d2367eccf39d0673fdecf2b2d3e243ca8a421e.edges-template.gz",
+      "shared_edge_sha256": "68d9bd860604f64ff55cc5105b099119cc93af1751e52f5380ae55d81c69c5f7",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/warmups/warmup-2026-11-08T051044_0900-web-Stanford-rr_sparse_sgd/rr-sparse-sgd-web-Stanford-warmup-2026-11-08T051044_0900-web-Stanford-rr_sparse_sgd.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/warmups/warmup-2026-11-08T051044_0900-web-Stanford-rr_sparse_sgd/rr-sparse-sgd-web-Stanford-warmup-2026-11-08T051044_0900-web-Stanford-rr_sparse_sgd.final.shared.txt.gz",
+      "original_sha256": "ef7acfcf82bdd4d3f0e53eb51ce969ef4f313d2e592dc0daf8103d682354f500",
+      "decompressed_sha256": "ef7acfcf82bdd4d3f0e53eb51ce969ef4f313d2e592dc0daf8103d682354f500",
+      "original_bytes": 35328498,
+      "compressed_sha256": "9c5e3e2653a61ed5b51eecd614fc9b7bcff03091b708506cd5d301f9c224ec57",
+      "compressed_bytes": 14133970,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/shared-edges/rr_sparse_sgd/afa585aee053734cef871ca579d2367eccf39d0673fdecf2b2d3e243ca8a421e.edges-template.gz",
+      "shared_edge_sha256": "68d9bd860604f64ff55cc5105b099119cc93af1751e52f5380ae55d81c69c5f7",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/warmups/warmup-2026-11-08T051044_0900-web-Stanford-rr_sparse_sgd/rr-sparse-sgd-web-Stanford-warmup-2026-11-08T051044_0900-web-Stanford-rr_sparse_sgd.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/warmups/warmup-2026-11-08T051044_0900-web-Stanford-rr_sparse_sgd/rr-sparse-sgd-web-Stanford-warmup-2026-11-08T051044_0900-web-Stanford-rr_sparse_sgd.vertex-map.txt.gz",
+      "original_sha256": "480e0a3e13bc0bbf08e9f384fc22d07a1dc7e11692b533172cd89b4759e3df5b",
+      "original_bytes": 3351490,
+      "compressed_sha256": "a0af213681edac43bdd0d437f5b587141df40486d1d6759f852e25bdfb996914",
+      "compressed_bytes": 1117802,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

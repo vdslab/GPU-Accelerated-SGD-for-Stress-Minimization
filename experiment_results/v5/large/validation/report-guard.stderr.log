@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiments/report_v5_large.py", line 186, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiments/report_v5_large.py", line 41, in main
+    assert len(rows)==len({r['run_id'] for r in rows})==len(jobs)==350,'All 350 outcomes must be recorded before offline reporting'
+AssertionError: All 350 outcomes must be recorded before offline reporting

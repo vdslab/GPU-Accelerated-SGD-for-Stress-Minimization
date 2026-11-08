@@ -1,0 +1,37 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/target/full16-release/release/rr-gpu",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/degree/inputs/BA-8000-g1.mtx",
+    "--seed",
+    "0",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--output-format",
+    "json",
+    "--run-id",
+    "degree-BA-8000-g1-rr_sgd-s0",
+    "--run-mode",
+    "benchmark",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/degree/raw/artifacts/degree-BA-8000-g1-rr_sgd-s0",
+    "--tile-size",
+    "1024",
+    "--workgroup-size",
+    "1024",
+    "--coordinate-memory",
+    "shared"
+  ],
+  "environment": {
+    "SGD_STRESS_SAMPLES": "256",
+    "SGD_TRACE_DIR": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/degree/raw/artifacts/degree-BA-8000-g1-rr_sgd-s0/trace",
+    "SGD_TRACE_CHECKPOINTS": ""
+  },
+  "limits": {
+    "timeout_seconds": 120,
+    "max_rss_bytes": 8589934592,
+    "min_free_disk_bytes": 8589934592
+  }
+}

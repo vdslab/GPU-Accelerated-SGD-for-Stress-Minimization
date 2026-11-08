@@ -1,0 +1,11 @@
+{
+  "at": "2026-11-06T21:30:35+09:00",
+  "reason": "Disk-only pause; no npm/cargo/uv installation process active; preserve all source, installed packages and experiments",
+  "free_before": 3925483520,
+  "removed": [
+    "/Users/kose/.npm/_cacache",
+    "/Users/kose/.cargo/registry/cache",
+    "/Users/kose/.cache/uv"
+  ],
+  "free_after": 4913299456
+}

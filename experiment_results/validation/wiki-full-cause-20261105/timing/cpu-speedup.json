@@ -1,0 +1,30 @@
+{
+  "cpu_source": "experiment_results/v4/reference/full-v3/runs.csv, study=basic, method=sgd, graph=wiki-Vote",
+  "definition": "saved CPU iteration_time_ms / 15 divided by median current-session GPU mean_iteration_ms for matching seed; measured on different dates",
+  "results": [
+    {
+      "seed": 0,
+      "cpu_ms": 443.4751611333333,
+      "current_ms": 17.8729528,
+      "split16_ms": 26.34365,
+      "current_speedup": 24.812640983046364,
+      "split16_speedup": 16.834233719827484
+    },
+    {
+      "seed": 1,
+      "cpu_ms": 443.7420084,
+      "current_ms": 18.145883333333337,
+      "split16_ms": 25.722277733333332,
+      "current_speedup": 24.454142035888758,
+      "split16_speedup": 17.25127195189863
+    },
+    {
+      "seed": 2,
+      "cpu_ms": 444.0218473333333,
+      "current_ms": 17.536661066666667,
+      "split16_ms": 25.271075,
+      "current_speedup": 25.319634430143665,
+      "split16_speedup": 17.570358496159475
+    }
+  ]
+}

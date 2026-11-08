@@ -1,0 +1,287 @@
+{
+  "audit": {
+    "formal_comparison_runs": 4230,
+    "tile_runs": 1800,
+    "total_formal_runs": 6030,
+    "success_runs": 4230,
+    "failed_runs": 0,
+    "retained_graphs": 56,
+    "conditions": 282,
+    "seeds_per_condition": 5,
+    "repetitions_per_seed": 3,
+    "missing_runs": 0,
+    "exact_stress_runs": 3060,
+    "sampled_stress_runs": 1170,
+    "archive_files_checked_for_existence_and_size": 10980,
+    "archive_original_and_decompressed_hashes_match": true,
+    "archive_crc_verified_at_creation": true,
+    "all_binaries_match_frozen_hashes": true,
+    "initial_fingerprint_mismatches_within_family": [],
+    "sparse_preprocessing_mismatches": [],
+    "large_graphs_not_executed": [
+      "AS365",
+      "Flan_1565",
+      "NACA0015",
+      "asia_osm",
+      "auto",
+      "belgium_osm",
+      "com-LiveJournal",
+      "com-Orkut",
+      "europe_osm",
+      "germany_osm",
+      "great-britain_osm",
+      "italy_osm",
+      "netherlands_osm",
+      "road_usa"
+    ],
+    "deferred_graphs": [
+      "AS365",
+      "great-britain_osm",
+      "asia_osm",
+      "auto",
+      "NACA0015",
+      "Flan_1565"
+    ],
+    "gpu_pass_timestamps": false,
+    "within_seed_stress_repeatability": [
+      {
+        "method": "sgd",
+        "graph_seed_groups": 190,
+        "variable_stress_groups": 0,
+        "max_relative_stress_range": 0.0,
+        "worst_graph": "lesmis",
+        "worst_seed": 0
+      },
+      {
+        "method": "atomic_sgd",
+        "graph_seed_groups": 190,
+        "variable_stress_groups": 190,
+        "max_relative_stress_range": 1.573398026325939,
+        "worst_graph": "3elt",
+        "worst_seed": 0
+      },
+      {
+        "method": "rr_sgd",
+        "graph_seed_groups": 190,
+        "variable_stress_groups": 0,
+        "max_relative_stress_range": 0.0,
+        "worst_graph": "dolphins",
+        "worst_seed": 0
+      },
+      {
+        "method": "sparse_sgd",
+        "graph_seed_groups": 280,
+        "variable_stress_groups": 0,
+        "max_relative_stress_range": 0.0,
+        "worst_graph": "email",
+        "worst_seed": 0
+      },
+      {
+        "method": "atomic_sparse_sgd",
+        "graph_seed_groups": 280,
+        "variable_stress_groups": 280,
+        "max_relative_stress_range": 1.172896010403414,
+        "worst_graph": "dwt_198",
+        "worst_seed": 4
+      },
+      {
+        "method": "rr_sparse_sgd",
+        "graph_seed_groups": 280,
+        "variable_stress_groups": 0,
+        "max_relative_stress_range": 0.0,
+        "worst_graph": "EVA",
+        "worst_seed": 0
+      }
+    ]
+  },
+  "aggregate": [
+    {
+      "family": "full",
+      "method": "sgd",
+      "graphs": 38,
+      "faster_than_cpu": 0,
+      "total_faster_than_cpu": 0,
+      "stress_lower_than_cpu": 0,
+      "sgd_speedup": {
+        "gmean": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "total_speedup": {
+        "gmean": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "stress_ratio": {
+        "gmean": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "rr_vs_atomic_sgd_speedup": null,
+      "rr_vs_atomic_total_speedup": null
+    },
+    {
+      "family": "full",
+      "method": "atomic_sgd",
+      "graphs": 38,
+      "faster_than_cpu": 14,
+      "total_faster_than_cpu": 14,
+      "stress_lower_than_cpu": 1,
+      "sgd_speedup": {
+        "gmean": 0.17269106526339761,
+        "median": 0.1007098770084635,
+        "min": 0.00271578440176088,
+        "max": 4.984364015134174
+      },
+      "total_speedup": {
+        "gmean": 0.15936137233342815,
+        "median": 0.14536297581568697,
+        "min": 0.0021230666232014022,
+        "max": 3.01437790913228
+      },
+      "stress_ratio": {
+        "gmean": 1.181768510943137,
+        "median": 1.0462124954767946,
+        "min": 0.967839043565735,
+        "max": 2.905580342552279
+      },
+      "rr_vs_atomic_sgd_speedup": null,
+      "rr_vs_atomic_total_speedup": null
+    },
+    {
+      "family": "full",
+      "method": "rr_sgd",
+      "graphs": 38,
+      "faster_than_cpu": 24,
+      "total_faster_than_cpu": 23,
+      "stress_lower_than_cpu": 10,
+      "sgd_speedup": {
+        "gmean": 1.3828481764804226,
+        "median": 1.7682022615319624,
+        "min": 0.002226939490097385,
+        "max": 50.98895483733671
+      },
+      "total_speedup": {
+        "gmean": 0.6299707568356292,
+        "median": 1.1639530556731827,
+        "min": 0.003494885607405952,
+        "max": 7.222019816759789
+      },
+      "stress_ratio": {
+        "gmean": 1.0656447724547753,
+        "median": 1.008310966331411,
+        "min": 0.9544190772538302,
+        "max": 1.6710001768169263
+      },
+      "rr_vs_atomic_sgd_speedup": {
+        "gmean": 7.99865222810379,
+        "median": 10.393730434233554,
+        "min": 0.8638198843125636,
+        "max": 23.210052887016918
+      },
+      "rr_vs_atomic_total_speedup": {
+        "gmean": 3.9393914742846174,
+        "median": 3.503596201126003,
+        "min": 1.6264243466250345,
+        "max": 13.392863786639497
+      }
+    },
+    {
+      "family": "sparse",
+      "method": "sparse_sgd",
+      "graphs": 56,
+      "faster_than_cpu": 0,
+      "total_faster_than_cpu": 0,
+      "stress_lower_than_cpu": 0,
+      "sgd_speedup": {
+        "gmean": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "total_speedup": {
+        "gmean": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "stress_ratio": {
+        "gmean": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "rr_vs_atomic_sgd_speedup": null,
+      "rr_vs_atomic_total_speedup": null
+    },
+    {
+      "family": "sparse",
+      "method": "atomic_sparse_sgd",
+      "graphs": 56,
+      "faster_than_cpu": 32,
+      "total_faster_than_cpu": 25,
+      "stress_lower_than_cpu": 8,
+      "sgd_speedup": {
+        "gmean": 0.5224599641328952,
+        "median": 1.2849453268359092,
+        "min": 0.002799451976442497,
+        "max": 3.207809397533645
+      },
+      "total_speedup": {
+        "gmean": 0.45272595153593465,
+        "median": 0.954266513822372,
+        "min": 0.004346107257182845,
+        "max": 1.4820155470323741
+      },
+      "stress_ratio": {
+        "gmean": 1.0083277218587574,
+        "median": 1.0045248441206918,
+        "min": 0.9710495120865456,
+        "max": 1.0854824373605167
+      },
+      "rr_vs_atomic_sgd_speedup": null,
+      "rr_vs_atomic_total_speedup": null
+    },
+    {
+      "family": "sparse",
+      "method": "rr_sparse_sgd",
+      "graphs": 56,
+      "faster_than_cpu": 36,
+      "total_faster_than_cpu": 37,
+      "stress_lower_than_cpu": 11,
+      "sgd_speedup": {
+        "gmean": 1.8706596664080632,
+        "median": 3.1965425856374408,
+        "min": 0.0023725701133321658,
+        "max": 69.63888784863555
+      },
+      "total_speedup": {
+        "gmean": 1.0211002487651113,
+        "median": 2.1015660350568,
+        "min": 0.0073871937957981845,
+        "max": 5.347784620068996
+      },
+      "stress_ratio": {
+        "gmean": 1.0171246402095768,
+        "median": 1.0027939751504067,
+        "min": 0.9818504681777045,
+        "max": 1.1552297537535878
+      },
+      "rr_vs_atomic_sgd_speedup": {
+        "gmean": 3.585564879882733,
+        "median": 2.472193305880665,
+        "min": 0.7763401479004864,
+        "max": 24.572863237383274
+      },
+      "rr_vs_atomic_total_speedup": {
+        "gmean": 2.2540681262490234,
+        "median": 2.154516349070854,
+        "min": 1.4689813162751564,
+        "max": 3.67615743718425
+      }
+    }
+  ]
+}

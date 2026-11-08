@@ -1,0 +1,37 @@
+% !TeX root = ../main.tex
+\section{Introduction}
+\label{sec:introduction}
+Stochastic gradient descent (SGD) is a promising approach to efficient stress minimization for graph drawing.
+Placing vertices so that network structure can be understood is a central task in graph drawing; stress minimization seeks to reproduce graph distances in the drawing space~\cite{ref11,ref16}.
+Zheng et al.~\cite{ref28} proposed SGD that updates one vertex pair at a time and reported fast, stable progress toward lower stress than stress majorization in their experiments.
+A replication study, however, found that the advantage in final stress does not always hold~\cite{ref2}.
+We build on this simple update and evaluate both speed and quality.
+
+SGD applies both to layouts that consider all vertex pairs and to large graphs for which the update set is reduced.
+Let $X$ denote vertex coordinates, $d_{ij}$ the shortest-path distance between vertices, and $w_{ij}=d_{ij}^{-2}$ the weight.
+Stress is defined as
+\begin{equation}
+S(X)=\sum_{i<j}w_{ij}\bigl(\lVert x_i-x_j\rVert-d_{ij}\bigr)^2.
+\label{eq:stress}
+\end{equation}
+We refer to the scheme that updates all vertex pairs as \emph{Full SGD}.
+\emph{Sparse SGD} optimizes Sparse Stress by SGD, approximating the objective with actual edges and terms involving a small set of representative vertices, or pivots, to handle larger graphs~\cite{ref20,ref28}.
+
+Even after reducing the update set, a sequential implementation leaves room for parallel execution.
+Full SGD processes $n(n-1)/2$ pairs per iteration, and Sparse SGD also performs many updates.
+Our CPU baselines execute these updates sequentially.
+Processing multiple terms simultaneously could reduce runtime, but pairs that share a vertex can conflict when reading and writing coordinates.
+Locks implemented with atomic operations offer one solution, at the cost of acquisition retries and coordinate accesses.
+
+We propose GPU methods based on round-robin (RR) scheduling to accelerate Full and Sparse SGD by organizing vertex-pair updates according to their dependencies.
+RR scheduling partitions all pairings into rounds in which each participant appears once.
+For Full SGD, we construct RR schedules at two levels, between vertex blocks and within tiles, combining parallel independent updates with coordinate reuse.
+For Sparse SGD, we separate one-sided and two-sided updates and assign work according to their read and write sets.
+Conflict-free scheduling is already used in parallel SGD~\cite{ref15,ref21,ref30}; our focus is on execution schemes tailored to these two update structures in graph drawing.
+
+Shorter iteration times do not necessarily imply less time to reach the same layout quality.
+Changes in update order induced by RR and differences in numerical precision can affect the final layout.
+We therefore compare the schemes with their CPU and Atomic counterparts in terms of iteration time, stress after a fixed number of iterations, and attainment of a quality target.
+We implement the schemes using wgpu and WGSL.
+
+The two schedules have different consequences for layout quality. After 15 iterations, RoundRobin Sparse SGD combines shorter iterations with a median stress ratio at most 1.05 relative to sequential CPU SGD on 36 of 37 comparable graphs. RoundRobin Full SGD also shortens iterations, but exceeds that ratio on nine of 19 graphs. We examine this difference by timing both implementations to a common stress target. A separate road-network experiment measures the time to compute coordinates for more than eleven million vertices with a reduced pivot set.

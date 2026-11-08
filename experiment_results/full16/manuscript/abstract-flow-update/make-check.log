@@ -1,0 +1,1339 @@
+npm run lint
+
+> vis-paper-2027-kose@0.1.0 lint
+> textlint main.tex preamble.tex "section/*.tex"
+
+latexmk -gg -Werror main.tex
+Rc files read:
+  .latexmkrc
+Latexmk: This is Latexmk, John Collins, 27 Dec. 2024. Version 4.86a.
+Latexmk: Doing main (small) clean up for 'main.tex'
+No existing .aux file, so I'll make a simple one, and require run of *latex.
+Force everything to be remade.
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Category 'other':
+  Rerun of 'pdflatex' forced or previously required:
+    Reason or flag: 'go_mode'
+
+------------
+Run number 1 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex -synctex=1 -interaction=nonstopmode -file-line-error -halt-on-error  -recorder -output-directory="build"  "main.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./main.tex
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+(./vgtc.cls
+Document Class: vgtc 2006/05/21 IEEE VGTC
+
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/iftex/ifp
+df.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/iftex/ift
+ex.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/gr
+aphicx.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/ke
+yval.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/gr
+aphics.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/tr
+ig.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics-cf
+g/graphics.cfg)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics-de
+f/pdftex.def)))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/articl
+e.cls
+Document Class: article 2024/06/29 v1.4n Standard LaTeX document class
+
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/size10
+.clo))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/etoolbox/et
+oolbox.sty)) (./preamble.tex
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/time
+s.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/math
+ptmx.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/microtype/m
+icrotype.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/microtype/m
+icrotype-pdftex.def)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/microtype/m
+icrotype.cfg))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/textco
+mp.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/cite/cite.s
+ty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+math.sty
+For additional information on amsmath, use the `?' option.
+
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+text.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+gen.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+bsy.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+opn.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsfonts/am
+ssymb.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsfonts/am
+sfonts.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/booktabs/bo
+oktabs.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/algorithms/
+algorithm.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/float/float
+.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/ifthen
+.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/algorithms/
+algorithmic.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/preprint/ba
+lance.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/capt-of/cap
+t-of.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/hy
+perref.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/kvsetkeys/k
+vsetkeys.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/kvdefinek
+eys/kvdefinekeys.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/pdfescape
+/pdfescape.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/ltxcmds/l
+txcmds.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/pdftexcmd
+s/pdftexcmds.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/infwarerr
+/infwarerr.sty)))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hycolor/hyc
+olor.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/na
+meref.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/refcount/re
+fcount.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/gettitles
+tring/gettitlestring.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/kvoptions/k
+voptions.sty)))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/stringenc
+/stringenc.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/pd
+1enc.def)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/intcalc/i
+ntcalc.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/pu
+enc.def)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/ba
+ckref.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/rerunfilech
+eck/rerunfilecheck.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/atvery
+end-ltx.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/uniquecou
+nter/uniquecounter.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/bigintcal
+c/bigintcalc.sty))))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/url/url.sty
+)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/bitset/bi
+tset.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/atbegs
+hi-ltx.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/hp
+dftex.def)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hypcap/hypc
+ap.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/letltxmacro
+/letltxmacro.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/xcolor/xcol
+or.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics-cf
+g/color.cfg)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/ma
+thcolor.ltx))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/xcolor/svgn
+am.def)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/cleveref/cl
+everef.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/ot1p
+tm.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/l3backend/l
+3backend-pdftex.def) (build/main.aux)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/context/base/mkii
+/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/epstopdf-pk
+g/epstopdf-base.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/grfext/grfe
+xt.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/latexconfig
+/epstopdf-sys.cfg))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/microtype/m
+t-ptm.cfg)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/ot1p
+hv.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/ot1z
+tmcm.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/omlz
+tmcm.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/omsz
+tmcm.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/omxz
+tmcm.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/microtype/m
+t-msa.cfg)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/microtype/m
+t-msb.cfg)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/ts1p
+tm.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/txfonts/ot1
+txtt.fd)
+
+LaTeX Warning: Reference `sec:large' on page 1 undefined on input line 59.
+
+
+LaTeX Warning: Reference `sec:large' on page 1 undefined on input line 59.
+
+(./section/00.abstract.tex) (./section/01.introduction.tex
+
+LaTeX Warning: Citation `ref11' on page 1 undefined on input line 5.
+
+
+LaTeX Warning: Citation `ref16' on page 1 undefined on input line 5.
+
+
+LaTeX Warning: Citation `ref28' on page 1 undefined on input line 6.
+
+
+LaTeX Warning: Citation `ref2' on page 1 undefined on input line 7.
+
+
+
+LaTeX Warning: Citation `ref20' on page 1 undefined on input line 17.
+
+
+LaTeX Warning: Citation `ref28' on page 1 undefined on input line 17.
+
+
+LaTeX Warning: Citation `ref15' on page 1 undefined on input line 29.
+
+
+LaTeX Warning: Citation `ref21' on page 1 undefined on input line 29.
+
+
+LaTeX Warning: Citation `ref30' on page 1 undefined on input line 29.
+
+
+[1{/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/map/pdftex/up
+dmap/pdftex.map}{/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts
+/enc/dvips/base/8r.enc} <./figures/teaser-belgium-osm-print.png> <./figures/tea
+ser-germany-osm-print.png> <./figures/teaser-italy-osm-print.png>])
+(./section/02.related_work.tex
+
+LaTeX Warning: Citation `ref32' on page 2 undefined on input line 5.
+
+
+LaTeX Warning: Citation `ref9' on page 2 undefined on input line 5.
+
+
+LaTeX Warning: Citation `ref44' on page 2 undefined on input line 5.
+
+
+LaTeX Warning: Citation `ref16' on page 2 undefined on input line 6.
+
+
+LaTeX Warning: Citation `ref38' on page 2 undefined on input line 7.
+
+
+LaTeX Warning: Citation `ref40' on page 2 undefined on input line 7.
+
+
+LaTeX Warning: Citation `ref19' on page 2 undefined on input line 7.
+
+
+LaTeX Warning: Citation `ref39' on page 2 undefined on input line 7.
+
+
+LaTeX Warning: Citation `ref7' on page 2 undefined on input line 8.
+
+
+LaTeX Warning: Citation `ref11' on page 2 undefined on input line 8.
+
+
+LaTeX Warning: Citation `ref50' on page 2 undefined on input line 10.
+
+
+LaTeX Warning: Citation `ref28' on page 2 undefined on input line 11.
+
+
+LaTeX Warning: Citation `ref2' on page 2 undefined on input line 12.
+
+
+LaTeX Warning: Citation `ref45' on page 2 undefined on input line 16.
+
+
+LaTeX Warning: Citation `ref41' on page 2 undefined on input line 16.
+
+
+LaTeX Warning: Citation `ref42' on page 2 undefined on input line 16.
+
+
+LaTeX Warning: Citation `ref43' on page 2 undefined on input line 16.
+
+
+LaTeX Warning: Citation `ref1' on page 2 undefined on input line 17.
+
+
+LaTeX Warning: Citation `ref27' on page 2 undefined on input line 17.
+
+
+LaTeX Warning: Citation `ref34' on page 2 undefined on input line 21.
+
+
+LaTeX Warning: Citation `ref35' on page 2 undefined on input line 21.
+
+
+LaTeX Warning: Citation `ref37' on page 2 undefined on input line 21.
+
+
+LaTeX Warning: Citation `ref33' on page 2 undefined on input line 22.
+
+
+LaTeX Warning: Citation `ref36' on page 2 undefined on input line 22.
+
+
+LaTeX Warning: Citation `ref14' on page 2 undefined on input line 22.
+
+
+LaTeX Warning: Citation `ref13' on page 2 undefined on input line 25.
+
+
+LaTeX Warning: Citation `ref5' on page 2 undefined on input line 25.
+
+
+LaTeX Warning: Citation `ref17' on page 2 undefined on input line 25.
+
+
+LaTeX Warning: Citation `ref10' on page 2 undefined on input line 25.
+
+
+LaTeX Warning: Citation `ref20' on page 2 undefined on input line 26.
+
+
+LaTeX Warning: Citation `ref28' on page 2 undefined on input line 26.
+
+
+LaTeX Warning: Citation `ref18' on page 2 undefined on input line 29.
+
+
+LaTeX Warning: Citation `ref25' on page 2 undefined on input line 29.
+
+
+LaTeX Warning: Citation `ref29' on page 2 undefined on input line 29.
+
+
+LaTeX Warning: Citation `ref47' on page 2 undefined on input line 30.
+
+
+LaTeX Warning: Citation `ref6' on page 2 undefined on input line 32.
+
+
+LaTeX Warning: Citation `ref24' on page 2 undefined on input line 32.
+
+
+LaTeX Warning: Citation `ref46' on page 2 undefined on input line 32.
+
+
+
+LaTeX Warning: Citation `ref8' on page 2 undefined on input line 35.
+
+
+LaTeX Warning: Citation `ref22' on page 2 undefined on input line 35.
+
+
+LaTeX Warning: Citation `ref48' on page 2 undefined on input line 35.
+
+
+LaTeX Warning: Citation `wang2018majorization' on page 2 undefined on input lin
+e 36.
+
+
+LaTeX Warning: Citation `ref3' on page 2 undefined on input line 36.
+
+
+LaTeX Warning: Citation `ref4' on page 2 undefined on input line 36.
+
+
+LaTeX Warning: Citation `ref49' on page 2 undefined on input line 36.
+
+
+LaTeX Warning: Citation `ref23' on page 2 undefined on input line 39.
+
+
+LaTeX Warning: Citation `ref21' on page 2 undefined on input line 39.
+
+
+LaTeX Warning: Citation `ref30' on page 2 undefined on input line 40.
+
+
+LaTeX Warning: Citation `ref15' on page 2 undefined on input line 41.
+
+
+LaTeX Warning: Citation `ref26' on page 2 undefined on input line 44.
+
+
+LaTeX Warning: Citation `ref12' on page 2 undefined on input line 46.
+
+) (./section/03.proposed_method.tex
+
+LaTeX Warning: Citation `ref28' on page 2 undefined on input line 10.
+
+
+LaTeX Warning: Citation `ref28' on page 2 undefined on input line 13.
+
+
+LaTeX Warning: Citation `ref20' on page 2 undefined on input line 30.
+
+
+LaTeX Warning: Citation `ref28' on page 2 undefined on input line 30.
+
+
+LaTeX Warning: Reference `eq:update' on page 2 undefined on input line 34.
+
+
+[2]
+
+LaTeX Warning: Citation `ref15' on page 3 undefined on input line 45.
+
+
+LaTeX Warning: Reference `eq:displacement' on page 3 undefined on input line 46
+.
+
+
+LaTeX Warning: Reference `eq:update' on page 3 undefined on input line 46.
+
+
+LaTeX Warning: Reference `fig:atomic' on page 3 undefined on input line 50.
+
+
+LaTeX Warning: Citation `ref4' on page 3 undefined on input line 68.
+
+
+
+LaTeX Warning: Reference `eq:displacement' on page 3 undefined on input line 80
+.
+
+
+LaTeX Warning: Reference `eq:update' on page 3 undefined on input line 80.
+
+
+LaTeX Warning: Reference `eq:minibatch' on page 3 undefined on input line 81.
+
+
+LaTeX Warning: Reference `fig:full' on page 3 undefined on input line 116.
+
+
+LaTeX Warning: Reference `fig:full' on page 3 undefined on input line 124.
+
+
+[3 <./figures/fig01_atomic.pdf>]
+Underfull \vbox (badness 1152) has occurred while \output is active
+
+LaTeX Warning: Reference `sec:sgd-atomic' on page 4 undefined on input line 159
+.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active
+[4 <./figures/fig02_rr_full.pdf> <./figures/fig03_rr_sparse.pdf>]
+
+LaTeX Warning: Reference `fig:sparse' on page 5 undefined on input line 163.
+
+) (./section/04.experiment.tex
+
+LaTeX Warning: Citation `ref46' on page 5 undefined on input line 4.
+
+
+LaTeX Warning: Citation `ref31' on page 5 undefined on input line 7.
+
+
+LaTeX Warning: Citation `ref28' on page 5 undefined on input line 11.
+
+
+LaTeX Warning: Citation `ref6' on page 5 undefined on input line 15.
+
+
+
+LaTeX Warning: Reference `eq:stress' on page 5 undefined on input line 25.
+
+
+LaTeX Warning: Reference `fig:comparison' on page 5 undefined on input line 38.
+
+
+
+LaTeX Warning: Reference `fig:full-time' on page 5 undefined on input line 52.
+
+
+LaTeX Warning: Reference `fig:comparison' on page 5 undefined on input line 60.
+
+
+
+LaTeX Warning: Reference `tab:arrival' on page 5 undefined on input line 67.
+
+
+[5]
+
+LaTeX Warning: Reference `fig:degree' on page 6 undefined on input line 80.
+
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active
+[6 <./figures/fig05_comparison.pdf>]
+
+LaTeX Warning: Reference `fig:large' on page 7 undefined on input line 141.
+
+
+LaTeX Warning: Reference `tab:large' on page 7 undefined on input line 141.
+
+
+) (./section/05.conclusion.tex
+
+LaTeX Warning: Citation `ref26' on page 7 undefined on input line 8.
+
+)
+No file main.bbl.
+
+
+Package balance Warning: You have called \balance in second column
+(balance)                Columns might not be balanced.
+
+[7 <./figures/full_time_to_quality.pdf>] [8 <./figures/full_degree_scaling.pdf>
+ <./figures/fig07_large_layouts.pdf>] (build/main.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+ )
+(see the transcript file for additional information)</opt/homebrew/Cellar/texli
+ve/20250308_2/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/
+homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmr10.pfb></opt/homebrew/Cellar/texlive/20250308_2/sha
+re/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar/t
+exlive/20250308_2/share/texmf-dist/fonts/type1/public/txfonts/txtt.pfb></opt/ho
+mebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/urw/helvetic/uhvb
+8a.pfb></opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/ur
+w/helvetic/uhvr8a.pfb></opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist
+/fonts/type1/urw/symbol/usyr.pfb></opt/homebrew/Cellar/texlive/20250308_2/share
+/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></opt/homebrew/Cellar/texlive/20250
+308_2/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/t
+exlive/20250308_2/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/homeb
+rew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/urw/times/utmri8a.pf
+b>
+Output written on build/main.pdf (8 pages, 9123875 bytes).
+SyncTeX written on build/main.synctex.gz.
+Transcript written on build/main.log.
+Latexmk: Getting log file 'build/main.log'
+Latexmk: Examining 'build/main.fls'
+Latexmk: Examining 'build/main.log'
+Latexmk: Missing bbl file 'build/main.bbl' in following:
+ No file main.bbl.
+Latexmk: References changed.
+Latexmk: References changed.
+Latexmk: Log file says output to 'build/main.pdf'
+Latexmk: Found bibliography file(s):
+  ./main.bib
+Latexmk: applying rule 'bibtex build/main'...
+Rule 'bibtex build/main':  Reasons for rerun
+Category 'other':
+  Rerun of 'bibtex build/main' forced or previously required:
+    Reason or flag: 'Initial set up of rule'
+
+------------
+Run number 1 of rule 'bibtex build/main'
+------------
+====== ENV{BIBINPUTS} changed to '/Users/kose/master/vis-paper-2027-kose:build:/Users/kose/master/vis-paper-2027-kose/build:'
+Latexmk: Change directory to 'build/'.
+To assist finding of files in document directory, I set
+  BIBINPUTS='/Users/kose/master/vis-paper-2027-kose:build:/Users/kose/master/vis-paper-2027-kose/build:'
+  BSTINPUTS='/Users/kose/master/vis-paper-2027-kose:'.
+------------
+Running 'bibtex  "main.aux"'
+------------
+This is BibTeX, Version 0.99d (TeX Live 2025/Homebrew)
+The top-level auxiliary file: main.aux
+The style file: abbrv-doi-hyperref.bst
+Database file #1: main.bib
+Warning--can't use both volume and number fields in ref24
+(There was 1 warning)
+Latexmk: Change directory back to '/Users/kose/master/vis-paper-2027-kose'
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Changed files or newly in use/created:
+  build/main.aux
+  build/main.bbl
+  build/main.out
+
+------------
+Run number 2 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex -synctex=1 -interaction=nonstopmode -file-line-error -halt-on-error  -recorder -output-directory="build"  "main.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./main.tex
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+(./vgtc.cls
+Document Class: vgtc 2006/05/21 IEEE VGTC
+
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/iftex/ifp
+df.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/iftex/ift
+ex.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/gr
+aphicx.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/ke
+yval.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/gr
+aphics.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/tr
+ig.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics-cf
+g/graphics.cfg)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics-de
+f/pdftex.def)))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/articl
+e.cls
+Document Class: article 2024/06/29 v1.4n Standard LaTeX document class
+
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/size10
+.clo))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/etoolbox/et
+oolbox.sty)) (./preamble.tex
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/time
+s.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/math
+ptmx.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/microtype/m
+icrotype.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/microtype/m
+icrotype-pdftex.def)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/microtype/m
+icrotype.cfg))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/textco
+mp.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/cite/cite.s
+ty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+math.sty
+For additional information on amsmath, use the `?' option.
+
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+text.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+gen.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+bsy.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+opn.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsfonts/am
+ssymb.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsfonts/am
+sfonts.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/booktabs/bo
+oktabs.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/algorithms/
+algorithm.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/float/float
+.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/ifthen
+.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/algorithms/
+algorithmic.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/preprint/ba
+lance.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/capt-of/cap
+t-of.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/hy
+perref.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/kvsetkeys/k
+vsetkeys.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/kvdefinek
+eys/kvdefinekeys.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/pdfescape
+/pdfescape.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/ltxcmds/l
+txcmds.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/pdftexcmd
+s/pdftexcmds.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/infwarerr
+/infwarerr.sty)))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hycolor/hyc
+olor.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/na
+meref.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/refcount/re
+fcount.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/gettitles
+tring/gettitlestring.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/kvoptions/k
+voptions.sty)))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/stringenc
+/stringenc.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/pd
+1enc.def)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/intcalc/i
+ntcalc.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/pu
+enc.def)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/ba
+ckref.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/rerunfilech
+eck/rerunfilecheck.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/atvery
+end-ltx.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/uniquecou
+nter/uniquecounter.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/bigintcal
+c/bigintcalc.sty))))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/url/url.sty
+)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/bitset/bi
+tset.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/atbegs
+hi-ltx.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/hp
+dftex.def)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hypcap/hypc
+ap.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/letltxmacro
+/letltxmacro.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/xcolor/xcol
+or.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics-cf
+g/color.cfg)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/ma
+thcolor.ltx))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/xcolor/svgn
+am.def)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/cleveref/cl
+everef.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/ot1p
+tm.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/l3backend/l
+3backend-pdftex.def) (build/main.aux)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/context/base/mkii
+/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/epstopdf-pk
+g/epstopdf-base.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/grfext/grfe
+xt.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/latexconfig
+/epstopdf-sys.cfg))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/microtype/m
+t-ptm.cfg) (build/main.out) (build/main.out)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/ot1p
+hv.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/ot1z
+tmcm.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/omlz
+tmcm.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/omsz
+tmcm.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/omxz
+tmcm.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/microtype/m
+t-msa.cfg)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/microtype/m
+t-msb.cfg)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/ts1p
+tm.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/txfonts/ot1
+txtt.fd) (./section/00.abstract.tex) (./section/01.introduction.tex
+
+LaTeX Warning: Citation `ref11' on page 1 undefined on input line 5.
+
+
+LaTeX Warning: Citation `ref16' on page 1 undefined on input line 5.
+
+
+LaTeX Warning: Citation `ref28' on page 1 undefined on input line 6.
+
+
+LaTeX Warning: Citation `ref2' on page 1 undefined on input line 7.
+
+
+
+LaTeX Warning: Citation `ref20' on page 1 undefined on input line 17.
+
+
+LaTeX Warning: Citation `ref28' on page 1 undefined on input line 17.
+
+
+LaTeX Warning: Citation `ref15' on page 1 undefined on input line 29.
+
+
+LaTeX Warning: Citation `ref21' on page 1 undefined on input line 29.
+
+
+LaTeX Warning: Citation `ref30' on page 1 undefined on input line 29.
+
+
+[1{/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/map/pdftex/up
+dmap/pdftex.map}{/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts
+/enc/dvips/base/8r.enc} <./figures/teaser-belgium-osm-print.png> <./figures/tea
+ser-germany-osm-print.png> <./figures/teaser-italy-osm-print.png>])
+(./section/02.related_work.tex
+
+LaTeX Warning: Citation `ref32' on page 2 undefined on input line 5.
+
+
+LaTeX Warning: Citation `ref9' on page 2 undefined on input line 5.
+
+
+LaTeX Warning: Citation `ref44' on page 2 undefined on input line 5.
+
+
+LaTeX Warning: Citation `ref16' on page 2 undefined on input line 6.
+
+
+LaTeX Warning: Citation `ref38' on page 2 undefined on input line 7.
+
+
+LaTeX Warning: Citation `ref40' on page 2 undefined on input line 7.
+
+
+LaTeX Warning: Citation `ref19' on page 2 undefined on input line 7.
+
+
+LaTeX Warning: Citation `ref39' on page 2 undefined on input line 7.
+
+
+LaTeX Warning: Citation `ref7' on page 2 undefined on input line 8.
+
+
+LaTeX Warning: Citation `ref11' on page 2 undefined on input line 8.
+
+
+LaTeX Warning: Citation `ref50' on page 2 undefined on input line 10.
+
+
+LaTeX Warning: Citation `ref28' on page 2 undefined on input line 11.
+
+
+LaTeX Warning: Citation `ref2' on page 2 undefined on input line 12.
+
+
+LaTeX Warning: Citation `ref45' on page 2 undefined on input line 16.
+
+
+LaTeX Warning: Citation `ref41' on page 2 undefined on input line 16.
+
+
+LaTeX Warning: Citation `ref42' on page 2 undefined on input line 16.
+
+
+LaTeX Warning: Citation `ref43' on page 2 undefined on input line 16.
+
+
+LaTeX Warning: Citation `ref1' on page 2 undefined on input line 17.
+
+
+LaTeX Warning: Citation `ref27' on page 2 undefined on input line 17.
+
+
+LaTeX Warning: Citation `ref34' on page 2 undefined on input line 21.
+
+
+LaTeX Warning: Citation `ref35' on page 2 undefined on input line 21.
+
+
+LaTeX Warning: Citation `ref37' on page 2 undefined on input line 21.
+
+
+LaTeX Warning: Citation `ref33' on page 2 undefined on input line 22.
+
+
+LaTeX Warning: Citation `ref36' on page 2 undefined on input line 22.
+
+
+LaTeX Warning: Citation `ref14' on page 2 undefined on input line 22.
+
+
+LaTeX Warning: Citation `ref13' on page 2 undefined on input line 25.
+
+
+LaTeX Warning: Citation `ref5' on page 2 undefined on input line 25.
+
+
+LaTeX Warning: Citation `ref17' on page 2 undefined on input line 25.
+
+
+LaTeX Warning: Citation `ref10' on page 2 undefined on input line 25.
+
+
+LaTeX Warning: Citation `ref20' on page 2 undefined on input line 26.
+
+
+LaTeX Warning: Citation `ref28' on page 2 undefined on input line 26.
+
+
+LaTeX Warning: Citation `ref18' on page 2 undefined on input line 29.
+
+
+LaTeX Warning: Citation `ref25' on page 2 undefined on input line 29.
+
+
+LaTeX Warning: Citation `ref29' on page 2 undefined on input line 29.
+
+
+LaTeX Warning: Citation `ref47' on page 2 undefined on input line 30.
+
+
+LaTeX Warning: Citation `ref6' on page 2 undefined on input line 32.
+
+
+LaTeX Warning: Citation `ref24' on page 2 undefined on input line 32.
+
+
+LaTeX Warning: Citation `ref46' on page 2 undefined on input line 32.
+
+
+
+LaTeX Warning: Citation `ref8' on page 2 undefined on input line 35.
+
+
+LaTeX Warning: Citation `ref22' on page 2 undefined on input line 35.
+
+
+LaTeX Warning: Citation `ref48' on page 2 undefined on input line 35.
+
+
+LaTeX Warning: Citation `wang2018majorization' on page 2 undefined on input lin
+e 36.
+
+
+LaTeX Warning: Citation `ref3' on page 2 undefined on input line 36.
+
+
+LaTeX Warning: Citation `ref4' on page 2 undefined on input line 36.
+
+
+LaTeX Warning: Citation `ref49' on page 2 undefined on input line 36.
+
+
+LaTeX Warning: Citation `ref23' on page 2 undefined on input line 39.
+
+
+LaTeX Warning: Citation `ref21' on page 2 undefined on input line 39.
+
+
+LaTeX Warning: Citation `ref30' on page 2 undefined on input line 40.
+
+
+LaTeX Warning: Citation `ref15' on page 2 undefined on input line 41.
+
+
+LaTeX Warning: Citation `ref26' on page 2 undefined on input line 44.
+
+
+LaTeX Warning: Citation `ref12' on page 2 undefined on input line 46.
+
+) (./section/03.proposed_method.tex
+
+LaTeX Warning: Citation `ref28' on page 2 undefined on input line 10.
+
+
+LaTeX Warning: Citation `ref28' on page 2 undefined on input line 13.
+
+
+LaTeX Warning: Citation `ref20' on page 2 undefined on input line 30.
+
+
+LaTeX Warning: Citation `ref28' on page 2 undefined on input line 30.
+
+
+[2]
+
+LaTeX Warning: Citation `ref15' on page 3 undefined on input line 45.
+
+
+LaTeX Warning: Citation `ref4' on page 3 undefined on input line 68.
+
+
+
+[3 <./figures/fig01_atomic.pdf>]
+Underfull \vbox (badness 1152) has occurred while \output is active
+
+Underfull \vbox (badness 10000) has occurred while \output is active
+[4 <./figures/fig02_rr_full.pdf> <./figures/fig03_rr_sparse.pdf>])
+(./section/04.experiment.tex
+
+LaTeX Warning: Citation `ref46' on page 5 undefined on input line 4.
+
+
+LaTeX Warning: Citation `ref31' on page 5 undefined on input line 7.
+
+
+LaTeX Warning: Citation `ref28' on page 5 undefined on input line 11.
+
+
+LaTeX Warning: Citation `ref6' on page 5 undefined on input line 15.
+
+
+
+[5]
+
+Underfull \vbox (badness 10000) has occurred while \output is active
+[6 <./figures/fig05_comparison.pdf>]
+) (./section/05.conclusion.tex
+
+LaTeX Warning: Citation `ref26' on page 7 undefined on input line 8.
+
+) (build/main.bbl (build/main.brf)
+
+Package balance Warning: You have called \balance in second column
+(balance)                Columns might not be balanced.
+
+[7 <./figures/full_time_to_quality.pdf>]
+Underfull \vbox (badness 10000) has occurred while \output is active
+
+Underfull \vbox (badness 10000) has occurred while \output is active
+
+Overfull \vbox (1.53598pt too high) has occurred while \output is active
+[8 <./figures/full_degree_scaling.pdf> <./figures/fig07_large_layouts.pdf>]
+Underfull \vbox (badness 10000) has occurred while \output is active
+)
+
+Overfull \vbox (1.5979pt too high) has occurred while \output is active
+[9] (build/main.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ )
+(see the transcript file for additional information)</opt/homebrew/Cellar/texli
+ve/20250308_2/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/
+homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmr10.pfb></opt/homebrew/Cellar/texlive/20250308_2/sha
+re/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar/t
+exlive/20250308_2/share/texmf-dist/fonts/type1/public/txfonts/txtt.pfb></opt/ho
+mebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/urw/helvetic/uhvb
+8a.pfb></opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/ur
+w/helvetic/uhvr8a.pfb></opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist
+/fonts/type1/urw/symbol/usyr.pfb></opt/homebrew/Cellar/texlive/20250308_2/share
+/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></opt/homebrew/Cellar/texlive/20250
+308_2/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/t
+exlive/20250308_2/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/homeb
+rew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/urw/times/utmri8a.pf
+b>
+Output written on build/main.pdf (9 pages, 9156837 bytes).
+SyncTeX written on build/main.synctex.gz.
+Transcript written on build/main.log.
+Latexmk: Getting log file 'build/main.log'
+Latexmk: Examining 'build/main.fls'
+Latexmk: Examining 'build/main.log'
+Latexmk: Found input bbl file 'build/main.bbl'
+Latexmk: References changed.
+Latexmk: Log file says output to 'build/main.pdf'
+Latexmk: Found bibliography file(s):
+  ./main.bib
+Latexmk: applying rule 'bibtex build/main'...
+Rule 'bibtex build/main':  Reasons for rerun
+Changed files or newly in use/created:
+  build/main.aux
+
+------------
+Run number 2 of rule 'bibtex build/main'
+------------
+====== ENV{BIBINPUTS} changed to '/Users/kose/master/vis-paper-2027-kose:build:/Users/kose/master/vis-paper-2027-kose/build:'
+Latexmk: Change directory to 'build/'.
+To assist finding of files in document directory, I set
+  BIBINPUTS='/Users/kose/master/vis-paper-2027-kose:build:/Users/kose/master/vis-paper-2027-kose/build:'
+  BSTINPUTS='/Users/kose/master/vis-paper-2027-kose:'.
+------------
+Running 'bibtex  "main.aux"'
+------------
+This is BibTeX, Version 0.99d (TeX Live 2025/Homebrew)
+The top-level auxiliary file: main.aux
+The style file: abbrv-doi-hyperref.bst
+Database file #1: main.bib
+Warning--can't use both volume and number fields in ref24
+(There was 1 warning)
+Latexmk: Change directory back to '/Users/kose/master/vis-paper-2027-kose'
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Changed files or newly in use/created:
+  build/main.aux
+  build/main.brf
+
+------------
+Run number 3 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex -synctex=1 -interaction=nonstopmode -file-line-error -halt-on-error  -recorder -output-directory="build"  "main.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./main.tex
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+(./vgtc.cls
+Document Class: vgtc 2006/05/21 IEEE VGTC
+
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/iftex/ifp
+df.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/iftex/ift
+ex.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/gr
+aphicx.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/ke
+yval.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/gr
+aphics.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/tr
+ig.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics-cf
+g/graphics.cfg)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics-de
+f/pdftex.def)))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/articl
+e.cls
+Document Class: article 2024/06/29 v1.4n Standard LaTeX document class
+
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/size10
+.clo))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/etoolbox/et
+oolbox.sty)) (./preamble.tex
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/time
+s.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/math
+ptmx.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/microtype/m
+icrotype.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/microtype/m
+icrotype-pdftex.def)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/microtype/m
+icrotype.cfg))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/textco
+mp.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/cite/cite.s
+ty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+math.sty
+For additional information on amsmath, use the `?' option.
+
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+text.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+gen.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+bsy.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsmath/ams
+opn.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsfonts/am
+ssymb.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/amsfonts/am
+sfonts.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/booktabs/bo
+oktabs.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/algorithms/
+algorithm.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/float/float
+.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/ifthen
+.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/algorithms/
+algorithmic.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/preprint/ba
+lance.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/capt-of/cap
+t-of.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/hy
+perref.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/kvsetkeys/k
+vsetkeys.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/kvdefinek
+eys/kvdefinekeys.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/pdfescape
+/pdfescape.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/ltxcmds/l
+txcmds.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/pdftexcmd
+s/pdftexcmds.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/infwarerr
+/infwarerr.sty)))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hycolor/hyc
+olor.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/na
+meref.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/refcount/re
+fcount.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/gettitles
+tring/gettitlestring.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/kvoptions/k
+voptions.sty)))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/stringenc
+/stringenc.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/pd
+1enc.def)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/intcalc/i
+ntcalc.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/pu
+enc.def)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/ba
+ckref.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/rerunfilech
+eck/rerunfilecheck.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/atvery
+end-ltx.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/uniquecou
+nter/uniquecounter.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/bigintcal
+c/bigintcalc.sty))))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/url/url.sty
+)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/generic/bitset/bi
+tset.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/base/atbegs
+hi-ltx.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hyperref/hp
+dftex.def)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/hypcap/hypc
+ap.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/letltxmacro
+/letltxmacro.sty))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/xcolor/xcol
+or.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics-cf
+g/color.cfg)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/ma
+thcolor.ltx))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/xcolor/svgn
+am.def)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/cleveref/cl
+everef.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/ot1p
+tm.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/l3backend/l
+3backend-pdftex.def) (build/main.aux)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/context/base/mkii
+/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/epstopdf-pk
+g/epstopdf-base.sty
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/grfext/grfe
+xt.sty)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/latexconfig
+/epstopdf-sys.cfg))
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/microtype/m
+t-ptm.cfg) (build/main.out) (build/main.out)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/ot1p
+hv.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/ot1z
+tmcm.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/omlz
+tmcm.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/omsz
+tmcm.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/omxz
+tmcm.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/microtype/m
+t-msa.cfg)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/microtype/m
+t-msb.cfg)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/ts1p
+tm.fd)
+(/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/txfonts/ot1
+txtt.fd) (./section/00.abstract.tex) (./section/01.introduction.tex
+
+[1{/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/map/pdftex/up
+dmap/pdftex.map}{/opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts
+/enc/dvips/base/8r.enc} <./figures/teaser-belgium-osm-print.png> <./figures/tea
+ser-germany-osm-print.png> <./figures/teaser-italy-osm-print.png>])
+(./section/02.related_work.tex
+) (./section/03.proposed_method.tex
+[2]
+
+[3 <./figures/fig01_atomic.pdf>]
+Underfull \vbox (badness 1152) has occurred while \output is active
+
+Underfull \vbox (badness 10000) has occurred while \output is active
+[4 <./figures/fig02_rr_full.pdf> <./figures/fig03_rr_sparse.pdf>])
+(./section/04.experiment.tex
+
+[5]
+
+Underfull \vbox (badness 10000) has occurred while \output is active
+[6 <./figures/fig05_comparison.pdf>]
+) (./section/05.conclusion.tex) (build/main.bbl (build/main.brf)
+
+Package balance Warning: You have called \balance in second column
+(balance)                Columns might not be balanced.
+
+[7 <./figures/full_time_to_quality.pdf>]
+Underfull \vbox (badness 10000) has occurred while \output is active
+
+Underfull \vbox (badness 10000) has occurred while \output is active
+
+Overfull \vbox (1.53598pt too high) has occurred while \output is active
+[8 <./figures/full_degree_scaling.pdf> <./figures/fig07_large_layouts.pdf>]
+Underfull \vbox (badness 10000) has occurred while \output is active
+)
+
+Overfull \vbox (1.5979pt too high) has occurred while \output is active
+[9] (build/main.aux) )
+(see the transcript file for additional information)</opt/homebrew/Cellar/texli
+ve/20250308_2/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/
+homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmr10.pfb></opt/homebrew/Cellar/texlive/20250308_2/sha
+re/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar/t
+exlive/20250308_2/share/texmf-dist/fonts/type1/public/txfonts/txtt.pfb></opt/ho
+mebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/urw/helvetic/uhvb
+8a.pfb></opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/ur
+w/helvetic/uhvr8a.pfb></opt/homebrew/Cellar/texlive/20250308_2/share/texmf-dist
+/fonts/type1/urw/symbol/usyr.pfb></opt/homebrew/Cellar/texlive/20250308_2/share
+/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></opt/homebrew/Cellar/texlive/20250
+308_2/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/t
+exlive/20250308_2/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/homeb
+rew/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/urw/times/utmri8a.pf
+b>
+Output written on build/main.pdf (9 pages, 9158347 bytes).
+SyncTeX written on build/main.synctex.gz.
+Transcript written on build/main.log.
+Latexmk: Getting log file 'build/main.log'
+Latexmk: Examining 'build/main.fls'
+Latexmk: Examining 'build/main.log'
+Latexmk: Found input bbl file 'build/main.bbl'
+Latexmk: Log file says output to 'build/main.pdf'
+Latexmk: Found bibliography file(s):
+  ./main.bib
+Latexmk: All targets (build/main.pdf) are up-to-date
+
+cp build/main.pdf main.pdf

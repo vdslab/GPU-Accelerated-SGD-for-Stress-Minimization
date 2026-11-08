@@ -1,0 +1,52 @@
+{
+  "format": "shared-gzip",
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/raw/grid-sparse-coPapersCiteseer-w256-p200-s2-r1/rr-sparse-sgd-coPapersCiteseer-grid-sparse-coPapersCiteseer-w256-p200-s2-r1.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/raw/grid-sparse-coPapersCiteseer-w256-p200-s2-r1/rr-sparse-sgd-coPapersCiteseer-grid-sparse-coPapersCiteseer-w256-p200-s2-r1.vertex-map.txt.xz",
+      "original_sha256": "31f2a33986306445f641802e92932fe93b8e7e285297d9255f47fca78d5d4123",
+      "decompressed_sha256": "31f2a33986306445f641802e92932fe93b8e7e285297d9255f47fca78d5d4123",
+      "compressed_sha256": "73143f7aeba595dc31330366a133092303fe35a9adb4471568a1ed231a6bd696",
+      "original_bytes": 5855208,
+      "compressed_bytes": 177136,
+      "compression": "xz",
+      "preset": 0,
+      "xz_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/raw/grid-sparse-coPapersCiteseer-w256-p200-s2-r1/rr-sparse-sgd-coPapersCiteseer-grid-sparse-coPapersCiteseer-w256-p200-s2-r1.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/raw/grid-sparse-coPapersCiteseer-w256-p200-s2-r1/rr-sparse-sgd-coPapersCiteseer-grid-sparse-coPapersCiteseer-w256-p200-s2-r1.final.shared.txt.gz",
+      "original_sha256": "a8a78fa3d14781e3fa774c2344cfa9f865959a93bbf20c350799e20eb33acc72",
+      "decompressed_sha256": "a8a78fa3d14781e3fa774c2344cfa9f865959a93bbf20c350799e20eb33acc72",
+      "original_bytes": 223521282,
+      "compressed_sha256": "13cb5806d7b26b7db4fc790a16c45615602e739b1321e14d79be2e205287b6d2",
+      "compressed_bytes": 54146072,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/shared-edges/1d2f63ad71756124d9eab451ede52f36bcc6281d438836d5ba5ae69973e74603.edges-template.gz",
+      "shared_edge_sha256": "d6af24997318bee34ac8a6bf26feeea2e3ae7f2ba30d844592bf1d5c32dc8ed5",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/raw/grid-sparse-coPapersCiteseer-w256-p200-s2-r1/rr-sparse-sgd-coPapersCiteseer-grid-sparse-coPapersCiteseer-w256-p200-s2-r1.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/raw/grid-sparse-coPapersCiteseer-w256-p200-s2-r1/rr-sparse-sgd-coPapersCiteseer-grid-sparse-coPapersCiteseer-w256-p200-s2-r1.initial.shared.txt.gz",
+      "original_sha256": "c3072f710f72b5b324278c1423411793edb92f9f6cd8a3d21bd824d7bcf0884f",
+      "decompressed_sha256": "c3072f710f72b5b324278c1423411793edb92f9f6cd8a3d21bd824d7bcf0884f",
+      "original_bytes": 224476939,
+      "compressed_sha256": "dadc12f355ee5431ee5fd7d948db7460da6e21f5183b424a18442636e51fe1f9",
+      "compressed_bytes": 54296802,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/shared-edges/1d2f63ad71756124d9eab451ede52f36bcc6281d438836d5ba5ae69973e74603.edges-template.gz",
+      "shared_edge_sha256": "d6af24997318bee34ac8a6bf26feeea2e3ae7f2ba30d844592bf1d5c32dc8ed5",
+      "prefix_member_bytes": 65536
+    }
+  ],
+  "errors": [],
+  "updated_at": "2026-11-07T17:35:54+09:00",
+  "storage_definition": "Each layout is independently readable with ordinary gzip; APFS shares immutable edge-member blocks. Other artifacts retain prior encoding.",
+  "previous_manifest": "archive-before-shared-gzip.json"
+}

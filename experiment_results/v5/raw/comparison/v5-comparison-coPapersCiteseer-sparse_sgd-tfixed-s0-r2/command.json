@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/baseline-sparse-sgd-non-gpu/target/release/baseline-sparse-sgd-non-gpu",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/sparse_only/coPapersCiteseer.mtx",
+    "--run-id",
+    "v5-comparison-coPapersCiteseer-sparse_sgd-tfixed-s0-r2",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "0",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-coPapersCiteseer-sparse_sgd-tfixed-s0-r2",
+    "--pivots",
+    "200"
+  ],
+  "environment": {
+    "SGD_STRESS_SAMPLES": "256",
+    "SGD_GPU_TIMESTAMPS": "0"
+  },
+  "started_at": "2026-11-06T12:56:09+09:00",
+  "memory_before": {
+    "available_bytes": 11786747904,
+    "used_bytes": 7939047424,
+    "swap_used_bytes": 1926823936,
+    "swap_in_bytes": 285405413376,
+    "swap_out_bytes": 3037282304
+  },
+  "warmup": false
+}

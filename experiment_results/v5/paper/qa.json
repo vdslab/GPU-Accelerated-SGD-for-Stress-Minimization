@@ -1,0 +1,58 @@
+{
+  "at": "2026-11-07T14:16:02+09:00",
+  "status": "passed",
+  "source_values_matched": true,
+  "figure_count": 9,
+  "visual_review": "All nine charts inspected; edited tile and pivot tick labels inspected again; no clipping or missing panels",
+  "timing_successes_audited": 6160,
+  "no_new_measurements": true,
+  "obsidian_embeds_and_copies_verified": true,
+  "files": [
+    {
+      "name": "f01-tile",
+      "png_sha256": "c92fddd30eae93df722922d9c501bc908b1a9ea2d52120f79d4fceb6fda73a7f",
+      "pdf_sha256": "edbd948edd0ffb86e0c2395635388a2828b08274ef0a94cdd2b6dd5e8e38b3ec"
+    },
+    {
+      "name": "f02-runtime",
+      "png_sha256": "dbed034d64b84aa55c2f3a551c737716c9b1382e204a93d20c5ecd83462e4892",
+      "pdf_sha256": "4189f924cd1fe03ed46379f72218a45d4709e0ec9554e3321bb47c2f945b6f58"
+    },
+    {
+      "name": "f03-quality",
+      "png_sha256": "fe6f4352b14cb43bb55cac66c746710d2bffcce0daf2a7aea74966d8ca98852a",
+      "pdf_sha256": "efbab62f639ec0a608fcabee4119c142e54bc9304dd1490ed918768e6e14a877"
+    },
+    {
+      "name": "f04-repeatability",
+      "png_sha256": "4f17773b2354daf4f040678a8dea03173183f226912f723db8155146bfa28ab0",
+      "pdf_sha256": "40a8957393b862ab062373a9277cad04ee86bc59146c2f7a55d2ed458d671965"
+    },
+    {
+      "name": "f05-bottleneck",
+      "png_sha256": "2db1a6e81d5396de6788f4773f7edcd6af2168f2ec77db1daf7ba93da7f041ce",
+      "pdf_sha256": "308de7d75238193cc2490d31e2663b088ba0ba46fee47d6c1c91261cf04b7c39"
+    },
+    {
+      "name": "f06-feasibility",
+      "png_sha256": "8ab548bd1ac76e1cc7c74d408f2df2e7648c3ccb199f22da9fa49fbb07bc802f",
+      "pdf_sha256": "584d66da328d29c1368fa16571ba0fb31284c16a7016be693a11f3b9b78534df"
+    },
+    {
+      "name": "f07-large-pivots",
+      "png_sha256": "1055d5e68d5b63a62cf76b819ea6441a015ca564aaf107a2adc9284c096d595c",
+      "pdf_sha256": "aa8f89bfcf0035770ec70c9d19b847deec5d48327e0465d1539b05f1556a1d68"
+    },
+    {
+      "name": "f08-layout-comparison",
+      "png_sha256": "a1de53a02827a508a64e6c3e13f37f4b609b9afa0889242f647c40108a44a122",
+      "pdf_sha256": "a4ab6a075e5238c08c784f42a96fdfb403cf15da90cdd46675b1b5076485777c"
+    },
+    {
+      "name": "f09-large-layouts",
+      "png_sha256": "82fa5ac8676a40da2aea3ef6d090ae6525699fd17005f852efd5761c281d1c3e",
+      "pdf_sha256": "7eefa08bf8cb92cbf4e78e75b2b62cb298351d5f9cebe968b0e5c1f9db3cfa1c"
+    }
+  ],
+  "script_sha256": "39f7f848b2a851b5d72ec31a81e0ba1733a1a1c9c8fb61a9f0d8e3070391c052"
+}

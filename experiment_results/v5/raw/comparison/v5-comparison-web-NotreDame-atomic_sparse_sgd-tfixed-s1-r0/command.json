@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/vram-lock-sparse/target/release/vram-lock-sparse",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/sparse_only/web-NotreDame.mtx",
+    "--run-id",
+    "v5-comparison-web-NotreDame-atomic_sparse_sgd-tfixed-s1-r0",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "1",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-web-NotreDame-atomic_sparse_sgd-tfixed-s1-r0",
+    "--pivots",
+    "200"
+  ],
+  "environment": {
+    "SGD_STRESS_SAMPLES": "256",
+    "SGD_GPU_TIMESTAMPS": "0"
+  },
+  "started_at": "2026-11-06T11:02:44+09:00",
+  "memory_before": {
+    "available_bytes": 13406191616,
+    "used_bytes": 8299216896,
+    "swap_used_bytes": 2035875840,
+    "swap_in_bytes": 207683387392,
+    "swap_out_bytes": 2563653632
+  },
+  "warmup": false
+}

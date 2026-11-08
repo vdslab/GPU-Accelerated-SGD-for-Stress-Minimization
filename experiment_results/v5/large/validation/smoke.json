@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "run_id": "validation-large-samples64-fe_4elt2-p50-s999",
+  "record": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/warmups/validation-large-samples64-fe_4elt2-p50-s999/record.json",
+  "checks": [
+    "sampled Stress64,seed0",
+    "layout15 iterations",
+    "phase_chunks1",
+    "p50",
+    "native schema and input hash",
+    "total_compute_time_ms positive",
+    "lossless artifacts"
+  ]
+}

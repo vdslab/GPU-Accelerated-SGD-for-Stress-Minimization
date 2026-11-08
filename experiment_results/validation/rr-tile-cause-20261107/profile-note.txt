@@ -1,0 +1,6 @@
+Metal System Trace captured successfully (5-second limit; application exited first).
+Raw metal.trace is retained locally and ignored by git.
+The exported gpu-counter-info exposes RT Unit Active only; no compute occupancy counter was obtained.
+GPU timeline/clock-state exports do not prove per-core occupancy or stall attribution.
+Profiling stdout is excluded from performance summaries.
+Large gpu-counter-value / metal-gpu-intervals XML exports were deleted after inspection; they can be regenerated from metal.trace.

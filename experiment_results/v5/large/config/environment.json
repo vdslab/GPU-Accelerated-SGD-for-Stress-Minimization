@@ -1,0 +1,1964 @@
+{
+  "captured_at_utc": "2026-11-06T09:53:51.006442+00:00",
+  "git_commit": "2bf4c24a47b3349620eda360b7d198c6266837d9",
+  "git_dirty": true,
+  "platform": "macOS-15.7.2-arm64-arm-64bit",
+  "machine": "arm64",
+  "python": "3.11.0 (main, May 27 2025, 02:55:14) [Clang 17.0.0 (clang-1700.0.13.3)]",
+  "binary_sha256": "61dd5fcb9ec4235c300242b10c4bda43bf958579380521a612cc1231b5af4092",
+  "memory": {
+    "available_bytes": 13351239680,
+    "used_bytes": 10361978880,
+    "swap_used_bytes": 3196518400,
+    "swap_in_bytes": 602979368960,
+    "swap_out_bytes": 3347300352
+  },
+  "disk_free_bytes": 16387284992,
+  "processes": [
+    {
+      "pid": 322,
+      "name": "SidecarRelay",
+      "rss": 8011776
+    },
+    {
+      "pid": 325,
+      "name": "UniversalControl",
+      "rss": 21217280
+    },
+    {
+      "pid": 385,
+      "name": "loginwindow",
+      "rss": 136183808
+    },
+    {
+      "pid": 586,
+      "name": "distnoted",
+      "rss": 6406144
+    },
+    {
+      "pid": 587,
+      "name": "cfprefsd",
+      "rss": 9732096
+    },
+    {
+      "pid": 589,
+      "name": "UserEventAgent",
+      "rss": 14598144
+    },
+    {
+      "pid": 596,
+      "name": "universalaccessd",
+      "rss": 16236544
+    },
+    {
+      "pid": 598,
+      "name": "pboard",
+      "rss": 7094272
+    },
+    {
+      "pid": 599,
+      "name": "WindowManager",
+      "rss": 35323904
+    },
+    {
+      "pid": 601,
+      "name": "lsd",
+      "rss": 14647296
+    },
+    {
+      "pid": 602,
+      "name": "tccd",
+      "rss": 17219584
+    },
+    {
+      "pid": 604,
+      "name": "AXVisualSupportAgent",
+      "rss": 21004288
+    },
+    {
+      "pid": 608,
+      "name": "secd",
+      "rss": 32702464
+    },
+    {
+      "pid": 612,
+      "name": "talagentd",
+      "rss": 14958592
+    },
+    {
+      "pid": 613,
+      "name": "sharedfilelistd",
+      "rss": 10338304
+    },
+    {
+      "pid": 614,
+      "name": "audioaccessoryd",
+      "rss": 18153472
+    },
+    {
+      "pid": 615,
+      "name": "bluetoothuserd",
+      "rss": 12500992
+    },
+    {
+      "pid": 616,
+      "name": "fontd",
+      "rss": 9781248
+    },
+    {
+      "pid": 617,
+      "name": "rapportd",
+      "rss": 23183360
+    },
+    {
+      "pid": 618,
+      "name": "usernotificationsd",
+      "rss": 12468224
+    },
+    {
+      "pid": 619,
+      "name": "accountsd",
+      "rss": 42352640
+    },
+    {
+      "pid": 620,
+      "name": "identityservicesd",
+      "rss": 34979840
+    },
+    {
+      "pid": 621,
+      "name": "fontworker",
+      "rss": 6176768
+    },
+    {
+      "pid": 622,
+      "name": "cloudd",
+      "rss": 36225024
+    },
+    {
+      "pid": 623,
+      "name": "containermanagerd",
+      "rss": 12566528
+    },
+    {
+      "pid": 636,
+      "name": "coreauthd",
+      "rss": 12222464
+    },
+    {
+      "pid": 637,
+      "name": "pkd",
+      "rss": 17367040
+    },
+    {
+      "pid": 638,
+      "name": "ChatGPT",
+      "rss": 569999360
+    },
+    {
+      "pid": 653,
+      "name": "iTerm2",
+      "rss": 54460416
+    },
+    {
+      "pid": 665,
+      "name": "Terminal",
+      "rss": 22642688
+    },
+    {
+      "pid": 667,
+      "name": "MobileDeviceUpdater",
+      "rss": 13189120
+    },
+    {
+      "pid": 668,
+      "name": "nsurlsessiond",
+      "rss": 23150592
+    },
+    {
+      "pid": 669,
+      "name": "usernoted",
+      "rss": 24018944
+    },
+    {
+      "pid": 673,
+      "name": "lockoutagent",
+      "rss": 7225344
+    },
+    {
+      "pid": 675,
+      "name": "Dock",
+      "rss": 47382528
+    },
+    {
+      "pid": 676,
+      "name": "ControlCenter",
+      "rss": 93487104
+    },
+    {
+      "pid": 677,
+      "name": "CoreLocationAgent",
+      "rss": 15990784
+    },
+    {
+      "pid": 679,
+      "name": "SystemUIServer",
+      "rss": 18530304
+    },
+    {
+      "pid": 682,
+      "name": "Finder",
+      "rss": 241647616
+    },
+    {
+      "pid": 684,
+      "name": "WiFiAgent",
+      "rss": 24821760
+    },
+    {
+      "pid": 689,
+      "name": "donotdisturbd",
+      "rss": 23117824
+    },
+    {
+      "pid": 690,
+      "name": "NotificationCenter",
+      "rss": 55934976
+    },
+    {
+      "pid": 696,
+      "name": "WallpaperAgent",
+      "rss": 27213824
+    },
+    {
+      "pid": 698,
+      "name": "ViewBridgeAuxiliary",
+      "rss": 12484608
+    },
+    {
+      "pid": 705,
+      "name": "bird",
+      "rss": 28934144
+    },
+    {
+      "pid": 706,
+      "name": "ContinuityCaptureAgent",
+      "rss": 14663680
+    },
+    {
+      "pid": 708,
+      "name": "fileproviderd",
+      "rss": 35569664
+    },
+    {
+      "pid": 709,
+      "name": "AMPDeviceDiscoveryAgent",
+      "rss": 7716864
+    },
+    {
+      "pid": 720,
+      "name": "replayd",
+      "rss": 23134208
+    },
+    {
+      "pid": 722,
+      "name": "WallpaperImageExtension",
+      "rss": 12582912
+    },
+    {
+      "pid": 732,
+      "name": "sharingd",
+      "rss": 36339712
+    },
+    {
+      "pid": 745,
+      "name": "useractivityd",
+      "rss": 11026432
+    },
+    {
+      "pid": 746,
+      "name": "com.apple.dock.extra",
+      "rss": 32473088
+    },
+    {
+      "pid": 747,
+      "name": "com.apple.dock.external.extra.arm64",
+      "rss": 10960896
+    },
+    {
+      "pid": 749,
+      "name": "com.apple.dock.external.extra.arm64",
+      "rss": 10633216
+    },
+    {
+      "pid": 750,
+      "name": "BiomeAgent",
+      "rss": 16711680
+    },
+    {
+      "pid": 751,
+      "name": "corespeechd",
+      "rss": 13942784
+    },
+    {
+      "pid": 755,
+      "name": "familycircled",
+      "rss": 13287424
+    },
+    {
+      "pid": 758,
+      "name": "akd",
+      "rss": 26525696
+    },
+    {
+      "pid": 762,
+      "name": "homed",
+      "rss": 31735808
+    },
+    {
+      "pid": 792,
+      "name": "Spotlight",
+      "rss": 42188800
+    },
+    {
+      "pid": 795,
+      "name": "ThemeWidgetControlViewService",
+      "rss": 14942208
+    },
+    {
+      "pid": 796,
+      "name": "corespotlightd",
+      "rss": 113770496
+    },
+    {
+      "pid": 802,
+      "name": "commerce",
+      "rss": 10895360
+    },
+    {
+      "pid": 816,
+      "name": "browser_crashpad_handler",
+      "rss": 1441792
+    },
+    {
+      "pid": 820,
+      "name": "icdd",
+      "rss": 7241728
+    },
+    {
+      "pid": 846,
+      "name": "imklaunchagent",
+      "rss": 10420224
+    },
+    {
+      "pid": 847,
+      "name": "ctkahp",
+      "rss": 4653056
+    },
+    {
+      "pid": 849,
+      "name": "CursorUIViewService",
+      "rss": 24592384
+    },
+    {
+      "pid": 851,
+      "name": "JapaneseIM-RomajiTyping",
+      "rss": 167591936
+    },
+    {
+      "pid": 852,
+      "name": "PAH_Extension",
+      "rss": 12468224
+    },
+    {
+      "pid": 875,
+      "name": "imagent",
+      "rss": 22593536
+    },
+    {
+      "pid": 879,
+      "name": "searchpartyuseragent",
+      "rss": 23855104
+    },
+    {
+      "pid": 881,
+      "name": "diagnostics_agent",
+      "rss": 11878400
+    },
+    {
+      "pid": 898,
+      "name": "mdbulkimport",
+      "rss": 27131904
+    },
+    {
+      "pid": 905,
+      "name": "browser_crashpad_handler",
+      "rss": 1441792
+    },
+    {
+      "pid": 946,
+      "name": "extensionkitservice",
+      "rss": 8175616
+    },
+    {
+      "pid": 947,
+      "name": "TextThumbnailExtension",
+      "rss": 13664256
+    },
+    {
+      "pid": 1635,
+      "name": "Codex (Service)",
+      "rss": 106790912
+    },
+    {
+      "pid": 1636,
+      "name": "Codex (Service)",
+      "rss": 81018880
+    },
+    {
+      "pid": 1732,
+      "name": "Codex (Service)",
+      "rss": 21987328
+    },
+    {
+      "pid": 2243,
+      "name": "com.apple.CloudDocs.iCloudDriveFileProvider",
+      "rss": 16957440
+    },
+    {
+      "pid": 2302,
+      "name": "trustd",
+      "rss": 15187968
+    },
+    {
+      "pid": 2370,
+      "name": "mediaremoteagent",
+      "rss": 3506176
+    },
+    {
+      "pid": 2376,
+      "name": "CloudTelemetryService",
+      "rss": 14139392
+    },
+    {
+      "pid": 2377,
+      "name": "avconferenced",
+      "rss": 13484032
+    },
+    {
+      "pid": 2543,
+      "name": "passd",
+      "rss": 17858560
+    },
+    {
+      "pid": 2960,
+      "name": "ChatGPTHelper",
+      "rss": 19202048
+    },
+    {
+      "pid": 3374,
+      "name": "bare-modifier-monitor",
+      "rss": 12746752
+    },
+    {
+      "pid": 3450,
+      "name": "codex",
+      "rss": 711245824
+    },
+    {
+      "pid": 3494,
+      "name": "Codex (Renderer)",
+      "rss": 44351488
+    },
+    {
+      "pid": 3496,
+      "name": "Codex (Renderer)",
+      "rss": 1493106688
+    },
+    {
+      "pid": 3668,
+      "name": "Codex (Service)",
+      "rss": 104120320
+    },
+    {
+      "pid": 3800,
+      "name": "iTermServer-3.7.6",
+      "rss": 1114112
+    },
+    {
+      "pid": 3810,
+      "name": "zsh",
+      "rss": 5013504
+    },
+    {
+      "pid": 4211,
+      "name": "heard",
+      "rss": 24100864
+    },
+    {
+      "pid": 4341,
+      "name": "FolderActionsDispatcher",
+      "rss": 12926976
+    },
+    {
+      "pid": 4352,
+      "name": "Siri",
+      "rss": 18087936
+    },
+    {
+      "pid": 4353,
+      "name": "karabiner_console_user_server",
+      "rss": 7602176
+    },
+    {
+      "pid": 4363,
+      "name": "AirPlayUIAgent",
+      "rss": 13778944
+    },
+    {
+      "pid": 4368,
+      "name": "TextInputMenuAgent",
+      "rss": 25591808
+    },
+    {
+      "pid": 4376,
+      "name": "Clipy",
+      "rss": 15683584
+    },
+    {
+      "pid": 4383,
+      "name": "WireGuard",
+      "rss": 19070976
+    },
+    {
+      "pid": 4417,
+      "name": "com.apple.accessibility.mediaaccessibilityd",
+      "rss": 2949120
+    },
+    {
+      "pid": 4662,
+      "name": "Karabiner-VirtualHIDDevice-Manager",
+      "rss": 3194880
+    },
+    {
+      "pid": 5124,
+      "name": "zsh",
+      "rss": 229376
+    },
+    {
+      "pid": 5125,
+      "name": "zsh",
+      "rss": 1015808
+    },
+    {
+      "pid": 5156,
+      "name": "zsh",
+      "rss": 229376
+    },
+    {
+      "pid": 5183,
+      "name": "gitstatusd-darwin-arm64",
+      "rss": 524288
+    },
+    {
+      "pid": 5733,
+      "name": "universalAccessAuthWarn",
+      "rss": 17186816
+    },
+    {
+      "pid": 6199,
+      "name": "Codex (Service)",
+      "rss": 15613952
+    },
+    {
+      "pid": 6301,
+      "name": "SkyComputerUseService",
+      "rss": 188596224
+    },
+    {
+      "pid": 6306,
+      "name": "Codex (Renderer)",
+      "rss": 100155392
+    },
+    {
+      "pid": 6320,
+      "name": "voicebankingd",
+      "rss": 14663680
+    },
+    {
+      "pid": 6323,
+      "name": "Codex (Renderer)",
+      "rss": 233734144
+    },
+    {
+      "pid": 6385,
+      "name": "codex",
+      "rss": 34684928
+    },
+    {
+      "pid": 6398,
+      "name": "Autoupdate",
+      "rss": 5160960
+    },
+    {
+      "pid": 6399,
+      "name": "Updater",
+      "rss": 11780096
+    },
+    {
+      "pid": 6400,
+      "name": "node",
+      "rss": 15826944
+    },
+    {
+      "pid": 6662,
+      "name": "SiriNCService",
+      "rss": 14827520
+    },
+    {
+      "pid": 7230,
+      "name": "extensionkitservice",
+      "rss": 8552448
+    },
+    {
+      "pid": 7316,
+      "name": "geoanalyticsd",
+      "rss": 11730944
+    },
+    {
+      "pid": 7495,
+      "name": "cloudphotod",
+      "rss": 14090240
+    },
+    {
+      "pid": 7496,
+      "name": "mediaanalysisd",
+      "rss": 63979520
+    },
+    {
+      "pid": 7502,
+      "name": "ScopedBookmarkAgent",
+      "rss": 9666560
+    },
+    {
+      "pid": 9728,
+      "name": "OSDUIHelper",
+      "rss": 14073856
+    },
+    {
+      "pid": 10164,
+      "name": "deleted",
+      "rss": 15433728
+    },
+    {
+      "pid": 10861,
+      "name": "iconservicesagent",
+      "rss": 26247168
+    },
+    {
+      "pid": 10865,
+      "name": "UserNotificationCenter",
+      "rss": 17612800
+    },
+    {
+      "pid": 11037,
+      "name": "peopled",
+      "rss": 16089088
+    },
+    {
+      "pid": 11188,
+      "name": "pbs",
+      "rss": 7667712
+    },
+    {
+      "pid": 11225,
+      "name": "amsondevicestoraged",
+      "rss": 14827520
+    },
+    {
+      "pid": 11226,
+      "name": "mobiletimerd",
+      "rss": 9175040
+    },
+    {
+      "pid": 11235,
+      "name": "AudioComponentRegistrar",
+      "rss": 9306112
+    },
+    {
+      "pid": 11288,
+      "name": "storekitagent",
+      "rss": 14483456
+    },
+    {
+      "pid": 11297,
+      "name": "chronod",
+      "rss": 29327360
+    },
+    {
+      "pid": 11302,
+      "name": "neagent",
+      "rss": 11649024
+    },
+    {
+      "pid": 11342,
+      "name": "WeatherWidget",
+      "rss": 64225280
+    },
+    {
+      "pid": 11343,
+      "name": "ScreenTimeWidgetExtension",
+      "rss": 61259776
+    },
+    {
+      "pid": 11368,
+      "name": "csnameddatad",
+      "rss": 3506176
+    },
+    {
+      "pid": 11488,
+      "name": "ReportCrash",
+      "rss": 12435456
+    },
+    {
+      "pid": 11507,
+      "name": "colorsync.useragent",
+      "rss": 5013504
+    },
+    {
+      "pid": 11510,
+      "name": "com.apple.ColorSyncXPCAgent",
+      "rss": 1982464
+    },
+    {
+      "pid": 11527,
+      "name": "PlugInLibraryService",
+      "rss": 1703936
+    },
+    {
+      "pid": 11581,
+      "name": "ThemeWidgetControlViewService",
+      "rss": 17154048
+    },
+    {
+      "pid": 11584,
+      "name": "ThemeWidgetControlViewService",
+      "rss": 13762560
+    },
+    {
+      "pid": 11585,
+      "name": "ThemeWidgetControlViewService",
+      "rss": 17399808
+    },
+    {
+      "pid": 11588,
+      "name": "PlugInLibraryService",
+      "rss": 1736704
+    },
+    {
+      "pid": 11591,
+      "name": "inputanalyticsd",
+      "rss": 8568832
+    },
+    {
+      "pid": 11737,
+      "name": "PasswordBreachAgent",
+      "rss": 16220160
+    },
+    {
+      "pid": 11948,
+      "name": "com.apple.appkit.xpc.openAndSavePanelService",
+      "rss": 64651264
+    },
+    {
+      "pid": 12151,
+      "name": "naturallanguaged",
+      "rss": 17858560
+    },
+    {
+      "pid": 12306,
+      "name": "MDRemoteServiceSupport",
+      "rss": 1982464
+    },
+    {
+      "pid": 12308,
+      "name": "replicatord",
+      "rss": 19644416
+    },
+    {
+      "pid": 12309,
+      "name": "StatusKitAgent",
+      "rss": 20791296
+    },
+    {
+      "pid": 14185,
+      "name": "CMFSyncAgent",
+      "rss": 8126464
+    },
+    {
+      "pid": 14242,
+      "name": "adprivacyd",
+      "rss": 10567680
+    },
+    {
+      "pid": 14254,
+      "name": "findmydevice-user-agent",
+      "rss": 8142848
+    },
+    {
+      "pid": 14309,
+      "name": "localizationswitcherd",
+      "rss": 8994816
+    },
+    {
+      "pid": 15946,
+      "name": "CoreServicesUIAgent",
+      "rss": 63291392
+    },
+    {
+      "pid": 16065,
+      "name": "IMAutomaticHistoryDeletionAgent",
+      "rss": 10862592
+    },
+    {
+      "pid": 17173,
+      "name": "spotlightknowledged",
+      "rss": 5160960
+    },
+    {
+      "pid": 20653,
+      "name": "USBAgent",
+      "rss": 1638400
+    },
+    {
+      "pid": 21693,
+      "name": "PowerChime",
+      "rss": 14827520
+    },
+    {
+      "pid": 26655,
+      "name": "Codex (Renderer)",
+      "rss": 18890752
+    },
+    {
+      "pid": 26722,
+      "name": "triald",
+      "rss": 15466496
+    },
+    {
+      "pid": 26833,
+      "name": "secinitd",
+      "rss": 12959744
+    },
+    {
+      "pid": 27216,
+      "name": "contactsd",
+      "rss": 22937600
+    },
+    {
+      "pid": 27338,
+      "name": "callservicesd",
+      "rss": 27787264
+    },
+    {
+      "pid": 27976,
+      "name": "IntelligencePlatformComputeService",
+      "rss": 22626304
+    },
+    {
+      "pid": 28240,
+      "name": "extensionkitservice",
+      "rss": 10584064
+    },
+    {
+      "pid": 28241,
+      "name": "networkserviceproxy",
+      "rss": 27869184
+    },
+    {
+      "pid": 29023,
+      "name": "BTLEServerAgent",
+      "rss": 4931584
+    },
+    {
+      "pid": 30925,
+      "name": "com.apple.quicklook.ThumbnailsAgent",
+      "rss": 34422784
+    },
+    {
+      "pid": 30926,
+      "name": "geodMachServiceBridge",
+      "rss": 4702208
+    },
+    {
+      "pid": 30934,
+      "name": "AssetCacheLocatorService",
+      "rss": 11321344
+    },
+    {
+      "pid": 31125,
+      "name": "AuthenticationServicesAgent",
+      "rss": 23789568
+    },
+    {
+      "pid": 31246,
+      "name": "appstoreagent",
+      "rss": 23003136
+    },
+    {
+      "pid": 31335,
+      "name": "photoanalysisd",
+      "rss": 24444928
+    },
+    {
+      "pid": 31732,
+      "name": "BackgroundTaskManagementAgent",
+      "rss": 12320768
+    },
+    {
+      "pid": 31934,
+      "name": "tipsd",
+      "rss": 14778368
+    },
+    {
+      "pid": 32006,
+      "name": "SoftwareUpdateNotificationManager",
+      "rss": 18104320
+    },
+    {
+      "pid": 32007,
+      "name": "nsattributedstringagent",
+      "rss": 24969216
+    },
+    {
+      "pid": 35994,
+      "name": "Codex (Renderer)",
+      "rss": 59375616
+    },
+    {
+      "pid": 36400,
+      "name": "knowledge-agent",
+      "rss": 28114944
+    },
+    {
+      "pid": 36541,
+      "name": "ContextStoreAgent",
+      "rss": 23429120
+    },
+    {
+      "pid": 36606,
+      "name": "duetexpertd",
+      "rss": 39305216
+    },
+    {
+      "pid": 36635,
+      "name": "linkd",
+      "rss": 15876096
+    },
+    {
+      "pid": 37829,
+      "name": "metrickitd",
+      "rss": 3817472
+    },
+    {
+      "pid": 38771,
+      "name": "intelligentroutingd",
+      "rss": 11665408
+    },
+    {
+      "pid": 38772,
+      "name": "UIKitSystem",
+      "rss": 23150592
+    },
+    {
+      "pid": 38773,
+      "name": "milod",
+      "rss": 15974400
+    },
+    {
+      "pid": 40799,
+      "name": "promotedcontentd",
+      "rss": 11616256
+    },
+    {
+      "pid": 41004,
+      "name": "installerauthagent",
+      "rss": 2342912
+    },
+    {
+      "pid": 41321,
+      "name": "financed",
+      "rss": 18300928
+    },
+    {
+      "pid": 41485,
+      "name": "Codex (Renderer)",
+      "rss": 66011136
+    },
+    {
+      "pid": 42012,
+      "name": "com.apple.CloudPhotosConfiguration",
+      "rss": 14286848
+    },
+    {
+      "pid": 42018,
+      "name": "findmylocateagent",
+      "rss": 16105472
+    },
+    {
+      "pid": 42019,
+      "name": "studentd",
+      "rss": 23592960
+    },
+    {
+      "pid": 42020,
+      "name": "progressd",
+      "rss": 11894784
+    },
+    {
+      "pid": 42040,
+      "name": "com.apple.BKAgentService",
+      "rss": 8060928
+    },
+    {
+      "pid": 42043,
+      "name": "PlugInLibraryService",
+      "rss": 1736704
+    },
+    {
+      "pid": 42046,
+      "name": "contactsdonationagent",
+      "rss": 16482304
+    },
+    {
+      "pid": 42271,
+      "name": "AudiovisualThumbnailExtension",
+      "rss": 28622848
+    },
+    {
+      "pid": 42272,
+      "name": "VTDecoderXPCService",
+      "rss": 12926976
+    },
+    {
+      "pid": 42293,
+      "name": "XprotectService",
+      "rss": 6520832
+    },
+    {
+      "pid": 42367,
+      "name": "WorkflowServiceRunner",
+      "rss": 14352384
+    },
+    {
+      "pid": 42368,
+      "name": "com.apple.automator.runner",
+      "rss": 12582912
+    },
+    {
+      "pid": 42536,
+      "name": "QuickLookUIService",
+      "rss": 18219008
+    },
+    {
+      "pid": 42545,
+      "name": "ImageThumbnailExtension",
+      "rss": 10764288
+    },
+    {
+      "pid": 43887,
+      "name": "Codex (Renderer)",
+      "rss": 242515968
+    },
+    {
+      "pid": 44235,
+      "name": "AppSSOAgent",
+      "rss": 18874368
+    },
+    {
+      "pid": 45311,
+      "name": "Codex (Renderer)",
+      "rss": 248184832
+    },
+    {
+      "pid": 45379,
+      "name": "codex-code-mode-host",
+      "rss": 38731776
+    },
+    {
+      "pid": 45396,
+      "name": "Codex (Renderer)",
+      "rss": 43892736
+    },
+    {
+      "pid": 45398,
+      "name": "dataaccessd",
+      "rss": 26886144
+    },
+    {
+      "pid": 45447,
+      "name": "Codex (Renderer)",
+      "rss": 16023552
+    },
+    {
+      "pid": 45880,
+      "name": "MTLCompilerService",
+      "rss": 15941632
+    },
+    {
+      "pid": 46226,
+      "name": "AMPArtworkAgent",
+      "rss": 9322496
+    },
+    {
+      "pid": 46675,
+      "name": "nbagent",
+      "rss": 36765696
+    },
+    {
+      "pid": 47100,
+      "name": "spindump_agent",
+      "rss": 3227648
+    },
+    {
+      "pid": 47253,
+      "name": "Codex (Renderer)",
+      "rss": 257212416
+    },
+    {
+      "pid": 47284,
+      "name": "Codex (Renderer)",
+      "rss": 17776640
+    },
+    {
+      "pid": 47434,
+      "name": "DiskUnmountWatcher",
+      "rss": 1703936
+    },
+    {
+      "pid": 47507,
+      "name": "Codex (Renderer)",
+      "rss": 258064384
+    },
+    {
+      "pid": 47520,
+      "name": "Codex (Renderer)",
+      "rss": 78397440
+    },
+    {
+      "pid": 48722,
+      "name": "diskspaced",
+      "rss": 9650176
+    },
+    {
+      "pid": 49842,
+      "name": "intents_helper",
+      "rss": 4243456
+    },
+    {
+      "pid": 50802,
+      "name": "com.apple.tonelibraryd",
+      "rss": 3424256
+    },
+    {
+      "pid": 50803,
+      "name": "com.apple.FaceTime.FTConversationService",
+      "rss": 9601024
+    },
+    {
+      "pid": 50804,
+      "name": "CallHistoryPluginHelper",
+      "rss": 17268736
+    },
+    {
+      "pid": 50810,
+      "name": "CallHistorySyncHelper",
+      "rss": 25690112
+    },
+    {
+      "pid": 51832,
+      "name": "assistantd",
+      "rss": 31277056
+    },
+    {
+      "pid": 51952,
+      "name": "com.apple.audio.SandboxHelper",
+      "rss": 2441216
+    },
+    {
+      "pid": 51964,
+      "name": "routined",
+      "rss": 42401792
+    },
+    {
+      "pid": 52197,
+      "name": "Microsoft Excel",
+      "rss": 85606400
+    },
+    {
+      "pid": 52198,
+      "name": "QuickTime Player",
+      "rss": 82247680
+    },
+    {
+      "pid": 52199,
+      "name": "com.apple.audio.SandboxHelper",
+      "rss": 2441216
+    },
+    {
+      "pid": 52200,
+      "name": "VTDecoderXPCService",
+      "rss": 8290304
+    },
+    {
+      "pid": 52201,
+      "name": "PlugInLibraryService",
+      "rss": 1785856
+    },
+    {
+      "pid": 52202,
+      "name": "PlugInLibraryService",
+      "rss": 1753088
+    },
+    {
+      "pid": 52203,
+      "name": "printtool",
+      "rss": 14614528
+    },
+    {
+      "pid": 52205,
+      "name": "com.apple.appkit.xpc.openAndSavePanelService",
+      "rss": 51363840
+    },
+    {
+      "pid": 52206,
+      "name": "QuickLookUIService",
+      "rss": 15335424
+    },
+    {
+      "pid": 52207,
+      "name": "PlugInLibraryService",
+      "rss": 1785856
+    },
+    {
+      "pid": 52208,
+      "name": "com.apple.appkit.xpc.openAndSavePanelService",
+      "rss": 50987008
+    },
+    {
+      "pid": 52209,
+      "name": "QuickLookUIService",
+      "rss": 15368192
+    },
+    {
+      "pid": 52210,
+      "name": "PlugInLibraryService",
+      "rss": 1753088
+    },
+    {
+      "pid": 52300,
+      "name": "parsecd",
+      "rss": 19070976
+    },
+    {
+      "pid": 52301,
+      "name": "translationd",
+      "rss": 17367040
+    },
+    {
+      "pid": 52626,
+      "name": "coreautha",
+      "rss": 21823488
+    },
+    {
+      "pid": 52627,
+      "name": "TextInputSwitcher",
+      "rss": 21168128
+    },
+    {
+      "pid": 52629,
+      "name": "keychainsharingmessagingd",
+      "rss": 7094272
+    },
+    {
+      "pid": 53149,
+      "name": "homeenergyd",
+      "rss": 29163520
+    },
+    {
+      "pid": 53790,
+      "name": "appplaceholdersyncd",
+      "rss": 9551872
+    },
+    {
+      "pid": 56064,
+      "name": "Codex (Renderer)",
+      "rss": 52871168
+    },
+    {
+      "pid": 56276,
+      "name": "TelemetryDiskChecker",
+      "rss": 5423104
+    },
+    {
+      "pid": 56306,
+      "name": "Codex (Renderer)",
+      "rss": 122388480
+    },
+    {
+      "pid": 56318,
+      "name": "Codex (Renderer)",
+      "rss": 70811648
+    },
+    {
+      "pid": 56325,
+      "name": "MTLCompilerService",
+      "rss": 3915776
+    },
+    {
+      "pid": 56967,
+      "name": "LinkedNotesUIService",
+      "rss": 23871488
+    },
+    {
+      "pid": 56971,
+      "name": "sociallayerd",
+      "rss": 13254656
+    },
+    {
+      "pid": 57004,
+      "name": "Rectangle",
+      "rss": 35422208
+    },
+    {
+      "pid": 58541,
+      "name": "ndoagent",
+      "rss": 7192576
+    },
+    {
+      "pid": 58543,
+      "name": "gamecontrolleragentd",
+      "rss": 5898240
+    },
+    {
+      "pid": 58773,
+      "name": "AppleSpell",
+      "rss": 194822144
+    },
+    {
+      "pid": 58895,
+      "name": "OfficeThumbnailExtension",
+      "rss": 12582912
+    },
+    {
+      "pid": 58896,
+      "name": "WebThumbnailExtension",
+      "rss": 34422784
+    },
+    {
+      "pid": 58897,
+      "name": "com.apple.WebKit.GPU",
+      "rss": 14155776
+    },
+    {
+      "pid": 58899,
+      "name": "com.apple.audio.SandboxHelper",
+      "rss": 2441216
+    },
+    {
+      "pid": 59547,
+      "name": "Obsidian",
+      "rss": 148094976
+    },
+    {
+      "pid": 59548,
+      "name": "PlugInLibraryService",
+      "rss": 1753088
+    },
+    {
+      "pid": 59549,
+      "name": "Obsidian Helper (GPU)",
+      "rss": 63569920
+    },
+    {
+      "pid": 59550,
+      "name": "Obsidian Helper",
+      "rss": 35078144
+    },
+    {
+      "pid": 59551,
+      "name": "Obsidian Helper (Renderer)",
+      "rss": 181108736
+    },
+    {
+      "pid": 59728,
+      "name": "generativeexperiencesd",
+      "rss": 11681792
+    },
+    {
+      "pid": 59784,
+      "name": "ModelCatalogAgent",
+      "rss": 7307264
+    },
+    {
+      "pid": 61255,
+      "name": "Codex (Renderer)",
+      "rss": 355762176
+    },
+    {
+      "pid": 61258,
+      "name": "Codex (Service)",
+      "rss": 44400640
+    },
+    {
+      "pid": 61267,
+      "name": "CSExattrCryptoService",
+      "rss": 3407872
+    },
+    {
+      "pid": 61703,
+      "name": "proactiveeventtrackerd",
+      "rss": 4751360
+    },
+    {
+      "pid": 62411,
+      "name": "feedbackd",
+      "rss": 7880704
+    },
+    {
+      "pid": 62415,
+      "name": "businessservicesd",
+      "rss": 10780672
+    },
+    {
+      "pid": 62416,
+      "name": "MessagesBlastDoorService",
+      "rss": 6012928
+    },
+    {
+      "pid": 65154,
+      "name": "CGPDFService",
+      "rss": 6881280
+    },
+    {
+      "pid": 67044,
+      "name": "node",
+      "rss": 45973504
+    },
+    {
+      "pid": 67045,
+      "name": "node_repl",
+      "rss": 9338880
+    },
+    {
+      "pid": 67048,
+      "name": "node",
+      "rss": 42745856
+    },
+    {
+      "pid": 67081,
+      "name": "node_repl",
+      "rss": 11141120
+    },
+    {
+      "pid": 69582,
+      "name": "Codex (Renderer)",
+      "rss": 103235584
+    },
+    {
+      "pid": 69602,
+      "name": "Codex (Renderer)",
+      "rss": 69828608
+    },
+    {
+      "pid": 70945,
+      "name": "itunescloudd",
+      "rss": 21135360
+    },
+    {
+      "pid": 71490,
+      "name": "syncdefaultsd",
+      "rss": 16613376
+    },
+    {
+      "pid": 71721,
+      "name": "photolibraryd",
+      "rss": 17055744
+    },
+    {
+      "pid": 72284,
+      "name": "iCloudNotificationAgent",
+      "rss": 23134208
+    },
+    {
+      "pid": 72285,
+      "name": "appleaccountd",
+      "rss": 19251200
+    },
+    {
+      "pid": 74283,
+      "name": "UsageTrackingAgent",
+      "rss": 20529152
+    },
+    {
+      "pid": 74284,
+      "name": "ManagedSettingsAgent",
+      "rss": 5226496
+    },
+    {
+      "pid": 74287,
+      "name": "CategoriesService",
+      "rss": 9256960
+    },
+    {
+      "pid": 74289,
+      "name": "ContextService",
+      "rss": 10780672
+    },
+    {
+      "pid": 74971,
+      "name": "ScreenTimeAgent",
+      "rss": 17154048
+    },
+    {
+      "pid": 74972,
+      "name": "dmd",
+      "rss": 10895360
+    },
+    {
+      "pid": 75500,
+      "name": "managedcorespotlightd",
+      "rss": 11796480
+    },
+    {
+      "pid": 75534,
+      "name": "contentlinkingd",
+      "rss": 9207808
+    },
+    {
+      "pid": 75535,
+      "name": "proactived",
+      "rss": 15007744
+    },
+    {
+      "pid": 75537,
+      "name": "calaccessd",
+      "rss": 20938752
+    },
+    {
+      "pid": 75602,
+      "name": "AppPredictionIntentsHelperService",
+      "rss": 13467648
+    },
+    {
+      "pid": 75621,
+      "name": "suggestd",
+      "rss": 33193984
+    },
+    {
+      "pid": 79217,
+      "name": "node",
+      "rss": 52985856
+    },
+    {
+      "pid": 79219,
+      "name": "node_repl",
+      "rss": 10813440
+    },
+    {
+      "pid": 79221,
+      "name": "node_repl",
+      "rss": 9420800
+    },
+    {
+      "pid": 79222,
+      "name": "node",
+      "rss": 39419904
+    },
+    {
+      "pid": 79275,
+      "name": "node_repl",
+      "rss": 166674432
+    },
+    {
+      "pid": 79948,
+      "name": "siriactionsd",
+      "rss": 24346624
+    },
+    {
+      "pid": 79949,
+      "name": "ContainerMetadataExtractor",
+      "rss": 10829824
+    },
+    {
+      "pid": 79950,
+      "name": "spotlightknowledged",
+      "rss": 12451840
+    },
+    {
+      "pid": 80088,
+      "name": "swtransparencyd",
+      "rss": 9256960
+    },
+    {
+      "pid": 80089,
+      "name": "CloudTelemetryService",
+      "rss": 8011776
+    },
+    {
+      "pid": 80635,
+      "name": "parsec-fbf",
+      "rss": 9994240
+    },
+    {
+      "pid": 80687,
+      "name": "XProtect",
+      "rss": 3702784
+    },
+    {
+      "pid": 80689,
+      "name": "XProtectPluginService",
+      "rss": 5406720
+    },
+    {
+      "pid": 80974,
+      "name": "amsaccountsd",
+      "rss": 21676032
+    },
+    {
+      "pid": 80975,
+      "name": "amsengagementd",
+      "rss": 19480576
+    },
+    {
+      "pid": 80977,
+      "name": "swcd",
+      "rss": 15040512
+    },
+    {
+      "pid": 81926,
+      "name": "remindd",
+      "rss": 43204608
+    },
+    {
+      "pid": 82927,
+      "name": "System Settings",
+      "rss": 128811008
+    },
+    {
+      "pid": 82928,
+      "name": "extensionkitservice",
+      "rss": 9207808
+    },
+    {
+      "pid": 82929,
+      "name": "GeneralSettings",
+      "rss": 73154560
+    },
+    {
+      "pid": 82931,
+      "name": "AppleIDSettings",
+      "rss": 67108864
+    },
+    {
+      "pid": 82932,
+      "name": "FamilySettings",
+      "rss": 37371904
+    },
+    {
+      "pid": 82933,
+      "name": "FollowUpSettingsExtension",
+      "rss": 26656768
+    },
+    {
+      "pid": 82935,
+      "name": "HeadphoneSettingsExtension",
+      "rss": 28049408
+    },
+    {
+      "pid": 82936,
+      "name": "VPN",
+      "rss": 27967488
+    },
+    {
+      "pid": 82937,
+      "name": "com.apple.iCloudHelper",
+      "rss": 19038208
+    },
+    {
+      "pid": 82938,
+      "name": "ClassroomSettings",
+      "rss": 27623424
+    },
+    {
+      "pid": 82943,
+      "name": "Storage",
+      "rss": 123453440
+    },
+    {
+      "pid": 82981,
+      "name": "PackageThumbnailExtension",
+      "rss": 13041664
+    },
+    {
+      "pid": 82982,
+      "name": "MTLCompilerService",
+      "rss": 19202048
+    },
+    {
+      "pid": 83026,
+      "name": "axassetsd",
+      "rss": 34144256
+    },
+    {
+      "pid": 83027,
+      "name": "com.apple.audio.ComponentTagHelper",
+      "rss": 3997696
+    },
+    {
+      "pid": 83028,
+      "name": "SiriAUSP",
+      "rss": 14286848
+    },
+    {
+      "pid": 83029,
+      "name": "WardaSynthesizer_arm64",
+      "rss": 17383424
+    },
+    {
+      "pid": 83030,
+      "name": "WardaSynthesizer_x86_64",
+      "rss": 10964992
+    },
+    {
+      "pid": 83031,
+      "name": "com.apple.audio.SandboxHelper",
+      "rss": 7241728
+    },
+    {
+      "pid": 83033,
+      "name": "com.apple.audio.SandboxHelper",
+      "rss": 7323648
+    },
+    {
+      "pid": 83034,
+      "name": "MacinTalkAUSP",
+      "rss": 23117824
+    },
+    {
+      "pid": 83035,
+      "name": "AUCrashHandlerService",
+      "rss": 8519680
+    },
+    {
+      "pid": 83036,
+      "name": "MauiAUSP",
+      "rss": 22069248
+    },
+    {
+      "pid": 83037,
+      "name": "KonaSynthesizer",
+      "rss": 14368768
+    },
+    {
+      "pid": 83045,
+      "name": "com.apple.audio.SandboxHelper",
+      "rss": 7585792
+    },
+    {
+      "pid": 83046,
+      "name": "com.apple.audio.SandboxHelper",
+      "rss": 7684096
+    },
+    {
+      "pid": 83047,
+      "name": "com.apple.audio.SandboxHelper",
+      "rss": 7569408
+    },
+    {
+      "pid": 83050,
+      "name": "com.apple.SiriTTSService.TrialProxy",
+      "rss": 12697600
+    },
+    {
+      "pid": 83053,
+      "name": "com.apple.SiriTTSService.TrialProxy",
+      "rss": 9371648
+    },
+    {
+      "pid": 83054,
+      "name": "com.apple.SiriTTSService.TrialProxy",
+      "rss": 9371648
+    },
+    {
+      "pid": 83071,
+      "name": "com.apple.audio.SandboxHelper",
+      "rss": 7405568
+    },
+    {
+      "pid": 83210,
+      "name": "node",
+      "rss": 82919424
+    },
+    {
+      "pid": 83211,
+      "name": "node",
+      "rss": 414236672
+    },
+    {
+      "pid": 83212,
+      "name": "codex",
+      "rss": 185663488
+    },
+    {
+      "pid": 83217,
+      "name": "CUALockScreenGuardian",
+      "rss": 131710976
+    },
+    {
+      "pid": 83242,
+      "name": "ThemeWidgetControlViewService",
+      "rss": 30146560
+    },
+    {
+      "pid": 83377,
+      "name": "mdworker_shared",
+      "rss": 28835840
+    },
+    {
+      "pid": 83430,
+      "name": "mdworker_shared",
+      "rss": 15777792
+    },
+    {
+      "pid": 83431,
+      "name": "mdworker_shared",
+      "rss": 15613952
+    },
+    {
+      "pid": 83440,
+      "name": "mdworker_shared",
+      "rss": 19824640
+    },
+    {
+      "pid": 83457,
+      "name": "zsh",
+      "rss": 2326528
+    },
+    {
+      "pid": 83488,
+      "name": "python3.11",
+      "rss": 28590080
+    },
+    {
+      "pid": 84033,
+      "name": "CommCenter",
+      "rss": 17760256
+    },
+    {
+      "pid": 85275,
+      "name": "mapssyncd",
+      "rss": 17317888
+    },
+    {
+      "pid": 85276,
+      "name": "com.apple.geod",
+      "rss": 14073856
+    },
+    {
+      "pid": 86536,
+      "name": "mdwrite",
+      "rss": 3211264
+    },
+    {
+      "pid": 88148,
+      "name": "siriinferenced",
+      "rss": 25427968
+    },
+    {
+      "pid": 88149,
+      "name": "intents_helper",
+      "rss": 9371648
+    },
+    {
+      "pid": 88153,
+      "name": "SiriSuggestionsBookkeepingService",
+      "rss": 15581184
+    },
+    {
+      "pid": 88166,
+      "name": "followupd",
+      "rss": 6455296
+    },
+    {
+      "pid": 88167,
+      "name": "cdpd",
+      "rss": 12156928
+    },
+    {
+      "pid": 89996,
+      "name": "devicecheckd",
+      "rss": 11583488
+    },
+    {
+      "pid": 90005,
+      "name": "ctkd",
+      "rss": 9633792
+    },
+    {
+      "pid": 92267,
+      "name": "mlhostd",
+      "rss": 13959168
+    },
+    {
+      "pid": 95922,
+      "name": "IMDPersistenceAgent",
+      "rss": 17563648
+    },
+    {
+      "pid": 95923,
+      "name": "siriknowledged",
+      "rss": 23232512
+    },
+    {
+      "pid": 95924,
+      "name": "SetStoreUpdateService",
+      "rss": 9502720
+    },
+    {
+      "pid": 97252,
+      "name": "keyboardservicesd",
+      "rss": 11337728
+    },
+    {
+      "pid": 97262,
+      "name": "Keychain Circle Notification",
+      "rss": 13402112
+    },
+    {
+      "pid": 97335,
+      "name": "com.apple.hiservices-xpcservice",
+      "rss": 4489216
+    },
+    {
+      "pid": 98437,
+      "name": "Codex (Renderer)",
+      "rss": 72876032
+    },
+    {
+      "pid": 98812,
+      "name": "transparencyd",
+      "rss": 28999680
+    },
+    {
+      "pid": 98813,
+      "name": "ProtectedCloudKeySyncing",
+      "rss": 9650176
+    },
+    {
+      "pid": 99227,
+      "name": "intelligenceplatformd",
+      "rss": 6914048
+    }
+  ]
+}

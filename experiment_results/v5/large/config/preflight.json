@@ -1,0 +1,940 @@
+[
+  {
+    "graph": "auto",
+    "pivots": 1000,
+    "nodes": 448695,
+    "edges": 3314611,
+    "one_sided_bytes": 3589560000,
+    "two_sided_lower_bound_bytes": 79550664,
+    "vertex_workgroups": 1753,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 7901674752,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "auto",
+    "pivots": 500,
+    "nodes": 448695,
+    "edges": 3314611,
+    "one_sided_bytes": 1794780000,
+    "two_sided_lower_bound_bytes": 79550664,
+    "vertex_workgroups": 1753,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 4312114752,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "auto",
+    "pivots": 200,
+    "nodes": 448695,
+    "edges": 3314611,
+    "one_sided_bytes": 717912000,
+    "two_sided_lower_bound_bytes": 79550664,
+    "vertex_workgroups": 1753,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 2158378752,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "auto",
+    "pivots": 100,
+    "nodes": 448695,
+    "edges": 3314611,
+    "one_sided_bytes": 358956000,
+    "two_sided_lower_bound_bytes": 79550664,
+    "vertex_workgroups": 1753,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 1440466752,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "auto",
+    "pivots": 50,
+    "nodes": 448695,
+    "edges": 3314611,
+    "one_sided_bytes": 179478000,
+    "two_sided_lower_bound_bytes": 79550664,
+    "vertex_workgroups": 1753,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 1081510752,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "NACA0015",
+    "pivots": 1000,
+    "nodes": 1039183,
+    "edges": 3114818,
+    "one_sided_bytes": 8313464000,
+    "two_sided_lower_bound_bytes": 74755632,
+    "vertex_workgroups": 4060,
+    "hard_limit_reasons": [
+      "one_sided: 8313464000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 17424496192,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "NACA0015",
+    "pivots": 500,
+    "nodes": 1039183,
+    "edges": 3114818,
+    "one_sided_bytes": 4156732000,
+    "two_sided_lower_bound_bytes": 74755632,
+    "vertex_workgroups": 4060,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 9111032192,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "NACA0015",
+    "pivots": 200,
+    "nodes": 1039183,
+    "edges": 3114818,
+    "one_sided_bytes": 1662692800,
+    "two_sided_lower_bound_bytes": 74755632,
+    "vertex_workgroups": 4060,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 4122953792,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "NACA0015",
+    "pivots": 100,
+    "nodes": 1039183,
+    "edges": 3114818,
+    "one_sided_bytes": 831346400,
+    "two_sided_lower_bound_bytes": 74755632,
+    "vertex_workgroups": 4060,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 2460260992,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "NACA0015",
+    "pivots": 50,
+    "nodes": 1039183,
+    "edges": 3114818,
+    "one_sided_bytes": 415673200,
+    "two_sided_lower_bound_bytes": 74755632,
+    "vertex_workgroups": 4060,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 1628914592,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "belgium_osm",
+    "pivots": 1000,
+    "nodes": 1441295,
+    "edges": 1549970,
+    "one_sided_bytes": 11530360000,
+    "two_sided_lower_bound_bytes": 37199280,
+    "vertex_workgroups": 5631,
+    "hard_limit_reasons": [
+      "one_sided: 11530360000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 23635042880,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "belgium_osm",
+    "pivots": 500,
+    "nodes": 1441295,
+    "edges": 1549970,
+    "one_sided_bytes": 5765180000,
+    "two_sided_lower_bound_bytes": 37199280,
+    "vertex_workgroups": 5631,
+    "hard_limit_reasons": [
+      "one_sided: 5765180000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 12104682880,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "belgium_osm",
+    "pivots": 200,
+    "nodes": 1441295,
+    "edges": 1549970,
+    "one_sided_bytes": 2306072000,
+    "two_sided_lower_bound_bytes": 37199280,
+    "vertex_workgroups": 5631,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 5186466880,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "belgium_osm",
+    "pivots": 100,
+    "nodes": 1441295,
+    "edges": 1549970,
+    "one_sided_bytes": 1153036000,
+    "two_sided_lower_bound_bytes": 37199280,
+    "vertex_workgroups": 5631,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 2880394880,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "belgium_osm",
+    "pivots": 50,
+    "nodes": 1441295,
+    "edges": 1549970,
+    "one_sided_bytes": 576518000,
+    "two_sided_lower_bound_bytes": 37199280,
+    "vertex_workgroups": 5631,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 1727358880,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "Flan_1565",
+    "pivots": 1000,
+    "nodes": 1564794,
+    "edges": 56300289,
+    "one_sided_bytes": 12518352000,
+    "two_sided_lower_bound_bytes": 1351206936,
+    "vertex_workgroups": 6113,
+    "hard_limit_reasons": [
+      "one_sided: 12518352000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 36146799936,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "Flan_1565",
+    "pivots": 500,
+    "nodes": 1564794,
+    "edges": 56300289,
+    "one_sided_bytes": 6259176000,
+    "two_sided_lower_bound_bytes": 1351206936,
+    "vertex_workgroups": 6113,
+    "hard_limit_reasons": [
+      "one_sided: 6259176000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 23628447936,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "Flan_1565",
+    "pivots": 200,
+    "nodes": 1564794,
+    "edges": 56300289,
+    "one_sided_bytes": 2503670400,
+    "two_sided_lower_bound_bytes": 1351206936,
+    "vertex_workgroups": 6113,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 16117436736,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "Flan_1565",
+    "pivots": 100,
+    "nodes": 1564794,
+    "edges": 56300289,
+    "one_sided_bytes": 1251835200,
+    "two_sided_lower_bound_bytes": 1351206936,
+    "vertex_workgroups": 6113,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 13613766336,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "Flan_1565",
+    "pivots": 50,
+    "nodes": 1564794,
+    "edges": 56300289,
+    "one_sided_bytes": 625917600,
+    "two_sided_lower_bound_bytes": 1351206936,
+    "vertex_workgroups": 6113,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 12361931136,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "netherlands_osm",
+    "pivots": 1000,
+    "nodes": 2216688,
+    "edges": 2441238,
+    "one_sided_bytes": 17733504000,
+    "two_sided_lower_bound_bytes": 58589712,
+    "vertex_workgroups": 8659,
+    "hard_limit_reasons": [
+      "one_sided: 17733504000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 36361329792,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "netherlands_osm",
+    "pivots": 500,
+    "nodes": 2216688,
+    "edges": 2441238,
+    "one_sided_bytes": 8866752000,
+    "two_sided_lower_bound_bytes": 58589712,
+    "vertex_workgroups": 8659,
+    "hard_limit_reasons": [
+      "one_sided: 8866752000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 18627825792,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "netherlands_osm",
+    "pivots": 200,
+    "nodes": 2216688,
+    "edges": 2441238,
+    "one_sided_bytes": 3546700800,
+    "two_sided_lower_bound_bytes": 58589712,
+    "vertex_workgroups": 8659,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 7987723392,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "netherlands_osm",
+    "pivots": 100,
+    "nodes": 2216688,
+    "edges": 2441238,
+    "one_sided_bytes": 1773350400,
+    "two_sided_lower_bound_bytes": 58589712,
+    "vertex_workgroups": 8659,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 4441022592,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "netherlands_osm",
+    "pivots": 50,
+    "nodes": 2216688,
+    "edges": 2441238,
+    "one_sided_bytes": 886675200,
+    "two_sided_lower_bound_bytes": 58589712,
+    "vertex_workgroups": 8659,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 2667672192,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "com-Orkut",
+    "pivots": 1000,
+    "nodes": 3072441,
+    "edges": 117185083,
+    "one_sided_bytes": 24579528000,
+    "two_sided_lower_bound_bytes": 2812441992,
+    "vertex_workgroups": 12002,
+    "hard_limit_reasons": [
+      "one_sided: 24579528000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 72248500608,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "com-Orkut",
+    "pivots": 500,
+    "nodes": 3072441,
+    "edges": 117185083,
+    "one_sided_bytes": 12289764000,
+    "two_sided_lower_bound_bytes": 2812441992,
+    "vertex_workgroups": 12002,
+    "hard_limit_reasons": [
+      "one_sided: 12289764000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 47668972608,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "com-Orkut",
+    "pivots": 200,
+    "nodes": 3072441,
+    "edges": 117185083,
+    "one_sided_bytes": 4915905600,
+    "two_sided_lower_bound_bytes": 2812441992,
+    "vertex_workgroups": 12002,
+    "hard_limit_reasons": [
+      "one_sided: 4915905600 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 32921255808,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "com-Orkut",
+    "pivots": 100,
+    "nodes": 3072441,
+    "edges": 117185083,
+    "one_sided_bytes": 2457952800,
+    "two_sided_lower_bound_bytes": 2812441992,
+    "vertex_workgroups": 12002,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 28005350208,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "com-Orkut",
+    "pivots": 50,
+    "nodes": 3072441,
+    "edges": 117185083,
+    "one_sided_bytes": 1228976400,
+    "two_sided_lower_bound_bytes": 2812441992,
+    "vertex_workgroups": 12002,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 25547397408,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "AS365",
+    "pivots": 1000,
+    "nodes": 3799275,
+    "edges": 11368076,
+    "one_sided_bytes": 30394200000,
+    "two_sided_lower_bound_bytes": 272833824,
+    "vertex_workgroups": 14841,
+    "hard_limit_reasons": [
+      "one_sided: 30394200000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 63700531392,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "AS365",
+    "pivots": 500,
+    "nodes": 3799275,
+    "edges": 11368076,
+    "one_sided_bytes": 15197100000,
+    "two_sided_lower_bound_bytes": 272833824,
+    "vertex_workgroups": 14841,
+    "hard_limit_reasons": [
+      "one_sided: 15197100000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 33306331392,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "AS365",
+    "pivots": 200,
+    "nodes": 3799275,
+    "edges": 11368076,
+    "one_sided_bytes": 6078840000,
+    "two_sided_lower_bound_bytes": 272833824,
+    "vertex_workgroups": 14841,
+    "hard_limit_reasons": [
+      "one_sided: 6078840000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 15069811392,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "AS365",
+    "pivots": 100,
+    "nodes": 3799275,
+    "edges": 11368076,
+    "one_sided_bytes": 3039420000,
+    "two_sided_lower_bound_bytes": 272833824,
+    "vertex_workgroups": 14841,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 8990971392,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "AS365",
+    "pivots": 50,
+    "nodes": 3799275,
+    "edges": 11368076,
+    "one_sided_bytes": 1519710000,
+    "two_sided_lower_bound_bytes": 272833824,
+    "vertex_workgroups": 14841,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 5951551392,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "com-LiveJournal",
+    "pivots": 1000,
+    "nodes": 3997962,
+    "edges": 34681189,
+    "one_sided_bytes": 31983696000,
+    "two_sided_lower_bound_bytes": 832348536,
+    "vertex_workgroups": 15618,
+    "hard_limit_reasons": [
+      "one_sided: 31983696000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 71393788992,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "com-LiveJournal",
+    "pivots": 500,
+    "nodes": 3997962,
+    "edges": 34681189,
+    "one_sided_bytes": 15991848000,
+    "two_sided_lower_bound_bytes": 832348536,
+    "vertex_workgroups": 15618,
+    "hard_limit_reasons": [
+      "one_sided: 15991848000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 39410092992,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "com-LiveJournal",
+    "pivots": 200,
+    "nodes": 3997962,
+    "edges": 34681189,
+    "one_sided_bytes": 6396739200,
+    "two_sided_lower_bound_bytes": 832348536,
+    "vertex_workgroups": 15618,
+    "hard_limit_reasons": [
+      "one_sided: 6396739200 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 20219875392,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "com-LiveJournal",
+    "pivots": 100,
+    "nodes": 3997962,
+    "edges": 34681189,
+    "one_sided_bytes": 3198369600,
+    "two_sided_lower_bound_bytes": 832348536,
+    "vertex_workgroups": 15618,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 13823136192,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "com-LiveJournal",
+    "pivots": 50,
+    "nodes": 3997962,
+    "edges": 34681189,
+    "one_sided_bytes": 1599184800,
+    "two_sided_lower_bound_bytes": 832348536,
+    "vertex_workgroups": 15618,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 10624766592,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "italy_osm",
+    "pivots": 1000,
+    "nodes": 6686493,
+    "edges": 7013978,
+    "one_sided_bytes": 53491944000,
+    "two_sided_lower_bound_bytes": 168335472,
+    "vertex_workgroups": 26120,
+    "hard_limit_reasons": [
+      "one_sided: 53491944000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 109614378432,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "italy_osm",
+    "pivots": 500,
+    "nodes": 6686493,
+    "edges": 7013978,
+    "one_sided_bytes": 26745972000,
+    "two_sided_lower_bound_bytes": 168335472,
+    "vertex_workgroups": 26120,
+    "hard_limit_reasons": [
+      "one_sided: 26745972000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 56122434432,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "italy_osm",
+    "pivots": 200,
+    "nodes": 6686493,
+    "edges": 7013978,
+    "one_sided_bytes": 10698388800,
+    "two_sided_lower_bound_bytes": 168335472,
+    "vertex_workgroups": 26120,
+    "hard_limit_reasons": [
+      "one_sided: 10698388800 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 24027268032,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "italy_osm",
+    "pivots": 100,
+    "nodes": 6686493,
+    "edges": 7013978,
+    "one_sided_bytes": 5349194400,
+    "two_sided_lower_bound_bytes": 168335472,
+    "vertex_workgroups": 26120,
+    "hard_limit_reasons": [
+      "one_sided: 5349194400 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 13328879232,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "italy_osm",
+    "pivots": 50,
+    "nodes": 6686493,
+    "edges": 7013978,
+    "one_sided_bytes": 2674597200,
+    "two_sided_lower_bound_bytes": 168335472,
+    "vertex_workgroups": 26120,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 7979684832,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "great-britain_osm",
+    "pivots": 1000,
+    "nodes": 7733822,
+    "edges": 8156517,
+    "one_sided_bytes": 61870576000,
+    "two_sided_lower_bound_bytes": 195756408,
+    "vertex_workgroups": 30211,
+    "hard_limit_reasons": [
+      "one_sided: 61870576000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 126792097088,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "great-britain_osm",
+    "pivots": 500,
+    "nodes": 7733822,
+    "edges": 8156517,
+    "one_sided_bytes": 30935288000,
+    "two_sided_lower_bound_bytes": 195756408,
+    "vertex_workgroups": 30211,
+    "hard_limit_reasons": [
+      "one_sided: 30935288000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 64921521088,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "great-britain_osm",
+    "pivots": 200,
+    "nodes": 7733822,
+    "edges": 8156517,
+    "one_sided_bytes": 12374115200,
+    "two_sided_lower_bound_bytes": 195756408,
+    "vertex_workgroups": 30211,
+    "hard_limit_reasons": [
+      "one_sided: 12374115200 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 27799175488,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "great-britain_osm",
+    "pivots": 100,
+    "nodes": 7733822,
+    "edges": 8156517,
+    "one_sided_bytes": 6187057600,
+    "two_sided_lower_bound_bytes": 195756408,
+    "vertex_workgroups": 30211,
+    "hard_limit_reasons": [
+      "one_sided: 6187057600 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 15425060288,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "great-britain_osm",
+    "pivots": 50,
+    "nodes": 7733822,
+    "edges": 8156517,
+    "one_sided_bytes": 3093528800,
+    "two_sided_lower_bound_bytes": 195756408,
+    "vertex_workgroups": 30211,
+    "hard_limit_reasons": [],
+    "estimated_peak_bytes": 9238002688,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "germany_osm",
+    "pivots": 1000,
+    "nodes": 11548845,
+    "edges": 12369181,
+    "one_sided_bytes": 92390760000,
+    "two_sided_lower_bound_bytes": 296860344,
+    "vertex_workgroups": 45113,
+    "hard_limit_reasons": [
+      "one_sided: 92390760000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 189373780992,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "germany_osm",
+    "pivots": 500,
+    "nodes": 11548845,
+    "edges": 12369181,
+    "one_sided_bytes": 46195380000,
+    "two_sided_lower_bound_bytes": 296860344,
+    "vertex_workgroups": 45113,
+    "hard_limit_reasons": [
+      "one_sided: 46195380000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 96983020992,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "germany_osm",
+    "pivots": 200,
+    "nodes": 11548845,
+    "edges": 12369181,
+    "one_sided_bytes": 18478152000,
+    "two_sided_lower_bound_bytes": 296860344,
+    "vertex_workgroups": 45113,
+    "hard_limit_reasons": [
+      "one_sided: 18478152000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 41548564992,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "germany_osm",
+    "pivots": 100,
+    "nodes": 11548845,
+    "edges": 12369181,
+    "one_sided_bytes": 9239076000,
+    "two_sided_lower_bound_bytes": 296860344,
+    "vertex_workgroups": 45113,
+    "hard_limit_reasons": [
+      "one_sided: 9239076000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 23070412992,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "germany_osm",
+    "pivots": 50,
+    "nodes": 11548845,
+    "edges": 12369181,
+    "one_sided_bytes": 4619538000,
+    "two_sided_lower_bound_bytes": 296860344,
+    "vertex_workgroups": 45113,
+    "hard_limit_reasons": [
+      "one_sided: 4619538000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 13831336992,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "asia_osm",
+    "pivots": 1000,
+    "nodes": 11950757,
+    "edges": 12711603,
+    "one_sided_bytes": 95606056000,
+    "two_sided_lower_bound_bytes": 305078472,
+    "vertex_workgroups": 46683,
+    "hard_limit_reasons": [
+      "one_sided: 95606056000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 195947285120,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "asia_osm",
+    "pivots": 500,
+    "nodes": 11950757,
+    "edges": 12711603,
+    "one_sided_bytes": 47803028000,
+    "two_sided_lower_bound_bytes": 305078472,
+    "vertex_workgroups": 46683,
+    "hard_limit_reasons": [
+      "one_sided: 47803028000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 100341229120,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "asia_osm",
+    "pivots": 200,
+    "nodes": 11950757,
+    "edges": 12711603,
+    "one_sided_bytes": 19121211200,
+    "two_sided_lower_bound_bytes": 305078472,
+    "vertex_workgroups": 46683,
+    "hard_limit_reasons": [
+      "one_sided: 19121211200 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 42977595520,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "asia_osm",
+    "pivots": 100,
+    "nodes": 11950757,
+    "edges": 12711603,
+    "one_sided_bytes": 9560605600,
+    "two_sided_lower_bound_bytes": 305078472,
+    "vertex_workgroups": 46683,
+    "hard_limit_reasons": [
+      "one_sided: 9560605600 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 23856384320,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "asia_osm",
+    "pivots": 50,
+    "nodes": 11950757,
+    "edges": 12711603,
+    "one_sided_bytes": 4780302800,
+    "two_sided_lower_bound_bytes": 305078472,
+    "vertex_workgroups": 46683,
+    "hard_limit_reasons": [
+      "one_sided: 4780302800 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 14295778720,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "road_usa",
+    "pivots": 1000,
+    "nodes": 23947347,
+    "edges": 28854312,
+    "one_sided_bytes": 191578776000,
+    "two_sided_lower_bound_bytes": 692503488,
+    "vertex_workgroups": 93545,
+    "hard_limit_reasons": [
+      "one_sided: 191578776000 bytes > storage buffer limit 4294967295",
+      "vertex dispatch: 93545 > 65535"
+    ],
+    "estimated_peak_bytes": 393295470528,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "road_usa",
+    "pivots": 500,
+    "nodes": 23947347,
+    "edges": 28854312,
+    "one_sided_bytes": 95789388000,
+    "two_sided_lower_bound_bytes": 692503488,
+    "vertex_workgroups": 93545,
+    "hard_limit_reasons": [
+      "one_sided: 95789388000 bytes > storage buffer limit 4294967295",
+      "vertex dispatch: 93545 > 65535"
+    ],
+    "estimated_peak_bytes": 201716694528,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "road_usa",
+    "pivots": 200,
+    "nodes": 23947347,
+    "edges": 28854312,
+    "one_sided_bytes": 38315755200,
+    "two_sided_lower_bound_bytes": 692503488,
+    "vertex_workgroups": 93545,
+    "hard_limit_reasons": [
+      "one_sided: 38315755200 bytes > storage buffer limit 4294967295",
+      "vertex dispatch: 93545 > 65535"
+    ],
+    "estimated_peak_bytes": 86769428928,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "road_usa",
+    "pivots": 100,
+    "nodes": 23947347,
+    "edges": 28854312,
+    "one_sided_bytes": 19157877600,
+    "two_sided_lower_bound_bytes": 692503488,
+    "vertex_workgroups": 93545,
+    "hard_limit_reasons": [
+      "one_sided: 19157877600 bytes > storage buffer limit 4294967295",
+      "vertex dispatch: 93545 > 65535"
+    ],
+    "estimated_peak_bytes": 48453673728,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "road_usa",
+    "pivots": 50,
+    "nodes": 23947347,
+    "edges": 28854312,
+    "one_sided_bytes": 9578938800,
+    "two_sided_lower_bound_bytes": 692503488,
+    "vertex_workgroups": 93545,
+    "hard_limit_reasons": [
+      "one_sided: 9578938800 bytes > storage buffer limit 4294967295",
+      "vertex dispatch: 93545 > 65535"
+    ],
+    "estimated_peak_bytes": 29295796128,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "europe_osm",
+    "pivots": 1000,
+    "nodes": 50912018,
+    "edges": 54054660,
+    "one_sided_bytes": 407296144000,
+    "two_sided_lower_bound_bytes": 1297311840,
+    "vertex_workgroups": 198876,
+    "hard_limit_reasons": [
+      "one_sided: 407296144000 bytes > storage buffer limit 4294967295",
+      "vertex dispatch: 198876 > 65535"
+    ],
+    "estimated_peak_bytes": 834745890176,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "europe_osm",
+    "pivots": 500,
+    "nodes": 50912018,
+    "edges": 54054660,
+    "one_sided_bytes": 203648072000,
+    "two_sided_lower_bound_bytes": 1297311840,
+    "vertex_workgroups": 198876,
+    "hard_limit_reasons": [
+      "one_sided: 203648072000 bytes > storage buffer limit 4294967295",
+      "vertex dispatch: 198876 > 65535"
+    ],
+    "estimated_peak_bytes": 427449746176,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "europe_osm",
+    "pivots": 200,
+    "nodes": 50912018,
+    "edges": 54054660,
+    "one_sided_bytes": 81459228800,
+    "two_sided_lower_bound_bytes": 1297311840,
+    "vertex_workgroups": 198876,
+    "hard_limit_reasons": [
+      "one_sided: 81459228800 bytes > storage buffer limit 4294967295",
+      "vertex dispatch: 198876 > 65535"
+    ],
+    "estimated_peak_bytes": 183072059776,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "europe_osm",
+    "pivots": 100,
+    "nodes": 50912018,
+    "edges": 54054660,
+    "one_sided_bytes": 40729614400,
+    "two_sided_lower_bound_bytes": 1297311840,
+    "vertex_workgroups": 198876,
+    "hard_limit_reasons": [
+      "one_sided: 40729614400 bytes > storage buffer limit 4294967295",
+      "vertex dispatch: 198876 > 65535"
+    ],
+    "estimated_peak_bytes": 101612830976,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  {
+    "graph": "europe_osm",
+    "pivots": 50,
+    "nodes": 50912018,
+    "edges": 54054660,
+    "one_sided_bytes": 20364807200,
+    "two_sided_lower_bound_bytes": 1297311840,
+    "vertex_workgroups": 198876,
+    "hard_limit_reasons": [
+      "one_sided: 20364807200 bytes > storage buffer limit 4294967295",
+      "vertex dispatch: 198876 > 65535"
+    ],
+    "estimated_peak_bytes": 60883216576,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  }
+]

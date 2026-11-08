@@ -1,0 +1,27 @@
+{
+  "graph": "italy_osm",
+  "method": "rr_sparse_sgd",
+  "pivots": 1000,
+  "seed": 4,
+  "repetition": 0,
+  "run_id": "v5-large-italy_osm-p1000-s4-r0",
+  "status": "preflight_unavailable",
+  "executed": false,
+  "measured": false,
+  "completed_at": "2026-11-06T18:53:51+09:00",
+  "preflight": {
+    "graph": "italy_osm",
+    "pivots": 1000,
+    "nodes": 6686493,
+    "edges": 7013978,
+    "one_sided_bytes": 53491944000,
+    "two_sided_lower_bound_bytes": 168335472,
+    "vertex_workgroups": 26120,
+    "hard_limit_reasons": [
+      "one_sided: 53491944000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 109614378432,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  "error": "one_sided: 53491944000 bytes > storage buffer limit 4294967295"
+}

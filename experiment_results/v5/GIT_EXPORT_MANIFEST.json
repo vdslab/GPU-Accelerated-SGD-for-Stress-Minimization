@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-08",
+  "scope": "Research code, full16/v5 experiments, diagnostic records and paper charts through RR128 versus 1024",
+  "new_files": 65581,
+  "bytes": 384344411,
+  "excluded_categories": [
+    "compressed and binary coordinates",
+    "shared edge payloads",
+    "distance caches",
+    "native executables and build caches",
+    "Instruments traces",
+    "runtime locks"
+  ],
+  "local_payloads_deleted": false,
+  "tests": {
+    "python_unittest": 108,
+    "experiment_common_rust": 14
+  },
+  "storage_policy": "GIT_STORAGE.md"
+}

@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/warmups/warmup-2026-11-06T052635_0900-bcsstk31-atomic_sparse_sgd-tfixed/atomic-sparse-sgd-bcsstk31-warmup-2026-11-06T052635_0900-bcsstk31-atomic_sparse_sgd-tfixed.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/warmups/warmup-2026-11-06T052635_0900-bcsstk31-atomic_sparse_sgd-tfixed/atomic-sparse-sgd-bcsstk31-warmup-2026-11-06T052635_0900-bcsstk31-atomic_sparse_sgd-tfixed.final.txt.gz",
+      "original_sha256": "5e12a2edf4ede2bee5f3e87eae5980b3e205cfc461228843502b187f631ae01b",
+      "decompressed_sha256": "5e12a2edf4ede2bee5f3e87eae5980b3e205cfc461228843502b187f631ae01b",
+      "compressed_sha256": "2e9b52d60d34be9372c2cd930a90f774c8d5c0eb837b3677091dc0d510caa1be",
+      "original_bytes": 7863053,
+      "compressed_bytes": 2285140,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/warmups/warmup-2026-11-06T052635_0900-bcsstk31-atomic_sparse_sgd-tfixed/atomic-sparse-sgd-bcsstk31-warmup-2026-11-06T052635_0900-bcsstk31-atomic_sparse_sgd-tfixed.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/warmups/warmup-2026-11-06T052635_0900-bcsstk31-atomic_sparse_sgd-tfixed/atomic-sparse-sgd-bcsstk31-warmup-2026-11-06T052635_0900-bcsstk31-atomic_sparse_sgd-tfixed.initial.txt.gz",
+      "original_sha256": "e789536efb29b6778eb49a243d602d119a3d53c9b7ba7974f3d6a69a74d73b07",
+      "decompressed_sha256": "e789536efb29b6778eb49a243d602d119a3d53c9b7ba7974f3d6a69a74d73b07",
+      "compressed_sha256": "1a5d07e90c8fed4b2bcaecb7647f2ff7d215496f38b580edc6a084443bec448c",
+      "original_bytes": 7947069,
+      "compressed_bytes": 2317313,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/warmups/warmup-2026-11-06T052635_0900-bcsstk31-atomic_sparse_sgd-tfixed/atomic-sparse-sgd-bcsstk31-warmup-2026-11-06T052635_0900-bcsstk31-atomic_sparse_sgd-tfixed.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/warmups/warmup-2026-11-06T052635_0900-bcsstk31-atomic_sparse_sgd-tfixed/atomic-sparse-sgd-bcsstk31-warmup-2026-11-06T052635_0900-bcsstk31-atomic_sparse_sgd-tfixed.vertex-map.txt.gz",
+      "original_sha256": "2ab937f4a587217fb28a69f5e8508a9a829d53dc5080f3bb2603d67458e4629a",
+      "decompressed_sha256": "2ab937f4a587217fb28a69f5e8508a9a829d53dc5080f3bb2603d67458e4629a",
+      "compressed_sha256": "4424adfa8bd0fa5f7c10509ade4bd3212197cae521853d5ef098d62a1075214a",
+      "original_bytes": 404812,
+      "compressed_bytes": 141240,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

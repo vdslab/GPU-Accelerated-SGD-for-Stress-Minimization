@@ -1,0 +1,20 @@
+{
+  "source": "tables/comparison-hierarchical.json",
+  "new_layout_runs": 0,
+  "reference": "https://arxiv.org/pdf/1710.04626",
+  "reference_figures": [
+    2,
+    7,
+    8
+  ],
+  "adaptation": "Markers and min/max whiskers; method symbols are assigned for this study.",
+  "symbols": {
+    "CPU": "x",
+    "Atomic": "^",
+    "RoundRobin": "o"
+  },
+  "aggregation": "Median within each seed over 3 repetitions, then median over 5 seeds.",
+  "whiskers": "Minimum and maximum of the 5 seed medians; not a confidence interval.",
+  "x_axis": "Number of vertices; log scale, different graphs, no connecting lines.",
+  "iteration_time": "15-iteration SGD elapsed time / 15, in milliseconds."
+}

@@ -1,6 +1,8 @@
 //! Pass timestamps, resolved after the final coordinate readback. Query sets are
-//! paged to respect WebGPU's 8192-query limit without changing SGD submissions.
+//! paged to respect wgpu's query-set limit without changing SGD submissions.
 use std::time::Duration;
+
+const QUERIES_PER_PAGE: usize = wgpu::QUERY_SET_MAX_QUERIES as usize;
 
 pub struct PassTimer {
     pages: Vec<(wgpu::QuerySet, wgpu::Buffer, wgpu::Buffer, u32)>,
@@ -10,9 +12,11 @@ pub struct PassTimer {
 impl PassTimer {
     pub fn new(device: &wgpu::Device, passes: usize) -> Self {
         let mut pages = Vec::new();
-        if device.features().contains(wgpu::Features::TIMESTAMP_QUERY) {
-            for start in (0..passes * 2).step_by(8192) {
-                let count = (passes * 2 - start).min(8192) as u32;
+        if std::env::var("SGD_GPU_TIMESTAMPS").as_deref() != Ok("0")
+            && device.features().contains(wgpu::Features::TIMESTAMP_QUERY)
+        {
+            for start in (0..passes * 2).step_by(QUERIES_PER_PAGE) {
+                let count = (passes * 2 - start).min(QUERIES_PER_PAGE) as u32;
                 let query = device.create_query_set(&wgpu::QuerySetDescriptor {
                     label: Some("SGD pass timestamps"),
                     ty: wgpu::QueryType::Timestamp,
@@ -46,9 +50,9 @@ impl PassTimer {
         let index = self.used * 2;
         self.used += 1;
         Some(wgpu::ComputePassTimestampWrites {
-            query_set: &self.pages[index / 8192].0,
-            beginning_of_pass_write_index: Some((index % 8192) as u32),
-            end_of_pass_write_index: Some((index % 8192 + 1) as u32),
+            query_set: &self.pages[index / QUERIES_PER_PAGE].0,
+            beginning_of_pass_write_index: Some((index % QUERIES_PER_PAGE) as u32),
+            end_of_pass_write_index: Some((index % QUERIES_PER_PAGE + 1) as u32),
         })
     }
     pub fn end_iteration(&mut self) {
@@ -67,7 +71,7 @@ impl PassTimer {
         });
         for (i, (query, resolve, read, capacity)) in self.pages.iter().enumerate() {
             let count = (self.used * 2)
-                .saturating_sub(i * 8192)
+                .saturating_sub(i * QUERIES_PER_PAGE)
                 .min(*capacity as usize) as u32;
             if count > 0 {
                 encoder.resolve_query_set(query, 0..count, resolve, 0);
@@ -82,7 +86,7 @@ impl PassTimer {
         let mut durations = Vec::with_capacity(self.used);
         for (i, (_, _, read, capacity)) in self.pages.iter().enumerate() {
             let count = (self.used * 2)
-                .saturating_sub(i * 8192)
+                .saturating_sub(i * QUERIES_PER_PAGE)
                 .min(*capacity as usize);
             let mapped = read.slice(..).get_mapped_range();
             let ticks: &[u64] = bytemuck::cast_slice(&mapped);

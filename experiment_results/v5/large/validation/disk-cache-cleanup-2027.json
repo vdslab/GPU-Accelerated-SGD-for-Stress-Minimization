@@ -1,0 +1,12 @@
+{
+  "at": "2026-11-06T20:27:45+09:00",
+  "reason": "Disk failure; no Chrome, cargo/rustc or pod process running. Rebuildable caches only.",
+  "free_before": 132358144,
+  "removed": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/baseline-sparse-sgd-non-gpu/target/debug",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/vram-lock-sparse/target/debug",
+    "/Users/kose/Library/Caches/Google/Chrome",
+    "/Users/kose/Library/Caches/CocoaPods"
+  ],
+  "free_after": 10638561280
+}

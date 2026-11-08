@@ -1,0 +1,78 @@
+{
+  "created_utc": "2026-11-07T09:21:24.677806+00:00",
+  "git_head": "2bf4c24a47b3349620eda360b7d198c6266837d9",
+  "scope": "Final replay sources. Early real/micro exploratory runs used earlier example revisions with equivalent full-SGD path; their binary hashes were not saved. Production gpu.rs and shader.wgsl were not edited.",
+  "sha256": {
+    "implementations/full/rr_gpu/examples/tile_cause.rs": "fd27631b3d81acbf4e0f26df18895969f38b48b958e7b7d57897466c02adb164",
+    "implementations/full/rr_gpu/src/gpu.rs": "96f22ccacfc194b9c60f8f92a060f5204b868d85d3ba187e85b2d5261b8b224a",
+    "implementations/full/rr_gpu/src/shader.wgsl": "b9ab2c39dd527f3b9c8735f4b1e87917ba300d747548e9e0c8a65571e91153f0",
+    "shared/gpu-timing/wgpu.rs": "f6ff28eabaf45aed046afa26dd3891465890a779f77760fed0e2755ef8c676bf",
+    "implementations/full/rr_gpu/Cargo.lock": "9c19f3e24e66488ac0a59c1a09968c4fe7ed7c8dc7291247bed2288268297b52",
+    "tools/diagnostics/rr-tile-cause/run.py": "d5a2e3e74336eeaf09636e48f31e38774b97ade5259f91ef3bd65b39959e3739",
+    "tools/diagnostics/rr-tile-cause/summarize.py": "f34834b1ef64de7a30abd1552090af872440004fe47e70da36caa50e10828de9",
+    "data/v5/common/3elt.mtx": "c7a404dd23aa5c583ce3b386f6f4d5c8942a70237ecf057ea4840ddbedb9cc18",
+    "data/v5/common/fe_4elt2.mtx": "e372ff422b4c8cfd113c180ffe6479ef188e919d9803ff7f27c172e7c284e815",
+    "implementations/full/rr_gpu/target/release/examples/tile_cause": "e2b99c7631b9dc2eba87d05f35895dc0af26434fd46d04dc222be85412c30811"
+  },
+  "data_sha256": {
+    "micro.jsonl": "e2c92c2d5dee3fea77b015de54b7c8dd09c91b6f07546b26f3ae752606aaca2b",
+    "3elt-no-timestamps.jsonl": "dfcb2157bfe3eaf71c09201b4ec52f9bd0e9fb4b4ba21085e883d17889bc18a4",
+    "fe_4elt2.jsonl": "051d433a76ee5a388bbfa8e9ff1cebc04b22035f7903693099115a8af9238aa1",
+    "3elt.jsonl": "0bd1e5722be751c359a3567869e99322fad05f17276d62899d1adae9ef8b37fb",
+    "profile-stdout.jsonl": "92c7cb9c596359e8a258f128ea1600ab64ce795b026445dfbdb9bc0cb61ea1cc",
+    "micro-controls.jsonl": "fae9bbbb8887427f27e7f1ff7616d193906c63f4720775879e4ff8e46cc433cf"
+  },
+  "commands": [
+    {
+      "output": "3elt.jsonl",
+      "argv": [
+        "tile_cause",
+        "data/v5/common/3elt.mtx",
+        "3",
+        "10"
+      ],
+      "env": {
+        "SGD_GPU_TIMESTAMPS": "1"
+      },
+      "exit_code": 0
+    },
+    {
+      "output": "fe_4elt2.jsonl",
+      "argv": [
+        "tile_cause",
+        "data/v5/common/fe_4elt2.mtx",
+        "3",
+        "10"
+      ],
+      "env": {
+        "SGD_GPU_TIMESTAMPS": "1"
+      },
+      "exit_code": 0
+    },
+    {
+      "output": "micro-controls.jsonl",
+      "argv": [
+        "tile_cause",
+        "micro"
+      ],
+      "env": {
+        "SGD_GPU_TIMESTAMPS": "1"
+      },
+      "exit_code": 0
+    },
+    {
+      "output": "3elt-no-timestamps.jsonl",
+      "argv": [
+        "tile_cause",
+        "data/v5/common/3elt.mtx",
+        "5",
+        "10"
+      ],
+      "env": {
+        "SGD_GPU_TIMESTAMPS": "0",
+        "TILE_CAUSE_FILTER": "baseline"
+      },
+      "exit_code": 0
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "updated": "2026-11-07T13:35:20+09:00",
+  "total": 350,
+  "finished": 350,
+  "success": 130,
+  "preflight_unavailable": 220,
+  "failed": 0,
+  "remaining": 0,
+  "remaining_conditions": 0,
+  "eta_known_seconds": 0,
+  "eta_unknown_runs": 0,
+  "active": null,
+  "active_elapsed_seconds": 0,
+  "memory": {
+    "available_bytes": 14787231744,
+    "used_bytes": 6872154112,
+    "swap_used_bytes": 0,
+    "swap_in_bytes": 41829367808,
+    "swap_out_bytes": 110804992
+  },
+  "disk_free_bytes": 12444082176,
+  "retried_attempts": 1,
+  "measurement_complete": true,
+  "reporting_complete": true,
+  "reporting_completed_at": "2026-11-07T13:49:24+09:00",
+  "report": "reports/large.md",
+  "qa_complete": true,
+  "qa_completed_at": "2026-11-07T13:53:10+09:00",
+  "qa_report": "validation/final-qa.json",
+  "all_artifacts_verified": true
+}

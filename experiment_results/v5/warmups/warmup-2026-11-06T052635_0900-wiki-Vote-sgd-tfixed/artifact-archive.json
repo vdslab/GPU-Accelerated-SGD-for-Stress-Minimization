@@ -1,0 +1,28 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/warmups/warmup-2026-11-06T052635_0900-wiki-Vote-sgd-tfixed/sgd-wiki-Vote-warmup-2026-11-06T052635_0900-wiki-Vote-sgd-tfixed.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/warmups/warmup-2026-11-06T052635_0900-wiki-Vote-sgd-tfixed/sgd-wiki-Vote-warmup-2026-11-06T052635_0900-wiki-Vote-sgd-tfixed.final.txt.gz",
+      "original_sha256": "e9c5966c94eaa127e8f62017fc89cabcaaffc5f6ff7c36c0778d1986202f3d9b",
+      "decompressed_sha256": "e9c5966c94eaa127e8f62017fc89cabcaaffc5f6ff7c36c0778d1986202f3d9b",
+      "compressed_sha256": "95bbf54e4ac6387195195ef2fc2f1950fe30870e0939c169415c0fb8b6b50c03",
+      "original_bytes": 2192522,
+      "compressed_bytes": 696339,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/warmups/warmup-2026-11-06T052635_0900-wiki-Vote-sgd-tfixed/sgd-wiki-Vote-warmup-2026-11-06T052635_0900-wiki-Vote-sgd-tfixed.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/warmups/warmup-2026-11-06T052635_0900-wiki-Vote-sgd-tfixed/sgd-wiki-Vote-warmup-2026-11-06T052635_0900-wiki-Vote-sgd-tfixed.initial.txt.gz",
+      "original_sha256": "90cb534cdc9ae635bfb31c3503fa9d08a36dbf762cf870ab55a2540c73db554d",
+      "decompressed_sha256": "90cb534cdc9ae635bfb31c3503fa9d08a36dbf762cf870ab55a2540c73db554d",
+      "compressed_sha256": "5bb0ce600ed7ac100e488c82a5738e5706cae8db6cfc5251a2aa668c49eeee33",
+      "original_bytes": 2202937,
+      "compressed_bytes": 698696,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

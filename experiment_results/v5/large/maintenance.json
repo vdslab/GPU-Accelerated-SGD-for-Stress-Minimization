@@ -1,0 +1,368 @@
+{
+  "pid": 2297,
+  "started_at": "2026-11-06T21:40:04+09:00",
+  "active": false,
+  "phase": "measurement_resumed",
+  "policy": "All refs, reflogs, checkpoints and unreachable objects retained. Only duplicate loose copies in verified packs removed.",
+  "packs": [
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-5b9aaa65ad63f1ceafef66fd5b6cb18fe19b1d88.idx",
+      "objects": 9,
+      "loose_bytes": 496991773,
+      "packed_bytes": 496967877,
+      "seconds": 30.939039582997793,
+      "free_after": 9174929408,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-03fe4e782c57f97033af1590eaeb1ea35e18ea68.idx",
+      "objects": 10,
+      "loose_bytes": 529417456,
+      "packed_bytes": 245355882,
+      "seconds": 26.147939167014556,
+      "free_after": 9802842112,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-77d5eab9ea82d7712c429aefecf972ebd48135fa.idx",
+      "objects": 10,
+      "loose_bytes": 493378381,
+      "packed_bytes": 492813393,
+      "seconds": 32.16587337499368,
+      "free_after": 9805885440,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-eb4379e5fb3f3be86c30c2ab63eac647b6d4de49.idx",
+      "objects": 10,
+      "loose_bytes": 493145161,
+      "packed_bytes": 492226674,
+      "seconds": 34.88396925001871,
+      "free_after": 9805529088,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-5221bb1233d135de530015a8b04d357c16dd4fd0.idx",
+      "objects": 10,
+      "loose_bytes": 493137174,
+      "packed_bytes": 492215599,
+      "seconds": 34.936042250017636,
+      "free_after": 9806512128,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-45c97661424d836ee884c08866c7f5be870b647b.idx",
+      "objects": 10,
+      "loose_bytes": 493132717,
+      "packed_bytes": 492213207,
+      "seconds": 35.21975475002546,
+      "free_after": 9807077376,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-be6efb0e5c86e025e5cee9b121e48958634c0185.idx",
+      "objects": 10,
+      "loose_bytes": 493122838,
+      "packed_bytes": 492205560,
+      "seconds": 34.67689137501293,
+      "free_after": 9807925248,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-42645cbd571a902861bcdb56fbeff783a873fb19.idx",
+      "objects": 10,
+      "loose_bytes": 492825802,
+      "packed_bytes": 492352557,
+      "seconds": 31.873792750004213,
+      "free_after": 9807884288,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-650b7f53689cf8900bba65c207a86d56c3c0d194.idx",
+      "objects": 10,
+      "loose_bytes": 491790844,
+      "packed_bytes": 450267713,
+      "seconds": 33.99194491599337,
+      "free_after": 9848766464,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-efb55d332a6a9017772140e0c820ff765b3206be.idx",
+      "objects": 10,
+      "loose_bytes": 491737729,
+      "packed_bytes": 490817648,
+      "seconds": 34.843379540980095,
+      "free_after": 9849942016,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-d25c3b90fbc6e541c503df742675f4880c824728.idx",
+      "objects": 10,
+      "loose_bytes": 491692421,
+      "packed_bytes": 490771064,
+      "seconds": 34.8352090830158,
+      "free_after": 9852178432,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-d6bcec4194cf4890e022ce4800f4d3a85da2dac7.idx",
+      "objects": 10,
+      "loose_bytes": 491633978,
+      "packed_bytes": 490712602,
+      "seconds": 34.87751587500679,
+      "free_after": 9853169664,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-cbe3f71428188c3c85cbe3095b82ad9a4c191cb3.idx",
+      "objects": 10,
+      "loose_bytes": 491604824,
+      "packed_bytes": 490684710,
+      "seconds": 34.70037758300896,
+      "free_after": 9854246912,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-8d5a68a547508afc5c31b14e3fe0a3bb28b8c448.idx",
+      "objects": 13,
+      "loose_bytes": 503903175,
+      "packed_bytes": 383116428,
+      "seconds": 25.772052749991417,
+      "free_after": 9984868352,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-a5758fdd45c61a5083032933f49d6a5da85c7124.idx",
+      "objects": 14,
+      "loose_bytes": 506048004,
+      "packed_bytes": 506033688,
+      "seconds": 31.613381500006653,
+      "free_after": 9985540096,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-cb84a87c700c59dc0f14b730e27d246b637465b2.idx",
+      "objects": 15,
+      "loose_bytes": 536092134,
+      "packed_bytes": 536038340,
+      "seconds": 34.363408834004076,
+      "free_after": 9985847296,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-e62d6af402ba9b078a15b08502653e80c695a24a.idx",
+      "objects": 15,
+      "loose_bytes": 531207792,
+      "packed_bytes": 531201119,
+      "seconds": 34.59042812499683,
+      "free_after": 9990426624,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-7ba2d74e31dd50b861490c211681b4afb9c436de.idx",
+      "objects": 15,
+      "loose_bytes": 507810437,
+      "packed_bytes": 507760051,
+      "seconds": 31.310594750015298,
+      "free_after": 9990844416,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-759247f97ec3f06758dd4bb5bbf0673992fd7d7d.idx",
+      "objects": 20,
+      "loose_bytes": 526594577,
+      "packed_bytes": 464229199,
+      "seconds": 37.531705624976894,
+      "free_after": 10053148672,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-a95c61ac8ebb709f89d468afabb56cbab447aaab.idx",
+      "objects": 22,
+      "loose_bytes": 532018997,
+      "packed_bytes": 470654408,
+      "seconds": 39.85439133300679,
+      "free_after": 10112155648,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-b70143eca423470852bdf94598eccf8f4d3dcdcb.idx",
+      "objects": 28,
+      "loose_bytes": 530417333,
+      "packed_bytes": 355614396,
+      "seconds": 32.729307625006186,
+      "free_after": 10288488448,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-89d9fe1b792400ef3290c23253af89771ec5094b.idx",
+      "objects": 38,
+      "loose_bytes": 536186090,
+      "packed_bytes": 225756543,
+      "seconds": 25.302953833015636,
+      "free_after": 10601897984,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-bc011f6eac55fbc48913d7bea5f7365c845a5b02.idx",
+      "objects": 38,
+      "loose_bytes": 535269161,
+      "packed_bytes": 237604525,
+      "seconds": 32.96996612500516,
+      "free_after": 10902020096,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-d76bbe4f40055166e8a2f721937f8d0c833bad70.idx",
+      "objects": 44,
+      "loose_bytes": 532331323,
+      "packed_bytes": 219531221,
+      "seconds": 27.10175829101354,
+      "free_after": 11217285120,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-d572821b5e6e6318874c945072201a0d0d4d8869.idx",
+      "objects": 46,
+      "loose_bytes": 533772536,
+      "packed_bytes": 301549509,
+      "seconds": 38.6297899170022,
+      "free_after": 11450109952,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-eaff3339d7e6c1e19724e75e809c616e7da8727b.idx",
+      "objects": 47,
+      "loose_bytes": 534157642,
+      "packed_bytes": 273711608,
+      "seconds": 34.833123791991966,
+      "free_after": 11711893504,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-980713fbf746628519271f1ae81fb9a17c05aaaa.idx",
+      "objects": 52,
+      "loose_bytes": 532665496,
+      "packed_bytes": 270019865,
+      "seconds": 41.03235779100214,
+      "free_after": 11981697024,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-668bab73175074d113b39e2de05dc50dd74a5e0b.idx",
+      "objects": 56,
+      "loose_bytes": 531186438,
+      "packed_bytes": 426332436,
+      "seconds": 61.92578362498898,
+      "free_after": 12086829056,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-86e8d574cb564464931effadf063d510367d5e16.idx",
+      "objects": 67,
+      "loose_bytes": 533529204,
+      "packed_bytes": 226832493,
+      "seconds": 36.87719516700599,
+      "free_after": 12398059520,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-c1479cfaf86aac703cf5350d5542f499f3c833ec.idx",
+      "objects": 76,
+      "loose_bytes": 530856103,
+      "packed_bytes": 276687607,
+      "seconds": 51.97753891700995,
+      "free_after": 12649115648,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-61260f3b0fbd385d4cf9b9b9dbed0a59e1e05e28.idx",
+      "objects": 89,
+      "loose_bytes": 535114553,
+      "packed_bytes": 299250211,
+      "seconds": 67.84255891598877,
+      "free_after": 12888428544,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-ad0f7384437fd6cd9629ad895b960b00a4f50a94.idx",
+      "objects": 101,
+      "loose_bytes": 536269128,
+      "packed_bytes": 340503371,
+      "seconds": 75.1991890000063,
+      "free_after": 13092311040,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-82edcac7c786665db5c4cc00eba2a69ad03a0abe.idx",
+      "objects": 141,
+      "loose_bytes": 536339735,
+      "packed_bytes": 404747041,
+      "seconds": 112.38245158400969,
+      "free_after": 13216239616,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-523ed356f7031863be23a5f728f62e98a5209cda.idx",
+      "objects": 167,
+      "loose_bytes": 536278701,
+      "packed_bytes": 456169037,
+      "seconds": 140.95541904098354,
+      "free_after": 13301813248,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-b4660695ebbef65b93d20fa446d718db3ada6b02.idx",
+      "objects": 182,
+      "loose_bytes": 536697931,
+      "packed_bytes": 356504941,
+      "seconds": 101.10509512500721,
+      "free_after": 13484855296,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-f0af87fc2c0fa63252975eca37b600e85d5bcc89.idx",
+      "objects": 246,
+      "loose_bytes": 536585138,
+      "packed_bytes": 355230849,
+      "seconds": 64.19869625000865,
+      "free_after": 13665361920,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-82fe8a3f09094fb885e58582aa2a3775643b6f64.idx",
+      "objects": 718,
+      "loose_bytes": 536560210,
+      "packed_bytes": 330740982,
+      "seconds": 60.258635792008135,
+      "free_after": 13874216960,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-3a1dc5117c2232833e8d527410f18200f196479d.idx",
+      "objects": 2172,
+      "loose_bytes": 536756372,
+      "packed_bytes": 442745911,
+      "seconds": 71.47017174999928,
+      "free_after": 13976453120,
+      "verified": true
+    },
+    {
+      "pack": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack-71e4e570e58080d9145acc3c4f0dccbc17b909ec.idx",
+      "objects": 51506,
+      "loose_bytes": 275564829,
+      "packed_bytes": 205255696,
+      "seconds": 49.066504791990155,
+      "free_after": 14245273600,
+      "verified": true
+    }
+  ],
+  "batch": 39,
+  "batches_total": 39,
+  "input_bytes": 275564829,
+  "updated": "2026-11-06T22:10:00+09:00",
+  "refs_unchanged": false,
+  "free_bytes": 14245273600,
+  "completed_at": "2026-11-06T22:10:00+09:00",
+  "runner_pid": 3794
+}

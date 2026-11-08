@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/vram-lock-sparse/target/release/vram-lock-sparse",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/sparse_only/email-Enron.mtx",
+    "--run-id",
+    "v5-comparison-email-Enron-atomic_sparse_sgd-tfixed-s0-r2",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "0",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-email-Enron-atomic_sparse_sgd-tfixed-s0-r2",
+    "--pivots",
+    "200"
+  ],
+  "environment": {
+    "SGD_STRESS_SAMPLES": "256",
+    "SGD_GPU_TIMESTAMPS": "0"
+  },
+  "started_at": "2026-11-06T07:48:18+09:00",
+  "memory_before": {
+    "available_bytes": 13007323136,
+    "used_bytes": 10517020672,
+    "swap_used_bytes": 2052653056,
+    "swap_in_bytes": 190045519872,
+    "swap_out_bytes": 2337357824
+  },
+  "warmup": false
+}

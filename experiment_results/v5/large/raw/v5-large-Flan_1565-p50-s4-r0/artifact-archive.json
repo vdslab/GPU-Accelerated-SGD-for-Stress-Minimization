@@ -1,0 +1,46 @@
+{
+  "format": "xz",
+  "preset": 0,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-Flan_1565-p50-s4-r0/rr-sparse-sgd-Flan_1565-v5-large-Flan_1565-p50-s4-r0.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-Flan_1565-p50-s4-r0/rr-sparse-sgd-Flan_1565-v5-large-Flan_1565-p50-s4-r0.final.txt.xz",
+      "original_sha256": "23cd9a78357b5fdcc5b3e7bea1260dc81f01feb386c6e2015f21ecd7dacbb5e5",
+      "decompressed_sha256": "23cd9a78357b5fdcc5b3e7bea1260dc81f01feb386c6e2015f21ecd7dacbb5e5",
+      "compressed_sha256": "5dd78ae25611e7d48791ff6bba58fbefe7ed658aa26f618b2a61726f1c649aca",
+      "original_bytes": 879433427,
+      "compressed_bytes": 73136652,
+      "compression": "xz",
+      "preset": 0,
+      "xz_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-Flan_1565-p50-s4-r0/rr-sparse-sgd-Flan_1565-v5-large-Flan_1565-p50-s4-r0.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-Flan_1565-p50-s4-r0/rr-sparse-sgd-Flan_1565-v5-large-Flan_1565-p50-s4-r0.initial.txt.xz",
+      "original_sha256": "3dcb2c345fd0413419b4413caf97161fda17cf10f23b028cf7e85d38bd9e7cda",
+      "decompressed_sha256": "3dcb2c345fd0413419b4413caf97161fda17cf10f23b028cf7e85d38bd9e7cda",
+      "compressed_sha256": "5222d7bd3a5e8abfdf15612cf9c16c98eb97dd82581c8974a9271c1157d1a76f",
+      "original_bytes": 883918932,
+      "compressed_bytes": 77037760,
+      "compression": "xz",
+      "preset": 0,
+      "xz_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-Flan_1565-p50-s4-r0/rr-sparse-sgd-Flan_1565-v5-large-Flan_1565-p50-s4-r0.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-Flan_1565-p50-s4-r0/rr-sparse-sgd-Flan_1565-v5-large-Flan_1565-p50-s4-r0.vertex-map.txt.xz",
+      "original_sha256": "44fe1445862786fcda6709fddab68ff960a05e20a1067f15ad9c548467706c9b",
+      "decompressed_sha256": "44fe1445862786fcda6709fddab68ff960a05e20a1067f15ad9c548467706c9b",
+      "compressed_sha256": "1ca955204f2f0f0fa5004a8a1bfb2d81c40d3db24a2b30c9c45b6244ff934768",
+      "original_bytes": 22814484,
+      "compressed_bytes": 668420,
+      "compression": "xz",
+      "preset": 0,
+      "xz_crc_validated": true
+    }
+  ],
+  "errors": [],
+  "converted_at": "2026-11-06T21:37:49+09:00",
+  "previous_manifest": "archive-before-xz.json"
+}

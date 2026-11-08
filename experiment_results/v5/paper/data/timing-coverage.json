@@ -1,0 +1,97 @@
+{
+  "at": "2026-11-07T14:14:50+09:00",
+  "successful_runs": 6160,
+  "unexecuted_gpu_limit": 220,
+  "intervals": [
+    {
+      "number": "①",
+      "name": "前処理",
+      "field": "preprocess_time_ms",
+      "cpu_measured": 1560,
+      "cpu_total": 1560,
+      "gpu_measured": 4600,
+      "gpu_total": 4600
+    },
+    {
+      "number": "②",
+      "name": "GPU準備",
+      "field": "gpu_prepare_time_ms",
+      "cpu_measured": 0,
+      "cpu_total": 1560,
+      "gpu_measured": 4600,
+      "gpu_total": 4600
+    },
+    {
+      "number": "③",
+      "name": "初期転送",
+      "field": "upload_time_ms",
+      "cpu_measured": 0,
+      "cpu_total": 1560,
+      "gpu_measured": 4600,
+      "gpu_total": 4600
+    },
+    {
+      "number": "④",
+      "name": "各反復の計算時間",
+      "field": "iteration_times_ms",
+      "cpu_measured": 1560,
+      "cpu_total": 1560,
+      "gpu_measured": 0,
+      "gpu_total": 4600
+    },
+    {
+      "number": "⑤",
+      "name": "SGD経過時間",
+      "field": "sgd_time_ms",
+      "cpu_measured": 1560,
+      "cpu_total": 1560,
+      "gpu_measured": 4600,
+      "gpu_total": 4600
+    },
+    {
+      "number": "⑥",
+      "name": "結果取得",
+      "field": "readback_time_ms",
+      "cpu_measured": 0,
+      "cpu_total": 1560,
+      "gpu_measured": 4600,
+      "gpu_total": 4600
+    },
+    {
+      "number": "⑦",
+      "name": "描画",
+      "field": "draw_time_ms",
+      "cpu_measured": 0,
+      "cpu_total": 1560,
+      "gpu_measured": 0,
+      "gpu_total": 4600
+    },
+    {
+      "number": "⑧",
+      "name": "描画込み総時間",
+      "field": "total_with_draw_time_ms",
+      "cpu_measured": 0,
+      "cpu_total": 1560,
+      "gpu_measured": 0,
+      "gpu_total": 4600
+    },
+    {
+      "number": "⑨",
+      "name": "反復計算時間合計",
+      "field": "iteration_total_time_ms",
+      "cpu_measured": 1560,
+      "cpu_total": 1560,
+      "gpu_measured": 0,
+      "gpu_total": 4600
+    },
+    {
+      "number": "⑩",
+      "name": "描画なし総計算時間",
+      "field": "total_compute_time_ms",
+      "cpu_measured": 1560,
+      "cpu_total": 1560,
+      "gpu_measured": 4600,
+      "gpu_total": 4600
+    }
+  ]
+}

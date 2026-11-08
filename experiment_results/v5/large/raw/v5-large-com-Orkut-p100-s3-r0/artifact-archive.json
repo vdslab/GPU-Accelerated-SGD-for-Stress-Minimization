@@ -1,0 +1,52 @@
+{
+  "format": "shared-gzip",
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-com-Orkut-p100-s3-r0/rr-sparse-sgd-com-Orkut-v5-large-com-Orkut-p100-s3-r0.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-com-Orkut-p100-s3-r0/rr-sparse-sgd-com-Orkut-v5-large-com-Orkut-p100-s3-r0.vertex-map.txt.xz",
+      "original_sha256": "99c3f8e98e9ed24e8014409bbebf7d74cd6f4dfaf40ff9a915019807b667ea64",
+      "decompressed_sha256": "99c3f8e98e9ed24e8014409bbebf7d74cd6f4dfaf40ff9a915019807b667ea64",
+      "compressed_sha256": "af275b635c94cfa8749c883e13914e82f4b3bab670278d5d8e061b0dad3568ca",
+      "original_bytes": 46936836,
+      "compressed_bytes": 1280668,
+      "compression": "xz",
+      "preset": 0,
+      "xz_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-com-Orkut-p100-s3-r0/rr-sparse-sgd-com-Orkut-v5-large-com-Orkut-p100-s3-r0.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-com-Orkut-p100-s3-r0/rr-sparse-sgd-com-Orkut-v5-large-com-Orkut-p100-s3-r0.initial.shared.txt.gz",
+      "original_sha256": "7d2b8539a82af60a8c98ed93f0691bbb20ef267deee731805606d219228792ba",
+      "decompressed_sha256": "7d2b8539a82af60a8c98ed93f0691bbb20ef267deee731805606d219228792ba",
+      "original_bytes": 1899837085,
+      "compressed_sha256": "022cfc5898048412e74c1ee1920b204ea42c0e1c2a2b78d42f01ddf69b76fe97",
+      "compressed_bytes": 601513727,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/shared-edges/38146670d468f820612381c80551daa8c783c32bb79fa136787690bbe7eec8f1.edges-template.gz",
+      "shared_edge_sha256": "f424fbff55007998f39b459cd5434625d959d7ad0644ae2c3c49456ec913cda1",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-com-Orkut-p100-s3-r0/rr-sparse-sgd-com-Orkut-v5-large-com-Orkut-p100-s3-r0.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-com-Orkut-p100-s3-r0/rr-sparse-sgd-com-Orkut-v5-large-com-Orkut-p100-s3-r0.final.shared.txt.gz",
+      "original_sha256": "8b3bcf3b263989c4c65623e5f75fc7dc028f61a4f214ddb9060cc834aa5ec102",
+      "decompressed_sha256": "8b3bcf3b263989c4c65623e5f75fc7dc028f61a4f214ddb9060cc834aa5ec102",
+      "original_bytes": 1894373705,
+      "compressed_sha256": "22e1733b1e35166e3c7a93d718527c1539a33a8611ab33eb9ce873eec8654a5c",
+      "compressed_bytes": 600010756,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/shared-edges/38146670d468f820612381c80551daa8c783c32bb79fa136787690bbe7eec8f1.edges-template.gz",
+      "shared_edge_sha256": "f424fbff55007998f39b459cd5434625d959d7ad0644ae2c3c49456ec913cda1",
+      "prefix_member_bytes": 65536
+    }
+  ],
+  "errors": [],
+  "updated_at": "2026-11-07T00:17:03+09:00",
+  "storage_definition": "Each layout is independently readable with ordinary gzip; APFS shares immutable edge-member blocks. Other artifacts retain prior encoding.",
+  "previous_manifest": "archive-before-shared-gzip.json"
+}

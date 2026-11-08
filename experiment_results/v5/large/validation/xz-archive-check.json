@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-06T20:32:58+09:00",
+  "passed": true,
+  "checks": [
+    "native plaintext byte-exact XZ recovery",
+    "SHA256 and size checked before removal",
+    "record path redirected",
+    "manifest references intact XZ"
+  ]
+}

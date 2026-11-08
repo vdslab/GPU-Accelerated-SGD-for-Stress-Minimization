@@ -1,0 +1,25 @@
+{
+  "state": "completed",
+  "formal_runs_started": true,
+  "planned_rr_full": 570,
+  "planned_rr_sparse": 840,
+  "total_formal_runs": 1410,
+  "full_stress": "exact",
+  "sparse_stress": "previous_auto_8000_samples256_seed0",
+  "timing_coverage": "validated_representative_small_large_both_methods",
+  "full_T": 128,
+  "full_W": 128,
+  "sparse_W": 128,
+  "sparse_T": null,
+  "pipeline_started": true,
+  "draw": {
+    "width": 2048,
+    "height": 2048,
+    "edges": "all",
+    "node_radius": 1,
+    "palette": "blue"
+  },
+  "validation": "validation/preflight-complete.json",
+  "formal_runs_completed": 1410,
+  "reports_complete": true
+}

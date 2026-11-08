@@ -1,0 +1,42 @@
+[
+  {
+    "method": "atomic_sgd",
+    "graphs": 38,
+    "sgd_cpu_speedup_gmean": 0.17269106526339761,
+    "sgd_cpu_speedup_faster_graphs": 14,
+    "requested_cpu_speedup_gmean": 0.1390218375178744,
+    "requested_cpu_speedup_faster_graphs": 14,
+    "with_upload_cpu_speedup_gmean": 0.13733983888607618,
+    "with_upload_cpu_speedup_faster_graphs": 14
+  },
+  {
+    "method": "rr_sgd",
+    "graphs": 38,
+    "sgd_cpu_speedup_gmean": 1.3828481764804226,
+    "sgd_cpu_speedup_faster_graphs": 24,
+    "requested_cpu_speedup_gmean": 1.0848417955361782,
+    "requested_cpu_speedup_faster_graphs": 23,
+    "with_upload_cpu_speedup_gmean": 0.9967666224687949,
+    "with_upload_cpu_speedup_faster_graphs": 23
+  },
+  {
+    "method": "atomic_sparse_sgd",
+    "graphs": 56,
+    "sgd_cpu_speedup_gmean": 0.5224599641328952,
+    "sgd_cpu_speedup_faster_graphs": 32,
+    "requested_cpu_speedup_gmean": 0.3794589254170156,
+    "requested_cpu_speedup_faster_graphs": 27,
+    "with_upload_cpu_speedup_gmean": 0.3757053664099923,
+    "with_upload_cpu_speedup_faster_graphs": 26
+  },
+  {
+    "method": "rr_sparse_sgd",
+    "graphs": 56,
+    "sgd_cpu_speedup_gmean": 1.8706596664080632,
+    "sgd_cpu_speedup_faster_graphs": 36,
+    "requested_cpu_speedup_gmean": 1.513457091647525,
+    "requested_cpu_speedup_faster_graphs": 36,
+    "with_upload_cpu_speedup_gmean": 1.385859221684071,
+    "with_upload_cpu_speedup_faster_graphs": 36
+  }
+]

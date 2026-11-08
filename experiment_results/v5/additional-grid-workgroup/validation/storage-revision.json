@@ -1,0 +1,14 @@
+{
+  "at": "2026-11-07T15:19:42+09:00",
+  "status": "passed",
+  "formal_successes_before": 226,
+  "native_binaries_changed": false,
+  "scope_changed": false,
+  "verified": "Small validation copy, independent gzip CRC/SHA/length, native scalar equality, idempotent finish, formal source byte hashes unchanged",
+  "pilot": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/validation/shared-storage-pilot",
+  "storage": "coPapers native outputs only: XZ then self-contained shared-edge gzip; storage timing excluded; all other graphs remain XZ",
+  "post_warmup_resource_recheck": true,
+  "runner_sha256": "894b0bed82fad04233370a0c2030fdf856497673d47396b22a1f7082c1ccd95f",
+  "helper_sha256": "823c3fdeacd08929d68bba6db64a9ecd497a350554ebddb95868866fc7df277c",
+  "disk_free_bytes": 12494565376
+}

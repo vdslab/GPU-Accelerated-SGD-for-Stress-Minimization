@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/sparse-sgd-gpu",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/sparse_only/AS365.mtx",
+    "--run-id",
+    "v5-large-AS365-p100-s0-r0-warmup-1793973893937356000",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "999",
+    "--pivots",
+    "100",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/warmups/v5-large-AS365-p100-s0-r0-warmup-1793973893937356000"
+  ],
+  "started_at": "2026-11-06T23:04:54+09:00",
+  "memory_before": {
+    "available_bytes": 11559780352,
+    "used_bytes": 12093341696,
+    "swap_used_bytes": 4891738112,
+    "swap_in_bytes": 778650238976,
+    "swap_out_bytes": 3682058240
+  },
+  "warmup": true,
+  "environment": {
+    "SGD_STRESS_SAMPLES": "64",
+    "SGD_GPU_TIMESTAMPS": "0"
+  }
+}

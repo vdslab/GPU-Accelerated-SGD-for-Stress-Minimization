@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-email-atomic_sparse_sgd-tfixed-s3-r1/atomic-sparse-sgd-email-v5-comparison-email-atomic_sparse_sgd-tfixed-s3-r1.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-email-atomic_sparse_sgd-tfixed-s3-r1/atomic-sparse-sgd-email-v5-comparison-email-atomic_sparse_sgd-tfixed-s3-r1.final.txt.gz",
+      "original_sha256": "02673ba10fe468454e35123ff11b463e9f7b9412908862d664b3644cfc043df9",
+      "decompressed_sha256": "02673ba10fe468454e35123ff11b463e9f7b9412908862d664b3644cfc043df9",
+      "compressed_sha256": "89432fe2a809de922e852e7ab21e2d731723bb096fe6b0fcb89bc2703456645b",
+      "original_bytes": 86581,
+      "compressed_bytes": 39238,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-email-atomic_sparse_sgd-tfixed-s3-r1/atomic-sparse-sgd-email-v5-comparison-email-atomic_sparse_sgd-tfixed-s3-r1.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-email-atomic_sparse_sgd-tfixed-s3-r1/atomic-sparse-sgd-email-v5-comparison-email-atomic_sparse_sgd-tfixed-s3-r1.initial.txt.gz",
+      "original_sha256": "5d113b35f35f819edf63ca16c1512d17646258db1ec0a84605b19b9bd816962b",
+      "decompressed_sha256": "5d113b35f35f819edf63ca16c1512d17646258db1ec0a84605b19b9bd816962b",
+      "compressed_sha256": "af0060e4eb17850e484fe715d09ca04a337d76cd98a0414d87119b6f63a30fbc",
+      "original_bytes": 88246,
+      "compressed_bytes": 39496,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-email-atomic_sparse_sgd-tfixed-s3-r1/atomic-sparse-sgd-email-v5-comparison-email-atomic_sparse_sgd-tfixed-s3-r1.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-email-atomic_sparse_sgd-tfixed-s3-r1/atomic-sparse-sgd-email-v5-comparison-email-atomic_sparse_sgd-tfixed-s3-r1.vertex-map.txt.gz",
+      "original_sha256": "c5669714989bd0ff3d9926e71f5c15cd3f8319069149f0c9f2bcac5f823b67ce",
+      "decompressed_sha256": "c5669714989bd0ff3d9926e71f5c15cd3f8319069149f0c9f2bcac5f823b67ce",
+      "compressed_sha256": "b38aa6d6ae9d843fe40c1e54622cdc8316ff948d97cc4d9e2bca7dac4cd386f5",
+      "original_bytes": 9110,
+      "compressed_bytes": 3619,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

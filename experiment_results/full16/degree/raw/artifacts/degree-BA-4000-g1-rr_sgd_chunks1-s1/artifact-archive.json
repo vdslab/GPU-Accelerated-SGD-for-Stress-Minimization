@@ -1,0 +1,28 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/degree/raw/artifacts/degree-BA-4000-g1-rr_sgd_chunks1-s1/rr-sgd-BA-4000-g1-degree-BA-4000-g1-rr_sgd_chunks1-s1.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/degree/raw/artifacts/degree-BA-4000-g1-rr_sgd_chunks1-s1/rr-sgd-BA-4000-g1-degree-BA-4000-g1-rr_sgd_chunks1-s1.final.txt.gz",
+      "original_sha256": "2be4f2f3a4c933a053a01c84625985238dde845c7bc93a8188c6985667e59305",
+      "decompressed_sha256": "2be4f2f3a4c933a053a01c84625985238dde845c7bc93a8188c6985667e59305",
+      "compressed_sha256": "ab2b1a36d37eacc07b4b0b90944c2f454a2e310b582977abe396d81a7013ec69",
+      "original_bytes": 502065,
+      "compressed_bytes": 208865,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/degree/raw/artifacts/degree-BA-4000-g1-rr_sgd_chunks1-s1/rr-sgd-BA-4000-g1-degree-BA-4000-g1-rr_sgd_chunks1-s1.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/degree/raw/artifacts/degree-BA-4000-g1-rr_sgd_chunks1-s1/rr-sgd-BA-4000-g1-degree-BA-4000-g1-rr_sgd_chunks1-s1.initial.txt.gz",
+      "original_sha256": "8179cd9f91b02593df817f103887f54907dfe667ba7e50bde9a3269f52c0e860",
+      "decompressed_sha256": "8179cd9f91b02593df817f103887f54907dfe667ba7e50bde9a3269f52c0e860",
+      "compressed_sha256": "8b330ba0814080e1567e5409871fc6078a0928a7579c1c0b63f531bdf883897d",
+      "original_bytes": 506921,
+      "compressed_bytes": 210582,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

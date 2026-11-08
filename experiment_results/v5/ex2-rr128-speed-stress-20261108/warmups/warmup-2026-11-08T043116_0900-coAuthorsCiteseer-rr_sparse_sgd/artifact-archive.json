@@ -1,0 +1,46 @@
+{
+  "format": "shared-gzip",
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/warmups/warmup-2026-11-08T043116_0900-coAuthorsCiteseer-rr_sparse_sgd/rr-sparse-sgd-coAuthorsCiteseer-warmup-2026-11-08T043116_0900-coAuthorsCiteseer-rr_sparse_sgd.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/warmups/warmup-2026-11-08T043116_0900-coAuthorsCiteseer-rr_sparse_sgd/rr-sparse-sgd-coAuthorsCiteseer-warmup-2026-11-08T043116_0900-coAuthorsCiteseer-rr_sparse_sgd.initial.shared.txt.gz",
+      "original_sha256": "45f44392a834677fd4daef7680a90f69eb603f4df206c2709407dd5ef5fc8a30",
+      "decompressed_sha256": "45f44392a834677fd4daef7680a90f69eb603f4df206c2709407dd5ef5fc8a30",
+      "original_bytes": 19235265,
+      "compressed_sha256": "1f0955d3f332ad52aa503131d30dfebfffd1002100c92742e8bdc1d1381dd03d",
+      "compressed_bytes": 7701264,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/shared-edges/rr_sparse_sgd/c567bc0895028edaf02b6d8bcde45e95d028350e9c22c76ef5ebaa80b4f55eeb.edges-template.gz",
+      "shared_edge_sha256": "491688ea4f952c3dc07526b6f06a934030b1899fa8b5d9f3ea4e9ad86f1eb996",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/warmups/warmup-2026-11-08T043116_0900-coAuthorsCiteseer-rr_sparse_sgd/rr-sparse-sgd-coAuthorsCiteseer-warmup-2026-11-08T043116_0900-coAuthorsCiteseer-rr_sparse_sgd.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/warmups/warmup-2026-11-08T043116_0900-coAuthorsCiteseer-rr_sparse_sgd/rr-sparse-sgd-coAuthorsCiteseer-warmup-2026-11-08T043116_0900-coAuthorsCiteseer-rr_sparse_sgd.final.shared.txt.gz",
+      "original_sha256": "79d324d3aafda9de38862aa95fefdd67daf9fb6e1d54fcb045ba6d9453c89c20",
+      "decompressed_sha256": "79d324d3aafda9de38862aa95fefdd67daf9fb6e1d54fcb045ba6d9453c89c20",
+      "original_bytes": 18676385,
+      "compressed_sha256": "e313758d787e3bf6fcd9d7c48fa7d699bbba43eca6416f4a363d7e9890d316ee",
+      "compressed_bytes": 7623818,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/shared-edges/rr_sparse_sgd/c567bc0895028edaf02b6d8bcde45e95d028350e9c22c76ef5ebaa80b4f55eeb.edges-template.gz",
+      "shared_edge_sha256": "491688ea4f952c3dc07526b6f06a934030b1899fa8b5d9f3ea4e9ad86f1eb996",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/warmups/warmup-2026-11-08T043116_0900-coAuthorsCiteseer-rr_sparse_sgd/rr-sparse-sgd-coAuthorsCiteseer-warmup-2026-11-08T043116_0900-coAuthorsCiteseer-rr_sparse_sgd.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/warmups/warmup-2026-11-08T043116_0900-coAuthorsCiteseer-rr_sparse_sgd/rr-sparse-sgd-coAuthorsCiteseer-warmup-2026-11-08T043116_0900-coAuthorsCiteseer-rr_sparse_sgd.vertex-map.txt.gz",
+      "original_sha256": "861502e8660ec27a8f8ea69d0a75f4e1ea0e5680bd401ab0f6463a87e9ac5aa5",
+      "original_bytes": 2960260,
+      "compressed_sha256": "3118be739f85fccd353ed7327ee298b757e4a42cacc87767336e344010a84d87",
+      "compressed_bytes": 991820,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

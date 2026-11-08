@@ -1,0 +1,39 @@
+{
+  "at": "2026-11-07T18:00:09+09:00",
+  "status": "passed",
+  "success": 810,
+  "failed": 0,
+  "pending": 0,
+  "settings": 54,
+  "full": 450,
+  "sparse": 360,
+  "measurement_binaries": {
+    "sgd": "63e81b64ecbc1b507c86416457798121cd44f1cf4af1d01a53628d84799e124a",
+    "atomic_sgd": "8a6974c341291acb82658430f15215d3eed69ab7863069150a4636530d7663c5",
+    "rr_sgd": "e6378204f1c018f3ce0b2b8630be509fcfb506aedb7de20ccd5881b2a6cd9be6",
+    "sparse_sgd": "9c370ee3acc057ca0ea94c78c88e9cff9c4dbb8c04e0d7371a37452087416989",
+    "atomic_sparse_sgd": "0f9c9428a48d09c27425687310dfa50e917241241ec82b27d947308fcd8037bd",
+    "rr_sparse_sgd": "61dd5fcb9ec4235c300242b10c4bda43bf958579380521a612cc1231b5af4092",
+    "added_w256": "48338d34a3aef6f934a745b4d5440bab2d3e9bf79f56bbd0992431d395ae1262",
+    "added_w1024": "74456261a9d17e07f418f18248e0a5f9a9358642165ea37e0c01278c8560a65a"
+  },
+  "input_hashes": {
+    "grid2d_64x64": "4bf543fe1efb2ca7b4df07df6e6340718c1c68f362cee6e67784bf1fa56b4de9",
+    "grid2d_96x96": "a15941bbec008393e46ffe3c37ca6b94494bcd1d7238939a1fbdad1f38448ec3",
+    "grid2d_128x128": "b9785dbbf2c1a76016beea90afd6d13d66addeb7a6228b6433f25c2a9a71e231",
+    "grid2d_128x192": "5fb929b5ab01729b5ab47520787fca9e7dc53610fca426dee0f8a274d3ad9f31",
+    "grid3d_16x16x16": "7c61e895eea72bb0adac2f7f70f8e11c31b57cfdeb57c4aab5bb0bef86c42190",
+    "grid3d_24x24x24": "de887a003e0c8518a13ae9f8170f25e7fd644d74a5662f46acebede2d864d5ff",
+    "luxembourg_osm": "a01af8886d28ee796a6c4cfee7c1699ac3c0c6665485d2e48b74b48da631bb5b",
+    "la2010": "d58d0c7f9e5507c5cc98fa16b77ed394c026ea2b50baa327f8b274480964832e",
+    "coPapersCiteseer": "1d2f63ad71756124d9eab451ede52f36bcc6281d438836d5ba5ae69973e74603"
+  },
+  "checked_archives": 1980,
+  "checked_compressed_logical_bytes": 7745175158,
+  "all_compressed_sha_match": true,
+  "all_native_measurement_scalars_unchanged": true,
+  "derived_timing_formulas_checked": true,
+  "hierarchical_aggregation_independently_checked": true,
+  "sparse_fingerprint_and_stress_pairs": 180,
+  "seconds": 5.35363383299773
+}

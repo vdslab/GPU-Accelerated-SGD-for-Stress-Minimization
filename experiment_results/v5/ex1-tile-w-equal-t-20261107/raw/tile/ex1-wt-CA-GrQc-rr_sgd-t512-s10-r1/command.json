@@ -1,0 +1,42 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex1-tile-w-equal-t-20261107/bin/rr-gpu",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/common/CA-GrQc.mtx",
+    "--run-id",
+    "ex1-wt-CA-GrQc-rr_sgd-t512-s10-r1",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "10",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex1-tile-w-equal-t-20261107/raw/tile/ex1-wt-CA-GrQc-rr_sgd-t512-s10-r1",
+    "--tile-size",
+    "512",
+    "--workgroup-size",
+    "512",
+    "--coordinate-memory",
+    "shared",
+    "--phase-chunks",
+    "1"
+  ],
+  "environment": {
+    "SGD_STRESS_MODE": "exact",
+    "SGD_GPU_TIMESTAMPS": "0"
+  },
+  "started_at": "2026-11-07T22:32:41+09:00",
+  "memory_before": {
+    "available_bytes": 8823652352,
+    "used_bytes": 9827565568,
+    "swap_used_bytes": 5199364096,
+    "swap_in_bytes": 199284981760,
+    "swap_out_bytes": 2020016128
+  },
+  "warmup": false
+}

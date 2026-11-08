@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/validation/v5-validation-karate-atomic_sparse_sgd/atomic-sparse-sgd-karate-v5-validation-karate-atomic_sparse_sgd.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/validation/v5-validation-karate-atomic_sparse_sgd/atomic-sparse-sgd-karate-v5-validation-karate-atomic_sparse_sgd.final.txt.gz",
+      "original_sha256": "81297f095b0335a0e8d8b09db6468390348104578b52f711fe779d6b877c86dc",
+      "decompressed_sha256": "81297f095b0335a0e8d8b09db6468390348104578b52f711fe779d6b877c86dc",
+      "compressed_sha256": "87e41ac8bae7a2985e3255eb10e02e6e995d397b3c33999ffa69b566e63ac4cc",
+      "original_bytes": 2564,
+      "compressed_bytes": 1417,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/validation/v5-validation-karate-atomic_sparse_sgd/atomic-sparse-sgd-karate-v5-validation-karate-atomic_sparse_sgd.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/validation/v5-validation-karate-atomic_sparse_sgd/atomic-sparse-sgd-karate-v5-validation-karate-atomic_sparse_sgd.initial.txt.gz",
+      "original_sha256": "a155a9e807951c59c92aef11cab426daeef37eeb1aae455dde3d9b9e944f6478",
+      "decompressed_sha256": "a155a9e807951c59c92aef11cab426daeef37eeb1aae455dde3d9b9e944f6478",
+      "compressed_sha256": "3e0084c9627b0de3865625d534ce0a37266a126643212f9e2306765f26d1e686",
+      "original_bytes": 2606,
+      "compressed_bytes": 1419,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/validation/v5-validation-karate-atomic_sparse_sgd/atomic-sparse-sgd-karate-v5-validation-karate-atomic_sparse_sgd.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/validation/v5-validation-karate-atomic_sparse_sgd/atomic-sparse-sgd-karate-v5-validation-karate-atomic_sparse_sgd.vertex-map.txt.gz",
+      "original_sha256": "0a804591382ba8a8173c86536b0db24cfe13e249c0fcb42ef8e3346795eb1042",
+      "decompressed_sha256": "0a804591382ba8a8173c86536b0db24cfe13e249c0fcb42ef8e3346795eb1042",
+      "compressed_sha256": "298696e5657e56fe58b037a959f9f3ec4f16e5f94625698abb4b3b3dd3bae188",
+      "original_bytes": 184,
+      "compressed_bytes": 119,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,42 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/rr_gpu/target/release/rr-gpu",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/common/grid17.mtx",
+    "--run-id",
+    "v5-comparison-grid17-rr_sgd-tfixed-s0-r0",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "0",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-grid17-rr_sgd-tfixed-s0-r0",
+    "--tile-size",
+    "1024",
+    "--workgroup-size",
+    "1024",
+    "--coordinate-memory",
+    "shared",
+    "--phase-chunks",
+    "1"
+  ],
+  "environment": {
+    "SGD_STRESS_SAMPLES": "256",
+    "SGD_GPU_TIMESTAMPS": "0"
+  },
+  "started_at": "2026-11-06T05:34:03+09:00",
+  "memory_before": {
+    "available_bytes": 11586764800,
+    "used_bytes": 12036866048,
+    "swap_used_bytes": 2069430272,
+    "swap_in_bytes": 185123127296,
+    "swap_out_bytes": 2305966080
+  },
+  "warmup": false
+}

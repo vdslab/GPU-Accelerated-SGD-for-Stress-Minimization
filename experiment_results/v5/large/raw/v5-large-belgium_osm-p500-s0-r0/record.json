@@ -1,0 +1,27 @@
+{
+  "graph": "belgium_osm",
+  "method": "rr_sparse_sgd",
+  "pivots": 500,
+  "seed": 0,
+  "repetition": 0,
+  "run_id": "v5-large-belgium_osm-p500-s0-r0",
+  "status": "preflight_unavailable",
+  "executed": false,
+  "measured": false,
+  "completed_at": "2026-11-06T18:53:51+09:00",
+  "preflight": {
+    "graph": "belgium_osm",
+    "pivots": 500,
+    "nodes": 1441295,
+    "edges": 1549970,
+    "one_sided_bytes": 5765180000,
+    "two_sided_lower_bound_bytes": 37199280,
+    "vertex_workgroups": 5631,
+    "hard_limit_reasons": [
+      "one_sided: 5765180000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 12104682880,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  "error": "one_sided: 5765180000 bytes > storage buffer limit 4294967295"
+}

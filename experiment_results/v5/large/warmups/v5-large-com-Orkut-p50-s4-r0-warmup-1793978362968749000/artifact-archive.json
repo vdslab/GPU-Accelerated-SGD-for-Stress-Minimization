@@ -1,0 +1,52 @@
+{
+  "format": "shared-gzip",
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/warmups/v5-large-com-Orkut-p50-s4-r0-warmup-1793978362968749000/rr-sparse-sgd-com-Orkut-v5-large-com-Orkut-p50-s4-r0-warmup-1793978362968749000.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/warmups/v5-large-com-Orkut-p50-s4-r0-warmup-1793978362968749000/rr-sparse-sgd-com-Orkut-v5-large-com-Orkut-p50-s4-r0-warmup-1793978362968749000.vertex-map.txt.xz",
+      "original_sha256": "99c3f8e98e9ed24e8014409bbebf7d74cd6f4dfaf40ff9a915019807b667ea64",
+      "decompressed_sha256": "99c3f8e98e9ed24e8014409bbebf7d74cd6f4dfaf40ff9a915019807b667ea64",
+      "compressed_sha256": "af275b635c94cfa8749c883e13914e82f4b3bab670278d5d8e061b0dad3568ca",
+      "original_bytes": 46936836,
+      "compressed_bytes": 1280668,
+      "compression": "xz",
+      "preset": 0,
+      "xz_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/warmups/v5-large-com-Orkut-p50-s4-r0-warmup-1793978362968749000/rr-sparse-sgd-com-Orkut-v5-large-com-Orkut-p50-s4-r0-warmup-1793978362968749000.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/warmups/v5-large-com-Orkut-p50-s4-r0-warmup-1793978362968749000/rr-sparse-sgd-com-Orkut-v5-large-com-Orkut-p50-s4-r0-warmup-1793978362968749000.final.shared.txt.gz",
+      "original_sha256": "e9debbb777c98547325ec1b26f0ada6fc28a6d86321e707bd6f31b735009bd3e",
+      "decompressed_sha256": "e9debbb777c98547325ec1b26f0ada6fc28a6d86321e707bd6f31b735009bd3e",
+      "original_bytes": 1894539247,
+      "compressed_sha256": "108ffa5db652711e8ad2d516ad91370dfd74a8ef11855593e797b54dd137a020",
+      "compressed_bytes": 600049858,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/shared-edges/38146670d468f820612381c80551daa8c783c32bb79fa136787690bbe7eec8f1.edges-template.gz",
+      "shared_edge_sha256": "f424fbff55007998f39b459cd5434625d959d7ad0644ae2c3c49456ec913cda1",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/warmups/v5-large-com-Orkut-p50-s4-r0-warmup-1793978362968749000/rr-sparse-sgd-com-Orkut-v5-large-com-Orkut-p50-s4-r0-warmup-1793978362968749000.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/warmups/v5-large-com-Orkut-p50-s4-r0-warmup-1793978362968749000/rr-sparse-sgd-com-Orkut-v5-large-com-Orkut-p50-s4-r0-warmup-1793978362968749000.initial.shared.txt.gz",
+      "original_sha256": "f869b2275d67e6dd86d37f19d663a361521d27ef5295858d9cfba29feb17b589",
+      "decompressed_sha256": "f869b2275d67e6dd86d37f19d663a361521d27ef5295858d9cfba29feb17b589",
+      "original_bytes": 1899836568,
+      "compressed_sha256": "d87e082122583cf8d70a66aaf32b78f229883015b85139b4cd3df36f6b4ddbff",
+      "compressed_bytes": 601517575,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/shared-edges/38146670d468f820612381c80551daa8c783c32bb79fa136787690bbe7eec8f1.edges-template.gz",
+      "shared_edge_sha256": "f424fbff55007998f39b459cd5434625d959d7ad0644ae2c3c49456ec913cda1",
+      "prefix_member_bytes": 65536
+    }
+  ],
+  "errors": [],
+  "updated_at": "2026-11-07T00:25:56+09:00",
+  "storage_definition": "Each layout is independently readable with ordinary gzip; APFS shares immutable edge-member blocks. Other artifacts retain prior encoding.",
+  "previous_manifest": "archive-before-shared-gzip.json"
+}

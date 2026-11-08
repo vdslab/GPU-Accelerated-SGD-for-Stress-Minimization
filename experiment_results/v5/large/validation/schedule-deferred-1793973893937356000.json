@@ -1,0 +1,531 @@
+{
+  "at": "2026-11-06T23:16:56+09:00",
+  "policy": "Pending only; preserve each graph pivot/seed order, process other approved graphs if resource reserve fits",
+  "jobs": [
+    {
+      "run": {
+        "graph": "com-Orkut",
+        "method": "rr_sparse_sgd",
+        "pivots": 50,
+        "seed": 4,
+        "repetition": 0,
+        "run_id": "v5-large-com-Orkut-p50-s4-r0"
+      },
+      "reason": "pre_run_resource_reserve",
+      "required_disk_bytes": 10411441840,
+      "available_disk_bytes": 7160569856,
+      "memory": {
+        "available_bytes": 11559780352,
+        "used_bytes": 12093341696,
+        "swap_used_bytes": 4891738112,
+        "swap_in_bytes": 778650238976,
+        "swap_out_bytes": 3682058240
+      },
+      "at": "2026-11-06T23:04:53+09:00"
+    },
+    {
+      "run": {
+        "graph": "AS365",
+        "method": "rr_sparse_sgd",
+        "pivots": 50,
+        "seed": 1,
+        "repetition": 0,
+        "run_id": "v5-large-AS365-p50-s1-r0"
+      },
+      "reason": "pre_run_resource_reserve",
+      "required_disk_bytes": 5448518944,
+      "available_disk_bytes": 5360816128,
+      "memory": {
+        "available_bytes": 18732105728,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "AS365",
+        "method": "rr_sparse_sgd",
+        "pivots": 50,
+        "seed": 2,
+        "repetition": 0,
+        "run_id": "v5-large-AS365-p50-s2-r0"
+      },
+      "reason": "earlier condition of this graph deferred; retain pivot/seed order",
+      "required_disk_bytes": 5448518944,
+      "available_disk_bytes": 5360816128,
+      "memory": {
+        "available_bytes": 18732122112,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "AS365",
+        "method": "rr_sparse_sgd",
+        "pivots": 50,
+        "seed": 3,
+        "repetition": 0,
+        "run_id": "v5-large-AS365-p50-s3-r0"
+      },
+      "reason": "earlier condition of this graph deferred; retain pivot/seed order",
+      "required_disk_bytes": 5448518944,
+      "available_disk_bytes": 5360816128,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "AS365",
+        "method": "rr_sparse_sgd",
+        "pivots": 50,
+        "seed": 4,
+        "repetition": 0,
+        "run_id": "v5-large-AS365-p50-s4-r0"
+      },
+      "reason": "earlier condition of this graph deferred; retain pivot/seed order",
+      "required_disk_bytes": 5448518944,
+      "available_disk_bytes": 5360816128,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "com-LiveJournal",
+        "method": "rr_sparse_sgd",
+        "pivots": 100,
+        "seed": 0,
+        "repetition": 0,
+        "run_id": "v5-large-com-LiveJournal-p100-s0-r0"
+      },
+      "reason": "pre_run_resource_reserve",
+      "required_disk_bytes": 6599338288,
+      "available_disk_bytes": 5360816128,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "com-LiveJournal",
+        "method": "rr_sparse_sgd",
+        "pivots": 100,
+        "seed": 1,
+        "repetition": 0,
+        "run_id": "v5-large-com-LiveJournal-p100-s1-r0"
+      },
+      "reason": "earlier condition of this graph deferred; retain pivot/seed order",
+      "required_disk_bytes": 6599338288,
+      "available_disk_bytes": 5360816128,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "com-LiveJournal",
+        "method": "rr_sparse_sgd",
+        "pivots": 100,
+        "seed": 2,
+        "repetition": 0,
+        "run_id": "v5-large-com-LiveJournal-p100-s2-r0"
+      },
+      "reason": "earlier condition of this graph deferred; retain pivot/seed order",
+      "required_disk_bytes": 6599338288,
+      "available_disk_bytes": 5360812032,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "com-LiveJournal",
+        "method": "rr_sparse_sgd",
+        "pivots": 100,
+        "seed": 3,
+        "repetition": 0,
+        "run_id": "v5-large-com-LiveJournal-p100-s3-r0"
+      },
+      "reason": "earlier condition of this graph deferred; retain pivot/seed order",
+      "required_disk_bytes": 6599338288,
+      "available_disk_bytes": 5360812032,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "com-LiveJournal",
+        "method": "rr_sparse_sgd",
+        "pivots": 100,
+        "seed": 4,
+        "repetition": 0,
+        "run_id": "v5-large-com-LiveJournal-p100-s4-r0"
+      },
+      "reason": "earlier condition of this graph deferred; retain pivot/seed order",
+      "required_disk_bytes": 6599338288,
+      "available_disk_bytes": 5360812032,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "com-LiveJournal",
+        "method": "rr_sparse_sgd",
+        "pivots": 50,
+        "seed": 0,
+        "repetition": 0,
+        "run_id": "v5-large-com-LiveJournal-p50-s0-r0"
+      },
+      "reason": "earlier condition of this graph deferred; retain pivot/seed order",
+      "required_disk_bytes": 6599338288,
+      "available_disk_bytes": 5360812032,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "com-LiveJournal",
+        "method": "rr_sparse_sgd",
+        "pivots": 50,
+        "seed": 1,
+        "repetition": 0,
+        "run_id": "v5-large-com-LiveJournal-p50-s1-r0"
+      },
+      "reason": "earlier condition of this graph deferred; retain pivot/seed order",
+      "required_disk_bytes": 6599338288,
+      "available_disk_bytes": 5360812032,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "com-LiveJournal",
+        "method": "rr_sparse_sgd",
+        "pivots": 50,
+        "seed": 2,
+        "repetition": 0,
+        "run_id": "v5-large-com-LiveJournal-p50-s2-r0"
+      },
+      "reason": "earlier condition of this graph deferred; retain pivot/seed order",
+      "required_disk_bytes": 6599338288,
+      "available_disk_bytes": 5360812032,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "com-LiveJournal",
+        "method": "rr_sparse_sgd",
+        "pivots": 50,
+        "seed": 3,
+        "repetition": 0,
+        "run_id": "v5-large-com-LiveJournal-p50-s3-r0"
+      },
+      "reason": "earlier condition of this graph deferred; retain pivot/seed order",
+      "required_disk_bytes": 6599338288,
+      "available_disk_bytes": 5360807936,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "com-LiveJournal",
+        "method": "rr_sparse_sgd",
+        "pivots": 50,
+        "seed": 4,
+        "repetition": 0,
+        "run_id": "v5-large-com-LiveJournal-p50-s4-r0"
+      },
+      "reason": "earlier condition of this graph deferred; retain pivot/seed order",
+      "required_disk_bytes": 6599338288,
+      "available_disk_bytes": 5360807936,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "italy_osm",
+        "method": "rr_sparse_sgd",
+        "pivots": 50,
+        "seed": 0,
+        "repetition": 0,
+        "run_id": "v5-large-italy_osm-p50-s0-r0"
+      },
+      "reason": "pre_run_resource_reserve",
+      "required_disk_bytes": 5701477120,
+      "available_disk_bytes": 5360807936,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "italy_osm",
+        "method": "rr_sparse_sgd",
+        "pivots": 50,
+        "seed": 1,
+        "repetition": 0,
+        "run_id": "v5-large-italy_osm-p50-s1-r0"
+      },
+      "reason": "earlier condition of this graph deferred; retain pivot/seed order",
+      "required_disk_bytes": 5701477120,
+      "available_disk_bytes": 5360807936,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "italy_osm",
+        "method": "rr_sparse_sgd",
+        "pivots": 50,
+        "seed": 2,
+        "repetition": 0,
+        "run_id": "v5-large-italy_osm-p50-s2-r0"
+      },
+      "reason": "earlier condition of this graph deferred; retain pivot/seed order",
+      "required_disk_bytes": 5701477120,
+      "available_disk_bytes": 5360807936,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "italy_osm",
+        "method": "rr_sparse_sgd",
+        "pivots": 50,
+        "seed": 3,
+        "repetition": 0,
+        "run_id": "v5-large-italy_osm-p50-s3-r0"
+      },
+      "reason": "earlier condition of this graph deferred; retain pivot/seed order",
+      "required_disk_bytes": 5701477120,
+      "available_disk_bytes": 5360807936,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "italy_osm",
+        "method": "rr_sparse_sgd",
+        "pivots": 50,
+        "seed": 4,
+        "repetition": 0,
+        "run_id": "v5-large-italy_osm-p50-s4-r0"
+      },
+      "reason": "earlier condition of this graph deferred; retain pivot/seed order",
+      "required_disk_bytes": 5701477120,
+      "available_disk_bytes": 5360803840,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "great-britain_osm",
+        "method": "rr_sparse_sgd",
+        "pivots": 50,
+        "seed": 0,
+        "repetition": 0,
+        "run_id": "v5-large-great-britain_osm-p50-s0-r0"
+      },
+      "reason": "pre_run_resource_reserve",
+      "required_disk_bytes": 5923891632,
+      "available_disk_bytes": 5360803840,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "great-britain_osm",
+        "method": "rr_sparse_sgd",
+        "pivots": 50,
+        "seed": 1,
+        "repetition": 0,
+        "run_id": "v5-large-great-britain_osm-p50-s1-r0"
+      },
+      "reason": "earlier condition of this graph deferred; retain pivot/seed order",
+      "required_disk_bytes": 5923891632,
+      "available_disk_bytes": 5360803840,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "great-britain_osm",
+        "method": "rr_sparse_sgd",
+        "pivots": 50,
+        "seed": 2,
+        "repetition": 0,
+        "run_id": "v5-large-great-britain_osm-p50-s2-r0"
+      },
+      "reason": "earlier condition of this graph deferred; retain pivot/seed order",
+      "required_disk_bytes": 5923891632,
+      "available_disk_bytes": 5360803840,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "great-britain_osm",
+        "method": "rr_sparse_sgd",
+        "pivots": 50,
+        "seed": 3,
+        "repetition": 0,
+        "run_id": "v5-large-great-britain_osm-p50-s3-r0"
+      },
+      "reason": "earlier condition of this graph deferred; retain pivot/seed order",
+      "required_disk_bytes": 5923891632,
+      "available_disk_bytes": 5360803840,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    },
+    {
+      "run": {
+        "graph": "great-britain_osm",
+        "method": "rr_sparse_sgd",
+        "pivots": 50,
+        "seed": 4,
+        "repetition": 0,
+        "run_id": "v5-large-great-britain_osm-p50-s4-r0"
+      },
+      "reason": "earlier condition of this graph deferred; retain pivot/seed order",
+      "required_disk_bytes": 5923891632,
+      "available_disk_bytes": 5360803840,
+      "memory": {
+        "available_bytes": 18732138496,
+        "used_bytes": 5058117632,
+        "swap_used_bytes": 4874960896,
+        "swap_in_bytes": 779372331008,
+        "swap_out_bytes": 3696148480
+      },
+      "at": "2026-11-06T23:16:56+09:00"
+    }
+  ]
+}

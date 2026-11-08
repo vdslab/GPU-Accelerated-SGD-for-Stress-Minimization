@@ -131,10 +131,18 @@ fn configured_samples() -> usize {
     }).unwrap_or(DEFAULT_SAMPLES)
 }
 
+fn configured_mode() -> StressMode {
+    match std::env::var("SGD_STRESS_MODE") {
+        Ok(value) => StressMode::parse(&value).expect("SGD_STRESS_MODE must be auto|exact|sampled|off"),
+        Err(std::env::VarError::NotPresent) => StressMode::Auto,
+        Err(error) => panic!("Invalid SGD_STRESS_MODE: {error}"),
+    }
+}
+
 pub fn measure_auto_f64(positions: &[[f64; 2]], edges: &[(usize, usize)]) -> StressMeasurement {
     let started = Instant::now();
     let result = evaluate_f64(
-        StressMode::Auto,
+        configured_mode(),
         positions,
         edges,
         configured_samples(),
@@ -146,7 +154,7 @@ pub fn measure_auto_f64(positions: &[[f64; 2]], edges: &[(usize, usize)]) -> Str
 pub fn measure_auto_f32(positions: &[[f32; 2]], edges: &[(usize, usize)]) -> StressMeasurement {
     let started = Instant::now();
     let result = evaluate_f32(
-        StressMode::Auto,
+        configured_mode(),
         positions,
         edges,
         configured_samples(),

@@ -1,0 +1,38 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/bin/rr-sparse-w256",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/sparse_only/coPapersCiteseer.mtx",
+    "--run-id",
+    "grid-sparse-coPapersCiteseer-w256-p1000-s4-r0",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "4",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/raw/grid-sparse-coPapersCiteseer-w256-p1000-s4-r0",
+    "--pivots",
+    "1000"
+  ],
+  "binary_sha256": "48338d34a3aef6f934a745b4d5440bab2d3e9bf79f56bbd0992431d395ae1262",
+  "workgroup_size": 256,
+  "started_at": "2026-11-07T17:09:29+09:00",
+  "memory_before": {
+    "available_bytes": 13414285312,
+    "used_bytes": 8664236032,
+    "swap_used_bytes": 9070903296,
+    "swap_in_bytes": 111436365824,
+    "swap_out_bytes": 1269121024
+  },
+  "warmup": false,
+  "environment": {
+    "SGD_GPU_TIMESTAMPS": "0",
+    "SGD_STRESS_SAMPLES": "256"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "chunks": 1,
+  "diagnostic_seconds": 0.491698542,
+  "initial_sha": "1e421f553f03a8027e47e88d5edb2dca5cae04700cc79fa1abb093b0eddf19f1",
+  "mode": "gpu",
+  "n": 7066,
+  "near_zero_updates": 0,
+  "remap": "none",
+  "seed": 0,
+  "stress": 6142905.898587413,
+  "tile": 1024,
+  "updates": 0,
+  "command": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/rr_gpu/target/release/examples/wiki_full_cause",
+    "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc/wiki-Vote.mtx",
+    "gpu",
+    "0",
+    "1024",
+    "1",
+    "none"
+  ]
+}

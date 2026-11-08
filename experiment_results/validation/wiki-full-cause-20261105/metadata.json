@@ -1,0 +1,78 @@
+{
+  "input": "/Users/kose/master/atomic-scheduling-investigation/data/v3_lcc/wiki-Vote.mtx",
+  "input_sha256": "0efd8c4218dc5ecd45f05d9869144f718416a5db8e9aa4f7fd20de2f51d056e3",
+  "binary_sha256": "8c49a691a4e32ed90acae01013da0fabea23616817d1087a21b5daca48d61695",
+  "source_sha256": "0858c139991d8481937512680fd253c21b7d52f48247f592d30395a96cebcf34",
+  "cases": [
+    [
+      "audit",
+      0,
+      1024,
+      1,
+      "none"
+    ],
+    [
+      "gpu",
+      0,
+      1024,
+      1,
+      "none"
+    ],
+    [
+      "cpu64",
+      0,
+      1024,
+      1,
+      "none"
+    ],
+    [
+      "rr32",
+      0,
+      1024,
+      1,
+      "none"
+    ],
+    [
+      "rr64",
+      0,
+      1024,
+      1,
+      "none"
+    ],
+    [
+      "cpu32",
+      0,
+      1024,
+      1,
+      "none"
+    ],
+    [
+      "rr32",
+      0,
+      1024,
+      16,
+      "none"
+    ],
+    [
+      "rr32",
+      0,
+      1024,
+      1,
+      "fixed"
+    ],
+    [
+      "rr32",
+      0,
+      1024,
+      1,
+      "epoch"
+    ],
+    [
+      "rr32",
+      0,
+      64,
+      1,
+      "none"
+    ]
+  ]
+}

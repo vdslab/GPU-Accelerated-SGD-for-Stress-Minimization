@@ -1,0 +1,22 @@
+{
+  "at": "2026-11-08T04:31:14+09:00",
+  "reason": "UTF-8 decoding failure in non-atomic Obsidian progress synchronization; measurement results themselves passed",
+  "completed_records_preserved": 698,
+  "binaries_unchanged": true,
+  "measurement_parameters_unchanged": true,
+  "fix": "atomic note replacement; sync throttled to30s; note-sync errors nonfatal; persist failures before note update; report note writes atomic",
+  "regression_checks": [
+    "valid UTF-8 preserves plan and trailing notes",
+    "invalid UTF-8 leaves original bytes and logs error without abort"
+  ],
+  "source_revisions": {
+    "experiments/run_ex2_rr128.py": {
+      "before": "8abcc512c5d074deb04eb111373ccf96355d261d9f1412f1f078d479226829fd",
+      "after": "eec184bb458b7128f5491af271daec1325b93299211a2b00324a5ba64125ad89"
+    },
+    "experiments/report_ex2_rr128.py": {
+      "before": "e145536f0001a9f03c5b2acd6cd4a7db463307e671a4bbb0ee42b597ab83e3c4",
+      "after": "718fe816729556d1157ccedcd072a2882c5ebe3fcab75e38d1ba0558a0d7ce39"
+    }
+  }
+}

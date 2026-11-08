@@ -1,0 +1,9 @@
+% !TeX root = ../main.tex
+Parallelizing vertex-pair updates in stochastic gradient descent (SGD) offers a way to accelerate stress minimization for graph drawing, but updates sharing a vertex can conflict.
+Atomic locks prevent conflicting accesses, yet each pair update still reads and writes endpoint coordinates in global memory.
+Inspired by the batching idea in mini-batch SGD, we propose round-robin GPU schedules that group independent updates and reuse coordinates while preserving the vertex-pair update rule.
+RoundRobin Full SGD interleaves 16 segments of the inner round sequence across outer rounds, reusing coordinates within each tile segment. RoundRobin Sparse SGD groups one-sided updates by destination and two-sided updates by disjoint endpoints.
+We compare both schedules with sequential CPU and lock-based GPU implementations over 15 iterations from matched initial layouts.
+RoundRobin Full SGD shortens iterations on 17 of 19 comparable graphs, with a median CPU-relative speedup of $9.98\times$. Its median final stress increase over CPU is 0.04\%, and the largest graph-median increase is 20.8\%.
+RoundRobin Sparse SGD shortens iterations on all 37 comparable graphs, with a median CPU-relative speedup of $44.49\times$, or $3.77\times$ including preprocessing and setup. Its median final stress increase over CPU is 0.02\%.
+With 40 pivots, RoundRobin Sparse SGD lays out road networks of 6.69 million and 11.55 million vertices in 43.45 s and 80.32 s, respectively, including preprocessing.

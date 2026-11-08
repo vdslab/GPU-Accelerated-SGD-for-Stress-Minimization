@@ -1,0 +1,59 @@
+{
+  "created": "2026-11-06T02:55:11+09:00",
+  "seeds_tile": [
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "seeds_comparison": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "repetitions": 3,
+  "iterations": 15,
+  "epsilon": 0.1,
+  "pivots": 200,
+  "stress_samples": 256,
+  "stress_seed": 0,
+  "order_seed": 20261107,
+  "timeout_seconds": null,
+  "normal_rr_full_tile": 1024,
+  "total_formal_runs": 6300,
+  "large_excluded": [
+    "belgium_osm",
+    "com-LiveJournal",
+    "com-Orkut",
+    "europe_osm",
+    "germany_osm",
+    "italy_osm",
+    "netherlands_osm",
+    "road_usa"
+  ],
+  "tile_graphs": [
+    "email",
+    "add20",
+    "CA-GrQc",
+    "p2p-Gnutella08",
+    "PGPgiantcompo",
+    "dwt_1005",
+    "dwt_2680",
+    "3elt",
+    "bcspwr10",
+    "fe_4elt2"
+  ],
+  "tile_classification": "5 high-degree-heterogeneity candidates and 5 non-scale-free candidates; scale-free property not statistically established; add20 is a circuit graph",
+  "memory_policy": "sequential; log RSS and swap; pause between runs if available memory < 2 GiB or disk free < 4 GiB; no wall-clock kill",
+  "gpu_timestamps": false,
+  "gpu_timestamps_reason": "Metal sample buffer allocation failed for p2p-Gnutella08 T=1; supplementary GPU-pass measurement disabled consistently for all v5 GPU methods; wall-clock SGD and final Stress retained",
+  "normal_rr_full_tile_selection": {
+    "selected_by": "user",
+    "value": 1024,
+    "selected_at": "2026-11-06T05:26:34+09:00",
+    "reason": "ユーザーがタイル実験結果の確認後に1024を指定"
+  }
+}

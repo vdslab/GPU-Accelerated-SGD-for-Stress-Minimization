@@ -1,0 +1,6 @@
+Public MTLDevice.counterSets exposes only timestamp / GPUTimestamp on this M4 Pro.
+Instruments Metal System Trace defaults to Counter Set: None.
+A custom template was saved through Instruments UI with Counter Set: Performance Limiters and Enable Shader Timeline.
+The saved configuration has counterprofile=13 and shaderprofiler=true.
+The exported hardware catalog has 48 counters, including Compute SIMD Groups Inflight, Kernel Occupancy, and F32 Utilization.
+Compute SIMD Groups Inflight is an average per shader core, not a count of same-cycle issued instructions. Its description string mistakenly says vertex in this installation; counter name and other related counters identify the compute series.

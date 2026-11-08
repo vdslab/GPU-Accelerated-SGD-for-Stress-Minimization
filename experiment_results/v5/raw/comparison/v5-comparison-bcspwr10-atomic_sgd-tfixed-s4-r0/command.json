@@ -1,0 +1,34 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/vram-lock-native/target/release/vram-lock-native",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/common/bcspwr10.mtx",
+    "--run-id",
+    "v5-comparison-bcspwr10-atomic_sgd-tfixed-s4-r0",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "4",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-bcspwr10-atomic_sgd-tfixed-s4-r0"
+  ],
+  "environment": {
+    "SGD_STRESS_SAMPLES": "256",
+    "SGD_GPU_TIMESTAMPS": "0"
+  },
+  "started_at": "2026-11-06T06:40:08+09:00",
+  "memory_before": {
+    "available_bytes": 11564056576,
+    "used_bytes": 12063539200,
+    "swap_used_bytes": 2069430272,
+    "swap_in_bytes": 187503034368,
+    "swap_out_bytes": 2305966080
+  },
+  "warmup": false
+}

@@ -1,0 +1,16 @@
+{
+  "at": "2026-11-06T23:04:12+09:00",
+  "reason": "Stop optional expensive storage delta search so resource-feasible measurement can proceed. No measurement process interrupted. All loose source objects retained; prune-packed had not been reached.",
+  "command": [
+    "git",
+    "pack-objects",
+    "--delta-base-offset",
+    "--window=50",
+    "--window-memory=2g",
+    "--threads=1",
+    "--depth=50",
+    "--compression=3",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/.git/objects/pack/pack"
+  ],
+  "unreferenced_objects_deleted": false
+}

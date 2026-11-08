@@ -1,0 +1,5 @@
+method,graphs,sgd_cpu_speedup_gmean,sgd_cpu_speedup_faster_graphs,requested_cpu_speedup_gmean,requested_cpu_speedup_faster_graphs,with_upload_cpu_speedup_gmean,with_upload_cpu_speedup_faster_graphs
+atomic_sgd,38,0.17269106526339761,14,0.1390218375178744,14,0.13733983888607618,14
+rr_sgd,38,1.3828481764804226,24,1.0848417955361782,23,0.9967666224687949,23
+atomic_sparse_sgd,56,0.5224599641328952,32,0.3794589254170156,27,0.3757053664099923,26
+rr_sparse_sgd,56,1.8706596664080632,36,1.513457091647525,36,1.385859221684071,36

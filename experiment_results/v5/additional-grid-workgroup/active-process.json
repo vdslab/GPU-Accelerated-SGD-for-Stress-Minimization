@@ -1,0 +1,15 @@
+{
+  "pid": null,
+  "completed_at": "2026-11-07T17:48:56+09:00",
+  "last_job": {
+    "stage": "sparse",
+    "graph": "coPapersCiteseer",
+    "method": "rr_sparse_sgd",
+    "tile_size": null,
+    "workgroup_size": 256,
+    "pivots": 200,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "grid-sparse-coPapersCiteseer-w256-p200-s4-r2"
+  }
+}

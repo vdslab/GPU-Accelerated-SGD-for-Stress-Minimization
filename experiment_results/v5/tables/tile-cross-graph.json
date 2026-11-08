@@ -1,0 +1,90 @@
+[
+  {
+    "tile_size": 1,
+    "slowdown_vs_each_graph_best_gmean": 51.257746444723665,
+    "stress_ratio_gmean": 1.0000283245103585,
+    "stress_ratio_min": 0.9990477706927111,
+    "stress_ratio_max": 1.0005348985684328,
+    "sgd_speedup_gmean": 0.34988454334920704
+  },
+  {
+    "tile_size": 2,
+    "slowdown_vs_each_graph_best_gmean": 20.061043785752794,
+    "stress_ratio_gmean": 1.0014300434372012,
+    "stress_ratio_min": 1.000023753243608,
+    "stress_ratio_max": 1.0065032734622155,
+    "sgd_speedup_gmean": 0.8974730272971659
+  },
+  {
+    "tile_size": 4,
+    "slowdown_vs_each_graph_best_gmean": 8.523478497433203,
+    "stress_ratio_gmean": 1.0033588120283214,
+    "stress_ratio_min": 1.0000361205437924,
+    "stress_ratio_max": 1.0144109872178677,
+    "sgd_speedup_gmean": 2.1017788394106067
+  },
+  {
+    "tile_size": 8,
+    "slowdown_vs_each_graph_best_gmean": 4.489048612421269,
+    "stress_ratio_gmean": 1.009519412122967,
+    "stress_ratio_min": 1.0000627117898038,
+    "stress_ratio_max": 1.032492978852958,
+    "sgd_speedup_gmean": 4.004423861575681
+  },
+  {
+    "tile_size": 16,
+    "slowdown_vs_each_graph_best_gmean": 2.6056933646701954,
+    "stress_ratio_gmean": 1.0368521612312294,
+    "stress_ratio_min": 1.0001470637868175,
+    "stress_ratio_max": 1.2289344029867584,
+    "sgd_speedup_gmean": 6.958788407003829
+  },
+  {
+    "tile_size": 32,
+    "slowdown_vs_each_graph_best_gmean": 1.7309009793842067,
+    "stress_ratio_gmean": 1.0331479157560484,
+    "stress_ratio_min": 1.0001943382169367,
+    "stress_ratio_max": 1.1306559886612664,
+    "sgd_speedup_gmean": 10.383572560751421
+  },
+  {
+    "tile_size": 64,
+    "slowdown_vs_each_graph_best_gmean": 1.2321176287788398,
+    "stress_ratio_gmean": 1.0469229805778328,
+    "stress_ratio_min": 1.000281686326718,
+    "stress_ratio_max": 1.151843647001503,
+    "sgd_speedup_gmean": 14.80090216624121
+  },
+  {
+    "tile_size": 128,
+    "slowdown_vs_each_graph_best_gmean": 1.0290432704814976,
+    "stress_ratio_gmean": 1.0598769733963638,
+    "stress_ratio_min": 1.0004872144191188,
+    "stress_ratio_max": 1.168835036179068,
+    "sgd_speedup_gmean": 17.587395677558145
+  },
+  {
+    "tile_size": 256,
+    "slowdown_vs_each_graph_best_gmean": 1.0430988843398985,
+    "stress_ratio_gmean": 1.0774650355817808,
+    "stress_ratio_min": 1.0007767233180391,
+    "stress_ratio_max": 1.2105439892621865,
+    "sgd_speedup_gmean": 17.266288699787644
+  },
+  {
+    "tile_size": 512,
+    "slowdown_vs_each_graph_best_gmean": 1.395398099952883,
+    "stress_ratio_gmean": 1.0993078628316038,
+    "stress_ratio_min": 1.0010324033962972,
+    "stress_ratio_max": 1.3024248780100958,
+    "sgd_speedup_gmean": 13.021418029274246
+  },
+  {
+    "tile_size": 1024,
+    "slowdown_vs_each_graph_best_gmean": 2.0404691269121473,
+    "stress_ratio_gmean": 1.0923748510407822,
+    "stress_ratio_min": 0.999728296763424,
+    "stress_ratio_max": 1.3297463543779298,
+    "sgd_speedup_gmean": 8.849764966314826
+  }
+]

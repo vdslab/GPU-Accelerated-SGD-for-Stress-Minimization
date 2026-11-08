@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/degree/config/rr-unsplit",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/degree/inputs/BA-8000-g1.mtx",
+    "--seed",
+    "0",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--output-format",
+    "json",
+    "--run-id",
+    "warmup-BA-8000-g1-rr_sgd_chunks1",
+    "--run-mode",
+    "benchmark",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/degree/warmups/warmup-BA-8000-g1-rr_sgd_chunks1"
+  ],
+  "environment": {
+    "SGD_STRESS_SAMPLES": "256",
+    "SGD_TRACE_DIR": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/degree/warmups/warmup-BA-8000-g1-rr_sgd_chunks1/trace",
+    "SGD_TRACE_CHECKPOINTS": ""
+  },
+  "limits": {
+    "timeout_seconds": 120,
+    "max_rss_bytes": 8589934592,
+    "min_free_disk_bytes": 8589934592
+  }
+}

@@ -1,0 +1,21 @@
+[
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/vram-lock-sparse/target/release/vram-lock-sparse",
+  "--run-id",
+  "karate-atomic_sparse_sgd-s0-r2",
+  "--input",
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/selection_20261106/normalized/karate.mtx",
+  "--iterations",
+  "15",
+  "--epsilon",
+  "0.10000000000000001",
+  "--seed",
+  "0",
+  "--output-format",
+  "json",
+  "--output-dir",
+  "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/validation/plan-contract-20261106/karate-atomic_sparse_sgd-s0-r2",
+  "--run-mode",
+  "benchmark",
+  "--pivots",
+  "34"
+]

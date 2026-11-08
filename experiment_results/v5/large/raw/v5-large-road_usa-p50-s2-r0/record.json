@@ -1,0 +1,28 @@
+{
+  "graph": "road_usa",
+  "method": "rr_sparse_sgd",
+  "pivots": 50,
+  "seed": 2,
+  "repetition": 0,
+  "run_id": "v5-large-road_usa-p50-s2-r0",
+  "status": "preflight_unavailable",
+  "executed": false,
+  "measured": false,
+  "completed_at": "2026-11-06T18:53:51+09:00",
+  "preflight": {
+    "graph": "road_usa",
+    "pivots": 50,
+    "nodes": 23947347,
+    "edges": 28854312,
+    "one_sided_bytes": 9578938800,
+    "two_sided_lower_bound_bytes": 692503488,
+    "vertex_workgroups": 93545,
+    "hard_limit_reasons": [
+      "one_sided: 9578938800 bytes > storage buffer limit 4294967295",
+      "vertex dispatch: 93545 > 65535"
+    ],
+    "estimated_peak_bytes": 29295796128,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  "error": "one_sided: 9578938800 bytes > storage buffer limit 4294967295; vertex dispatch: 93545 > 65535"
+}

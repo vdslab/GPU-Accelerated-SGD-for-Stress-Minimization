@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-belgium_osm-p100-s2-r0/rr-sparse-sgd-belgium_osm-v5-large-belgium_osm-p100-s2-r0.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-belgium_osm-p100-s2-r0/rr-sparse-sgd-belgium_osm-v5-large-belgium_osm-p100-s2-r0.final.txt.gz",
+      "original_sha256": "63ccf0036a3070a5569ec578e907c6aa2c3a0dc976c2efdb51d03072e3970a7a",
+      "decompressed_sha256": "63ccf0036a3070a5569ec578e907c6aa2c3a0dc976c2efdb51d03072e3970a7a",
+      "compressed_sha256": "40b8f0dc6c61e2abea3d814a191cefb55f927c8eee53543f1a16e75d1419798c",
+      "original_bytes": 76450898,
+      "compressed_bytes": 33485738,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-belgium_osm-p100-s2-r0/rr-sparse-sgd-belgium_osm-v5-large-belgium_osm-p100-s2-r0.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-belgium_osm-p100-s2-r0/rr-sparse-sgd-belgium_osm-v5-large-belgium_osm-p100-s2-r0.initial.txt.gz",
+      "original_sha256": "44a146a50ab2a57fa2e6fccc29ef8a7b19c08fc0b7653b1105b5a1ef1a63023e",
+      "decompressed_sha256": "44a146a50ab2a57fa2e6fccc29ef8a7b19c08fc0b7653b1105b5a1ef1a63023e",
+      "compressed_sha256": "902a89af902d00a4c21ad1a878dc4618ee9d464a1d80b565808c0d96f3469c3d",
+      "original_bytes": 80474195,
+      "compressed_bytes": 36002335,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-belgium_osm-p100-s2-r0/rr-sparse-sgd-belgium_osm-v5-large-belgium_osm-p100-s2-r0.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-belgium_osm-p100-s2-r0/rr-sparse-sgd-belgium_osm-v5-large-belgium_osm-p100-s2-r0.vertex-map.txt.gz",
+      "original_sha256": "ca2ba86d06500eb0a4cc23a140b89687c2f189e3622c98d96268c9fb05ae0131",
+      "decompressed_sha256": "ca2ba86d06500eb0a4cc23a140b89687c2f189e3622c98d96268c9fb05ae0131",
+      "compressed_sha256": "3b1054d49518dcff2f4918567e1c74cbf0ea9383c6bc120bccd05613195fdae2",
+      "original_bytes": 20838500,
+      "compressed_bytes": 6466639,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

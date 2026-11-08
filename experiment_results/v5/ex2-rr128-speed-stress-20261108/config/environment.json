@@ -1,0 +1,82 @@
+{
+  "captured_at_utc": "2026-11-07T19:14:22.702417+00:00",
+  "git_commit": "2bf4c24a47b3349620eda360b7d198c6266837d9",
+  "git_dirty": true,
+  "platform": "macOS-15.7.2-arm64-arm-64bit",
+  "machine": "arm64",
+  "python": "3.11.0 (main, May 27 2025, 02:55:14) [Clang 17.0.0 (clang-1700.0.13.3)]",
+  "created": "2026-11-08T04:14:22+09:00",
+  "binary_sha256": {
+    "rr_sgd": "2ebd27090d350256496e331e0f0c70357fe50ef5ff33dd5ca00143df83de7987",
+    "rr_sparse_sgd": "72a18c7414def1320ba47792dda40308e98bd554b8aea42092ee5fae48fdc8b6"
+  },
+  "renderer_sha256": "ae3602a8b07f638391f48cbe216247c682b5624439d94daad0f0761154b3c320",
+  "source_sha256": {
+    "experiments/run_ex2_rr128.py": "eec184bb458b7128f5491af271daec1325b93299211a2b00324a5ba64125ad89",
+    "experiments/report_ex2_rr128.py": "718fe816729556d1157ccedcd072a2882c5ebe3fcab75e38d1ba0558a0d7ce39",
+    "experiments/run_experiments.py": "b7aa035790d42eeedd498106a6a6abf2a33b57164f0b641983946abf1413ee05",
+    "experiments/experiment_plan.py": "597b95f16f3b3ef78a4da18ed4d8803c85da69f5f54469c85060f44f6c157928",
+    "experiments/run_single.py": "b59fe733eda05a4d1600ea021d7e0d29b808b79c861e71dedba0d5b9e305973a",
+    "experiments/share_v5_large_edges.py": "823c3fdeacd08929d68bba6db64a9ecd497a350554ebddb95868866fc7df277c",
+    "implementations/full/rr_gpu/src/graph.rs": "88995b80d2e51f393de6470dad1f921e128e102d3b0e9c6d58612a09857fef59",
+    "implementations/full/rr_gpu/src/gpu.rs": "96f22ccacfc194b9c60f8f92a060f5204b868d85d3ba187e85b2d5261b8b224a",
+    "implementations/full/rr_gpu/src/main.rs": "b4d5cd1ed766e608fe9096dddeb149e97643adc5a5f2b0ce61fd5e44d9fae48c",
+    "implementations/full/rr_gpu/src/shader.wgsl": "b9ab2c39dd527f3b9c8735f4b1e87917ba300d747548e9e0c8a65571e91153f0",
+    "shared/gpu-timing/metal.rs": "1f4d010e8087f9a282780d9583c04398ef1ff613fd2930e409806392cc3ad63e",
+    "shared/gpu-timing/wgpu.rs": "f6ff28eabaf45aed046afa26dd3891465890a779f77760fed0e2755ef8c676bf",
+    "shared/experiment-common/src/metadata.rs": "a62920493211d77de646d7a47a9f012f6d542e7e91f30a27151d8c3bb0cb796d",
+    "shared/experiment-common/src/lib.rs": "5998941dd45368f6dca1fe6afcbe0eba1318bbcc5ea54a9a8730ec0ec3207143",
+    "shared/experiment-common/src/paths.rs": "0c0e3efcec52b513f1bd4714330afb6206ab2253bbb5a1e195d8572ebc6ca46c",
+    "shared/experiment-common/src/trace.rs": "45d33fa8b24e058694dec2e0b94c3ae3223d40f8c6f795f9063116516fc11f0d",
+    "shared/experiment-common/src/record.rs": "0502995b3417a7e2d6b763ff2ce148866560d5940533c8fb46046964cb708964",
+    "shared/experiment-common/src/stress.rs": "ac5e72155ee4c78f899c0145b27cc09aa190d811ada1cd5d0c6c134288b6899a",
+    "shared/experiment-common/src/cli.rs": "233571eb0530444f993082aa35c18a024fd8558476ebe75aa84c7e18b47d8e6d",
+    "shared/experiment-common/src/seed.rs": "445bc2c585e323754e3733d8bb577b58eae2dd1e80d9beedfaa22ac39fce381a",
+    "tools/gpu_visualizer/src/renderer.rs": "a4c94aa94c657d5f8d884cef6e30e9e5a46d701f2a6b6ac17b9625370fa632ca",
+    "tools/gpu_visualizer/src/main.rs": "daf1cba1b18c22ce483592b391f9cc36557a6371c23934f0276d25fe1cc90046",
+    "tools/gpu_visualizer/src/reader.rs": "142f49bccf57012e2338403e2d80d77f6c7e9b5326f9c485107e24a896fa0b8c",
+    "tools/gpu_visualizer/src/shader.wgsl": "0003f842b55209f8777a15917e5279c9e72f98657dc4d117a9b0d0b8493ad230",
+    "experiment_results/v5/ex2-rr128-speed-stress-20261108/source-snapshot/sparse-w128/Cargo.toml": "1c623673a6611297af6cd902316bfba3c41bfcb270d18782ce888b4249f95ae2",
+    "experiment_results/v5/ex2-rr128-speed-stress-20261108/source-snapshot/sparse-w128/Cargo.lock": "084b68b834302b76cfc5935c47cca44ad3358cf79002e86ed0a3eaec24f77815",
+    "experiment_results/v5/ex2-rr128-speed-stress-20261108/source-snapshot/sparse-w128/src/lib.rs": "0a9298e8b49ebc9bc04add177d8923c0cc7d27c822584d0e19dd430201ff5a2d",
+    "experiment_results/v5/ex2-rr128-speed-stress-20261108/source-snapshot/sparse-w128/src/preprocess.rs": "94f7f35dbe7a68c02e8c34bb48d181e57abb11c67c6cad0cf82d532f4a0b84f0",
+    "experiment_results/v5/ex2-rr128-speed-stress-20261108/source-snapshot/sparse-w128/src/cpu_reference.rs": "8e27a5dedecacde5957f93d834fe4e16f484b91c1979cea7daeb934e227f08b2",
+    "experiment_results/v5/ex2-rr128-speed-stress-20261108/source-snapshot/sparse-w128/src/graph_reference.rs": "58fbb42107c3bdbd20b423311769595ade6cd91559556db2c24cb06f1271f503",
+    "experiment_results/v5/ex2-rr128-speed-stress-20261108/source-snapshot/sparse-w128/src/schedule.rs": "f91d9e05b6819d01701cc43a8be4484939814af8284031cdb8c9a66714311e80",
+    "experiment_results/v5/ex2-rr128-speed-stress-20261108/source-snapshot/sparse-w128/src/gpu.rs": "5db68e300b30ba25461dd32a0dd5967e11adfcb941d0b40a6cbdd34e2463bc2d",
+    "experiment_results/v5/ex2-rr128-speed-stress-20261108/source-snapshot/sparse-w128/src/shader_permutation.wgsl": "c0877f681cb5356c974cfc9c8cedc2e3a6aa7041c247ed526f1fdbe2d93c3134",
+    "experiment_results/v5/ex2-rr128-speed-stress-20261108/source-snapshot/sparse-w128/src/main.rs": "3eb37bf7fe7fb133ae77d1008d5627ed38f0209435e57191112251b78bd7f589",
+    "experiment_results/v5/ex2-rr128-speed-stress-20261108/source-snapshot/sparse-w128/src/shader.wgsl": "b4c3381edd993388ad4ad9f79d2420110ef89c2e6a003ea9d7f26e7d5e9a6120",
+    "experiment_results/v5/ex2-rr128-speed-stress-20261108/source-snapshot/sparse-w128/src/timing.rs": "f6ff28eabaf45aed046afa26dd3891465890a779f77760fed0e2755ef8c676bf"
+  },
+  "memory": {
+    "available_bytes": 6839894016,
+    "used_bytes": 9649897472,
+    "swap_used_bytes": 4838653952,
+    "swap_in_bytes": 223277678592,
+    "swap_out_bytes": 3102883840
+  },
+  "render": {
+    "width": 2048,
+    "height": 2048,
+    "node_radius": 1,
+    "palette": "blue",
+    "edges": "all"
+  },
+  "stress": {
+    "rr_sgd": "exact",
+    "rr_sparse_sgd": "auto, max_n8000, samples256, seed0"
+  },
+  "timing_fields": [
+    "preprocess_time_ms",
+    "gpu_prepare_time_ms",
+    "upload_time_ms",
+    "iteration_times_ms",
+    "sgd_time_ms",
+    "readback_time_ms",
+    "draw_time_ms",
+    "total_with_draw_time_ms",
+    "iteration_total_time_ms",
+    "total_compute_time_ms"
+  ]
+}

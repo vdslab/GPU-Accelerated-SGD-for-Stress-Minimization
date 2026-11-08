@@ -1,0 +1,1713 @@
+[
+  {
+    "graph": "netherlands_osm",
+    "pivots": 500,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "road_usa",
+    "pivots": 50,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "germany_osm",
+    "pivots": 500,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "AS365",
+    "pivots": 1000,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "asia_osm",
+    "pivots": 50,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "road_usa",
+    "pivots": 200,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "great-britain_osm",
+    "pivots": 1000,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "great-britain_osm",
+    "pivots": 200,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "belgium_osm",
+    "pivots": 200,
+    "recorded": 5,
+    "success": 5,
+    "statuses": {
+      "success": 5
+    },
+    "iteration_time_ms": {
+      "median": 1117.320833,
+      "min": 1116.8775420000002,
+      "max": 1118.689625
+    },
+    "total_compute_time_ms": {
+      "median": 28524.835750000002,
+      "min": 28476.354416,
+      "max": 28628.537541
+    },
+    "stress_value": {
+      "median": 28898692097.446346,
+      "min": 28838382122.53791,
+      "max": 29203759661.444614
+    },
+    "peak_rss_bytes": {
+      "median": 5717180416,
+      "min": 5681758208,
+      "max": 5736628224
+    }
+  },
+  {
+    "graph": "Flan_1565",
+    "pivots": 100,
+    "recorded": 5,
+    "success": 5,
+    "statuses": {
+      "success": 5
+    },
+    "iteration_time_ms": {
+      "median": 1104.341875,
+      "min": 1100.967416,
+      "max": 1107.0586250000001
+    },
+    "total_compute_time_ms": {
+      "median": 63444.089458999995,
+      "min": 63316.732,
+      "max": 63881.370333
+    },
+    "stress_value": {
+      "median": 69292214989.80612,
+      "min": 68411517262.0202,
+      "max": 70946624593.87814
+    },
+    "peak_rss_bytes": {
+      "median": 9090826240,
+      "min": 9020243968,
+      "max": 9365880832
+    }
+  },
+  {
+    "graph": "netherlands_osm",
+    "pivots": 1000,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "auto",
+    "pivots": 500,
+    "recorded": 5,
+    "success": 5,
+    "statuses": {
+      "success": 5
+    },
+    "iteration_time_ms": {
+      "median": 968.9489159999999,
+      "min": 965.097125,
+      "max": 978.182208
+    },
+    "total_compute_time_ms": {
+      "median": 31462.295459,
+      "min": 31377.326166,
+      "max": 32303.957
+    },
+    "stress_value": {
+      "median": 7434537161.634124,
+      "min": 7384650691.888272,
+      "max": 7578912108.091445
+    },
+    "peak_rss_bytes": {
+      "median": 5105385472,
+      "min": 5001445376,
+      "max": 5143150592
+    }
+  },
+  {
+    "graph": "europe_osm",
+    "pivots": 500,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "asia_osm",
+    "pivots": 200,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "Flan_1565",
+    "pivots": 1000,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "AS365",
+    "pivots": 500,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "italy_osm",
+    "pivots": 500,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "belgium_osm",
+    "pivots": 50,
+    "recorded": 5,
+    "success": 5,
+    "statuses": {
+      "success": 5
+    },
+    "iteration_time_ms": {
+      "median": 173.052708,
+      "min": 171.666834,
+      "max": 176.604416
+    },
+    "total_compute_time_ms": {
+      "median": 7689.827083,
+      "min": 7677.838541,
+      "max": 7718.800459
+    },
+    "stress_value": {
+      "median": 30277448501.75208,
+      "min": 30060959828.840492,
+      "max": 31786264840.643932
+    },
+    "peak_rss_bytes": {
+      "median": 1905721344,
+      "min": 1882374144,
+      "max": 1969750016
+    }
+  },
+  {
+    "graph": "auto",
+    "pivots": 1000,
+    "recorded": 5,
+    "success": 5,
+    "statuses": {
+      "success": 5
+    },
+    "iteration_time_ms": {
+      "median": 2023.460542,
+      "min": 2019.2064169999999,
+      "max": 2028.3677500000001
+    },
+    "total_compute_time_ms": {
+      "median": 62112.502540999994,
+      "min": 61431.222583,
+      "max": 62896.362459
+    },
+    "stress_value": {
+      "median": 7410342484.924722,
+      "min": 7384541608.689776,
+      "max": 7555443627.451392
+    },
+    "peak_rss_bytes": {
+      "median": 8539357184,
+      "min": 8450195456,
+      "max": 8549056512
+    }
+  },
+  {
+    "graph": "europe_osm",
+    "pivots": 100,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "com-Orkut",
+    "pivots": 500,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "germany_osm",
+    "pivots": 1000,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "com-LiveJournal",
+    "pivots": 200,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "italy_osm",
+    "pivots": 100,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "germany_osm",
+    "pivots": 100,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "NACA0015",
+    "pivots": 200,
+    "recorded": 5,
+    "success": 5,
+    "statuses": {
+      "success": 5
+    },
+    "iteration_time_ms": {
+      "median": 824.2813329999999,
+      "min": 822.6497499999999,
+      "max": 825.856208
+    },
+    "total_compute_time_ms": {
+      "median": 25267.229624,
+      "min": 25199.936,
+      "max": 25304.412125
+    },
+    "stress_value": {
+      "median": 13408106732.053106,
+      "min": 12811028260.110939,
+      "max": 15540592345.174881
+    },
+    "peak_rss_bytes": {
+      "median": 4835852288,
+      "min": 4699176960,
+      "max": 4848369664
+    }
+  },
+  {
+    "graph": "com-Orkut",
+    "pivots": 1000,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "auto",
+    "pivots": 100,
+    "recorded": 5,
+    "success": 5,
+    "statuses": {
+      "success": 5
+    },
+    "iteration_time_ms": {
+      "median": 248.884875,
+      "min": 237.985,
+      "max": 259.301709
+    },
+    "total_compute_time_ms": {
+      "median": 7800.101499,
+      "min": 7686.48625,
+      "max": 7907.249458
+    },
+    "stress_value": {
+      "median": 7909647173.582399,
+      "min": 7632427570.558761,
+      "max": 8479198250.47026
+    },
+    "peak_rss_bytes": {
+      "median": 1502248960,
+      "min": 1481867264,
+      "max": 1526431744
+    }
+  },
+  {
+    "graph": "road_usa",
+    "pivots": 1000,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "Flan_1565",
+    "pivots": 500,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "great-britain_osm",
+    "pivots": 100,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "germany_osm",
+    "pivots": 50,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "belgium_osm",
+    "pivots": 100,
+    "recorded": 5,
+    "success": 5,
+    "statuses": {
+      "success": 5
+    },
+    "iteration_time_ms": {
+      "median": 690.881791,
+      "min": 684.607458,
+      "max": 711.097917
+    },
+    "total_compute_time_ms": {
+      "median": 14847.387458,
+      "min": 14839.619959,
+      "max": 14900.484542
+    },
+    "stress_value": {
+      "median": 29636226414.689564,
+      "min": 29148750324.98572,
+      "max": 30147655205.862602
+    },
+    "peak_rss_bytes": {
+      "median": 3339206656,
+      "min": 3185770496,
+      "max": 3382493184
+    }
+  },
+  {
+    "graph": "com-Orkut",
+    "pivots": 200,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "italy_osm",
+    "pivots": 200,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "NACA0015",
+    "pivots": 1000,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "road_usa",
+    "pivots": 100,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "AS365",
+    "pivots": 200,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "europe_osm",
+    "pivots": 1000,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "belgium_osm",
+    "pivots": 500,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "great-britain_osm",
+    "pivots": 500,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "italy_osm",
+    "pivots": 1000,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "auto",
+    "pivots": 200,
+    "recorded": 5,
+    "success": 5,
+    "statuses": {
+      "success": 5
+    },
+    "iteration_time_ms": {
+      "median": 381.4995,
+      "min": 379.766667,
+      "max": 386.20675
+    },
+    "total_compute_time_ms": {
+      "median": 13550.701667,
+      "min": 13477.416125,
+      "max": 13699.221709
+    },
+    "stress_value": {
+      "median": 7895580334.802434,
+      "min": 7478079445.325313,
+      "max": 8013949035.274202
+    },
+    "peak_rss_bytes": {
+      "median": 2416197632,
+      "min": 2355937280,
+      "max": 2481602560
+    }
+  },
+  {
+    "graph": "europe_osm",
+    "pivots": 50,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "com-LiveJournal",
+    "pivots": 500,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "germany_osm",
+    "pivots": 200,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "NACA0015",
+    "pivots": 100,
+    "recorded": 5,
+    "success": 5,
+    "statuses": {
+      "success": 5
+    },
+    "iteration_time_ms": {
+      "median": 511.647208,
+      "min": 511.188542,
+      "max": 512.8034580000001
+    },
+    "total_compute_time_ms": {
+      "median": 13659.458,
+      "min": 13635.569583,
+      "max": 13793.242166
+    },
+    "stress_value": {
+      "median": 13397952936.050852,
+      "min": 12449922448.614315,
+      "max": 16128771539.16344
+    },
+    "peak_rss_bytes": {
+      "median": 2763505664,
+      "min": 2639183872,
+      "max": 2815508480
+    }
+  },
+  {
+    "graph": "auto",
+    "pivots": 50,
+    "recorded": 5,
+    "success": 5,
+    "statuses": {
+      "success": 5
+    },
+    "iteration_time_ms": {
+      "median": 97.169875,
+      "min": 81.887208,
+      "max": 101.917333
+    },
+    "total_compute_time_ms": {
+      "median": 4761.5103340000005,
+      "min": 4662.923458,
+      "max": 4824.573958
+    },
+    "stress_value": {
+      "median": 8036770552.996036,
+      "min": 7643484501.260722,
+      "max": 8480626550.624847
+    },
+    "peak_rss_bytes": {
+      "median": 1070481408,
+      "min": 1021165568,
+      "max": 1158004736
+    }
+  },
+  {
+    "graph": "asia_osm",
+    "pivots": 100,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "asia_osm",
+    "pivots": 1000,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "Flan_1565",
+    "pivots": 200,
+    "recorded": 5,
+    "success": 5,
+    "statuses": {
+      "success": 5
+    },
+    "iteration_time_ms": {
+      "median": 1594.942125,
+      "min": 1592.960833,
+      "max": 1595.105875
+    },
+    "total_compute_time_ms": {
+      "median": 85590.769583,
+      "min": 85460.131374,
+      "max": 86452.380458
+    },
+    "stress_value": {
+      "median": 66371366986.15443,
+      "min": 65554717186.40518,
+      "max": 67531562180.36871
+    },
+    "peak_rss_bytes": {
+      "median": 11264376832,
+      "min": 11154472960,
+      "max": 11384930304
+    }
+  },
+  {
+    "graph": "com-LiveJournal",
+    "pivots": 1000,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "NACA0015",
+    "pivots": 500,
+    "recorded": 5,
+    "success": 5,
+    "statuses": {
+      "success": 5
+    },
+    "iteration_time_ms": {
+      "median": 2172.998125,
+      "min": 2167.463917,
+      "max": 2214.322417
+    },
+    "total_compute_time_ms": {
+      "median": 61651.656958,
+      "min": 61063.685208,
+      "max": 63480.355
+    },
+    "stress_value": {
+      "median": 14629890385.573252,
+      "min": 14067098928.411724,
+      "max": 15350977708.91215
+    },
+    "peak_rss_bytes": {
+      "median": 9908682752,
+      "min": 9520234496,
+      "max": 9938665472
+    }
+  },
+  {
+    "graph": "asia_osm",
+    "pivots": 500,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "europe_osm",
+    "pivots": 200,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "belgium_osm",
+    "pivots": 1000,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "road_usa",
+    "pivots": 500,
+    "recorded": 5,
+    "success": 0,
+    "statuses": {
+      "preflight_unavailable": 5
+    },
+    "iteration_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "total_compute_time_ms": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "stress_value": {
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "peak_rss_bytes": {
+      "median": null,
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "graph": "NACA0015",
+    "pivots": 50,
+    "recorded": 5,
+    "success": 5,
+    "statuses": {
+      "success": 5
+    },
+    "iteration_time_ms": {
+      "median": 148.90520800000002,
+      "min": 147.57558400000002,
+      "max": 152.227875
+    },
+    "total_compute_time_ms": {
+      "median": 7643.889625,
+      "min": 7635.505083,
+      "max": 7655.525501
+    },
+    "stress_value": {
+      "median": 16393916939.418957,
+      "min": 13345548497.627623,
+      "max": 18800539306.437782
+    },
+    "peak_rss_bytes": {
+      "median": 1727119360,
+      "min": 1640497152,
+      "max": 1749270528
+    }
+  },
+  {
+    "graph": "Flan_1565",
+    "pivots": 50,
+    "recorded": 2,
+    "success": 2,
+    "statuses": {
+      "success": 2
+    },
+    "iteration_time_ms": {
+      "median": 562.7530835,
+      "min": 560.921917,
+      "max": 564.58425
+    },
+    "total_compute_time_ms": {
+      "median": 53590.6427505,
+      "min": 52828.436209,
+      "max": 54352.849292
+    },
+    "stress_value": {
+      "median": 72247009273.49188,
+      "min": 71775079873.02058,
+      "max": 72718938673.96317
+    },
+    "peak_rss_bytes": {
+      "median": 8169873408.0,
+      "min": 8129576960,
+      "max": 8210169856
+    }
+  }
+]

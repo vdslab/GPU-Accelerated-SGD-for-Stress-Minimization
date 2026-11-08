@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-com-Amazon-sparse_sgd-tfixed-s1-r1/sparse-sgd-com-Amazon-v5-comparison-com-Amazon-sparse_sgd-tfixed-s1-r1.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-com-Amazon-sparse_sgd-tfixed-s1-r1/sparse-sgd-com-Amazon-v5-comparison-com-Amazon-sparse_sgd-tfixed-s1-r1.final.txt.gz",
+      "original_sha256": "1227e1d219cfafe674b83bd7ccf2f329f32597f939da71106af3a11e3352921f",
+      "decompressed_sha256": "1227e1d219cfafe674b83bd7ccf2f329f32597f939da71106af3a11e3352921f",
+      "compressed_sha256": "62042c4dc24fda094d1288a427d2e594a97fc831f26800c4587433abe8ac6edb",
+      "original_bytes": 24990674,
+      "compressed_bytes": 11575630,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-com-Amazon-sparse_sgd-tfixed-s1-r1/sparse-sgd-com-Amazon-v5-comparison-com-Amazon-sparse_sgd-tfixed-s1-r1.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-com-Amazon-sparse_sgd-tfixed-s1-r1/sparse-sgd-com-Amazon-v5-comparison-com-Amazon-sparse_sgd-tfixed-s1-r1.initial.txt.gz",
+      "original_sha256": "e9cc4f252eec1b77d517bb7959b70b1bc55219857d252900696d874c490f376e",
+      "decompressed_sha256": "e9cc4f252eec1b77d517bb7959b70b1bc55219857d252900696d874c490f376e",
+      "compressed_sha256": "ffc587cdbf1ef624e41608d275c646b48a07ef4e964af818d4b7e89b6f036ff1",
+      "original_bytes": 25849269,
+      "compressed_bytes": 11657743,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-com-Amazon-sparse_sgd-tfixed-s1-r1/sparse-sgd-com-Amazon-v5-comparison-com-Amazon-sparse_sgd-tfixed-s1-r1.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-com-Amazon-sparse_sgd-tfixed-s1-r1/sparse-sgd-com-Amazon-v5-comparison-com-Amazon-sparse_sgd-tfixed-s1-r1.vertex-map.txt.gz",
+      "original_sha256": "2f9ae43ca069298a0a64d6ea01636270975c971663fbd777b9c3e82fd98c1af1",
+      "decompressed_sha256": "2f9ae43ca069298a0a64d6ea01636270975c971663fbd777b9c3e82fd98c1af1",
+      "compressed_sha256": "97050eca4194db2a57fd62e9677798cfd380c400cee4d0ef0ddccf1631870fa6",
+      "original_bytes": 4465862,
+      "compressed_bytes": 1476398,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,181 @@
+{
+  "started": "2026-11-08T05:10:29.046546+09:00",
+  "free_before": 4386918400,
+  "candidates": [
+    {
+      "path": "implementations/full/baseline-sgd-non-gpu/target/release/deps",
+      "logical_bytes": 321051599,
+      "allocated_bytes": 322019328,
+      "files": 451,
+      "reason": "Rebuildable Cargo debug/docs/dependency cache; release entry-point binaries retained",
+      "removed": true
+    },
+    {
+      "path": "implementations/full/baseline-sgd-non-gpu/target/release/build",
+      "logical_bytes": 32301633,
+      "allocated_bytes": 32882688,
+      "files": 214,
+      "reason": "Rebuildable Cargo debug/docs/dependency cache; release entry-point binaries retained",
+      "removed": true
+    },
+    {
+      "path": "implementations/full/baseline-sgd-non-gpu/target/release/.fingerprint",
+      "logical_bytes": 128737,
+      "allocated_bytes": 3244032,
+      "files": 792,
+      "reason": "Rebuildable Cargo debug/docs/dependency cache; release entry-point binaries retained",
+      "removed": true
+    },
+    {
+      "path": "implementations/full/baseline-sgd-non-gpu/target/release/incremental",
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "files": 0,
+      "reason": "Rebuildable Cargo debug/docs/dependency cache; release entry-point binaries retained",
+      "removed": true
+    },
+    {
+      "path": "implementations/full/rr_gpu/target/release/deps",
+      "logical_bytes": 436473070,
+      "allocated_bytes": 437366784,
+      "files": 431,
+      "reason": "Rebuildable Cargo debug/docs/dependency cache; release entry-point binaries retained",
+      "removed": true
+    },
+    {
+      "path": "implementations/full/rr_gpu/target/release/build",
+      "logical_bytes": 33612835,
+      "allocated_bytes": 34234368,
+      "files": 230,
+      "reason": "Rebuildable Cargo debug/docs/dependency cache; release entry-point binaries retained",
+      "removed": true
+    },
+    {
+      "path": "implementations/full/rr_gpu/target/release/.fingerprint",
+      "logical_bytes": 141254,
+      "allocated_bytes": 3219456,
+      "files": 785,
+      "reason": "Rebuildable Cargo debug/docs/dependency cache; release entry-point binaries retained",
+      "removed": true
+    },
+    {
+      "path": "implementations/full/rr_gpu/target/release/incremental",
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "files": 0,
+      "reason": "Rebuildable Cargo debug/docs/dependency cache; release entry-point binaries retained",
+      "removed": true
+    },
+    {
+      "path": "implementations/sparse/baseline-sparse-sgd-non-gpu/target/release/.fingerprint",
+      "logical_bytes": 48453,
+      "allocated_bytes": 1122304,
+      "files": 273,
+      "reason": "Rebuildable Cargo debug/docs/dependency cache; release entry-point binaries retained",
+      "removed": true
+    },
+    {
+      "path": "implementations/sparse/baseline-sparse-sgd-non-gpu/target/release/incremental",
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "files": 0,
+      "reason": "Rebuildable Cargo debug/docs/dependency cache; release entry-point binaries retained",
+      "removed": true
+    },
+    {
+      "path": "implementations/sparse/sparse-sgd-gpu/target/release/deps",
+      "logical_bytes": 301862756,
+      "allocated_bytes": 302587904,
+      "files": 348,
+      "reason": "Rebuildable Cargo debug/docs/dependency cache; release entry-point binaries retained",
+      "removed": true
+    },
+    {
+      "path": "implementations/sparse/sparse-sgd-gpu/target/release/build",
+      "logical_bytes": 26918253,
+      "allocated_bytes": 27422720,
+      "files": 185,
+      "reason": "Rebuildable Cargo debug/docs/dependency cache; release entry-point binaries retained",
+      "removed": true
+    },
+    {
+      "path": "implementations/sparse/sparse-sgd-gpu/target/release/.fingerprint",
+      "logical_bytes": 106815,
+      "allocated_bytes": 2588672,
+      "files": 632,
+      "reason": "Rebuildable Cargo debug/docs/dependency cache; release entry-point binaries retained",
+      "removed": true
+    },
+    {
+      "path": "implementations/sparse/sparse-sgd-gpu/target/release/incremental",
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "files": 0,
+      "reason": "Rebuildable Cargo debug/docs/dependency cache; release entry-point binaries retained",
+      "removed": true
+    },
+    {
+      "path": "tools/gpu_visualizer/target/debug",
+      "logical_bytes": 2182224942,
+      "allocated_bytes": 2212876288,
+      "files": 13463,
+      "reason": "Rebuildable Cargo debug/docs/dependency cache; release entry-point binaries retained",
+      "removed": true
+    },
+    {
+      "path": "tools/gpu_visualizer/target/doc",
+      "logical_bytes": 2070325,
+      "allocated_bytes": 2252800,
+      "files": 80,
+      "reason": "Rebuildable Cargo debug/docs/dependency cache; release entry-point binaries retained",
+      "removed": true
+    },
+    {
+      "path": "tools/gpu_visualizer/target/release/deps",
+      "logical_bytes": 483131396,
+      "allocated_bytes": 484548608,
+      "files": 663,
+      "reason": "Rebuildable Cargo debug/docs/dependency cache; release entry-point binaries retained",
+      "removed": true
+    },
+    {
+      "path": "tools/gpu_visualizer/target/release/build",
+      "logical_bytes": 26738005,
+      "allocated_bytes": 27250688,
+      "files": 186,
+      "reason": "Rebuildable Cargo debug/docs/dependency cache; release entry-point binaries retained",
+      "removed": true
+    },
+    {
+      "path": "tools/gpu_visualizer/target/release/.fingerprint",
+      "logical_bytes": 208536,
+      "allocated_bytes": 5029888,
+      "files": 1228,
+      "reason": "Rebuildable Cargo debug/docs/dependency cache; release entry-point binaries retained",
+      "removed": true
+    },
+    {
+      "path": "tools/gpu_visualizer/target/release/incremental",
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "files": 0,
+      "reason": "Rebuildable Cargo debug/docs/dependency cache; release entry-point binaries retained",
+      "removed": true
+    }
+  ],
+  "protected_binary_sha256": {
+    "experiment_results/v5/ex2-rr128-speed-stress-20261108/bin/rr-sparse-w128": "72a18c7414def1320ba47792dda40308e98bd554b8aea42092ee5fae48fdc8b6",
+    "experiment_results/v5/ex2-rr128-speed-stress-20261108/bin/gpu-visualizer": "ae3602a8b07f638391f48cbe216247c682b5624439d94daad0f0761154b3c320",
+    "experiment_results/v5/ex2-rr128-speed-stress-20261108/bin/rr-full": "2ebd27090d350256496e331e0f0c70357fe50ef5ff33dd5ca00143df83de7987",
+    "experiment_results/v5/ex2-rr128-speed-stress-20261108/bin/rr-sparse-w256-reference": "61dd5fcb9ec4235c300242b10c4bda43bf958579380521a612cc1231b5af4092",
+    "tools/gpu_visualizer/target/release/gpu-visualizer": "ae3602a8b07f638391f48cbe216247c682b5624439d94daad0f0761154b3c320",
+    "implementations/full/rr_gpu/target/release/rr-gpu": "2ebd27090d350256496e331e0f0c70357fe50ef5ff33dd5ca00143df83de7987",
+    "implementations/sparse/sparse-sgd-gpu/target/release/sparse-sgd-gpu": "61dd5fcb9ec4235c300242b10c4bda43bf958579380521a612cc1231b5af4092"
+  },
+  "protected_record_count": 1323,
+  "state": "complete",
+  "free_after": 7627726848,
+  "protected_binaries_unchanged": true,
+  "protected_1323_records_unchanged": true,
+  "reclaimed_bytes": 3240808448
+}

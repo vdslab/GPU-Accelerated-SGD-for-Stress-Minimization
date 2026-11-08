@@ -1,0 +1,48 @@
+{
+  "metadata": {
+    "counter_sets": [
+      {
+        "counters": [
+          "GPUTimestamp"
+        ],
+        "name": "timestamp"
+      }
+    ],
+    "device": "Apple M4 Pro",
+    "fast_math": false,
+    "iterations": 4096,
+    "kind": "metadata",
+    "max_threadgroup_memory": 32768,
+    "mode": "rr-fixed",
+    "pipelines": {
+      "fma1": {
+        "max_threads": 1024,
+        "simd_width": 32,
+        "static_shared_bytes": 0
+      },
+      "fma4": {
+        "max_threads": 1024,
+        "simd_width": 32,
+        "static_shared_bytes": 0
+      },
+      "rr_matrix": {
+        "max_threads": 1024,
+        "simd_width": 32,
+        "static_shared_bytes": 0
+      },
+      "rr_uniform": {
+        "max_threads": 1024,
+        "simd_width": 32,
+        "static_shared_bytes": 0
+      }
+    },
+    "repetitions": 5,
+    "timing": "MTLCommandBuffer.gpuEndTime - gpuStartTime; serial compute dispatches"
+  },
+  "sha256": {
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/metal-workgroup-capacity/analyze_rr_fixed.py": "93085c76cde8811d3888eb906d8c30788d2c210ee06b4214a0794e96a56f2d29",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/metal-workgroup-capacity/benchmark.swift": "ea237cf67ba03cceb1acf87b67493fd48bd3ad6febe49e10bfbb8bcdc1746a2f",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/metal-workgroup-capacity/benchmark.metal": "a0a5c7b75ab6c5d8877954636936fe10507669f4857a70bc23f9a2a9127e8205",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/metal-workgroup-capacity/benchmark": "9e306e711752d8b2e1809fce1021e8e5005ea567c9fcaa02d6e449e3edb3da6d"
+  }
+}

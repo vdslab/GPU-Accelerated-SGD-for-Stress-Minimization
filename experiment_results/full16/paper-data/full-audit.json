@@ -1,0 +1,303 @@
+{
+  "completed": 160,
+  "planned": 160,
+  "convergence_evaluated": true,
+  "core_statuses": {
+    "success": 160
+  },
+  "additional_runs": 90,
+  "pair_mismatches": [],
+  "comparable_graphs": 19,
+  "faster": 17,
+  "quality_within_5pct": 18,
+  "both": 16,
+  "full_arrivals": [
+    {
+      "graph": "EVA",
+      "hit": 9,
+      "end": 9,
+      "cpu_seconds": 1.6781881875,
+      "rr_seconds": 0.281303918
+    },
+    {
+      "graph": "USpowerGrid",
+      "hit": 10,
+      "end": 10,
+      "cpu_seconds": 2.0456654365,
+      "rr_seconds": 0.199074562
+    },
+    {
+      "graph": "bcsstk16",
+      "hit": 10,
+      "end": 10,
+      "cpu_seconds": 2.9069618125,
+      "rr_seconds": 0.2851591235
+    },
+    {
+      "graph": "dwt_2680",
+      "hit": 6,
+      "end": 6,
+      "cpu_seconds": 0.8069282085,
+      "rr_seconds": 0.15964935400000002
+    },
+    {
+      "graph": "fe_4elt2",
+      "hit": 10,
+      "end": 10,
+      "cpu_seconds": 11.593240792,
+      "rr_seconds": 0.46276324849999995
+    },
+    {
+      "graph": "wiki-Vote",
+      "hit": 10,
+      "end": 10,
+      "cpu_seconds": 6.6912720005,
+      "rr_seconds": 0.38512960500000004
+    }
+  ],
+  "degree_summary": [
+    {
+      "name": "BA-2000-g0",
+      "nodes": 2000,
+      "edges": 9975,
+      "max_degree": 156,
+      "degree_cv": 1.13049362740753,
+      "split_speedup": 3.0043389017874373,
+      "split_stress_ratio": 1.010191430273721,
+      "split_iteration_ms": 8.304666733333333,
+      "split_cpu_iteration_ms": 24.249930533333334,
+      "split_within_target": 5,
+      "unsplit_speedup": 3.329714359029019,
+      "unsplit_stress_ratio": 1.1699559335812788,
+      "unsplit_iteration_ms": 7.252155533333333,
+      "unsplit_cpu_iteration_ms": 24.249930533333334,
+      "unsplit_within_target": 0,
+      "split_unsplit_time_ratio": 1.1599577642855277
+    },
+    {
+      "name": "BA-2000-g1",
+      "nodes": 2000,
+      "edges": 9975,
+      "max_degree": 143,
+      "degree_cv": 1.0628948283682678,
+      "split_speedup": 2.955080283960102,
+      "split_stress_ratio": 1.0072437561583691,
+      "split_iteration_ms": 8.417088933333334,
+      "split_cpu_iteration_ms": 24.791750066666665,
+      "split_within_target": 5,
+      "unsplit_speedup": 3.4694689161822483,
+      "unsplit_stress_ratio": 1.1723971960598232,
+      "unsplit_iteration_ms": 7.1458806,
+      "unsplit_cpu_iteration_ms": 24.791750066666665,
+      "unsplit_within_target": 0,
+      "split_unsplit_time_ratio": 1.1579831398265574
+    },
+    {
+      "name": "BA-4000-g0",
+      "nodes": 4000,
+      "edges": 19975,
+      "max_degree": 218,
+      "degree_cv": 1.2260685948098033,
+      "split_speedup": 9.74571114469463,
+      "split_stress_ratio": 1.0170652937604836,
+      "split_iteration_ms": 13.089441666666666,
+      "split_cpu_iteration_ms": 127.50586653333333,
+      "split_within_target": 5,
+      "unsplit_speedup": 13.817457497981426,
+      "unsplit_stress_ratio": 1.5032691055212928,
+      "unsplit_iteration_ms": 9.226816666666668,
+      "unsplit_cpu_iteration_ms": 127.50586653333333,
+      "unsplit_within_target": 0,
+      "split_unsplit_time_ratio": 1.4177987930109515
+    },
+    {
+      "name": "BA-4000-g1",
+      "nodes": 4000,
+      "edges": 19975,
+      "max_degree": 218,
+      "degree_cv": 1.162001267254861,
+      "split_speedup": 9.906783727954359,
+      "split_stress_ratio": 1.0134867528414009,
+      "split_iteration_ms": 12.940511066666668,
+      "split_cpu_iteration_ms": 127.60886393333334,
+      "split_within_target": 5,
+      "unsplit_speedup": 13.396386601801192,
+      "unsplit_stress_ratio": 1.3289907708548925,
+      "unsplit_iteration_ms": 9.569658466666665,
+      "unsplit_cpu_iteration_ms": 127.60886393333334,
+      "unsplit_within_target": 0,
+      "split_unsplit_time_ratio": 1.352243772517218
+    },
+    {
+      "name": "BA-8000-g0",
+      "nodes": 8000,
+      "edges": 39975,
+      "max_degree": 295,
+      "degree_cv": 1.2922427485674794,
+      "split_speedup": 21.99683296279621,
+      "split_stress_ratio": 1.0374317355472358,
+      "split_iteration_ms": 25.86769986666667,
+      "split_cpu_iteration_ms": 569.2051278,
+      "split_within_target": 5,
+      "unsplit_speedup": 29.965395255622063,
+      "unsplit_stress_ratio": 1.5192394509570863,
+      "unsplit_iteration_ms": 18.985502666666665,
+      "unsplit_cpu_iteration_ms": 569.2051278,
+      "unsplit_within_target": 0,
+      "split_unsplit_time_ratio": 1.344922104423958
+    },
+    {
+      "name": "BA-8000-g1",
+      "nodes": 8000,
+      "edges": 39975,
+      "max_degree": 311,
+      "degree_cv": 1.2489090107909924,
+      "split_speedup": 22.95344478598744,
+      "split_stress_ratio": 1.0378607105915154,
+      "split_iteration_ms": 25.9350888,
+      "split_cpu_iteration_ms": 599.7146888666666,
+      "split_within_target": 5,
+      "unsplit_speedup": 32.046145764929385,
+      "unsplit_stress_ratio": 1.4067499315172602,
+      "unsplit_iteration_ms": 18.791588866666665,
+      "unsplit_cpu_iteration_ms": 599.7146888666666,
+      "unsplit_within_target": 0,
+      "split_unsplit_time_ratio": 1.3648421632667123
+    }
+  ],
+  "full_graphs": [
+    {
+      "graph": "1138_bus",
+      "method": "rr_sgd",
+      "n": 5,
+      "speedup": 0.9059612040520363,
+      "stress_ratio": 0.9998701132240292
+    },
+    {
+      "graph": "EVA",
+      "method": "rr_sgd",
+      "n": 5,
+      "speedup": 9.101162537072463,
+      "stress_ratio": 1.0204203713159619
+    },
+    {
+      "graph": "USpowerGrid",
+      "method": "rr_sgd",
+      "n": 5,
+      "speedup": 10.028009600722218,
+      "stress_ratio": 1.0002687302178594
+    },
+    {
+      "graph": "bcspwr10",
+      "method": "rr_sgd",
+      "n": 5,
+      "speedup": 13.193468612655549,
+      "stress_ratio": 0.9999950301408166
+    },
+    {
+      "graph": "bcsstk15",
+      "method": "rr_sgd",
+      "n": 5,
+      "speedup": 9.65929123572482,
+      "stress_ratio": 1.000443171326581
+    },
+    {
+      "graph": "bcsstk16",
+      "method": "rr_sgd",
+      "n": 5,
+      "speedup": 9.984990264925209,
+      "stress_ratio": 0.9117301150821773
+    },
+    {
+      "graph": "bcsstk17",
+      "method": "rr_sgd",
+      "n": 5,
+      "speedup": 20.949630615144958,
+      "stress_ratio": 1.2080394128060772
+    },
+    {
+      "graph": "ca-GrQc",
+      "method": "rr_sgd",
+      "n": 5,
+      "speedup": 7.853503934612783,
+      "stress_ratio": 1.0028840535546955
+    },
+    {
+      "graph": "ca-HepTh",
+      "method": "rr_sgd",
+      "n": 5,
+      "speedup": 20.418357956719465,
+      "stress_ratio": 1.0123671808180088
+    },
+    {
+      "graph": "data",
+      "method": "rr_sgd",
+      "n": 5,
+      "speedup": 4.656381963397975,
+      "stress_ratio": 1.0001087473503363
+    },
+    {
+      "graph": "delaunay_n12",
+      "method": "rr_sgd",
+      "n": 5,
+      "speedup": 10.819657915142454,
+      "stress_ratio": 1.0000134526348243
+    },
+    {
+      "graph": "dwt_1005",
+      "method": "rr_sgd",
+      "n": 5,
+      "speedup": 0.8549852736533248,
+      "stress_ratio": 0.9998475257996904
+    },
+    {
+      "graph": "dwt_2680",
+      "method": "rr_sgd",
+      "n": 5,
+      "speedup": 4.0751265929746925,
+      "stress_ratio": 0.9999962172718995
+    },
+    {
+      "graph": "fe_4elt2",
+      "method": "rr_sgd",
+      "n": 5,
+      "speedup": 23.468588909922165,
+      "stress_ratio": 1.0101755134592065
+    },
+    {
+      "graph": "p2p-Gnutella08",
+      "method": "rr_sgd",
+      "n": 5,
+      "speedup": 14.119604201537383,
+      "stress_ratio": 1.026251785649399
+    },
+    {
+      "graph": "polblogs",
+      "method": "rr_sgd",
+      "n": 5,
+      "speedup": 1.0455271904327987,
+      "stress_ratio": 0.9965516252687937
+    },
+    {
+      "graph": "uk",
+      "method": "rr_sgd",
+      "n": 5,
+      "speedup": 10.091774624519255,
+      "stress_ratio": 1.0119464947306887
+    },
+    {
+      "graph": "wiki-Vote",
+      "method": "rr_sgd",
+      "n": 5,
+      "speedup": 16.92807492744409,
+      "stress_ratio": 1.025821241843966
+    },
+    {
+      "graph": "yeast",
+      "method": "rr_sgd",
+      "n": 5,
+      "speedup": 3.250594616474398,
+      "stress_ratio": 1.0037588448803352
+    }
+  ]
+}

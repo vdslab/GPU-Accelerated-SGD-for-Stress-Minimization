@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/vram-lock-sparse/target/release/vram-lock-sparse",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/common/PGPgiantcompo.mtx",
+    "--run-id",
+    "warmup-2026-11-06T052635_0900-PGPgiantcompo-atomic_sparse_sgd-tfixed",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "999",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/warmups/warmup-2026-11-06T052635_0900-PGPgiantcompo-atomic_sparse_sgd-tfixed",
+    "--pivots",
+    "200"
+  ],
+  "environment": {
+    "SGD_STRESS_SAMPLES": "256",
+    "SGD_GPU_TIMESTAMPS": "0"
+  },
+  "started_at": "2026-11-06T07:27:13+09:00",
+  "memory_before": {
+    "available_bytes": 12878135296,
+    "used_bytes": 10665328640,
+    "swap_used_bytes": 2061041664,
+    "swap_in_bytes": 188899131392,
+    "swap_out_bytes": 2324381696
+  },
+  "warmup": true
+}

@@ -1,0 +1,38 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/bin/rr-sparse-w1024",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/sparse_only/la2010.mtx",
+    "--run-id",
+    "grid-sparse-la2010-w1024-p1000-s0-r1",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "0",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/raw/grid-sparse-la2010-w1024-p1000-s0-r1",
+    "--pivots",
+    "1000"
+  ],
+  "binary_sha256": "74456261a9d17e07f418f18248e0a5f9a9358642165ea37e0c01278c8560a65a",
+  "workgroup_size": 1024,
+  "started_at": "2026-11-07T16:02:28+09:00",
+  "memory_before": {
+    "available_bytes": 11209162752,
+    "used_bytes": 9109028864,
+    "swap_used_bytes": 5451808768,
+    "swap_in_bytes": 86331490304,
+    "swap_out_bytes": 1107542016
+  },
+  "warmup": false,
+  "environment": {
+    "SGD_GPU_TIMESTAMPS": "0",
+    "SGD_STRESS_SAMPLES": "256"
+  }
+}

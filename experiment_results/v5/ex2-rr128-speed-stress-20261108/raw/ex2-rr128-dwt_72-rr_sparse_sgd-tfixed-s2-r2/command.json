@@ -1,0 +1,38 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/bin/rr-sparse-w128",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/common/dwt_72.mtx",
+    "--run-id",
+    "ex2-rr128-dwt_72-rr_sparse_sgd-tfixed-s2-r2",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "2",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/raw/ex2-rr128-dwt_72-rr_sparse_sgd-tfixed-s2-r2",
+    "--pivots",
+    "72"
+  ],
+  "environment": {
+    "SGD_GPU_TIMESTAMPS": "1",
+    "SGD_STRESS_MODE": "auto",
+    "SGD_STRESS_SAMPLES": "256"
+  },
+  "binary_sha256": "72a18c7414def1320ba47792dda40308e98bd554b8aea42092ee5fae48fdc8b6",
+  "started": "2026-11-08T04:17:07+09:00",
+  "memory_before": {
+    "available_bytes": 6556647424,
+    "used_bytes": 10078502912,
+    "swap_used_bytes": 4813488128,
+    "swap_in_bytes": 224666353664,
+    "swap_out_bytes": 3143761920
+  },
+  "kind": "raw"
+}

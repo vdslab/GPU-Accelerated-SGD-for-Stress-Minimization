@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/warmups/v5-large-Flan_1565-p100-s0-r0-warmup-1793958935764378000/rr-sparse-sgd-Flan_1565-v5-large-Flan_1565-p100-s0-r0-warmup-1793958935764378000.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/warmups/v5-large-Flan_1565-p100-s0-r0-warmup-1793958935764378000/rr-sparse-sgd-Flan_1565-v5-large-Flan_1565-p100-s0-r0-warmup-1793958935764378000.final.txt.gz",
+      "original_sha256": "df09ffeb8bf001ad5e6417ed3628693e54e1cdef745d2dd70d73318f5d45afbf",
+      "decompressed_sha256": "df09ffeb8bf001ad5e6417ed3628693e54e1cdef745d2dd70d73318f5d45afbf",
+      "compressed_sha256": "faf1be174df0b1d862a222ee1746bf439997b397c2d209b6b30580f5a83dd1c7",
+      "original_bytes": 879595934,
+      "compressed_bytes": 188408999,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/warmups/v5-large-Flan_1565-p100-s0-r0-warmup-1793958935764378000/rr-sparse-sgd-Flan_1565-v5-large-Flan_1565-p100-s0-r0-warmup-1793958935764378000.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/warmups/v5-large-Flan_1565-p100-s0-r0-warmup-1793958935764378000/rr-sparse-sgd-Flan_1565-v5-large-Flan_1565-p100-s0-r0-warmup-1793958935764378000.initial.txt.gz",
+      "original_sha256": "3db47dc7302aca8357028602c725f92f2093bbe0c42e0db2aad9dd6d5ca90e79",
+      "decompressed_sha256": "3db47dc7302aca8357028602c725f92f2093bbe0c42e0db2aad9dd6d5ca90e79",
+      "compressed_sha256": "826d5a1fdeb4fd3ab62a41683ff66c425c169c81acb707befd7ee09d7f03aebb",
+      "original_bytes": 883915843,
+      "compressed_bytes": 191379263,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/warmups/v5-large-Flan_1565-p100-s0-r0-warmup-1793958935764378000/rr-sparse-sgd-Flan_1565-v5-large-Flan_1565-p100-s0-r0-warmup-1793958935764378000.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/warmups/v5-large-Flan_1565-p100-s0-r0-warmup-1793958935764378000/rr-sparse-sgd-Flan_1565-v5-large-Flan_1565-p100-s0-r0-warmup-1793958935764378000.vertex-map.txt.gz",
+      "original_sha256": "44fe1445862786fcda6709fddab68ff960a05e20a1067f15ad9c548467706c9b",
+      "decompressed_sha256": "44fe1445862786fcda6709fddab68ff960a05e20a1067f15ad9c548467706c9b",
+      "compressed_sha256": "fb151ba6520d5dd419986ecb2db1a6a9d2f97d86abb1dad08d374cc302edcc9e",
+      "original_bytes": 22814484,
+      "compressed_bytes": 7023203,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

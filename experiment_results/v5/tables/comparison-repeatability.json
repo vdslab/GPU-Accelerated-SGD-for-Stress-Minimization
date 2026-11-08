@@ -1,0 +1,50 @@
+[
+  {
+    "method": "sgd",
+    "graph_seed_groups": 190,
+    "variable_stress_groups": 0,
+    "max_relative_stress_range": 0.0,
+    "worst_graph": "lesmis",
+    "worst_seed": 0
+  },
+  {
+    "method": "atomic_sgd",
+    "graph_seed_groups": 190,
+    "variable_stress_groups": 190,
+    "max_relative_stress_range": 1.573398026325939,
+    "worst_graph": "3elt",
+    "worst_seed": 0
+  },
+  {
+    "method": "rr_sgd",
+    "graph_seed_groups": 190,
+    "variable_stress_groups": 0,
+    "max_relative_stress_range": 0.0,
+    "worst_graph": "dolphins",
+    "worst_seed": 0
+  },
+  {
+    "method": "sparse_sgd",
+    "graph_seed_groups": 280,
+    "variable_stress_groups": 0,
+    "max_relative_stress_range": 0.0,
+    "worst_graph": "email",
+    "worst_seed": 0
+  },
+  {
+    "method": "atomic_sparse_sgd",
+    "graph_seed_groups": 280,
+    "variable_stress_groups": 280,
+    "max_relative_stress_range": 1.172896010403414,
+    "worst_graph": "dwt_198",
+    "worst_seed": 4
+  },
+  {
+    "method": "rr_sparse_sgd",
+    "graph_seed_groups": 280,
+    "variable_stress_groups": 0,
+    "max_relative_stress_range": 0.0,
+    "worst_graph": "EVA",
+    "worst_seed": 0
+  }
+]

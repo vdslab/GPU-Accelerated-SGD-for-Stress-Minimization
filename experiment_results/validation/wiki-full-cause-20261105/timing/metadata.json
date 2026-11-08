@@ -1,0 +1,24 @@
+{
+  "files": {
+    "implementations/full/rr_gpu/examples/wiki_full_timing.rs": "30d08fadcd24f2b070129a65b0be5d87fdd49af802bbec33c0fed0884cf390c7",
+    "implementations/full/rr_gpu/src/gpu.rs": "8db1247d72bf814a9b8fb22a42e65fb265628f9878a9541c3410861c62632f07",
+    "implementations/full/rr_gpu/src/shader.wgsl": "87659347344e06f43af284217726ead5a53fdeb5656ad4e2c105c39823056eb8",
+    "implementations/full/rr_gpu/examples/wiki_full_cause/gpu.rs": "7b6500630c287804b866c164fa7723531204d6cdc24709584041e794d9f1542b",
+    "implementations/full/rr_gpu/examples/wiki_full_cause/shader.wgsl": "b9ab2c39dd527f3b9c8735f4b1e87917ba300d747548e9e0c8a65571e91153f0",
+    "implementations/full/rr_gpu/target/release/examples/wiki_full_timing": "20bb12f9529f046dfe03061332252d83f7e3dfe18ab95c43416cd9af34850817"
+  },
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "iterations": 15,
+  "epsilon": 0.1,
+  "tile_size": 1024,
+  "workgroup_size": 1024,
+  "warmups_per_seed_per_method": 1,
+  "measured_repeats_per_seed_per_method": 5,
+  "execution": "sequential paired measurements, alternating method order",
+  "time_definition": "GpuRunResult.iteration_time / 15; includes shuffle, queue writes, dispatch, and completion waits; excludes initial uploads, initialization, preprocessing, readback, evaluation",
+  "machine": "ProductName:\t\tmacOS\nProductVersion:\t\t15.7.2\nBuildVersion:\t\t24G325\n"
+}

@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-auto-p50-s4-r0/rr-sparse-sgd-auto-v5-large-auto-p50-s4-r0.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-auto-p50-s4-r0/rr-sparse-sgd-auto-v5-large-auto-p50-s4-r0.final.txt.gz",
+      "original_sha256": "6fe1f9483d659b22b8f8b1aa244c0949b14738c08a07d4341ab811c56e16be61",
+      "decompressed_sha256": "6fe1f9483d659b22b8f8b1aa244c0949b14738c08a07d4341ab811c56e16be61",
+      "compressed_sha256": "7b5dbd1fcbdfc14047d9cdae40ea546e82576982e7f325e88625ce6865d40d54",
+      "original_bytes": 61790817,
+      "compressed_bytes": 24170012,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-auto-p50-s4-r0/rr-sparse-sgd-auto-v5-large-auto-p50-s4-r0.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-auto-p50-s4-r0/rr-sparse-sgd-auto-v5-large-auto-p50-s4-r0.initial.txt.gz",
+      "original_sha256": "62abeccc2a12a8d52dc02e88e788e0e0d300bb0a00813bf8538557bfa001e877",
+      "decompressed_sha256": "62abeccc2a12a8d52dc02e88e788e0e0d300bb0a00813bf8538557bfa001e877",
+      "compressed_sha256": "70ea30743e0c57bd1d407741f92ff638bc4f66867ccb80f7269ed73ca750df4b",
+      "original_bytes": 62851411,
+      "compressed_bytes": 24328988,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-auto-p50-s4-r0/rr-sparse-sgd-auto-v5-large-auto-p50-s4-r0.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-auto-p50-s4-r0/rr-sparse-sgd-auto-v5-large-auto-p50-s4-r0.vertex-map.txt.gz",
+      "original_sha256": "13226d915bcb6923dac335e6885e411a2183f40087501a3c143c2240f15e8d43",
+      "decompressed_sha256": "13226d915bcb6923dac335e6885e411a2183f40087501a3c143c2240f15e8d43",
+      "compressed_sha256": "0316668d8659ff6d3f3f09fc3d0dff5f41a8ce13ab84db4ad3169f8cf68a6719",
+      "original_bytes": 6059510,
+      "compressed_bytes": 1989904,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

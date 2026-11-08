@@ -1,0 +1,32 @@
+{
+  "graph": "com-Orkut",
+  "method": "rr_sparse_sgd",
+  "pivots": 100,
+  "seed": 0,
+  "repetition": 0,
+  "run_id": "v5-large-com-Orkut-p100-s0-r0",
+  "status": "disk_capacity_limit",
+  "executed": true,
+  "measured": true,
+  "warmup": false,
+  "process_wall_seconds": 281.019586541006,
+  "peak_rss_bytes": 14715699200,
+  "returncode": -15,
+  "completed_at": "2026-11-06T20:22:23+09:00",
+  "memory_after": {
+    "available_bytes": 9979412480,
+    "used_bytes": 9675816960,
+    "swap_used_bytes": 4341760000,
+    "swap_in_bytes": 627037323264,
+    "swap_out_bytes": 3420225536
+  },
+  "binary_sha256": "61dd5fcb9ec4235c300242b10c4bda43bf958579380521a612cc1231b5af4092",
+  "error": "disk_capacity_limit",
+  "archive_manifest_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/validation/retried/v5-large-com-Orkut-p100-s0-r0-disk-attempt1/artifact-archive.json",
+  "archive_seconds": 21.724590790996444,
+  "archive_status": "success",
+  "archive_format": "xz",
+  "xz_repack_seconds": 413.5553480000235,
+  "retry_reason": "Disk capacity issue resolved; retry same graph/p/seed after preserving this interrupted attempt. No complete native result JSON was emitted.",
+  "moved_from": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-com-Orkut-p100-s0-r0"
+}

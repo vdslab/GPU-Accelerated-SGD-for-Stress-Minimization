@@ -1,0 +1,25 @@
+{
+  "at": "2026-11-07T17:58:22+09:00",
+  "success": 810,
+  "failed": 0,
+  "pending": 0,
+  "figures": [
+    "full-grid-iteration",
+    "full-grid-stress",
+    "sparse-workgroup-p200",
+    "sparse-workgroup-p1000"
+  ],
+  "full_complete_graphs": 6,
+  "full_winner_counts": {
+    "128": 5,
+    "256": 1
+  },
+  "sparse_paired_runs": 180,
+  "sparse_equal_stress_pairs": 180,
+  "visual_review_required": false,
+  "visual_review_passed": true,
+  "final_data_audit": "final-data-audit.json",
+  "final_qa": "final-qa.json",
+  "reporting_complete": true,
+  "completed_at": "2026-11-07T18:01:32+09:00"
+}

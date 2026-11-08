@@ -1,0 +1,33 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/baseline-sgd-non-gpu/target/release/baseline-sgd-non-gpu",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/common/add20.mtx",
+    "--run-id",
+    "v5-tile-add20-sgd-tfixed-s14-r0",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "14",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/tile/v5-tile-add20-sgd-tfixed-s14-r0"
+  ],
+  "environment": {
+    "SGD_STRESS_SAMPLES": "256"
+  },
+  "started_at": "2026-11-06T03:01:21+09:00",
+  "memory_before": {
+    "available_bytes": 10919428096,
+    "used_bytes": 12437028864,
+    "swap_used_bytes": 2732195840,
+    "swap_in_bytes": 172640337920,
+    "swap_out_bytes": 2071461888
+  },
+  "warmup": false
+}

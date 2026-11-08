@@ -1,0 +1,35 @@
+{
+  "at": "2026-11-07T18:01:32+09:00",
+  "status": "passed",
+  "success": 810,
+  "failed": 0,
+  "pending": 0,
+  "settings": 54,
+  "visual_review": "All four PNGs inspected with view_image: no clipping/overlap, axes/units/ticks/data ranges correct; time axes start at zero, Stress axis zoom stated in caption",
+  "figures": {
+    "full-grid-iteration": {
+      "png_sha256": "fe7e4bd8588708d3dbf3bd5b066f87eac478a8f73940e9a78b99bcd903a7fc9d",
+      "pdf_sha256": "3d133c3734d4205c4bd96a2d53bdee43d340eb02a24def71433d91e4bab7be7b"
+    },
+    "full-grid-stress": {
+      "png_sha256": "fa7a29a7d0e17eb2eebe150093744987b3e38f7da7dc764067614bc07309c82e",
+      "pdf_sha256": "d5233a0f08b9bd096fb8aa5846295376433713bf3b1f3c0fb0576318275e5301"
+    },
+    "sparse-workgroup-p200": {
+      "png_sha256": "06cd2076430693bbcdbc9ee67ff31367a9bab84cf535cded703f31544d21e7b1",
+      "pdf_sha256": "736ec4cd72d22710c0b1edd4b3b7fed65d734d975a9e02d8c89bb8025bf372e6"
+    },
+    "sparse-workgroup-p1000": {
+      "png_sha256": "98107cdb7010ca7c2281f7a82d6a513718f966ab0b495e114cefb3e3f66cb517",
+      "pdf_sha256": "3946411469926abe7d2ba62b3a9a10672e6b4e1c5e736a7a26f9c15b1cfe855b"
+    }
+  },
+  "all_review_embeds_resolve": 17,
+  "new_review_embeds": 4,
+  "review_previous_content_preserved": true,
+  "review_new_content_only_figures_and_brief_captions": true,
+  "repo_and_obsidian_image_table_bytes_equal": true,
+  "sparse_initial_constraint_stress_exact_pairs": 180,
+  "data_audit": "final-data-audit.json",
+  "review_note": "/Users/kose/Documents/ChatGPT/Obsidian タスク管理/sakamoti55/12_大学院研究/実験/論文図表_確認用.md"
+}

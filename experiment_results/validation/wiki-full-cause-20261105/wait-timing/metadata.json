@@ -1,0 +1,19 @@
+{
+  "source_hashes": {
+    "implementations/full/rr_gpu/src/gpu.rs": "8db1247d72bf814a9b8fb22a42e65fb265628f9878a9541c3410861c62632f07",
+    "implementations/full/rr_gpu/examples/wiki_full_cause/round_wait_gpu.rs": "32b5c4903a774d13d5c53a6aeb5abad07f9f0f3596edee3574a99ae0cb2d2638",
+    "implementations/full/rr_gpu/examples/wiki_full_wait_timing.rs": "03e1799b079291c43db70ab709f0c54b52dc7e56dd132dee0cdd4105953bfc96"
+  },
+  "old_binary_sha256": "c98d77e5da7b32dced8826af46426f8571e819e0778e17a0c959043d4c7f8691",
+  "chunks_label": {
+    "0": "production with per-round completion waits restored",
+    "1": "production with per-iteration completion waits"
+  },
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "repetitions": 5,
+  "warmup_pairs_per_seed": 1
+}

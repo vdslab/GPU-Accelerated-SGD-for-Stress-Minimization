@@ -1,0 +1,44 @@
+{
+  "created": "2026-11-06T18:53:51+09:00",
+  "graphs": 14,
+  "planned_runs": 350,
+  "pivots": [
+    1000,
+    500,
+    200,
+    100,
+    50
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "repetitions": 1,
+  "iterations": 15,
+  "epsilon": 0.1,
+  "stress_samples": 64,
+  "stress_seed": 0,
+  "phase_chunks": 1,
+  "timeout_seconds": null,
+  "max_rss_bytes": 19327352832,
+  "min_available_bytes": 536870912,
+  "emergency_disk_bytes": 1073741824,
+  "pre_run_disk_reserve_bytes": 4294967296,
+  "memory_policy": "Only proven GPU limits skipped before allocation; estimates recorded only. Stop current process on RSS >18 GiB, available RAM <512 MiB sustained 10s, or disk <1 GiB. No wall-clock kill. Each seed independent.",
+  "warmup": "seed999 once per graph/p/session, except explicit capacity-only resume may reuse a validated successful same-binary/same-parameters warmup <=30 minutes old; reuse source is logged; excluded from formal results",
+  "execution_context": "User requested Codex execution instead of previously planned manual terminal run. Codex remains resident; environment is not a minimal OS-only state.",
+  "initial_positions": "Native algorithm retained: same seed across p does not guarantee identical initial coordinates because preprocessing consumes RNG. Fingerprints retained; pivot lists not forced to align.",
+  "archive_format": "xz preset0 CRC64; decompressed SHA256 and length validated before removing original; archival excluded from native timing. Initial recovery pilot used preset3 (manifest retains it).",
+  "pre_run_disk_formula": "4 GiB + 160n + 48m bytes; includes two complete native edge lists",
+  "capacity_defer_policy": "If a graph cannot meet pre/post-warmup reserve, keep its remaining jobs pending (not failures) and preserve its pivot/seed order. Execute other approved graphs that fit. Actual deferrals logged in validation/schedule-deferred-*.json.",
+  "storage_sharing": {
+    "scope": "Large successful com-Orkut only; normal6030 unchanged",
+    "format": "Self-contained gzip with three concatenated members; first member FEXTRA padded to 64KiB; edge member shared with APFS clonefile",
+    "verification": "Full original-text SHA256/length and gzip EOF CRC; template digest immutable after writes; native measurement fields unchanged",
+    "existing_runs": "Preserve original archive_seconds, append shared_repack_seconds",
+    "future_runs": "Native layout/Stress unchanged; XZ archival then verified shared gzip repack after all measurement; store both archival durations"
+  }
+}

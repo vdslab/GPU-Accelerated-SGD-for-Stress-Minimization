@@ -1,0 +1,11 @@
+number,name,field,cpu_measured,cpu_total,gpu_measured,gpu_total
+①,前処理,preprocess_time_ms,1560,1560,4600,4600
+②,GPU準備,gpu_prepare_time_ms,0,1560,4600,4600
+③,初期転送,upload_time_ms,0,1560,4600,4600
+④,各反復の計算時間,iteration_times_ms,1560,1560,0,4600
+⑤,SGD経過時間,sgd_time_ms,1560,1560,4600,4600
+⑥,結果取得,readback_time_ms,0,1560,4600,4600
+⑦,描画,draw_time_ms,0,1560,0,4600
+⑧,描画込み総時間,total_with_draw_time_ms,0,1560,0,4600
+⑨,反復計算時間合計,iteration_total_time_ms,1560,1560,0,4600
+⑩,描画なし総計算時間,total_compute_time_ms,1560,1560,4600,4600

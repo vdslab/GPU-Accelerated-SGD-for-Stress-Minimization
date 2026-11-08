@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-email-Enron-atomic_sparse_sgd-tfixed-s3-r2/atomic-sparse-sgd-email-Enron-v5-comparison-email-Enron-atomic_sparse_sgd-tfixed-s3-r2.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-email-Enron-atomic_sparse_sgd-tfixed-s3-r2/atomic-sparse-sgd-email-Enron-v5-comparison-email-Enron-atomic_sparse_sgd-tfixed-s3-r2.final.txt.gz",
+      "original_sha256": "6849af810a57f05feca70d780ca3bbcfa90ba57f44a56c7dc22cdd48aee11112",
+      "decompressed_sha256": "6849af810a57f05feca70d780ca3bbcfa90ba57f44a56c7dc22cdd48aee11112",
+      "compressed_sha256": "c72a76a24387dcbb991d56d11e4c727651969875398b9cc0751ef273337da044",
+      "original_bytes": 3108226,
+      "compressed_bytes": 1277392,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-email-Enron-atomic_sparse_sgd-tfixed-s3-r2/atomic-sparse-sgd-email-Enron-v5-comparison-email-Enron-atomic_sparse_sgd-tfixed-s3-r2.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-email-Enron-atomic_sparse_sgd-tfixed-s3-r2/atomic-sparse-sgd-email-Enron-v5-comparison-email-Enron-atomic_sparse_sgd-tfixed-s3-r2.initial.txt.gz",
+      "original_sha256": "391cc46583c10089cbbdff2efcbc5b8d15b53532532abab518f295d6ef366099",
+      "decompressed_sha256": "391cc46583c10089cbbdff2efcbc5b8d15b53532532abab518f295d6ef366099",
+      "compressed_sha256": "b958870f623b40abc5b22f525f650ab6ba8889f9713ef723af1cf92428f093ad",
+      "original_bytes": 3163590,
+      "compressed_bytes": 1288088,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-email-Enron-atomic_sparse_sgd-tfixed-s3-r2/atomic-sparse-sgd-email-Enron-v5-comparison-email-Enron-atomic_sparse_sgd-tfixed-s3-r2.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-email-Enron-atomic_sparse_sgd-tfixed-s3-r2/atomic-sparse-sgd-email-Enron-v5-comparison-email-Enron-atomic_sparse_sgd-tfixed-s3-r2.vertex-map.txt.gz",
+      "original_sha256": "a169ca8bb633d2eb347472222eff7db04c247e8adf8c02d6c0771dbf37a3249a",
+      "decompressed_sha256": "a169ca8bb633d2eb347472222eff7db04c247e8adf8c02d6c0771dbf37a3249a",
+      "compressed_sha256": "c6ed03201bab1e772b702b11cf774d40daf38aab3af497d9f881b0f66e5ba8af",
+      "original_bytes": 382132,
+      "compressed_bytes": 133137,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

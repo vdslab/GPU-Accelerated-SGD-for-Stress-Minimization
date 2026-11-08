@@ -1,0 +1,74 @@
+{
+  "created": "2026-11-07T14:49:31+09:00",
+  "full_graphs": [
+    "grid2d_64x64",
+    "grid2d_96x96",
+    "grid2d_128x128",
+    "grid2d_128x192",
+    "grid3d_16x16x16",
+    "grid3d_24x24x24"
+  ],
+  "sparse_graphs": [
+    "grid2d_64x64",
+    "grid2d_128x128",
+    "grid3d_24x24x24",
+    "luxembourg_osm",
+    "la2010",
+    "coPapersCiteseer"
+  ],
+  "full_tiles": [
+    64,
+    128,
+    256,
+    512,
+    1024
+  ],
+  "full_workgroup": 1024,
+  "sparse_workgroups": [
+    256,
+    1024
+  ],
+  "sparse_pivots": [
+    1000,
+    200
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "repetitions": 3,
+  "iterations": 15,
+  "epsilon": 0.1,
+  "phase_chunks": 1,
+  "stress_samples": 256,
+  "stress_seed": 0,
+  "gpu_timestamps": false,
+  "timeout_seconds": null,
+  "order_seed": 20261108,
+  "planned_full_runs": 450,
+  "planned_sparse_runs": 360,
+  "planned_runs": 810,
+  "primary_metric": "SGD elapsed / 15 ms per iteration; also GPU prepare + SGD + readback, and plus upload",
+  "selection": "Grid families and sizes fixed before added measurements. Full shape/n and Sparse workgroup/pivot comparisons are distinct. Keep every outcome, not only W/T1024 wins.",
+  "warmup": "seed999 once per graph/configuration/session; excluded",
+  "resource_policy": "Sequential only; stop on RSS18GiB, available RAM512MiB sustained10s, disk1GiB. Pause before next run if RAM<2GiB or disk<4GiB. No wall-clock kill.",
+  "full_binary_sha256": "e6378204f1c018f3ce0b2b8630be509fcfb506aedb7de20ccd5881b2a6cd9be6",
+  "production_sparse_binary_sha256": "61dd5fcb9ec4235c300242b10c4bda43bf958579380521a612cc1231b5af4092",
+  "sparse_variants": [
+    {
+      "workgroup_size": 256,
+      "manifest": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/source-snapshot/sparse-w256/Cargo.toml",
+      "binary": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/bin/rr-sparse-w256",
+      "code_changes": "Workgroup size constant and two shader declarations only; frozen reference/timing sources copied locally; p, arithmetic and update schedule unchanged"
+    },
+    {
+      "workgroup_size": 1024,
+      "manifest": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/source-snapshot/sparse-w1024/Cargo.toml",
+      "binary": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/bin/rr-sparse-w1024",
+      "code_changes": "Workgroup size constant and two shader declarations only; frozen reference/timing sources copied locally; p, arithmetic and update schedule unchanged"
+    }
+  ]
+}

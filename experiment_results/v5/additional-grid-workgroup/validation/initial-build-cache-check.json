@@ -1,0 +1,20 @@
+{
+  "used_for_measurement": false,
+  "reason": "Shared-target cache returned identical binaries for different source paths; rebuild with unique package identities",
+  "binaries": [
+    {
+      "workgroup_size": 256,
+      "manifest": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/source-snapshot/sparse-w256/Cargo.toml",
+      "binary": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/bin/rr-sparse-w256",
+      "code_changes": "Workgroup size constant and two shader declarations only; frozen reference/timing sources copied locally; p, arithmetic and update schedule unchanged",
+      "sha256": "db97e4a0e7f2615c104fbd90fb9495c36c2e615d4d221ba12f1edde044d6bf82"
+    },
+    {
+      "workgroup_size": 1024,
+      "manifest": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/source-snapshot/sparse-w1024/Cargo.toml",
+      "binary": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/bin/rr-sparse-w1024",
+      "code_changes": "Workgroup size constant and two shader declarations only; frozen reference/timing sources copied locally; p, arithmetic and update schedule unchanged",
+      "sha256": "db97e4a0e7f2615c104fbd90fb9495c36c2e615d4d221ba12f1edde044d6bf82"
+    }
+  ]
+}

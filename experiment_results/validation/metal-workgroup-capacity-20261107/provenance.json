@@ -1,0 +1,84 @@
+{
+  "created_utc": "2026-11-07T11:24:37.638775+00:00",
+  "git_head": "2bf4c24a47b3349620eda360b7d198c6266837d9",
+  "gpu_source_note": "benchmark.metal was unchanged throughout. Swift host additions only added boundary/profile2/resident mode selection; old intermediate binary hashes were not recorded. Final replay source and binary hashes are included.",
+  "sources_sha256": {
+    "benchmark.swift": "ea7e816c3e93f4e68a14a586dac7701ab76ee0dfe46449c4756792f882551641",
+    "run.py": "91105973102e82d749029199d53f3cb7ff383ca779aae020c0c9e2ce0d6de79f",
+    "extract_counters.py": "a5bd01cadef41e34420119ef7eb826958717cfb90d47400a1cb52023690f3b37",
+    "README.md": "635fefc503075c9eafb63ade6067b1cdcdfe317458f40cb7929c275f6f9cd46d",
+    "benchmark.metal": "a0a5c7b75ab6c5d8877954636936fe10507669f4857a70bc23f9a2a9127e8205",
+    "analyze.py": "05b7f3549103dd802f2b41f13b227057ff1791a88204db92bb4b64f1a8c40e3c"
+  },
+  "final_binary_sha256": "2d8710fb026cf8039c64df6971f477f4536a8318db5c812b7b5a95bab4286987",
+  "datasets": {
+    "boundary.jsonl": {
+      "sha256": "33e0e189990f6632d40ac173d9c9cd6daedbe2d5bd7ff6037b60a22213f6d1a9",
+      "rows": 1441,
+      "trials": 1440,
+      "mode": "boundary",
+      "iterations": 16384,
+      "repetitions": 5
+    },
+    "profile.jsonl": {
+      "sha256": "4d5c680f6070521513ab75333fd197b134221e73ee0c9982fbc5a6aae1fecfc3",
+      "rows": 165,
+      "trials": 164,
+      "mode": "profile",
+      "iterations": 32768,
+      "repetitions": 40
+    },
+    "profile2.jsonl": {
+      "sha256": "b44e613be0a25ac6c6dd964c1ea84bbd970a45ac9c4b83efc3e9e799fd441e58",
+      "rows": 181,
+      "trials": 180,
+      "mode": "profile2",
+      "iterations": 32768,
+      "repetitions": 5
+    },
+    "quick.jsonl": {
+      "sha256": "6ab71895cd5b0f21224afc2a686e92fdddea06aa65f09c96dc4118e172ee20d7",
+      "rows": 81,
+      "trials": 80,
+      "mode": "quick",
+      "iterations": 4096,
+      "repetitions": 1
+    },
+    "resident.jsonl": {
+      "sha256": "4683be016d122c19e4040b6f9cb36c4fe97c5a61313dc1942ccbc8bd948db948",
+      "rows": 49,
+      "trials": 48,
+      "mode": "resident",
+      "iterations": 32768,
+      "repetitions": 3
+    },
+    "sweep.jsonl": {
+      "sha256": "8a23a31b8b72acf327dc31e263f15da0f29f136cbea408bb15ab780bd104b11c",
+      "rows": 2857,
+      "trials": 2856,
+      "mode": "sweep",
+      "iterations": 4096,
+      "repetitions": 5
+    },
+    "profile2-counter-samples.csv.gz": {
+      "sha256": "9f7b4cb209900b05050252ca7346a3980335dd01a93654fbc53b7c10113f503b",
+      "bytes": 6162915
+    },
+    "resident-counter-samples.csv.gz": {
+      "sha256": "c505132d21831063b29334b393ae6dd01f505c9437b2832d65aa516cf1e147c1",
+      "bytes": 4320955
+    },
+    "counter-samples.csv.gz": {
+      "sha256": "a583dc8a1eb0d7a2a1e2ab93514f08994a33fb9e31c1f5d7c4780121d8feed00",
+      "bytes": 3033931
+    }
+  },
+  "checks": [
+    "GPU FMA outputs checked against fused CPU FMA at three positions per run.",
+    "Same-N FMA output SHA equality across W/G geometry.",
+    "RR same-T output SHA equality across W, G, memory source and repetitions.",
+    "Every RR workgroup output equals first group output.",
+    "Main sweep/boundary expected trial counts and 5 measured repetitions per configuration.",
+    "Compressed sample CSV hashes verified against uncompressed data."
+  ]
+}

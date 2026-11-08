@@ -1,0 +1,13 @@
+{
+  "at": "2026-11-06T19:56:39+09:00",
+  "reason": "Runner stopped before next job for disk reserve; no cargo/rustc/RR runner/Atlas/Cursor application processes present",
+  "preserved": "All release binaries, inputs, result artifacts, manifests, source files",
+  "free_before": 1956872192,
+  "removed": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/debug",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/rr_gpu/target/debug",
+    "/Users/kose/Library/Caches/com.todesktop.230313mzl4w4u92.ShipIt",
+    "/Users/kose/Library/Caches/com.openai.atlas"
+  ],
+  "free_after": 9777127424
+}

@@ -169,6 +169,8 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
             raise PlanError("pivotsは1以上のinteger配列です")
     for field, minimum in (("repetitions", 1), ("warmups", 0), ("timeout_seconds", 1)):
         value = manifest[field]
+        if field == "timeout_seconds" and value is None:
+            continue  # Explicitly disable the wall-clock deadline.
         if not isinstance(value, int) or isinstance(value, bool) or value < minimum:
             raise PlanError(f"{field}は{minimum}以上のintegerです")
     if not isinstance(manifest["fail_fast"], bool):

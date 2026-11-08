@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/sparse-sgd-gpu",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/sparse_only/com-Orkut.mtx",
+    "--run-id",
+    "v5-large-com-Orkut-p50-s3-r0",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "3",
+    "--pivots",
+    "50",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-com-Orkut-p50-s3-r0"
+  ],
+  "started_at": "2026-11-06T22:33:17+09:00",
+  "memory_before": {
+    "available_bytes": 18347769856,
+    "used_bytes": 4564942848,
+    "swap_used_bytes": 4925358080,
+    "swap_in_bytes": 763406991360,
+    "swap_out_bytes": 3664199680
+  },
+  "warmup": false,
+  "environment": {
+    "SGD_STRESS_SAMPLES": "64",
+    "SGD_GPU_TIMESTAMPS": "0"
+  }
+}

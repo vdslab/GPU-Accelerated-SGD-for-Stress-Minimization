@@ -1,0 +1,47 @@
+{
+  "at": "2026-11-06T20:36:58+09:00",
+  "removed": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/baseline-sgd-non-gpu/target/release/deps",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/baseline-sgd-non-gpu/target/release/build",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/baseline-sgd-non-gpu/target/release/incremental",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/baseline-sgd-non-gpu/target/release/.fingerprint",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/vram-lock-native/target/release/deps",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/vram-lock-native/target/release/build",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/vram-lock-native/target/release/incremental",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/vram-lock-native/target/release/.fingerprint",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/rr_gpu/target/release/deps",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/rr_gpu/target/release/build",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/rr_gpu/target/release/incremental",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/rr_gpu/target/release/.fingerprint",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/baseline-sparse-sgd-non-gpu/target/release/deps",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/baseline-sparse-sgd-non-gpu/target/release/build",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/baseline-sparse-sgd-non-gpu/target/release/incremental",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/baseline-sparse-sgd-non-gpu/target/release/.fingerprint",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/vram-lock-sparse/target/release/deps",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/vram-lock-sparse/target/release/build",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/vram-lock-sparse/target/release/incremental",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/vram-lock-sparse/target/release/.fingerprint",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/deps",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/build",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/incremental",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/.fingerprint"
+  ],
+  "binary_sha256_before": {
+    "sgd": "63e81b64ecbc1b507c86416457798121cd44f1cf4af1d01a53628d84799e124a",
+    "atomic_sgd": "8a6974c341291acb82658430f15215d3eed69ab7863069150a4636530d7663c5",
+    "rr_sgd": "e6378204f1c018f3ce0b2b8630be509fcfb506aedb7de20ccd5881b2a6cd9be6",
+    "sparse_sgd": "9c370ee3acc057ca0ea94c78c88e9cff9c4dbb8c04e0d7371a37452087416989",
+    "atomic_sparse_sgd": "0f9c9428a48d09c27425687310dfa50e917241241ec82b27d947308fcd8037bd",
+    "rr_sparse_sgd": "61dd5fcb9ec4235c300242b10c4bda43bf958579380521a612cc1231b5af4092"
+  },
+  "binary_sha256_after": {
+    "sgd": "63e81b64ecbc1b507c86416457798121cd44f1cf4af1d01a53628d84799e124a",
+    "atomic_sgd": "8a6974c341291acb82658430f15215d3eed69ab7863069150a4636530d7663c5",
+    "rr_sgd": "e6378204f1c018f3ce0b2b8630be509fcfb506aedb7de20ccd5881b2a6cd9be6",
+    "sparse_sgd": "9c370ee3acc057ca0ea94c78c88e9cff9c4dbb8c04e0d7371a37452087416989",
+    "atomic_sparse_sgd": "0f9c9428a48d09c27425687310dfa50e917241241ec82b27d947308fcd8037bd",
+    "rr_sparse_sgd": "61dd5fcb9ec4235c300242b10c4bda43bf958579380521a612cc1231b5af4092"
+  },
+  "dynamic_dependencies": "otool -L verified no target runtime dependencies",
+  "free_after": 13147209728
+}

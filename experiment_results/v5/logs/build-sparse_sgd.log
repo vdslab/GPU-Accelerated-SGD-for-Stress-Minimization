@@ -1,0 +1,27 @@
+warning: function `execute_sgd_iterations` is never used
+  --> src/algorithm.rs:68:8
+   |
+68 | pub fn execute_sgd_iterations<R: Rng + ?Sized>(params: SgdParams, rng: &mut R) -> Vec<[f64; 2]> {
+   |        ^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `execute_sgd` is never used
+  --> src/algorithm.rs:72:8
+   |
+72 | pub fn execute_sgd<R: Rng + ?Sized>(sgd_params: SgdParams, rng: &mut R) -> Vec<[f64; 2]> {
+   |        ^^^^^^^^^^^
+
+warning: methods `retained_vertex_ratio` and `retained_edge_ratio` are never used
+  --> src/graph.rs:29:12
+   |
+28 | impl ComponentInfo {
+   | ------------------ methods in this implementation
+29 |     pub fn retained_vertex_ratio(&self) -> f64 {
+   |            ^^^^^^^^^^^^^^^^^^^^^
+...
+37 |     pub fn retained_edge_ratio(&self, selected_edge_size: usize) -> f64 {
+   |            ^^^^^^^^^^^^^^^^^^^
+
+warning: `baseline-sparse-sgd-non-gpu` (bin "baseline-sparse-sgd-non-gpu") generated 3 warnings
+    Finished `release` profile [optimized] target(s) in 0.05s

@@ -1,0 +1,28 @@
+% !TeX root = main.tex
+\usepackage{times}
+\renewcommand*\ttdefault{txtt}
+\usepackage{mathptmx}
+\usepackage{microtype}
+\usepackage{textcomp}
+\usepackage{cite}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\graphicspath{{figures/}}
+% graphicx is loaded by the class; hyperref/cleveref by \vgtcinsertpkg.
+
+% Break long dataset identifiers at underscores without changing their spelling.
+\newcommand{\graph}[1]{\nolinkurl{#1}}
+
+% Balance the last bibliography page and allow figures near their first reference.
+\usepackage{balance}
+\usepackage{placeins}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\dbltopfraction}{0.9}
+\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.8}
+\renewcommand{\dblfloatpagefraction}{0.8}
+
+% Captions for full-width panels placed with their discussion.
+\usepackage{capt-of}

@@ -1,0 +1,1381 @@
+{
+  "user_requested": true,
+  "graphs": [
+    {
+      "name": "AS365",
+      "set": "sparse_only",
+      "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/sparse_only/AS365.mtx",
+      "selected_nodes": 3799275,
+      "selected_edges": 11368076,
+      "family": "格子メッシュ",
+      "degree_tag": "偏り小",
+      "degree_basis": "estimated_from_published_structure",
+      "source_page": "https://sparse.tamu.edu/DIMACS10/AS365",
+      "status": "ready",
+      "input_state": "normalized_simple_undirected_lcc",
+      "local_origin": "data/AS365.mtx",
+      "storage": "normalized",
+      "bytes": 175190059,
+      "sha256": "4f0383846ac391693f97affc8fdd2e7b790bddb9e98f3e7289f60db28dd244dc",
+      "matrix_market": "%%MatrixMarket matrix coordinate pattern symmetric",
+      "stored_rows": 3799275,
+      "stored_columns": 3799275,
+      "stored_entries": 11368076,
+      "source_sha256": "cba17d92f0d493ee2d92e48210c63c0bee7ac79bd935536a1df3f1b53cbdc6f9",
+      "source_header": {
+        "matrix_market": "%%MatrixMarket matrix coordinate pattern symmetric",
+        "stored_rows": 3799275,
+        "stored_columns": 3799275,
+        "stored_entries": 11368076
+      },
+      "nodes": 3799275,
+      "edges": 11368076,
+      "vertex_map": null,
+      "vertex_mapping": "identity",
+      "selected_counts_match": true,
+      "reason": "CPU/Atomic shared preprocessing lower bound exceeds 24 GiB physical RAM",
+      "minimum_cpu_atomic_preprocess_bytes": 48629594400,
+      "target_study": "large",
+      "target_method": "rr_sparse_sgd",
+      "target_pivots": [
+        1000,
+        500,
+        200,
+        100,
+        50
+      ],
+      "target_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "target_repetitions": 1
+    },
+    {
+      "name": "great-britain_osm",
+      "set": "sparse_only",
+      "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/sparse_only/great-britain_osm.mtx",
+      "selected_nodes": 7733822,
+      "selected_edges": 8156517,
+      "family": "道路網",
+      "degree_tag": "偏り小",
+      "degree_basis": "estimated_from_published_structure",
+      "source_page": "https://sparse.tamu.edu/DIMACS10/great-britain_osm",
+      "status": "ready",
+      "archive_url": "https://www.cise.ufl.edu/research/sparse/MM/DIMACS10/great-britain_osm.tar.gz",
+      "input_state": "normalized_simple_undirected_lcc",
+      "storage": "normalized",
+      "bytes": 128002883,
+      "sha256": "689299790f0f7b267742a649f78002cd3d0ab0ca3707e64a0204a3842f0f2891",
+      "matrix_market": "%%MatrixMarket matrix coordinate pattern symmetric",
+      "stored_rows": 7733822,
+      "stored_columns": 7733822,
+      "stored_entries": 8156517,
+      "source_sha256": "72cb2375ac3b81b47d9eee0f8c3b8be45d72198ede7f32cdedd7ad13a79df997",
+      "source_header": {
+        "matrix_market": "%%MatrixMarket matrix coordinate pattern symmetric",
+        "stored_rows": 7733822,
+        "stored_columns": 7733822,
+        "stored_entries": 8156517
+      },
+      "nodes": 7733822,
+      "edges": 8156517,
+      "vertex_map": null,
+      "vertex_mapping": "identity",
+      "selected_counts_match": true,
+      "reason": "CPU/Atomic shared preprocessing lower bound exceeds 24 GiB physical RAM",
+      "minimum_cpu_atomic_preprocess_bytes": 98991796000,
+      "target_study": "large",
+      "target_method": "rr_sparse_sgd",
+      "target_pivots": [
+        1000,
+        500,
+        200,
+        100,
+        50
+      ],
+      "target_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "target_repetitions": 1
+    },
+    {
+      "name": "asia_osm",
+      "set": "sparse_only",
+      "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/sparse_only/asia_osm.mtx",
+      "selected_nodes": 11950757,
+      "selected_edges": 12711603,
+      "family": "道路網",
+      "degree_tag": "偏り小",
+      "degree_basis": "estimated_from_published_structure",
+      "source_page": "https://sparse.tamu.edu/DIMACS10/asia_osm",
+      "status": "ready",
+      "archive_url": "https://www.cise.ufl.edu/research/sparse/MM/DIMACS10/asia_osm.tar.gz",
+      "input_state": "normalized_simple_undirected_lcc",
+      "storage": "normalized",
+      "bytes": 205064613,
+      "sha256": "e6eb95de839ea0175d5aefec48787a4214f996d61f74999f217cc12cdbc4ace3",
+      "matrix_market": "%%MatrixMarket matrix coordinate pattern symmetric",
+      "stored_rows": 11950757,
+      "stored_columns": 11950757,
+      "stored_entries": 12711603,
+      "source_sha256": "10006a3e537aca9b82a2868850dfb8729fbb455437ecce476e0c8c7ecd38eb6b",
+      "source_header": {
+        "matrix_market": "%%MatrixMarket matrix coordinate pattern symmetric",
+        "stored_rows": 11950757,
+        "stored_columns": 11950757,
+        "stored_entries": 12711603
+      },
+      "nodes": 11950757,
+      "edges": 12711603,
+      "vertex_map": null,
+      "vertex_mapping": "identity",
+      "selected_counts_match": true,
+      "reason": "CPU/Atomic shared preprocessing lower bound exceeds 24 GiB physical RAM",
+      "minimum_cpu_atomic_preprocess_bytes": 152968564000,
+      "target_study": "large",
+      "target_method": "rr_sparse_sgd",
+      "target_pivots": [
+        1000,
+        500,
+        200,
+        100,
+        50
+      ],
+      "target_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "target_repetitions": 1
+    }
+  ],
+  "removed_comparison_jobs": [
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 0,
+      "run_id": "v5-comparison-AS365-atomic_sparse_sgd-tfixed-s0-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 0,
+      "run_id": "v5-comparison-AS365-sparse_sgd-tfixed-s0-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 0,
+      "run_id": "v5-comparison-AS365-rr_sparse_sgd-tfixed-s0-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 1,
+      "run_id": "v5-comparison-AS365-rr_sparse_sgd-tfixed-s0-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 1,
+      "run_id": "v5-comparison-AS365-sparse_sgd-tfixed-s0-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 1,
+      "run_id": "v5-comparison-AS365-atomic_sparse_sgd-tfixed-s0-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 2,
+      "run_id": "v5-comparison-AS365-sparse_sgd-tfixed-s0-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 2,
+      "run_id": "v5-comparison-AS365-atomic_sparse_sgd-tfixed-s0-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 2,
+      "run_id": "v5-comparison-AS365-rr_sparse_sgd-tfixed-s0-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 0,
+      "run_id": "v5-comparison-AS365-sparse_sgd-tfixed-s1-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 0,
+      "run_id": "v5-comparison-AS365-rr_sparse_sgd-tfixed-s1-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 0,
+      "run_id": "v5-comparison-AS365-atomic_sparse_sgd-tfixed-s1-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 1,
+      "run_id": "v5-comparison-AS365-sparse_sgd-tfixed-s1-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 1,
+      "run_id": "v5-comparison-AS365-rr_sparse_sgd-tfixed-s1-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 1,
+      "run_id": "v5-comparison-AS365-atomic_sparse_sgd-tfixed-s1-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 2,
+      "run_id": "v5-comparison-AS365-rr_sparse_sgd-tfixed-s1-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 2,
+      "run_id": "v5-comparison-AS365-sparse_sgd-tfixed-s1-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 2,
+      "run_id": "v5-comparison-AS365-atomic_sparse_sgd-tfixed-s1-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 0,
+      "run_id": "v5-comparison-AS365-sparse_sgd-tfixed-s2-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 0,
+      "run_id": "v5-comparison-AS365-atomic_sparse_sgd-tfixed-s2-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 0,
+      "run_id": "v5-comparison-AS365-rr_sparse_sgd-tfixed-s2-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 1,
+      "run_id": "v5-comparison-AS365-sparse_sgd-tfixed-s2-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 1,
+      "run_id": "v5-comparison-AS365-atomic_sparse_sgd-tfixed-s2-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 1,
+      "run_id": "v5-comparison-AS365-rr_sparse_sgd-tfixed-s2-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 2,
+      "run_id": "v5-comparison-AS365-rr_sparse_sgd-tfixed-s2-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 2,
+      "run_id": "v5-comparison-AS365-atomic_sparse_sgd-tfixed-s2-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 2,
+      "run_id": "v5-comparison-AS365-sparse_sgd-tfixed-s2-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 0,
+      "run_id": "v5-comparison-AS365-sparse_sgd-tfixed-s3-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 0,
+      "run_id": "v5-comparison-AS365-rr_sparse_sgd-tfixed-s3-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 0,
+      "run_id": "v5-comparison-AS365-atomic_sparse_sgd-tfixed-s3-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 1,
+      "run_id": "v5-comparison-AS365-rr_sparse_sgd-tfixed-s3-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 1,
+      "run_id": "v5-comparison-AS365-atomic_sparse_sgd-tfixed-s3-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 1,
+      "run_id": "v5-comparison-AS365-sparse_sgd-tfixed-s3-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 2,
+      "run_id": "v5-comparison-AS365-atomic_sparse_sgd-tfixed-s3-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 2,
+      "run_id": "v5-comparison-AS365-sparse_sgd-tfixed-s3-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 2,
+      "run_id": "v5-comparison-AS365-rr_sparse_sgd-tfixed-s3-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 0,
+      "run_id": "v5-comparison-AS365-sparse_sgd-tfixed-s4-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 0,
+      "run_id": "v5-comparison-AS365-rr_sparse_sgd-tfixed-s4-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 0,
+      "run_id": "v5-comparison-AS365-atomic_sparse_sgd-tfixed-s4-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 1,
+      "run_id": "v5-comparison-AS365-atomic_sparse_sgd-tfixed-s4-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 1,
+      "run_id": "v5-comparison-AS365-sparse_sgd-tfixed-s4-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 1,
+      "run_id": "v5-comparison-AS365-rr_sparse_sgd-tfixed-s4-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 2,
+      "run_id": "v5-comparison-AS365-rr_sparse_sgd-tfixed-s4-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 2,
+      "run_id": "v5-comparison-AS365-atomic_sparse_sgd-tfixed-s4-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "AS365",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 2,
+      "run_id": "v5-comparison-AS365-sparse_sgd-tfixed-s4-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 0,
+      "run_id": "v5-comparison-great-britain_osm-atomic_sparse_sgd-tfixed-s0-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 0,
+      "run_id": "v5-comparison-great-britain_osm-rr_sparse_sgd-tfixed-s0-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 0,
+      "run_id": "v5-comparison-great-britain_osm-sparse_sgd-tfixed-s0-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 1,
+      "run_id": "v5-comparison-great-britain_osm-sparse_sgd-tfixed-s0-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 1,
+      "run_id": "v5-comparison-great-britain_osm-rr_sparse_sgd-tfixed-s0-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 1,
+      "run_id": "v5-comparison-great-britain_osm-atomic_sparse_sgd-tfixed-s0-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 2,
+      "run_id": "v5-comparison-great-britain_osm-rr_sparse_sgd-tfixed-s0-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 2,
+      "run_id": "v5-comparison-great-britain_osm-atomic_sparse_sgd-tfixed-s0-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 2,
+      "run_id": "v5-comparison-great-britain_osm-sparse_sgd-tfixed-s0-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 0,
+      "run_id": "v5-comparison-great-britain_osm-sparse_sgd-tfixed-s1-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 0,
+      "run_id": "v5-comparison-great-britain_osm-rr_sparse_sgd-tfixed-s1-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 0,
+      "run_id": "v5-comparison-great-britain_osm-atomic_sparse_sgd-tfixed-s1-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 1,
+      "run_id": "v5-comparison-great-britain_osm-sparse_sgd-tfixed-s1-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 1,
+      "run_id": "v5-comparison-great-britain_osm-rr_sparse_sgd-tfixed-s1-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 1,
+      "run_id": "v5-comparison-great-britain_osm-atomic_sparse_sgd-tfixed-s1-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 2,
+      "run_id": "v5-comparison-great-britain_osm-atomic_sparse_sgd-tfixed-s1-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 2,
+      "run_id": "v5-comparison-great-britain_osm-sparse_sgd-tfixed-s1-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 2,
+      "run_id": "v5-comparison-great-britain_osm-rr_sparse_sgd-tfixed-s1-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 0,
+      "run_id": "v5-comparison-great-britain_osm-rr_sparse_sgd-tfixed-s2-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 0,
+      "run_id": "v5-comparison-great-britain_osm-sparse_sgd-tfixed-s2-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 0,
+      "run_id": "v5-comparison-great-britain_osm-atomic_sparse_sgd-tfixed-s2-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 1,
+      "run_id": "v5-comparison-great-britain_osm-atomic_sparse_sgd-tfixed-s2-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 1,
+      "run_id": "v5-comparison-great-britain_osm-sparse_sgd-tfixed-s2-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 1,
+      "run_id": "v5-comparison-great-britain_osm-rr_sparse_sgd-tfixed-s2-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 2,
+      "run_id": "v5-comparison-great-britain_osm-sparse_sgd-tfixed-s2-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 2,
+      "run_id": "v5-comparison-great-britain_osm-rr_sparse_sgd-tfixed-s2-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 2,
+      "run_id": "v5-comparison-great-britain_osm-atomic_sparse_sgd-tfixed-s2-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 0,
+      "run_id": "v5-comparison-great-britain_osm-sparse_sgd-tfixed-s3-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 0,
+      "run_id": "v5-comparison-great-britain_osm-atomic_sparse_sgd-tfixed-s3-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 0,
+      "run_id": "v5-comparison-great-britain_osm-rr_sparse_sgd-tfixed-s3-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 1,
+      "run_id": "v5-comparison-great-britain_osm-rr_sparse_sgd-tfixed-s3-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 1,
+      "run_id": "v5-comparison-great-britain_osm-sparse_sgd-tfixed-s3-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 1,
+      "run_id": "v5-comparison-great-britain_osm-atomic_sparse_sgd-tfixed-s3-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 2,
+      "run_id": "v5-comparison-great-britain_osm-atomic_sparse_sgd-tfixed-s3-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 2,
+      "run_id": "v5-comparison-great-britain_osm-sparse_sgd-tfixed-s3-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 2,
+      "run_id": "v5-comparison-great-britain_osm-rr_sparse_sgd-tfixed-s3-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 0,
+      "run_id": "v5-comparison-great-britain_osm-atomic_sparse_sgd-tfixed-s4-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 0,
+      "run_id": "v5-comparison-great-britain_osm-sparse_sgd-tfixed-s4-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 0,
+      "run_id": "v5-comparison-great-britain_osm-rr_sparse_sgd-tfixed-s4-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 1,
+      "run_id": "v5-comparison-great-britain_osm-sparse_sgd-tfixed-s4-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 1,
+      "run_id": "v5-comparison-great-britain_osm-rr_sparse_sgd-tfixed-s4-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 1,
+      "run_id": "v5-comparison-great-britain_osm-atomic_sparse_sgd-tfixed-s4-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 2,
+      "run_id": "v5-comparison-great-britain_osm-atomic_sparse_sgd-tfixed-s4-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 2,
+      "run_id": "v5-comparison-great-britain_osm-rr_sparse_sgd-tfixed-s4-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "great-britain_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 2,
+      "run_id": "v5-comparison-great-britain_osm-sparse_sgd-tfixed-s4-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 0,
+      "run_id": "v5-comparison-asia_osm-atomic_sparse_sgd-tfixed-s0-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 0,
+      "run_id": "v5-comparison-asia_osm-sparse_sgd-tfixed-s0-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 0,
+      "run_id": "v5-comparison-asia_osm-rr_sparse_sgd-tfixed-s0-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 1,
+      "run_id": "v5-comparison-asia_osm-atomic_sparse_sgd-tfixed-s0-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 1,
+      "run_id": "v5-comparison-asia_osm-rr_sparse_sgd-tfixed-s0-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 1,
+      "run_id": "v5-comparison-asia_osm-sparse_sgd-tfixed-s0-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 2,
+      "run_id": "v5-comparison-asia_osm-atomic_sparse_sgd-tfixed-s0-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 2,
+      "run_id": "v5-comparison-asia_osm-sparse_sgd-tfixed-s0-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 0,
+      "repetition": 2,
+      "run_id": "v5-comparison-asia_osm-rr_sparse_sgd-tfixed-s0-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 0,
+      "run_id": "v5-comparison-asia_osm-atomic_sparse_sgd-tfixed-s1-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 0,
+      "run_id": "v5-comparison-asia_osm-sparse_sgd-tfixed-s1-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 0,
+      "run_id": "v5-comparison-asia_osm-rr_sparse_sgd-tfixed-s1-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 1,
+      "run_id": "v5-comparison-asia_osm-rr_sparse_sgd-tfixed-s1-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 1,
+      "run_id": "v5-comparison-asia_osm-sparse_sgd-tfixed-s1-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 1,
+      "run_id": "v5-comparison-asia_osm-atomic_sparse_sgd-tfixed-s1-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 2,
+      "run_id": "v5-comparison-asia_osm-sparse_sgd-tfixed-s1-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 2,
+      "run_id": "v5-comparison-asia_osm-rr_sparse_sgd-tfixed-s1-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 1,
+      "repetition": 2,
+      "run_id": "v5-comparison-asia_osm-atomic_sparse_sgd-tfixed-s1-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 0,
+      "run_id": "v5-comparison-asia_osm-rr_sparse_sgd-tfixed-s2-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 0,
+      "run_id": "v5-comparison-asia_osm-atomic_sparse_sgd-tfixed-s2-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 0,
+      "run_id": "v5-comparison-asia_osm-sparse_sgd-tfixed-s2-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 1,
+      "run_id": "v5-comparison-asia_osm-rr_sparse_sgd-tfixed-s2-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 1,
+      "run_id": "v5-comparison-asia_osm-sparse_sgd-tfixed-s2-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 1,
+      "run_id": "v5-comparison-asia_osm-atomic_sparse_sgd-tfixed-s2-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 2,
+      "run_id": "v5-comparison-asia_osm-sparse_sgd-tfixed-s2-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 2,
+      "run_id": "v5-comparison-asia_osm-rr_sparse_sgd-tfixed-s2-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 2,
+      "repetition": 2,
+      "run_id": "v5-comparison-asia_osm-atomic_sparse_sgd-tfixed-s2-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 0,
+      "run_id": "v5-comparison-asia_osm-sparse_sgd-tfixed-s3-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 0,
+      "run_id": "v5-comparison-asia_osm-atomic_sparse_sgd-tfixed-s3-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 0,
+      "run_id": "v5-comparison-asia_osm-rr_sparse_sgd-tfixed-s3-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 1,
+      "run_id": "v5-comparison-asia_osm-rr_sparse_sgd-tfixed-s3-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 1,
+      "run_id": "v5-comparison-asia_osm-sparse_sgd-tfixed-s3-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 1,
+      "run_id": "v5-comparison-asia_osm-atomic_sparse_sgd-tfixed-s3-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 2,
+      "run_id": "v5-comparison-asia_osm-sparse_sgd-tfixed-s3-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 2,
+      "run_id": "v5-comparison-asia_osm-rr_sparse_sgd-tfixed-s3-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 3,
+      "repetition": 2,
+      "run_id": "v5-comparison-asia_osm-atomic_sparse_sgd-tfixed-s3-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 0,
+      "run_id": "v5-comparison-asia_osm-sparse_sgd-tfixed-s4-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 0,
+      "run_id": "v5-comparison-asia_osm-atomic_sparse_sgd-tfixed-s4-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 0,
+      "run_id": "v5-comparison-asia_osm-rr_sparse_sgd-tfixed-s4-r0"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 1,
+      "run_id": "v5-comparison-asia_osm-atomic_sparse_sgd-tfixed-s4-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 1,
+      "run_id": "v5-comparison-asia_osm-rr_sparse_sgd-tfixed-s4-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 1,
+      "run_id": "v5-comparison-asia_osm-sparse_sgd-tfixed-s4-r1"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 2,
+      "run_id": "v5-comparison-asia_osm-sparse_sgd-tfixed-s4-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "atomic_sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 2,
+      "run_id": "v5-comparison-asia_osm-atomic_sparse_sgd-tfixed-s4-r2"
+    },
+    {
+      "stage": "comparison",
+      "graph": "asia_osm",
+      "method": "rr_sparse_sgd",
+      "tile_size": null,
+      "seed": 4,
+      "repetition": 2,
+      "run_id": "v5-comparison-asia_osm-rr_sparse_sgd-tfixed-s4-r2"
+    }
+  ],
+  "removed_runs": 135,
+  "new_large_runs": 75,
+  "large_runs_started": false
+}

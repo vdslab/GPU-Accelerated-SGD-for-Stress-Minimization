@@ -1,0 +1,135 @@
+{
+  "at": "2026-11-07T15:17:36.008666+09:00",
+  "status": "completed",
+  "authorization": "User requested deletion of original ultra-large graph data to free disk space.",
+  "successful_final_coordinates_verified": 130,
+  "preflight_unavailable_conditions": 220,
+  "preserved": "All experiment outputs including initial/final positions, vertex maps, records, figures, provenance and source URLs.",
+  "files": [
+    {
+      "path": "data/AS365.mtx",
+      "bytes": 175191406,
+      "sha256": "cba17d92f0d493ee2d92e48210c63c0bee7ac79bd935536a1df3f1b53cbdc6f9"
+    },
+    {
+      "path": "data/NACA0015.mtx",
+      "bytes": 43158387,
+      "sha256": "6be4530f9ce89a4a8179f87cf67ef38b2ac4efbef1e6c272914e4aac45cbc9af"
+    },
+    {
+      "path": "data/auto.mtx",
+      "bytes": 44768883,
+      "sha256": "126aba5b50d75b60a5785686715961e394af6068831b2b9603159f9744677089"
+    },
+    {
+      "path": "data/belgium_osm.mtx",
+      "bytes": 22360923,
+      "sha256": "38aa2db5ac873c7ba8aa30309dff65f1ab4ea071f7cd49953ddfa4b27ee5ac01"
+    },
+    {
+      "path": "data/germany_osm.mtx",
+      "bytes": 198530725,
+      "sha256": "a8de087a1262601537a77ca8acc0ce6d3f790f07621f0cef605a8c362303924c"
+    },
+    {
+      "path": "data/italy_osm.mtx",
+      "bytes": 109866123,
+      "sha256": "e44b39d671a415cef853e11638d0d5017d580b4e4d18ff861999795a930b2421"
+    },
+    {
+      "path": "data/netherlands_osm.mtx",
+      "bytes": 36583936,
+      "sha256": "7084e2f634518805c1a72494c2a1cc018d79420aee037ab0743bb6755857e797"
+    },
+    {
+      "path": "data/v4_lcc/auto.mtx",
+      "bytes": 44756989,
+      "sha256": "63150a0b3d28fa6e07279fa7185d131a6fafd4bc929b3bc954c78399b2002a8e"
+    },
+    {
+      "path": "data/v5/_downloads/livejournal.csv.zip",
+      "bytes": 187287963,
+      "sha256": "d8c585cc9dc8013f2739447abde9e5e2694ecbe5e204e5e57aabb3f14c2439b2"
+    },
+    {
+      "path": "data/v5/_downloads/orkut.csv.zip",
+      "bytes": 927388262,
+      "sha256": "1e4e4db216d6f0dd965de89ff498d613f2df40763321b909ac9635c633180b12"
+    },
+    {
+      "path": "data/v5/sparse_only/AS365.mtx",
+      "bytes": 175190059,
+      "sha256": "4f0383846ac391693f97affc8fdd2e7b790bddb9e98f3e7289f60db28dd244dc"
+    },
+    {
+      "path": "data/v5/sparse_only/Flan_1565.mtx",
+      "bytes": 820814658,
+      "sha256": "b7e9f8da9d7f3469fb5722240f626b62afa3b496d0c2872b4ede36fbc432bcd8"
+    },
+    {
+      "path": "data/v5/sparse_only/NACA0015.mtx",
+      "bytes": 43157030,
+      "sha256": "ade57c7648d406c0688624ac35257c7cc0afa1fff0cc71c9f60678c090d46e8b"
+    },
+    {
+      "path": "data/v5/sparse_only/asia_osm.mtx",
+      "bytes": 205064613,
+      "sha256": "e6eb95de839ea0175d5aefec48787a4214f996d61f74999f217cc12cdbc4ace3"
+    },
+    {
+      "path": "data/v5/sparse_only/auto.mtx",
+      "bytes": 44757015,
+      "sha256": "789c1994dc494f543ebce73ba1b323443a6eae92c07c86dbeec714be332983aa"
+    },
+    {
+      "path": "data/v5/sparse_only/belgium_osm.mtx",
+      "bytes": 22350660,
+      "sha256": "69a8f69c86041a54c5807920d8dddf958a6cfbd49eb5eb3d1c8c67822052b5c0"
+    },
+    {
+      "path": "data/v5/sparse_only/com-LiveJournal.mtx",
+      "bytes": 502172437,
+      "sha256": "76ae6557f36b2db3b7d2092e441301640bf309af7c3a55f880a37b1be072679a"
+    },
+    {
+      "path": "data/v5/sparse_only/com-Orkut.mtx",
+      "bytes": 1775935064,
+      "sha256": "38146670d468f820612381c80551daa8c783c32bb79fa136787690bbe7eec8f1"
+    },
+    {
+      "path": "data/v5/sparse_only/europe_osm.mtx",
+      "bytes": 948991044,
+      "sha256": "9d6fba98705f08e60d2ec95365b1c2d07d7a44931ee55e6c47cebbfdc23cc6dc"
+    },
+    {
+      "path": "data/v5/sparse_only/germany_osm.mtx",
+      "bytes": 198520462,
+      "sha256": "0a2d2dcb29088eb51943f1bd97809854657c5a762c4ff638de935f8be721a37c"
+    },
+    {
+      "path": "data/v5/sparse_only/great-britain_osm.mtx",
+      "bytes": 128002883,
+      "sha256": "689299790f0f7b267742a649f78002cd3d0ab0ca3707e64a0204a3842f0f2891"
+    },
+    {
+      "path": "data/v5/sparse_only/italy_osm.mtx",
+      "bytes": 109855866,
+      "sha256": "0c2f799482b2b713dc21ae6e19a38a07d569558bf6e0aeaf1a7ad2be851a35d2"
+    },
+    {
+      "path": "data/v5/sparse_only/netherlands_osm.mtx",
+      "bytes": 36573661,
+      "sha256": "933714a47eac418a9074f8ce9e646140114d3bb3d985cef09f0ff3e25a54a79f"
+    },
+    {
+      "path": "data/v5/sparse_only/road_usa.mtx",
+      "bytes": 492485328,
+      "sha256": "da89d1348bb49ea2cd47ec901abeb0a6a887b280bcc7506cf14a86f2726ec362"
+    }
+  ],
+  "logical_bytes": 7293764377,
+  "disk_free_before": 5188771840,
+  "disk_free_after": 12468191232,
+  "raw_output_files_unchanged": 1445,
+  "disk_free_increase_bytes": 7279419392
+}

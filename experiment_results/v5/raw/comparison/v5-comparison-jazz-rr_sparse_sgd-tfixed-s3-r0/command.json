@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/sparse-sgd-gpu",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/common/jazz.mtx",
+    "--run-id",
+    "v5-comparison-jazz-rr_sparse_sgd-tfixed-s3-r0",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "3",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-jazz-rr_sparse_sgd-tfixed-s3-r0",
+    "--pivots",
+    "198"
+  ],
+  "environment": {
+    "SGD_STRESS_SAMPLES": "256",
+    "SGD_GPU_TIMESTAMPS": "0"
+  },
+  "started_at": "2026-11-06T05:33:36+09:00",
+  "memory_before": {
+    "available_bytes": 11596120064,
+    "used_bytes": 12023185408,
+    "swap_used_bytes": 2069430272,
+    "swap_in_bytes": 185088196608,
+    "swap_out_bytes": 2305966080
+  },
+  "warmup": false
+}

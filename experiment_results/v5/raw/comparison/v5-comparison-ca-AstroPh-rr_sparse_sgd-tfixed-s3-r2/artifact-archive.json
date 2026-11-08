@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-ca-AstroPh-rr_sparse_sgd-tfixed-s3-r2/rr-sparse-sgd-ca-AstroPh-v5-comparison-ca-AstroPh-rr_sparse_sgd-tfixed-s3-r2.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-ca-AstroPh-rr_sparse_sgd-tfixed-s3-r2/rr-sparse-sgd-ca-AstroPh-v5-comparison-ca-AstroPh-rr_sparse_sgd-tfixed-s3-r2.final.txt.gz",
+      "original_sha256": "d8884b5e3961563d00e0654a17dfcb8f626fda5f0645dd45cfd5b94359ad7345",
+      "decompressed_sha256": "d8884b5e3961563d00e0654a17dfcb8f626fda5f0645dd45cfd5b94359ad7345",
+      "compressed_sha256": "6266238cec7442cc0baab824e2a1849bb176ae21d50f8fa1aafe5f644f75daa5",
+      "original_bytes": 2813568,
+      "compressed_bytes": 1135452,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-ca-AstroPh-rr_sparse_sgd-tfixed-s3-r2/rr-sparse-sgd-ca-AstroPh-v5-comparison-ca-AstroPh-rr_sparse_sgd-tfixed-s3-r2.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-ca-AstroPh-rr_sparse_sgd-tfixed-s3-r2/rr-sparse-sgd-ca-AstroPh-v5-comparison-ca-AstroPh-rr_sparse_sgd-tfixed-s3-r2.initial.txt.gz",
+      "original_sha256": "3e92d0191ad191b03c36cbf82f5d1d2cca8eae56664de60cc179275a26efdbb4",
+      "decompressed_sha256": "3e92d0191ad191b03c36cbf82f5d1d2cca8eae56664de60cc179275a26efdbb4",
+      "compressed_sha256": "79eb77ebb880a2cd42d79d09c9023c633f047e8e4400bc101b1bd92bdc6a0264",
+      "original_bytes": 2843827,
+      "compressed_bytes": 1138858,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-ca-AstroPh-rr_sparse_sgd-tfixed-s3-r2/rr-sparse-sgd-ca-AstroPh-v5-comparison-ca-AstroPh-rr_sparse_sgd-tfixed-s3-r2.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-ca-AstroPh-rr_sparse_sgd-tfixed-s3-r2/rr-sparse-sgd-ca-AstroPh-v5-comparison-ca-AstroPh-rr_sparse_sgd-tfixed-s3-r2.vertex-map.txt.gz",
+      "original_sha256": "66b6abfb7f155aad06ae843d674c3da6f1dcefcdeab5feaf5c264c14003742c1",
+      "decompressed_sha256": "66b6abfb7f155aad06ae843d674c3da6f1dcefcdeab5feaf5c264c14003742c1",
+      "compressed_sha256": "ebe4a7dd5f3d559ada00fe97b42b0848839fe870a96f99e0b08cc231c3ffeec5",
+      "original_bytes": 192616,
+      "compressed_bytes": 65844,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

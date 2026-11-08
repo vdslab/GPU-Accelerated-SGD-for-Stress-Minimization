@@ -1,0 +1,90 @@
+{
+  "metadata": [
+    {
+      "counter_sets": [
+        {
+          "counters": [
+            "GPUTimestamp"
+          ],
+          "name": "timestamp"
+        }
+      ],
+      "device": "Apple M4 Pro",
+      "fast_math": false,
+      "iterations": 16384,
+      "kind": "metadata",
+      "max_threadgroup_memory": 32768,
+      "mode": "fixed",
+      "pipelines": {
+        "fma1": {
+          "max_threads": 1024,
+          "simd_width": 32,
+          "static_shared_bytes": 0
+        },
+        "fma4": {
+          "max_threads": 1024,
+          "simd_width": 32,
+          "static_shared_bytes": 0
+        },
+        "rr_matrix": {
+          "max_threads": 1024,
+          "simd_width": 32,
+          "static_shared_bytes": 0
+        },
+        "rr_uniform": {
+          "max_threads": 1024,
+          "simd_width": 32,
+          "static_shared_bytes": 0
+        }
+      },
+      "repetitions": 5,
+      "timing": "MTLCommandBuffer.gpuEndTime - gpuStartTime; serial compute dispatches"
+    },
+    {
+      "counter_sets": [
+        {
+          "counters": [
+            "GPUTimestamp"
+          ],
+          "name": "timestamp"
+        }
+      ],
+      "device": "Apple M4 Pro",
+      "fast_math": false,
+      "iterations": 4096,
+      "kind": "metadata",
+      "max_threadgroup_memory": 32768,
+      "mode": "fixed",
+      "pipelines": {
+        "fma1": {
+          "max_threads": 1024,
+          "simd_width": 32,
+          "static_shared_bytes": 0
+        },
+        "fma4": {
+          "max_threads": 1024,
+          "simd_width": 32,
+          "static_shared_bytes": 0
+        },
+        "rr_matrix": {
+          "max_threads": 1024,
+          "simd_width": 32,
+          "static_shared_bytes": 0
+        },
+        "rr_uniform": {
+          "max_threads": 1024,
+          "simd_width": 32,
+          "static_shared_bytes": 0
+        }
+      },
+      "repetitions": 5,
+      "timing": "MTLCommandBuffer.gpuEndTime - gpuStartTime; serial compute dispatches"
+    }
+  ],
+  "sha256": {
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/metal-workgroup-capacity/analyze_fixed.py": "b25dec8d1266da39c5875d99bb2c1f77023e234a6b7504d1c5fc59137595d34d",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/metal-workgroup-capacity/benchmark.swift": "f4618b3b06c6d7c9f1ca0a7ba2d00cd97d15b4f6a3c9a9a73ae8161ba78ff1e1",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/metal-workgroup-capacity/benchmark.metal": "a0a5c7b75ab6c5d8877954636936fe10507669f4857a70bc23f9a2a9127e8205",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/metal-workgroup-capacity/benchmark": "9717617575eabaec6b146e88eea831bcffeeb3cdc0869519697f3d27e008b139"
+  }
+}

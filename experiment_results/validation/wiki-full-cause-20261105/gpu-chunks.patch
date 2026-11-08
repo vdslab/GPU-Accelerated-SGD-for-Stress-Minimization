@@ -1,0 +1,135 @@
+--- production/gpu.rs
++++ diagnostic/gpu.rs
+@@ -45,6 +45,7 @@
+     pub memory_mode: MemoryMode,
+     pub outer_shuffle: bool,
+     pub inner_shuffle: bool,
++    pub phase_chunks: u32,
+ }
+ 
+ impl Default for KernelConfig {
+@@ -55,6 +56,7 @@
+             memory_mode: MemoryMode::Shared,
+             outer_shuffle: true,
+             inner_shuffle: true,
++            phase_chunks: 1,
+         }
+     }
+ }
+@@ -165,6 +167,9 @@
+     pub eta: f32,
+     pub full_self_perm_offset: u32,
+     pub partial_self_perm_offset: u32,
++    pub chunk: u32,
++    pub chunks: u32,
++    pub padding: [u32; 2],
+ }
+ 
+ pub struct GpuContext {
+@@ -391,6 +396,9 @@
+             eta: etas[0],
+             full_self_perm_offset,
+             partial_self_perm_offset,
++            chunk: 0,
++            chunks: self.kernel.phase_chunks,
++            padding: [0; 2],
+         };
+         let uniforms_buffer = self
+             .device
+@@ -599,6 +607,9 @@
+                 eta,
+                 full_self_perm_offset,
+                 partial_self_perm_offset,
++            chunk: 0,
++            chunks: self.kernel.phase_chunks,
++            padding: [0; 2],
+             };
+             self.queue
+                 .write_buffer(&uniforms_buffer, 0, bytemuck::bytes_of(&uni));
+@@ -608,6 +619,14 @@
+                 round_order.shuffle(&mut rng);
+             }
+ 
++            let permutations: Vec<_> = round_order.iter().map(|_| {
++                build_inner_permutation(tile_size, last_block_len,
++                                        self.kernel.inner_shuffle, &mut rng)
++            }).collect();
++            for chunk in 0..self.kernel.phase_chunks {
++                let chunk_uniforms = Uniforms { chunk, ..uni };
++                self.queue.write_buffer(&uniforms_buffer, 0,
++                                        bytemuck::bytes_of(&chunk_uniforms));
+             for (round_position, &ri) in round_order.iter().enumerate() {
+                 let round = &schedule[ri];
+ 
+@@ -617,12 +636,7 @@
+                     .write_buffer(&tiles_buffer, 0, bytemuck::cast_slice(&tiles_flat));
+ 
+                 // Shuffle exact matching-round domains independently; never reduce modulo.
+-                let inner_perm = build_inner_permutation(
+-                    tile_size,
+-                    last_block_len,
+-                    self.kernel.inner_shuffle,
+-                    &mut rng,
+-                );
++                let inner_perm = &permutations[round_position];
+                 self.queue
+                     .write_buffer(&perm_buffer, 0, bytemuck::cast_slice(&inner_perm));
+ 
+@@ -633,8 +647,8 @@
+                     let timestamp_writes =
+                         timestamp_resources.as_ref().and_then(|(query_set, _, _)| {
+                             let beginning_of_pass_write_index =
+-                                (round_position == 0).then_some(timestamp_index);
+-                            let end_of_pass_write_index = (round_position + 1 == round_order.len())
++                                (chunk == 0 && round_position == 0).then_some(timestamp_index);
++                            let end_of_pass_write_index = (chunk + 1 == self.kernel.phase_chunks && round_position + 1 == round_order.len())
+                                 .then_some(timestamp_index + 1);
+                             (beginning_of_pass_write_index.is_some()
+                                 || end_of_pass_write_index.is_some())
+@@ -654,6 +668,7 @@
+                     pass.dispatch_workgroups(round.len() as u32, 1, 1);
+                 }
+                 self.queue.submit([encoder.finish()]);
++            }
+             }
+             // Queue writes and submissions retain round order. Synchronize once
+             // per epoch so iteration timing includes completed GPU work.
+@@ -740,7 +755,7 @@
+             iteration_time,
+             gpu_device_time,
+             readback_time,
+-            dispatches: (schedule.len() * num_iterations) as u64,
++            dispatches: (schedule.len() * num_iterations) as u64 * self.kernel.phase_chunks as u64,
+         })
+     }
+ }
+--- production/shader.wgsl
++++ diagnostic/shader.wgsl
+@@ -8,6 +8,9 @@
+     eta: f32,
+     full_self_perm_offset: u32,
+     partial_self_perm_offset: u32,
++    chunk: u32,
++    chunks: u32,
++    padding: vec2<u32>,
+ }
+ 
+ @group(0) @binding(0) var<uniform> uniforms: Uniforms;
+@@ -46,7 +49,7 @@
+         // Both sides are padded to T. The cyclic offset is a bijection on T,
+         // so every subround is a disjoint matching even for a partial last tile.
+         // Skipping dummies still visits every real cross pair exactly once.
+-        for (var s = 0u; s < BLOCK_T; s++) {
++        for (var s = uniforms.chunk * BLOCK_T / uniforms.chunks; s < (uniforms.chunk + 1u) * BLOCK_T / uniforms.chunks; s++) {
+             let offset = inner_perm[s];
+             for (var local = tx; local < li; local += WORKGROUP_SIZE) {
+                 let other = (local + offset) % BLOCK_T;
+@@ -77,7 +80,7 @@
+         let rounds = effective_len - 1u;
+         let perm_offset = select(uniforms.full_self_perm_offset,
+                                  uniforms.partial_self_perm_offset, li < BLOCK_T);
+-        for (var s = 0u; s < rounds; s++) {
++        for (var s = uniforms.chunk * rounds / uniforms.chunks; s < (uniforms.chunk + 1u) * rounds / uniforms.chunks; s++) {
+             let r = inner_perm[perm_offset + s];
+             for (var slot = tx; slot < effective_len / 2u; slot += WORKGROUP_SIZE) {
+                 var lu = effective_len - 1u;

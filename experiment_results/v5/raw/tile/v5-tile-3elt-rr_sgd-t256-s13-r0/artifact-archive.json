@@ -1,0 +1,28 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/tile/v5-tile-3elt-rr_sgd-t256-s13-r0/rr-sgd-3elt-v5-tile-3elt-rr_sgd-t256-s13-r0.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/tile/v5-tile-3elt-rr_sgd-t256-s13-r0/rr-sgd-3elt-v5-tile-3elt-rr_sgd-t256-s13-r0.final.txt.gz",
+      "original_sha256": "a4b64c97743d71527266d5e554cdca02b80bcb4f9ff461b2cd7c0f07af188382",
+      "decompressed_sha256": "a4b64c97743d71527266d5e554cdca02b80bcb4f9ff461b2cd7c0f07af188382",
+      "compressed_sha256": "3b379f13466b27ae9cf786f934987a04e5d664705e4ddc41c0afb048487b73ec",
+      "original_bytes": 441317,
+      "compressed_bytes": 168437,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/tile/v5-tile-3elt-rr_sgd-t256-s13-r0/rr-sgd-3elt-v5-tile-3elt-rr_sgd-t256-s13-r0.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/tile/v5-tile-3elt-rr_sgd-t256-s13-r0/rr-sgd-3elt-v5-tile-3elt-rr_sgd-t256-s13-r0.initial.txt.gz",
+      "original_sha256": "9b5c84ed8f9d1ad3a75ab811a701abb171813e97dc61bc32d63c6b77d2b24bd5",
+      "decompressed_sha256": "9b5c84ed8f9d1ad3a75ab811a701abb171813e97dc61bc32d63c6b77d2b24bd5",
+      "compressed_sha256": "13b0b3c491e72ed84dcfb3e9872d4869831664d46667f44a876fd0e81ae51921",
+      "original_bytes": 452236,
+      "compressed_bytes": 172619,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

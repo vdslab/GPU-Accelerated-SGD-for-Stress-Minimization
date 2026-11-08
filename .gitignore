@@ -10,3 +10,21 @@ target/
 __pycache__/
 *.pyc
 .DS_Store
+
+# Large local experiment payloads; run records, manifests and reports are versioned.
+/experiment_results/**/bin/
+/experiment_results/**/shared-edges/
+/experiment_results/**/*.trace/
+/experiment_results/**/*.gputrace/
+/experiment_results/**/*.txt.gz
+/experiment_results/**/*.txt.xz
+/experiment_results/**/*.f64le.gz
+/experiment_results/**/*.f64le.xz
+/experiment_results/**/*.f64le
+/experiment_results/**/*.f32le
+/experiment_results/**/*.initial.txt
+/experiment_results/**/*.final.txt
+/experiment_results/**/*.vertex-map.txt
+/experiment_results/**/cache/
+/experiment_results/**/runner.lock
+/experiment_results/**/maintenance.lock

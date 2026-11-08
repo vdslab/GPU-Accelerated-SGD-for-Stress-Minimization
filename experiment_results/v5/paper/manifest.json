@@ -1,0 +1,84 @@
+{
+  "at": "2026-11-07T14:14:55+09:00",
+  "new_layout_runs": 0,
+  "normal_runs": 4230,
+  "tile_runs": 1800,
+  "large_successes": 130,
+  "large_gpu_unexecuted": 220,
+  "figures": [
+    {
+      "name": "f01-tile",
+      "title": "タイルサイズの速度・品質の交換関係",
+      "caption": "10グラフ、T=1〜1024、seed10〜14×各3回。seed内3回中央値→5seed中央値。左は各グラフの最速Tで正規化、右は対応CPU比を先に計算して集計。T1024の点線は通常比較に採用した条件。線は傾向を読むためで、スケールフリー性の実証やTの因果効果の分離ではない。",
+      "priority": "本文候補"
+    },
+    {
+      "name": "f02-runtime",
+      "title": "SGDと総計算時間の速度比較",
+      "caption": "Full38件、Sparse56件をすべて表示。縦軸は同族CPU時間/GPU時間、1より上で高速。graph・seed・repetition対応比→seed内3回中央値→5seedの中央値と最小最大。総計算時間は入力読込からCPU上の最終座標までで、Stress評価・保存・描画は含めない。両対数軸。小規模の低速化を省略していない。",
+      "priority": "本文候補"
+    },
+    {
+      "name": "f03-quality",
+      "title": "同じ実行から取得した最終Stress",
+      "caption": "速度と同じ4230実行。対応比→seed内3回中央値→5seed中央値と最小最大。n≤8000は厳密Full Stress、それ以外は256始点・評価seed0の推定Full Stress。1より上はStress増加。Full/Sparseの分母が異なるので両パネルの値を直接比べない。固定15反復後の値であり、収束到達や最適解の品質ではない。",
+      "priority": "本文候補"
+    },
+    {
+      "name": "f04-repeatability",
+      "title": "同seed内3回のStressの再現性",
+      "caption": "Full各方式190群、Sparse各方式280群。(最大−最小)/中央値の経験累積分布。CPU・RoundRobinは全群でStressが3回一致し、Atomicは全群で変動した。これは観測したStressの再現性であり、全GPUや全機材のビット単位決定性の保証ではない。ゼロを表示できる対称対数軸。",
+      "priority": "補足・本文の再現性主張用"
+    },
+    {
+      "name": "f05-bottleneck",
+      "title": "SGD高速化が処理全体へ及ぼす範囲",
+      "caption": "各runの⑤SGD経過時間/⑩総計算時間を求め、seed内3回中央値→5seed中央値。純GPU時間ではない。残りの時間をGPU待ち・転送など特定の要因へ一括帰属しない。複数の重複したタイマーを足した積み上げ棒グラフにはしていない。",
+      "priority": "補足・前処理ボトルネックの説明用"
+    },
+    {
+      "name": "f06-feasibility",
+      "title": "大規模実験の成功とGPU上限",
+      "caption": "14グラフ×5p×5seedの350条件。130実測成功、220は照会済みstorage binding/dispatch上限で確保前に未実行。灰色は実行失敗ではない。CPU/Atomicはこの規模で測定していないため、CPUの一般的不可能性やCPU速度比を示さない。",
+      "priority": "本文候補"
+    },
+    {
+      "name": "f07-large-pivots",
+      "title": "大規模のpivot数と時間・品質・RSS",
+      "caption": "各グラフで5seed成功した最大pを基準に、同seedの比を先に計算し、5seedの中央値と最小最大を表示。Stressは64始点・評価seed0。p間では初期座標fingerprintも変わるため、p単独の因果効果とは断定しない。RSSは専用GPUメモリ量ではない。各seed1回。",
+      "priority": "本文候補"
+    },
+    {
+      "name": "f08-layout-comparison",
+      "title": "品質差が大きかった入力の配置比較",
+      "caption": "Full/SparseそれぞれRoundRobinのグラフ別Stress比中央値が最大だった入力を選び、seed0・repetition0を固定。表示した時間・比はこの1実行の値で、主図の5seed中央値とは異なる。同族3方式の初期配置一致を確認、行内で共通スケール、回転や位置合わせなし。50k頂点/20k辺以下の決定的間引き。見栄えのよい入力だけを選んだ図ではない。",
+      "priority": "本文候補・定性的な限界の確認"
+    },
+    {
+      "name": "f09-large-layouts",
+      "title": "大規模入力の描画例",
+      "caption": "auto、Flan_1565、com-Orkut、great-britain_osm。各グラフで5seed成功した最大pのseed0。保存済みレイアウト図を配置し、測定・再レイアウトは行わない。100k頂点/50k辺以下に決定的間引き、全座標のextentを保持し、グラフ間は独立スケール。CPUとの品質比較ではない。",
+      "priority": "補足・大規模の実例"
+    }
+  ],
+  "sources": [
+    {
+      "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/tables/comparison-hierarchical.json",
+      "sha256": "c974db293a269d5137d554422d5df6756119769f7d871e35b6db819b7f767f9f"
+    },
+    {
+      "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/tables/tile-hierarchical.json",
+      "sha256": "60967ee59e3422289ab65037d0b5b7e1569bfa6f1f08f30aea133e4eba4bac3c"
+    },
+    {
+      "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/tables/comparison-cross-graph.json",
+      "sha256": "95778026f72ad2cef0a7fd6da84b895f6aa1203c2970cb797b26766cd1b3eeac"
+    },
+    {
+      "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/tables/summary.json",
+      "sha256": "dd11cac54ad958e0a33efd60c42e859b66e2d281da5d3f6b44c9341ade2eb9cf"
+    }
+  ],
+  "timing_audited_successes": 6160,
+  "aggregation": "Normal/tile: paired run ratios, median of 3 repetitions within seed, then median and min/max across 5 seeds. Large: one run per seed."
+}

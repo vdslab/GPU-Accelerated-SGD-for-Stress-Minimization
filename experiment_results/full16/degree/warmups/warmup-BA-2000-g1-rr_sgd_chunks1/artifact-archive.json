@@ -1,0 +1,28 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/degree/warmups/warmup-BA-2000-g1-rr_sgd_chunks1/rr-sgd-BA-2000-g1-warmup-BA-2000-g1-rr_sgd_chunks1.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/degree/warmups/warmup-BA-2000-g1-rr_sgd_chunks1/rr-sgd-BA-2000-g1-warmup-BA-2000-g1-rr_sgd_chunks1.final.txt.gz",
+      "original_sha256": "31e8ab91c6d75f904706a69cd935ed1a10f0ba8f9df06f5cf6120f33508d9c90",
+      "decompressed_sha256": "31e8ab91c6d75f904706a69cd935ed1a10f0ba8f9df06f5cf6120f33508d9c90",
+      "compressed_sha256": "f17e065edfa809ae20010027435695470f683e46cf59d0fe5193b266962a53e9",
+      "original_bytes": 239227,
+      "compressed_bytes": 98343,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/degree/warmups/warmup-BA-2000-g1-rr_sgd_chunks1/rr-sgd-BA-2000-g1-warmup-BA-2000-g1-rr_sgd_chunks1.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/degree/warmups/warmup-BA-2000-g1-rr_sgd_chunks1/rr-sgd-BA-2000-g1-warmup-BA-2000-g1-rr_sgd_chunks1.initial.txt.gz",
+      "original_sha256": "eda82b3d85273a3962e8c24eb3d996f4f9e59ddba5dc7c8d7a946c612df43f7b",
+      "decompressed_sha256": "eda82b3d85273a3962e8c24eb3d996f4f9e59ddba5dc7c8d7a946c612df43f7b",
+      "compressed_sha256": "e511eed78e2efcfcb296366698102db6ef42de79690111ddb0c21946ee700fc0",
+      "original_bytes": 242396,
+      "compressed_bytes": 99025,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,41 @@
+ Downloading crates ...
+  Downloaded quote v1.0.47
+  Downloaded anyhow v1.0.104
+  Downloaded serde_core v1.0.229
+  Downloaded proc-macro2 v1.0.107
+  Downloaded serde_derive v1.0.229
+  Downloaded serde v1.0.229
+  Downloaded zerocopy v0.8.55
+  Downloaded syn v3.0.3
+  Downloaded libc v0.2.189
+   Compiling libc v0.2.189
+   Compiling proc-macro2 v1.0.107
+   Compiling zerocopy v0.8.55
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling anyhow v1.0.104
+   Compiling memchr v2.8.3
+   Compiling syn v3.0.3
+   Compiling serde_derive v1.0.229
+   Compiling getrandom v0.3.4
+   Compiling cpufeatures v0.2.17
+   Compiling sha2 v0.10.9
+   Compiling rand_core v0.9.5
+   Compiling serde_json v1.0.151
+   Compiling ppv-lite86 v0.2.21
+   Compiling rand_chacha v0.9.0
+   Compiling rand v0.9.5
+   Compiling experiment-common v0.1.0 (/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/shared/experiment-common)
+    Finished `release` profile [optimized] target(s) in 6.55s
+     Running unittests src/lib.rs (implementations/full/rr_gpu/target/release/deps/experiment_common-fd955d159f09621b)
+
+running 5 tests
+test stress::tests::auto_switches_at_threshold ... ok
+test stress::tests::all_sources_sample_matches_exact ... ok
+test stress::tests::f32_and_f64_paths_match_for_identical_values ... ok
+test stress::tests::exact_regression ... ok
+test stress::tests::sampling_is_unique_and_repeatable ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.00s
+

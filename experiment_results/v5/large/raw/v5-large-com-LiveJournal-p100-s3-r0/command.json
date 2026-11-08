@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/sparse-sgd-gpu",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/sparse_only/com-LiveJournal.mtx",
+    "--run-id",
+    "v5-large-com-LiveJournal-p100-s3-r0",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "3",
+    "--pivots",
+    "100",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-com-LiveJournal-p100-s3-r0"
+  ],
+  "started_at": "2026-11-07T00:38:26+09:00",
+  "memory_before": {
+    "available_bytes": 17331847168,
+    "used_bytes": 6082887680,
+    "swap_used_bytes": 4757520384,
+    "swap_in_bytes": 831279169536,
+    "swap_out_bytes": 3736911872
+  },
+  "warmup": false,
+  "environment": {
+    "SGD_STRESS_SAMPLES": "64",
+    "SGD_GPU_TIMESTAMPS": "0"
+  }
+}

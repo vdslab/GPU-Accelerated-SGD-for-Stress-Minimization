@@ -1,0 +1,28 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-bcsstk16-atomic_sgd-tfixed-s1-r0/atomic-sgd-bcsstk16-v5-comparison-bcsstk16-atomic_sgd-tfixed-s1-r0.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-bcsstk16-atomic_sgd-tfixed-s1-r0/atomic-sgd-bcsstk16-v5-comparison-bcsstk16-atomic_sgd-tfixed-s1-r0.final.txt.gz",
+      "original_sha256": "7de4904fb20383b32cfdbe3eb2648980c650a4a1a7f55e26e06de8074a79c4f9",
+      "decompressed_sha256": "7de4904fb20383b32cfdbe3eb2648980c650a4a1a7f55e26e06de8074a79c4f9",
+      "compressed_sha256": "51eb2eaa47e5927df7f7b9650f814f7564a6d9dcc412217749e4f7020589ee7c",
+      "original_bytes": 2914836,
+      "compressed_bytes": 613675,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-bcsstk16-atomic_sgd-tfixed-s1-r0/atomic-sgd-bcsstk16-v5-comparison-bcsstk16-atomic_sgd-tfixed-s1-r0.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-bcsstk16-atomic_sgd-tfixed-s1-r0/atomic-sgd-bcsstk16-v5-comparison-bcsstk16-atomic_sgd-tfixed-s1-r0.initial.txt.gz",
+      "original_sha256": "64a16f8279697c1c8b77ca010507d175761fb5287d1453d51319fe52a886f508",
+      "decompressed_sha256": "64a16f8279697c1c8b77ca010507d175761fb5287d1453d51319fe52a886f508",
+      "compressed_sha256": "02805095a0d02bbc692d25a3eeb6f77b7c0186d0674b85a6c104ebbfb76d21ee",
+      "original_bytes": 2925886,
+      "compressed_bytes": 620087,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

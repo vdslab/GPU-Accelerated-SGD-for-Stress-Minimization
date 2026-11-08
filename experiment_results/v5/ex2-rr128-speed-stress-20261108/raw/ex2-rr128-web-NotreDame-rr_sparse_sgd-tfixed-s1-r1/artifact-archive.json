@@ -1,0 +1,46 @@
+{
+  "format": "shared-gzip",
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/raw/ex2-rr128-web-NotreDame-rr_sparse_sgd-tfixed-s1-r1/rr-sparse-sgd-web-NotreDame-ex2-rr128-web-NotreDame-rr_sparse_sgd-tfixed-s1-r1.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/raw/ex2-rr128-web-NotreDame-rr_sparse_sgd-tfixed-s1-r1/rr-sparse-sgd-web-NotreDame-ex2-rr128-web-NotreDame-rr_sparse_sgd-tfixed-s1-r1.initial.shared.txt.gz",
+      "original_sha256": "9b383b2c6be338baade026f30fc4d908914c8d58be82481840046dc1f1bdba19",
+      "decompressed_sha256": "9b383b2c6be338baade026f30fc4d908914c8d58be82481840046dc1f1bdba19",
+      "original_bytes": 27589066,
+      "compressed_sha256": "775e1b73f72c40a44d5dd2406b0464ba24f1b32732c3a93a82844ff1c8aca81a",
+      "compressed_bytes": 10003362,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/shared-edges/rr_sparse_sgd/e779c1ef4ec3fad9515cf23ee89e88f7cafc8b3d7824963ffbc3667c86a2553a.edges-template.gz",
+      "shared_edge_sha256": "d343a9dd12e091c596059236efabcbcb06452c53f7ac274f4b6f14656d78896a",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/raw/ex2-rr128-web-NotreDame-rr_sparse_sgd-tfixed-s1-r1/rr-sparse-sgd-web-NotreDame-ex2-rr128-web-NotreDame-rr_sparse_sgd-tfixed-s1-r1.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/raw/ex2-rr128-web-NotreDame-rr_sparse_sgd-tfixed-s1-r1/rr-sparse-sgd-web-NotreDame-ex2-rr128-web-NotreDame-rr_sparse_sgd-tfixed-s1-r1.final.shared.txt.gz",
+      "original_sha256": "701782f4d6bb613252cd15349ce198fdd8c75abd2432ec8525a55fe30d5b0e78",
+      "decompressed_sha256": "701782f4d6bb613252cd15349ce198fdd8c75abd2432ec8525a55fe30d5b0e78",
+      "original_bytes": 26931964,
+      "compressed_sha256": "491ff059682fbe639a80e2775cdcbb51c878a34041577901f69418925638c9ab",
+      "compressed_bytes": 9854540,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/shared-edges/rr_sparse_sgd/e779c1ef4ec3fad9515cf23ee89e88f7cafc8b3d7824963ffbc3667c86a2553a.edges-template.gz",
+      "shared_edge_sha256": "d343a9dd12e091c596059236efabcbcb06452c53f7ac274f4b6f14656d78896a",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/raw/ex2-rr128-web-NotreDame-rr_sparse_sgd-tfixed-s1-r1/rr-sparse-sgd-web-NotreDame-ex2-rr128-web-NotreDame-rr_sparse_sgd-tfixed-s1-r1.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/raw/ex2-rr128-web-NotreDame-rr_sparse_sgd-tfixed-s1-r1/rr-sparse-sgd-web-NotreDame-ex2-rr128-web-NotreDame-rr_sparse_sgd-tfixed-s1-r1.vertex-map.txt.gz",
+      "original_sha256": "1f7c402f8e8a606ad666662e9db3e19461ca90c1ad9924d28e6d6bab1791f6ca",
+      "original_bytes": 4337986,
+      "compressed_sha256": "a9d7addd618715431f655ecf3d44532352666c2d11b956fd2565d188a6d1bfec",
+      "compressed_bytes": 1435305,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

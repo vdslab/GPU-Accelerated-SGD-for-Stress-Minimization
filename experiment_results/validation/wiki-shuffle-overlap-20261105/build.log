@@ -1,0 +1,80 @@
+   Compiling rr-gpu v0.1.0 (/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/rr_gpu)
+warning: field `wij` is never read
+  --> examples/../src/graph.rs:28:9
+   |
+24 | pub struct EdgeInfo {
+   |            -------- field in this struct
+...
+28 |     pub wij: f64,
+   |         ^^^
+   |
+   = note: `EdgeInfo` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: method `as_str` is never used
+  --> examples/../src/gpu.rs:21:12
+   |
+20 | impl MemoryMode {
+   | --------------- method in this implementation
+21 |     pub fn as_str(self) -> &'static str {
+   |            ^^^^^^
+
+warning: fields `adapter_name` and `backend` are never read
+   --> examples/../src/gpu.rs:180:9
+    |
+176 | pub struct GpuContext {
+    |            ---------- fields in this struct
+...
+180 |     pub adapter_name: String,
+    |         ^^^^^^^^^^^^
+181 |     pub backend: String,
+    |         ^^^^^^^
+
+warning: fields `initial_positions`, `upload_time`, `iteration_time`, `gpu_device_time`, `readback_time`, and `dispatches` are never read
+   --> examples/../src/gpu.rs:188:9
+    |
+187 | pub struct GpuRunResult {
+    |            ------------ fields in this struct
+188 |     pub initial_positions: Vec<[f64; 2]>,
+    |         ^^^^^^^^^^^^^^^^^
+189 |     pub positions: Vec<[f32; 2]>,
+190 |     pub upload_time: Duration,
+    |         ^^^^^^^^^^^
+191 |     pub iteration_time: Duration,
+    |         ^^^^^^^^^^^^^^
+192 |     pub gpu_device_time: Option<Duration>,
+    |         ^^^^^^^^^^^^^^^
+193 |     pub readback_time: Duration,
+    |         ^^^^^^^^^^^^^
+194 |     pub dispatches: u64,
+    |         ^^^^^^^^^^
+    |
+    = note: `GpuRunResult` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+
+warning: method `as_str` is never used
+  --> examples/wiki_shuffle_overlap/gpu.rs:21:12
+   |
+20 | impl MemoryMode {
+   | --------------- method in this implementation
+21 |     pub fn as_str(self) -> &'static str {
+   |            ^^^^^^
+
+warning: field `initial_positions` is never read
+   --> examples/wiki_shuffle_overlap/gpu.rs:195:9
+    |
+187 | pub struct GpuRunResult {
+    |            ------------ field in this struct
+...
+195 |     pub initial_positions: Vec<[f64; 2]>,
+    |         ^^^^^^^^^^^^^^^^^
+    |
+    = note: `GpuRunResult` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+
+warning: function `build_schedule` is never used
+   --> examples/wiki_shuffle_overlap/gpu.rs:216:8
+    |
+216 | pub fn build_schedule(big_b: u32) -> Vec<Vec<(u32, u32)>> {
+    |        ^^^^^^^^^^^^^^
+
+warning: `rr-gpu` (example "wiki_shuffle_overlap") generated 7 warnings
+    Finished `release` profile [optimized] target(s) in 2.34s

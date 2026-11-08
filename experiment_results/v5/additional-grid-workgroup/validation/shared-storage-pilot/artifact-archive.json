@@ -1,0 +1,40 @@
+{
+  "format": "shared-gzip",
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/validation/shared-storage-pilot/rr-sgd-grid2d_64x64-grid-full-grid2d_64x64-t128-s0-r0.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/validation/shared-storage-pilot/rr-sgd-grid2d_64x64-grid-full-grid2d_64x64-t128-s0-r0.final.shared.txt.gz",
+      "original_sha256": "71532526afab2559c394698e779dbb8bf0b2a233566f0edbf9015cf545638f65",
+      "decompressed_sha256": "71532526afab2559c394698e779dbb8bf0b2a233566f0edbf9015cf545638f65",
+      "original_bytes": 232043,
+      "compressed_sha256": "50fa4a8873bfa640ac5e690d0a75c4ced85600e356093da9165409efd03c7610",
+      "compressed_bytes": 173976,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/shared-edges/4bf543fe1efb2ca7b4df07df6e6340718c1c68f362cee6e67784bf1fa56b4de9.edges-template.gz",
+      "shared_edge_sha256": "febb9d9c1a18e4342f4c21e90949e778c9eb0599e72986fd2e990ddc55bf507c",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/validation/shared-storage-pilot/rr-sgd-grid2d_64x64-grid-full-grid2d_64x64-t128-s0-r0.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/validation/shared-storage-pilot/rr-sgd-grid2d_64x64-grid-full-grid2d_64x64-t128-s0-r0.initial.shared.txt.gz",
+      "original_sha256": "4dd650a7b683a63903388adc6d0c92f0c343ce2bdbe6a7b76173b6d11b7cd7ed",
+      "decompressed_sha256": "4dd650a7b683a63903388adc6d0c92f0c343ce2bdbe6a7b76173b6d11b7cd7ed",
+      "original_bytes": 242062,
+      "compressed_sha256": "ab7dd3fa676bccb9d1b6dff82819b8ef9fde2948a5d35ae8b2eeea0cb0a2a789",
+      "compressed_bytes": 176906,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/shared-edges/4bf543fe1efb2ca7b4df07df6e6340718c1c68f362cee6e67784bf1fa56b4de9.edges-template.gz",
+      "shared_edge_sha256": "febb9d9c1a18e4342f4c21e90949e778c9eb0599e72986fd2e990ddc55bf507c",
+      "prefix_member_bytes": 65536
+    }
+  ],
+  "errors": [],
+  "updated_at": "2026-11-07T15:19:42+09:00",
+  "storage_definition": "Each layout is independently readable with ordinary gzip; APFS shares immutable edge-member blocks. Other artifacts retain prior encoding.",
+  "previous_manifest": "archive-before-shared-gzip.json"
+}

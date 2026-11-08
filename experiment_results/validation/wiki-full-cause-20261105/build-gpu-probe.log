@@ -1,0 +1,62 @@
+   Compiling rr-gpu v0.1.0 (/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/rr_gpu)
+warning: method `as_str` is never used
+  --> examples/wiki_full_cause/gpu.rs:21:12
+   |
+20 | impl MemoryMode {
+   | --------------- method in this implementation
+21 |     pub fn as_str(self) -> &'static str {
+   |            ^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: fields `adapter_name` and `backend` are never read
+   --> examples/wiki_full_cause/gpu.rs:179:9
+    |
+175 | pub struct GpuContext {
+    |            ---------- fields in this struct
+...
+179 |     pub adapter_name: String,
+    |         ^^^^^^^^^^^^
+180 |     pub backend: String,
+    |         ^^^^^^^
+
+warning: fields `initial_positions`, `upload_time`, `iteration_time`, `gpu_device_time`, `readback_time`, and `dispatches` are never read
+   --> examples/wiki_full_cause/gpu.rs:187:9
+    |
+186 | pub struct GpuRunResult {
+    |            ------------ fields in this struct
+187 |     pub initial_positions: Vec<[f64; 2]>,
+    |         ^^^^^^^^^^^^^^^^^
+188 |     pub positions: Vec<[f32; 2]>,
+189 |     pub upload_time: Duration,
+    |         ^^^^^^^^^^^
+190 |     pub iteration_time: Duration,
+    |         ^^^^^^^^^^^^^^
+191 |     pub gpu_device_time: Option<Duration>,
+    |         ^^^^^^^^^^^^^^^
+192 |     pub readback_time: Duration,
+    |         ^^^^^^^^^^^^^
+193 |     pub dispatches: u64,
+    |         ^^^^^^^^^^
+    |
+    = note: `GpuRunResult` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+
+warning: field `center` is never read
+  --> examples/../src/graph.rs:20:9
+   |
+16 | pub struct SgdParams {
+   |            --------- field in this struct
+...
+20 |     pub center: bool,
+   |         ^^^^^^
+   |
+   = note: `SgdParams` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis
+
+warning: function `center_inplace` is never used
+  --> examples/../../baseline-sgd-non-gpu/src/algorithm.rs:19:8
+   |
+19 | pub fn center_inplace(positions: &mut [[f64; 2]]) {
+   |        ^^^^^^^^^^^^^^
+
+warning: `rr-gpu` (example "wiki_full_cause") generated 5 warnings
+    Finished `release` profile [optimized] target(s) in 1.29s

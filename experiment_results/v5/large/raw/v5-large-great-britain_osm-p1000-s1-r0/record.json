@@ -1,0 +1,27 @@
+{
+  "graph": "great-britain_osm",
+  "method": "rr_sparse_sgd",
+  "pivots": 1000,
+  "seed": 1,
+  "repetition": 0,
+  "run_id": "v5-large-great-britain_osm-p1000-s1-r0",
+  "status": "preflight_unavailable",
+  "executed": false,
+  "measured": false,
+  "completed_at": "2026-11-06T18:53:51+09:00",
+  "preflight": {
+    "graph": "great-britain_osm",
+    "pivots": 1000,
+    "nodes": 7733822,
+    "edges": 8156517,
+    "one_sided_bytes": 61870576000,
+    "two_sided_lower_bound_bytes": 195756408,
+    "vertex_workgroups": 30211,
+    "hard_limit_reasons": [
+      "one_sided: 61870576000 bytes > storage buffer limit 4294967295"
+    ],
+    "estimated_peak_bytes": 126792097088,
+    "estimate_definition": "192m + 192n + 16np; conservative planning estimate, not proven minimum; does not itself skip runs"
+  },
+  "error": "one_sided: 61870576000 bytes > storage buffer limit 4294967295"
+}

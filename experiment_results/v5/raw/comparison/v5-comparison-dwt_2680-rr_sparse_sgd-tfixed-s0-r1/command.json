@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/sparse-sgd-gpu",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/common/dwt_2680.mtx",
+    "--run-id",
+    "v5-comparison-dwt_2680-rr_sparse_sgd-tfixed-s0-r1",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "0",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-dwt_2680-rr_sparse_sgd-tfixed-s0-r1",
+    "--pivots",
+    "200"
+  ],
+  "environment": {
+    "SGD_STRESS_SAMPLES": "256",
+    "SGD_GPU_TIMESTAMPS": "0"
+  },
+  "started_at": "2026-11-06T05:54:28+09:00",
+  "memory_before": {
+    "available_bytes": 11601149952,
+    "used_bytes": 12021252096,
+    "swap_used_bytes": 2069430272,
+    "swap_in_bytes": 186224558080,
+    "swap_out_bytes": 2305966080
+  },
+  "warmup": false
+}

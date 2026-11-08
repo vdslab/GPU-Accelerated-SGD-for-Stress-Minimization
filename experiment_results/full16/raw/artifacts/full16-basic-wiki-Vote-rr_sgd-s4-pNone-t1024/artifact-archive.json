@@ -1,0 +1,28 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/raw/artifacts/full16-basic-wiki-Vote-rr_sgd-s4-pNone-t1024/rr-sgd-wiki-Vote-full16-basic-wiki-Vote-rr_sgd-s4-pNone-t1024.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/raw/artifacts/full16-basic-wiki-Vote-rr_sgd-s4-pNone-t1024/rr-sgd-wiki-Vote-full16-basic-wiki-Vote-rr_sgd-s4-pNone-t1024.final.txt.gz",
+      "original_sha256": "e19c0a078436d599e00f9a5d0fa7453e5cb6653597cbfeb5ed43338593af5953",
+      "decompressed_sha256": "e19c0a078436d599e00f9a5d0fa7453e5cb6653597cbfeb5ed43338593af5953",
+      "compressed_sha256": "56a7091cfc5c3d99aa53fa741bd7cd1c6c60433e49b92db45f7887dbc993d498",
+      "original_bytes": 1233812,
+      "compressed_bytes": 456744,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/raw/artifacts/full16-basic-wiki-Vote-rr_sgd-s4-pNone-t1024/rr-sgd-wiki-Vote-full16-basic-wiki-Vote-rr_sgd-s4-pNone-t1024.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/raw/artifacts/full16-basic-wiki-Vote-rr_sgd-s4-pNone-t1024/rr-sgd-wiki-Vote-full16-basic-wiki-Vote-rr_sgd-s4-pNone-t1024.initial.txt.gz",
+      "original_sha256": "a668b90411fd737bbe187040452559f386529a886d04262857eeed500fde3b8b",
+      "decompressed_sha256": "a668b90411fd737bbe187040452559f386529a886d04262857eeed500fde3b8b",
+      "compressed_sha256": "248a6bd39d721c155b86d2484faa4f068c612994686d19a54e1e534e175abe5d",
+      "original_bytes": 1244337,
+      "compressed_bytes": 459580,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

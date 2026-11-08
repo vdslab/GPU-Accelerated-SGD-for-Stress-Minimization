@@ -1,0 +1,82 @@
+[
+  {
+    "name": "full-sgd-time",
+    "title": "Full — CPU / Atomic / RR128 (38 graphs)",
+    "caption": "Mean elapsed time per SGD iteration (ms)。低いほど高速。"
+  },
+  {
+    "name": "full-total-time",
+    "title": "Full — CPU / Atomic / RR128 (38 graphs)",
+    "caption": "Total compute, input to CPU coordinates (s)。低いほど高速。"
+  },
+  {
+    "name": "full-sgd-speedup",
+    "title": "Full — CPU / Atomic / RR128 (38 graphs)",
+    "caption": "Paired CPU / method SGD time。1より大きいほどCPUより高速。"
+  },
+  {
+    "name": "full-total-speedup",
+    "title": "Full — CPU / Atomic / RR128 (38 graphs)",
+    "caption": "Paired CPU / method total compute time。1より大きいほどCPUより高速。"
+  },
+  {
+    "name": "full-stress-ratio",
+    "title": "Full — Final Stress / paired family CPU",
+    "caption": "Exact Full Stress for all methods。Stress比は1より小さいほどCPUより低い。絶対Stressの大小で異なるグラフ間の品質順位を判断しない。"
+  },
+  {
+    "name": "full-stress-absolute",
+    "title": "Full — Final Full Stress (absolute)",
+    "caption": "Exact Full Stress for all methods。Stress比は1より小さいほどCPUより低い。絶対Stressの大小で異なるグラフ間の品質順位を判断しない。"
+  },
+  {
+    "name": "full-speed-stress",
+    "title": "Full — speed and final quality",
+    "caption": "Exact Full Stress for all methods。右ほど高速、下ほど低Stress。同じ対応run集合から集計。"
+  },
+  {
+    "name": "sparse-sgd-time",
+    "title": "Sparse — CPU / Atomic / RR128 (56 graphs)",
+    "caption": "Mean elapsed time per SGD iteration (ms)。低いほど高速。"
+  },
+  {
+    "name": "sparse-total-time",
+    "title": "Sparse — CPU / Atomic / RR128 (56 graphs)",
+    "caption": "Total compute, input to CPU coordinates (s)。低いほど高速。"
+  },
+  {
+    "name": "sparse-sgd-speedup",
+    "title": "Sparse — CPU / Atomic / RR128 (56 graphs)",
+    "caption": "Paired CPU / method SGD time。1より大きいほどCPUより高速。"
+  },
+  {
+    "name": "sparse-total-speedup",
+    "title": "Sparse — CPU / Atomic / RR128 (56 graphs)",
+    "caption": "Paired CPU / method total compute time。1より大きいほどCPUより高速。"
+  },
+  {
+    "name": "sparse-stress-ratio",
+    "title": "Sparse — Final Stress / paired family CPU",
+    "caption": "Exact n<=8000; same 256 sources (seed0) otherwise。Stress比は1より小さいほどCPUより低い。絶対Stressの大小で異なるグラフ間の品質順位を判断しない。"
+  },
+  {
+    "name": "sparse-stress-absolute",
+    "title": "Sparse — Final Full Stress (absolute)",
+    "caption": "Exact n<=8000; same 256 sources (seed0) otherwise。Stress比は1より小さいほどCPUより低い。絶対Stressの大小で異なるグラフ間の品質順位を判断しない。"
+  },
+  {
+    "name": "sparse-speed-stress",
+    "title": "Sparse — speed and final quality",
+    "caption": "Exact n<=8000; same 256 sources (seed0) otherwise。右ほど高速、下ほど低Stress。同じ対応run集合から集計。"
+  },
+  {
+    "name": "overview-sgd",
+    "title": "CPU / Atomic (previous v5) vs RR128 (EX2)",
+    "caption": "Full/Sparseを別パネルで表示。RR FullはT=W128、RR SparseはW128。"
+  },
+  {
+    "name": "overview-speedup",
+    "title": "CPU speedup — historical CPU / Atomic vs RR128",
+    "caption": "1倍基準線。FullはCPU Full、SparseはCPU Sparseを分母にする。"
+  }
+]

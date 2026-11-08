@@ -215,7 +215,7 @@ def append_record(path: Path, record: dict[str, Any]) -> None:
 def run_method(
     run: RunDefinition,
     command: list[str],
-    timeout_seconds: int,
+    timeout_seconds: int | None,
 ) -> subprocess.CompletedProcess[str]:
     environment = os.environ.copy()
     environment["EXPERIMENT_METHOD"] = run.method

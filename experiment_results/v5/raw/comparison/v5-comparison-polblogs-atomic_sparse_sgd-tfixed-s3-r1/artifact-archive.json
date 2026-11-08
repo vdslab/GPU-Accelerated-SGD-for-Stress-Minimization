@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-polblogs-atomic_sparse_sgd-tfixed-s3-r1/atomic-sparse-sgd-polblogs-v5-comparison-polblogs-atomic_sparse_sgd-tfixed-s3-r1.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-polblogs-atomic_sparse_sgd-tfixed-s3-r1/atomic-sparse-sgd-polblogs-v5-comparison-polblogs-atomic_sparse_sgd-tfixed-s3-r1.final.txt.gz",
+      "original_sha256": "fbfae617b1ee45a96a686204171cb5bbf85bdb47c123cbb372caaf7d5e46a755",
+      "decompressed_sha256": "fbfae617b1ee45a96a686204171cb5bbf85bdb47c123cbb372caaf7d5e46a755",
+      "compressed_sha256": "9b25201d311ba044bd80a3c985d9be384153a6c74ff40556926c0d2cecbd2341",
+      "original_bytes": 184429,
+      "compressed_bytes": 71842,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-polblogs-atomic_sparse_sgd-tfixed-s3-r1/atomic-sparse-sgd-polblogs-v5-comparison-polblogs-atomic_sparse_sgd-tfixed-s3-r1.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-polblogs-atomic_sparse_sgd-tfixed-s3-r1/atomic-sparse-sgd-polblogs-v5-comparison-polblogs-atomic_sparse_sgd-tfixed-s3-r1.initial.txt.gz",
+      "original_sha256": "5fa66acc142f31adafb0517a702dde227b98b41f5b12e1c03d9f0f602a05e029",
+      "decompressed_sha256": "5fa66acc142f31adafb0517a702dde227b98b41f5b12e1c03d9f0f602a05e029",
+      "compressed_sha256": "a82fef4e46575c889c4d4c999019a7c563f9b097ff1f7ab1e1f55c9893785ca3",
+      "original_bytes": 186177,
+      "compressed_bytes": 72108,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-polblogs-atomic_sparse_sgd-tfixed-s3-r1/atomic-sparse-sgd-polblogs-v5-comparison-polblogs-atomic_sparse_sgd-tfixed-s3-r1.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-polblogs-atomic_sparse_sgd-tfixed-s3-r1/atomic-sparse-sgd-polblogs-v5-comparison-polblogs-atomic_sparse_sgd-tfixed-s3-r1.vertex-map.txt.gz",
+      "original_sha256": "b0eb7d545540a96061756fe23e3ea2ca98755058ababba4072e8c7caa35ae258",
+      "decompressed_sha256": "b0eb7d545540a96061756fe23e3ea2ca98755058ababba4072e8c7caa35ae258",
+      "compressed_sha256": "2800ab3eb710f9a4ef3568c02f218039290c28ec02db71033e42104cfc88f194",
+      "original_bytes": 10000,
+      "compressed_bytes": 4082,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

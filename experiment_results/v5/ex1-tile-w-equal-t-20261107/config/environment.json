@@ -1,0 +1,59 @@
+{
+  "captured_at_utc": "2026-11-07T13:26:41.526341+00:00",
+  "git_commit": "2bf4c24a47b3349620eda360b7d198c6266837d9",
+  "git_dirty": true,
+  "platform": "macOS-15.7.2-arm64-arm-64bit",
+  "machine": "arm64",
+  "python": "3.11.0 (main, May 27 2025, 02:55:14) [Clang 17.0.0 (clang-1700.0.13.3)]",
+  "created": "2026-11-07T22:26:41+09:00",
+  "memory": {
+    "available_bytes": 8661417984,
+    "used_bytes": 9145630720,
+    "swap_used_bytes": 5300027392,
+    "swap_in_bytes": 198599540736,
+    "swap_out_bytes": 1983905792
+  },
+  "binary_sha256": {
+    "sgd": "e6746049ba63bd39130905b74a5724e25498d307c657e7a28cf4837c4afc4d1c",
+    "rr_sgd": "2ebd27090d350256496e331e0f0c70357fe50ef5ff33dd5ca00143df83de7987"
+  },
+  "binary_paths": {
+    "sgd": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex1-tile-w-equal-t-20261107/bin/baseline-sgd-non-gpu",
+    "rr_sgd": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex1-tile-w-equal-t-20261107/bin/rr-gpu"
+  },
+  "source_sha256": {
+    "experiments/run_ex1_tile_w_equal_t.py": "f646deddf70b04ed6a1ee378e65c276e4845dfb6c2f344c2d0e1bf983cd981dc",
+    "experiments/report_ex1_tile_w_equal_t.py": "de97004554617d59a811bb56be642cb3e588db497859c12108853266ca656e04",
+    "experiments/run_experiments.py": "b7aa035790d42eeedd498106a6a6abf2a33b57164f0b641983946abf1413ee05",
+    "experiments/experiment_plan.py": "597b95f16f3b3ef78a4da18ed4d8803c85da69f5f54469c85060f44f6c157928",
+    "experiments/run_v4.py": "2b8f0be545aa4e69d92c86e10cc042eb6c33abd2236ad1a2c54e8478ae7622cc",
+    "experiments/run_v5.py": "b3e33137e3459fc2bba963b012eaa1ad5af1ad8fbf603fc24e20c7a442f0daa8",
+    "experiments/artifact_paths.py": "14a34116c15076fda8584ef02abbc37aa3f1d5c6db31b3d105632aadabe9fc13",
+    "implementations/full/rr_gpu/src/graph.rs": "88995b80d2e51f393de6470dad1f921e128e102d3b0e9c6d58612a09857fef59",
+    "implementations/full/rr_gpu/src/gpu.rs": "96f22ccacfc194b9c60f8f92a060f5204b868d85d3ba187e85b2d5261b8b224a",
+    "implementations/full/rr_gpu/src/main.rs": "b4d5cd1ed766e608fe9096dddeb149e97643adc5a5f2b0ce61fd5e44d9fae48c",
+    "implementations/full/rr_gpu/src/shader.wgsl": "b9ab2c39dd527f3b9c8735f4b1e87917ba300d747548e9e0c8a65571e91153f0",
+    "implementations/full/baseline-sgd-non-gpu/src/graph.rs": "69d6b7eb4a35591fd65629a1c068cc21a517ea622bec4997cbc1f0acf7aee3e0",
+    "implementations/full/baseline-sgd-non-gpu/src/algorithm.rs": "6ef2b20624f207415782eecf0158a6363210aed0e924b5f692cb93688e4c438f",
+    "implementations/full/baseline-sgd-non-gpu/src/main.rs": "1b0e151409641849abf0ae5184f2b40ef877b07bd3a0911c11ec4ddf9ddb69c1",
+    "shared/gpu-timing/metal.rs": "1f4d010e8087f9a282780d9583c04398ef1ff613fd2930e409806392cc3ad63e",
+    "shared/gpu-timing/wgpu.rs": "f6ff28eabaf45aed046afa26dd3891465890a779f77760fed0e2755ef8c676bf",
+    "shared/experiment-common/src/metadata.rs": "a62920493211d77de646d7a47a9f012f6d542e7e91f30a27151d8c3bb0cb796d",
+    "shared/experiment-common/src/lib.rs": "5998941dd45368f6dca1fe6afcbe0eba1318bbcc5ea54a9a8730ec0ec3207143",
+    "shared/experiment-common/src/paths.rs": "0c0e3efcec52b513f1bd4714330afb6206ab2253bbb5a1e195d8572ebc6ca46c",
+    "shared/experiment-common/src/trace.rs": "45d33fa8b24e058694dec2e0b94c3ae3223d40f8c6f795f9063116516fc11f0d",
+    "shared/experiment-common/src/record.rs": "0502995b3417a7e2d6b763ff2ce148866560d5940533c8fb46046964cb708964",
+    "shared/experiment-common/src/stress.rs": "ac5e72155ee4c78f899c0145b27cc09aa190d811ada1cd5d0c6c134288b6899a",
+    "shared/experiment-common/src/cli.rs": "233571eb0530444f993082aa35c18a024fd8558476ebe75aa84c7e18b47d8e6d",
+    "shared/experiment-common/src/seed.rs": "445bc2c585e323754e3733d8bb577b58eae2dd1e80d9beedfaa22ac39fce381a"
+  },
+  "previous_v5_binary_sha256": {
+    "sgd": "63e81b64ecbc1b507c86416457798121cd44f1cf4af1d01a53628d84799e124a",
+    "atomic_sgd": "8a6974c341291acb82658430f15215d3eed69ab7863069150a4636530d7663c5",
+    "rr_sgd": "e6378204f1c018f3ce0b2b8630be509fcfb506aedb7de20ccd5881b2a6cd9be6",
+    "sparse_sgd": "9c370ee3acc057ca0ea94c78c88e9cff9c4dbb8c04e0d7371a37452087416989",
+    "atomic_sparse_sgd": "0f9c9428a48d09c27425687310dfa50e917241241ec82b27d947308fcd8037bd",
+    "rr_sparse_sgd": "61dd5fcb9ec4235c300242b10c4bda43bf958579380521a612cc1231b5af4092"
+  },
+  "build_change": "Optional SGD_STRESS_MODE override in shared evaluation; SGD algorithms/shaders unchanged"
+}

@@ -1,0 +1,13 @@
+{
+  "at": "2026-11-07T00:03:35+09:00",
+  "passed": true,
+  "checks": [
+    "Darwin clonefile succeeds on this filesystem",
+    "64KiB FEXTRA headers and 3 gzip members recover exact native bytes",
+    "two seeds/stages share immutable edge template",
+    "pool digest unchanged after prefix rewrites",
+    "all timing/Stress and original archive_seconds unchanged",
+    "old archives removed only after replacement/manifest/record persisted",
+    "idempotent completed-folder call"
+  ]
+}

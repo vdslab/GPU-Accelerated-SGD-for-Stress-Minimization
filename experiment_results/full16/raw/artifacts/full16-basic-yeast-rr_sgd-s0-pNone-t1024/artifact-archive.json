@@ -1,0 +1,28 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/raw/artifacts/full16-basic-yeast-rr_sgd-s0-pNone-t1024/rr-sgd-yeast-full16-basic-yeast-rr_sgd-s0-pNone-t1024.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/raw/artifacts/full16-basic-yeast-rr_sgd-s0-pNone-t1024/rr-sgd-yeast-full16-basic-yeast-rr_sgd-s0-pNone-t1024.final.txt.gz",
+      "original_sha256": "4e4e5ecbf0d3fc606b6e2a99426e223b3e382a20b2d29409ba07022c29abbd83",
+      "decompressed_sha256": "4e4e5ecbf0d3fc606b6e2a99426e223b3e382a20b2d29409ba07022c29abbd83",
+      "compressed_sha256": "167ba2d87721c7dc816d54e554a28a14fcc67d1a203430708a0c1cb16d26d027",
+      "original_bytes": 143218,
+      "compressed_bytes": 65869,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/raw/artifacts/full16-basic-yeast-rr_sgd-s0-pNone-t1024/rr-sgd-yeast-full16-basic-yeast-rr_sgd-s0-pNone-t1024.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/raw/artifacts/full16-basic-yeast-rr_sgd-s0-pNone-t1024/rr-sgd-yeast-full16-basic-yeast-rr_sgd-s0-pNone-t1024.initial.txt.gz",
+      "original_sha256": "b9ce91dce99c832be62ea284dc73a93c3683cb41f2db290ca91329b81f3b132d",
+      "decompressed_sha256": "b9ce91dce99c832be62ea284dc73a93c3683cb41f2db290ca91329b81f3b132d",
+      "compressed_sha256": "ccc28a88d81ff1ab96a06350647efe48ccb188a5aa6e70b24c89714727952563",
+      "original_bytes": 147137,
+      "compressed_bytes": 66536,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

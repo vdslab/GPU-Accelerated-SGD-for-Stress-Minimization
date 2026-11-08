@@ -1,0 +1,8 @@
+% !TeX root = ../main.tex
+We present GPU schedules that accelerate graph drawing by stress minimization with stochastic gradient descent (SGD). Our sparse schedule handles over ten million vertices on one GPU.
+We adapt the batching idea from mini-batch SGD to group independent updates while preserving the vertex-pair update rule.
+RoundRobin Full SGD interleaves 16 segments of the inner round sequence across outer rounds, reusing coordinates within each tile segment. RoundRobin Sparse SGD groups one-sided updates by destination and two-sided updates by disjoint endpoints.
+We compare both schedules with sequential CPU and lock-based GPU implementations over 15 iterations from matched initial layouts.
+RoundRobin Full SGD shortens iterations on 17 of 19 comparable graphs, with a median CPU-relative speedup of $9.98\times$. Its median final stress increase over CPU is 0.04\%, and the largest graph-median increase is 20.8\%.
+RoundRobin Sparse SGD shortens iterations on all 37 comparable graphs, with a median CPU-relative speedup of $44.49\times$, or $3.77\times$ including preprocessing and setup. Its median final stress increase over CPU is 0.02\%.
+With 40 pivots, RoundRobin Sparse SGD lays out road networks of 6.69 million and 11.55 million vertices in 43.45 s and 80.32 s, respectively, including preprocessing.

@@ -1,0 +1,26 @@
+diff --git a/experiments/experiment_plan.py b/experiments/experiment_plan.py
+index fa46441c..fb2f1a96 100644
+--- a/experiments/experiment_plan.py
++++ b/experiments/experiment_plan.py
+@@ -169,6 +169,8 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
+             raise PlanError("pivotsは1以上のinteger配列です")
+     for field, minimum in (("repetitions", 1), ("warmups", 0), ("timeout_seconds", 1)):
+         value = manifest[field]
++        if field == "timeout_seconds" and value is None:
++            continue  # Explicitly disable the wall-clock deadline.
+         if not isinstance(value, int) or isinstance(value, bool) or value < minimum:
+             raise PlanError(f"{field}は{minimum}以上のintegerです")
+     if not isinstance(manifest["fail_fast"], bool):
+diff --git a/experiments/run_experiments.py b/experiments/run_experiments.py
+index 109d24dc..5a82438c 100644
+--- a/experiments/run_experiments.py
++++ b/experiments/run_experiments.py
+@@ -215,7 +215,7 @@ def append_record(path: Path, record: dict[str, Any]) -> None:
+ def run_method(
+     run: RunDefinition,
+     command: list[str],
+-    timeout_seconds: int,
++    timeout_seconds: int | None,
+ ) -> subprocess.CompletedProcess[str]:
+     environment = os.environ.copy()
+     environment["EXPERIMENT_METHOD"] = run.method

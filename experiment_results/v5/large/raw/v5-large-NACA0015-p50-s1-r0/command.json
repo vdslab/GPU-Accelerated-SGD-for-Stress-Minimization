@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/sparse-sgd-gpu",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/sparse_only/NACA0015.mtx",
+    "--run-id",
+    "v5-large-NACA0015-p50-s1-r0",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "1",
+    "--pivots",
+    "50",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-NACA0015-p50-s1-r0"
+  ],
+  "started_at": "2026-11-06T19:21:24+09:00",
+  "memory_before": {
+    "available_bytes": 16188162048,
+    "used_bytes": 6027657216,
+    "swap_used_bytes": 3584557056,
+    "swap_in_bytes": 607296471040,
+    "swap_out_bytes": 3356229632
+  },
+  "warmup": false,
+  "environment": {
+    "SGD_STRESS_SAMPLES": "64",
+    "SGD_GPU_TIMESTAMPS": "0"
+  }
+}

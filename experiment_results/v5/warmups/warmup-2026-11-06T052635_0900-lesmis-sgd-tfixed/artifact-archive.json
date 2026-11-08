@@ -1,0 +1,28 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/warmups/warmup-2026-11-06T052635_0900-lesmis-sgd-tfixed/sgd-lesmis-warmup-2026-11-06T052635_0900-lesmis-sgd-tfixed.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/warmups/warmup-2026-11-06T052635_0900-lesmis-sgd-tfixed/sgd-lesmis-warmup-2026-11-06T052635_0900-lesmis-sgd-tfixed.final.txt.gz",
+      "original_sha256": "9cb77bff7a92e815f8b94ecedf3fdb524c9a111a8d8db09d569a401e13e7723e",
+      "decompressed_sha256": "9cb77bff7a92e815f8b94ecedf3fdb524c9a111a8d8db09d569a401e13e7723e",
+      "compressed_sha256": "44212ac0b60e0abb53fcb38c54c25baffaa219789e8d718d255c00f7810792fe",
+      "original_bytes": 6271,
+      "compressed_bytes": 2889,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/warmups/warmup-2026-11-06T052635_0900-lesmis-sgd-tfixed/sgd-lesmis-warmup-2026-11-06T052635_0900-lesmis-sgd-tfixed.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/warmups/warmup-2026-11-06T052635_0900-lesmis-sgd-tfixed/sgd-lesmis-warmup-2026-11-06T052635_0900-lesmis-sgd-tfixed.initial.txt.gz",
+      "original_sha256": "841a79682f6f72a000fe272aebb6bc1f44df22acd985b08eee69304b0e48ec10",
+      "decompressed_sha256": "841a79682f6f72a000fe272aebb6bc1f44df22acd985b08eee69304b0e48ec10",
+      "compressed_sha256": "e4fb45bb7e5fd4ea40a7bfb7558f6d86208dbbc3b0f58196fe09852ccc5c0738",
+      "original_bytes": 6385,
+      "compressed_bytes": 2898,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

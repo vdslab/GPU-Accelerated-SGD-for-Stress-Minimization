@@ -1,0 +1,165 @@
+[
+  {
+    "name": "grid2d_64x64",
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/data/grid2d_64x64.mtx",
+    "nodes": 4096,
+    "edges": 8064,
+    "sha256": "4bf543fe1efb2ca7b4df07df6e6340718c1c68f362cee6e67784bf1fa56b4de9",
+    "family": "grid",
+    "shape": [
+      64,
+      64
+    ],
+    "generator": "Nearest neighbors along each axis, open boundaries, row-major IDs, no graph RNG"
+  },
+  {
+    "name": "grid2d_96x96",
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/data/grid2d_96x96.mtx",
+    "nodes": 9216,
+    "edges": 18240,
+    "sha256": "a15941bbec008393e46ffe3c37ca6b94494bcd1d7238939a1fbdad1f38448ec3",
+    "family": "grid",
+    "shape": [
+      96,
+      96
+    ],
+    "generator": "Nearest neighbors along each axis, open boundaries, row-major IDs, no graph RNG"
+  },
+  {
+    "name": "grid2d_128x128",
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/data/grid2d_128x128.mtx",
+    "nodes": 16384,
+    "edges": 32512,
+    "sha256": "b9785dbbf2c1a76016beea90afd6d13d66addeb7a6228b6433f25c2a9a71e231",
+    "family": "grid",
+    "shape": [
+      128,
+      128
+    ],
+    "generator": "Nearest neighbors along each axis, open boundaries, row-major IDs, no graph RNG"
+  },
+  {
+    "name": "grid2d_128x192",
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/data/grid2d_128x192.mtx",
+    "nodes": 24576,
+    "edges": 48832,
+    "sha256": "5fb929b5ab01729b5ab47520787fca9e7dc53610fca426dee0f8a274d3ad9f31",
+    "family": "grid",
+    "shape": [
+      128,
+      192
+    ],
+    "generator": "Nearest neighbors along each axis, open boundaries, row-major IDs, no graph RNG"
+  },
+  {
+    "name": "grid3d_16x16x16",
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/data/grid3d_16x16x16.mtx",
+    "nodes": 4096,
+    "edges": 11520,
+    "sha256": "7c61e895eea72bb0adac2f7f70f8e11c31b57cfdeb57c4aab5bb0bef86c42190",
+    "family": "grid",
+    "shape": [
+      16,
+      16,
+      16
+    ],
+    "generator": "Nearest neighbors along each axis, open boundaries, row-major IDs, no graph RNG"
+  },
+  {
+    "name": "grid3d_24x24x24",
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/data/grid3d_24x24x24.mtx",
+    "nodes": 13824,
+    "edges": 39744,
+    "sha256": "de887a003e0c8518a13ae9f8170f25e7fd644d74a5662f46acebede2d864d5ff",
+    "family": "grid",
+    "shape": [
+      24,
+      24,
+      24
+    ],
+    "generator": "Nearest neighbors along each axis, open boundaries, row-major IDs, no graph RNG"
+  },
+  {
+    "name": "luxembourg_osm",
+    "set": "sparse_only",
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/sparse_only/luxembourg_osm.mtx",
+    "selected_nodes": 114599,
+    "selected_edges": 119666,
+    "family": "道路網",
+    "degree_tag": "偏り小",
+    "degree_basis": "measured",
+    "source_page": "https://sparse.tamu.edu/DIMACS10/luxembourg_osm",
+    "status": "ready",
+    "input_state": "normalized_simple_undirected_lcc",
+    "local_origin": "data/v4_lcc/luxembourg_osm.mtx",
+    "storage": "normalized",
+    "bytes": 1441104,
+    "sha256": "a01af8886d28ee796a6c4cfee7c1699ac3c0c6665485d2e48b74b48da631bb5b",
+    "matrix_market": "%%MatrixMarket matrix coordinate pattern symmetric",
+    "stored_rows": 114599,
+    "stored_columns": 114599,
+    "stored_entries": 119666,
+    "nodes": 114599,
+    "edges": 119666,
+    "precanonical_sha256": "e71dcaaf863f4c1304b35f5a4348d1a090d237d845db2c7de584d059ce19bb0e",
+    "selected_counts_match": true
+  },
+  {
+    "name": "la2010",
+    "set": "sparse_only",
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/sparse_only/la2010.mtx",
+    "selected_nodes": 204447,
+    "selected_edges": 490317,
+    "family": "地理隣接",
+    "degree_tag": "偏り小",
+    "degree_basis": "estimated_from_published_structure",
+    "source_page": "https://sparse.tamu.edu/DIMACS10/la2010",
+    "status": "ready",
+    "archive_url": "https://www.cise.ufl.edu/research/sparse/MM/DIMACS10/la2010.tar.gz",
+    "input_state": "normalized_simple_undirected_lcc",
+    "storage": "normalized",
+    "bytes": 6325851,
+    "sha256": "d58d0c7f9e5507c5cc98fa16b77ed394c026ea2b50baa327f8b274480964832e",
+    "matrix_market": "%%MatrixMarket matrix coordinate pattern symmetric",
+    "stored_rows": 204447,
+    "stored_columns": 204447,
+    "stored_entries": 490317,
+    "source_sha256": "8ee4b3aa155d8d950ff8b36b7c10ecb76f22a1347c4468b1b54da4eb3670184b",
+    "source_header": {
+      "matrix_market": "%%MatrixMarket matrix coordinate integer symmetric",
+      "stored_rows": 204447,
+      "stored_columns": 204447,
+      "stored_entries": 490317
+    },
+    "nodes": 204447,
+    "edges": 490317,
+    "vertex_map": null,
+    "vertex_mapping": "identity",
+    "selected_counts_match": true
+  },
+  {
+    "name": "coPapersCiteseer",
+    "set": "sparse_only",
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/sparse_only/coPapersCiteseer.mtx",
+    "selected_nodes": 434102,
+    "selected_edges": 16036720,
+    "family": "論文ネットワーク",
+    "degree_tag": "偏り大",
+    "degree_basis": "estimated_from_published_structure",
+    "source_page": "https://sparse.tamu.edu/DIMACS10/coPapersCiteseer",
+    "status": "ready",
+    "input_state": "normalized_simple_undirected_lcc",
+    "local_origin": "data/v4_lcc/coPapersCiteseer.mtx",
+    "storage": "normalized",
+    "bytes": 206970879,
+    "sha256": "1d2f63ad71756124d9eab451ede52f36bcc6281d438836d5ba5ae69973e74603",
+    "matrix_market": "%%MatrixMarket matrix coordinate pattern symmetric",
+    "stored_rows": 434102,
+    "stored_columns": 434102,
+    "stored_entries": 16036720,
+    "nodes": 434102,
+    "edges": 16036720,
+    "precanonical_sha256": "bda7950c921f4eec769f3b08db0ee8a39be5fd6cfcd28393393aa74febab89be",
+    "selected_counts_match": true
+  }
+]

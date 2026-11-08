@@ -1,0 +1,402 @@
+[
+  {
+    "graph": "auto",
+    "seed": 0,
+    "pivots": [
+      1000,
+      100,
+      50,
+      200,
+      500
+    ],
+    "distinct_initial_positions": 5
+  },
+  {
+    "graph": "auto",
+    "seed": 1,
+    "pivots": [
+      100,
+      1000,
+      200,
+      50,
+      500
+    ],
+    "distinct_initial_positions": 5
+  },
+  {
+    "graph": "auto",
+    "seed": 2,
+    "pivots": [
+      500,
+      50,
+      200,
+      1000,
+      100
+    ],
+    "distinct_initial_positions": 5
+  },
+  {
+    "graph": "auto",
+    "seed": 3,
+    "pivots": [
+      500,
+      200,
+      50,
+      100,
+      1000
+    ],
+    "distinct_initial_positions": 5
+  },
+  {
+    "graph": "auto",
+    "seed": 4,
+    "pivots": [
+      1000,
+      100,
+      50,
+      200,
+      500
+    ],
+    "distinct_initial_positions": 5
+  },
+  {
+    "graph": "NACA0015",
+    "seed": 0,
+    "pivots": [
+      500,
+      50,
+      100,
+      200
+    ],
+    "distinct_initial_positions": 4
+  },
+  {
+    "graph": "NACA0015",
+    "seed": 1,
+    "pivots": [
+      500,
+      100,
+      50,
+      200
+    ],
+    "distinct_initial_positions": 4
+  },
+  {
+    "graph": "NACA0015",
+    "seed": 2,
+    "pivots": [
+      200,
+      50,
+      100,
+      500
+    ],
+    "distinct_initial_positions": 4
+  },
+  {
+    "graph": "NACA0015",
+    "seed": 3,
+    "pivots": [
+      200,
+      100,
+      50,
+      500
+    ],
+    "distinct_initial_positions": 4
+  },
+  {
+    "graph": "NACA0015",
+    "seed": 4,
+    "pivots": [
+      500,
+      50,
+      100,
+      200
+    ],
+    "distinct_initial_positions": 4
+  },
+  {
+    "graph": "belgium_osm",
+    "seed": 0,
+    "pivots": [
+      200,
+      50,
+      100
+    ],
+    "distinct_initial_positions": 3
+  },
+  {
+    "graph": "belgium_osm",
+    "seed": 1,
+    "pivots": [
+      200,
+      50,
+      100
+    ],
+    "distinct_initial_positions": 3
+  },
+  {
+    "graph": "belgium_osm",
+    "seed": 2,
+    "pivots": [
+      100,
+      200,
+      50
+    ],
+    "distinct_initial_positions": 3
+  },
+  {
+    "graph": "belgium_osm",
+    "seed": 3,
+    "pivots": [
+      100,
+      200,
+      50
+    ],
+    "distinct_initial_positions": 3
+  },
+  {
+    "graph": "belgium_osm",
+    "seed": 4,
+    "pivots": [
+      200,
+      50,
+      100
+    ],
+    "distinct_initial_positions": 3
+  },
+  {
+    "graph": "Flan_1565",
+    "seed": 0,
+    "pivots": [
+      100,
+      200,
+      50
+    ],
+    "distinct_initial_positions": 3
+  },
+  {
+    "graph": "Flan_1565",
+    "seed": 1,
+    "pivots": [
+      100,
+      200,
+      50
+    ],
+    "distinct_initial_positions": 3
+  },
+  {
+    "graph": "Flan_1565",
+    "seed": 2,
+    "pivots": [
+      50,
+      200,
+      100
+    ],
+    "distinct_initial_positions": 3
+  },
+  {
+    "graph": "Flan_1565",
+    "seed": 3,
+    "pivots": [
+      50,
+      200,
+      100
+    ],
+    "distinct_initial_positions": 3
+  },
+  {
+    "graph": "Flan_1565",
+    "seed": 4,
+    "pivots": [
+      100,
+      200,
+      50
+    ],
+    "distinct_initial_positions": 3
+  },
+  {
+    "graph": "netherlands_osm",
+    "seed": 0,
+    "pivots": [
+      50,
+      200,
+      100
+    ],
+    "distinct_initial_positions": 3
+  },
+  {
+    "graph": "netherlands_osm",
+    "seed": 1,
+    "pivots": [
+      50,
+      200,
+      100
+    ],
+    "distinct_initial_positions": 3
+  },
+  {
+    "graph": "netherlands_osm",
+    "seed": 2,
+    "pivots": [
+      100,
+      200,
+      50
+    ],
+    "distinct_initial_positions": 3
+  },
+  {
+    "graph": "netherlands_osm",
+    "seed": 3,
+    "pivots": [
+      100,
+      200,
+      50
+    ],
+    "distinct_initial_positions": 3
+  },
+  {
+    "graph": "netherlands_osm",
+    "seed": 4,
+    "pivots": [
+      50,
+      200,
+      100
+    ],
+    "distinct_initial_positions": 3
+  },
+  {
+    "graph": "com-Orkut",
+    "seed": 0,
+    "pivots": [
+      100,
+      50
+    ],
+    "distinct_initial_positions": 2
+  },
+  {
+    "graph": "com-Orkut",
+    "seed": 1,
+    "pivots": [
+      100,
+      50
+    ],
+    "distinct_initial_positions": 2
+  },
+  {
+    "graph": "com-Orkut",
+    "seed": 2,
+    "pivots": [
+      50,
+      100
+    ],
+    "distinct_initial_positions": 2
+  },
+  {
+    "graph": "com-Orkut",
+    "seed": 3,
+    "pivots": [
+      50,
+      100
+    ],
+    "distinct_initial_positions": 2
+  },
+  {
+    "graph": "com-Orkut",
+    "seed": 4,
+    "pivots": [
+      100,
+      50
+    ],
+    "distinct_initial_positions": 2
+  },
+  {
+    "graph": "AS365",
+    "seed": 0,
+    "pivots": [
+      100,
+      50
+    ],
+    "distinct_initial_positions": 2
+  },
+  {
+    "graph": "AS365",
+    "seed": 1,
+    "pivots": [
+      100,
+      50
+    ],
+    "distinct_initial_positions": 2
+  },
+  {
+    "graph": "AS365",
+    "seed": 2,
+    "pivots": [
+      50,
+      100
+    ],
+    "distinct_initial_positions": 2
+  },
+  {
+    "graph": "AS365",
+    "seed": 3,
+    "pivots": [
+      50,
+      100
+    ],
+    "distinct_initial_positions": 2
+  },
+  {
+    "graph": "AS365",
+    "seed": 4,
+    "pivots": [
+      100,
+      50
+    ],
+    "distinct_initial_positions": 2
+  },
+  {
+    "graph": "com-LiveJournal",
+    "seed": 0,
+    "pivots": [
+      50,
+      100
+    ],
+    "distinct_initial_positions": 2
+  },
+  {
+    "graph": "com-LiveJournal",
+    "seed": 1,
+    "pivots": [
+      50,
+      100
+    ],
+    "distinct_initial_positions": 2
+  },
+  {
+    "graph": "com-LiveJournal",
+    "seed": 2,
+    "pivots": [
+      100,
+      50
+    ],
+    "distinct_initial_positions": 2
+  },
+  {
+    "graph": "com-LiveJournal",
+    "seed": 3,
+    "pivots": [
+      100,
+      50
+    ],
+    "distinct_initial_positions": 2
+  },
+  {
+    "graph": "com-LiveJournal",
+    "seed": 4,
+    "pivots": [
+      50,
+      100
+    ],
+    "distinct_initial_positions": 2
+  }
+]

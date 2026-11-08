@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/baseline-sparse-sgd-non-gpu/target/release/baseline-sparse-sgd-non-gpu",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/sparse_only/p2p-Gnutella31.mtx",
+    "--run-id",
+    "v5-comparison-p2p-Gnutella31-sparse_sgd-tfixed-s3-r2",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "3",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-p2p-Gnutella31-sparse_sgd-tfixed-s3-r2",
+    "--pivots",
+    "200"
+  ],
+  "environment": {
+    "SGD_STRESS_SAMPLES": "256",
+    "SGD_GPU_TIMESTAMPS": "0"
+  },
+  "started_at": "2026-11-06T08:15:39+09:00",
+  "memory_before": {
+    "available_bytes": 12150325248,
+    "used_bytes": 11376508928,
+    "swap_used_bytes": 2044264448,
+    "swap_in_bytes": 191097012224,
+    "swap_out_bytes": 2337357824
+  },
+  "warmup": false
+}

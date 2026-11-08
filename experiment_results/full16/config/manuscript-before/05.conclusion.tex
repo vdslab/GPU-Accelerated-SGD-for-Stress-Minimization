@@ -1,0 +1,8 @@
+% !TeX root = ../main.tex
+\section{Conclusion}
+\label{sec:conclusion}
+Separating one-sided pivot updates from two-sided updates let RoundRobin Sparse SGD shorten iterations on all 37 comparable graphs while keeping median final full stress within 5\% above the sequential CPU baseline on 36. The median algorithm speedup was $3.77\times$ once preprocessing and setup were included. At 40 pivots the method also completed a layout of 11.55 million vertices in 80.32 s on one Apple M4 Pro.
+
+For Full SGD, tiling reduced iteration time on all 19 comparable graphs, but only 36 of 60 diagnostic runs reached the same-seed quality target within 15 iterations. Tile size therefore matters for the stress obtained under a fixed iteration budget. On the Apple M4 Pro laptop GPU, all ten \graph{fe_4elt2} runs reached the target, with median time to attainment falling from 11.593 to 1.124 seconds. None of the ten \graph{wiki-Vote} runs reached it. For applications with a quality threshold, time to that threshold is therefore more informative than iteration time alone.
+
+A GPU with more parallel execution units could process more independent pairs concurrently when a round contains enough work to occupy them. Dependencies between successive rounds still impose synchronization, and faster kernels leave preprocessing costs in place. Testing this prediction requires measurements on additional GPUs and a same-device comparison with destination-grouped updates~\cite{ref26}.

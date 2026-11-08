@@ -1,0 +1,17 @@
+{
+  "at": "2026-11-07T14:28:14+09:00",
+  "status": "passed",
+  "input_records": 6380,
+  "successful_records": 6160,
+  "unexecuted_gpu_limit": 220,
+  "matched_normal_gpu_runs": 2820,
+  "matched_tile_gpu_runs": 1650,
+  "large_gpu_runs_without_cpu_reference": 130,
+  "summary_groups": 472,
+  "formula": "gpu_prepare_time_ms + sgd_time_ms + readback_time_ms; alternative also adds upload_time_ms; CPU baseline=sgd_time_ms",
+  "aggregation": "Per-run sums and paired ratios first, median of repetitions per seed, then median/min/max of five seeds",
+  "plots_created": 0,
+  "new_measurements": 0,
+  "csv_formula_check_successes": 6160,
+  "original_sgd_baseline_reproduced": true
+}

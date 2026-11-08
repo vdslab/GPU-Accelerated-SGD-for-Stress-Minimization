@@ -1,0 +1,26 @@
+{
+  "stage": "tile",
+  "graph": "p2p-Gnutella08",
+  "method": "rr_sgd",
+  "tile_size": 1,
+  "seed": 999,
+  "repetition": 0,
+  "run_id": "warmup-2026-11-06T025702_0900-p2p-Gnutella08-rr_sgd-t1",
+  "binary_sha256": "ff1c31d7360d0588d9151d9008c582a30807140bb5e952a1708c0cb63e89ee8b",
+  "status": "error",
+  "process_wall_seconds": 1.4859750409959815,
+  "peak_rss_bytes": 1582153728,
+  "memory_after": {
+    "available_bytes": 11229855744,
+    "used_bytes": 12137562112,
+    "swap_used_bytes": 2715418624,
+    "swap_in_bytes": 173186285568,
+    "swap_out_bytes": 2078474240
+  },
+  "completed_at": "2026-11-06T03:09:43+09:00",
+  "warmup": true,
+  "error": "RunnerError('process exit code 101')",
+  "archive_manifest_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/warmups/warmup-2026-11-06T025702_0900-p2p-Gnutella08-rr_sgd-t1/artifact-archive.json",
+  "archive_seconds": 0.001124832997447811,
+  "archive_status": "success"
+}

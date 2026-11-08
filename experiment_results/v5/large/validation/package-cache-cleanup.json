@@ -1,0 +1,16 @@
+{
+  "at": "2026-11-06T20:37:43+09:00",
+  "reason": "Retain all inputs/results and Codex caches; reclaim regenerable package/updater caches",
+  "removed": [
+    "/Users/kose/Library/Caches/Cypress",
+    "/Users/kose/Library/Caches/Yarn",
+    "/Users/kose/Library/Caches/pip",
+    "/Users/kose/Library/Caches/typescript",
+    "/Users/kose/Library/Caches/pnpm",
+    "/Users/kose/Library/Caches/Homebrew",
+    "/Users/kose/Library/Caches/notion-updater",
+    "/Users/kose/Library/Caches/gather-electron-updater"
+  ],
+  "free_before": 13077708800,
+  "free_after": 16027103232
+}

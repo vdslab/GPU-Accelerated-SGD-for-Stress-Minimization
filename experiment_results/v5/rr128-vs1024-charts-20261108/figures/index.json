@@ -1,0 +1,243 @@
+{
+  "overview": [
+    {
+      "name": "full-pergraph-sgd-time",
+      "title": "Full: T=W128 vs T=W1024 — Mean elapsed time per SGD iteration (ms)"
+    },
+    {
+      "name": "full-pergraph-total-time",
+      "title": "Full: T=W128 vs T=W1024 — Total compute, input to CPU coordinates (s)"
+    },
+    {
+      "name": "full-pergraph-sgd-speedup",
+      "title": "Full: T=W128 vs T=W1024 — SGD time1024 / time128 (higher = 128 faster)"
+    },
+    {
+      "name": "full-pergraph-stress-ratio",
+      "title": "Full: T=W128 vs T=W1024 — Final Stress128 / Stress1024 (lower = 128 better)"
+    },
+    {
+      "name": "sparse-pergraph-sgd-time",
+      "title": "Sparse: W128 vs W1024, p=200 (3 matched graphs only) — Mean elapsed time per SGD iteration (ms)"
+    },
+    {
+      "name": "sparse-pergraph-total-time",
+      "title": "Sparse: W128 vs W1024, p=200 (3 matched graphs only) — Total compute, input to CPU coordinates (s)"
+    },
+    {
+      "name": "sparse-pergraph-sgd-speedup",
+      "title": "Sparse: W128 vs W1024, p=200 (3 matched graphs only) — SGD time1024 / time128 (higher = 128 faster)"
+    },
+    {
+      "name": "sparse-pergraph-stress-ratio",
+      "title": "Sparse: W128 vs W1024, p=200 (3 matched graphs only) — Final Stress128 / Stress1024 (lower = 128 better)"
+    }
+  ],
+  "individual": [
+    {
+      "graph": "1138_bus",
+      "family": "full",
+      "name": "full-detail-1138_bus"
+    },
+    {
+      "graph": "3elt",
+      "family": "full",
+      "name": "full-detail-3elt"
+    },
+    {
+      "graph": "CA-GrQc",
+      "family": "full",
+      "name": "full-detail-CA-GrQc"
+    },
+    {
+      "graph": "EVA",
+      "family": "full",
+      "name": "full-detail-EVA"
+    },
+    {
+      "graph": "PGPgiantcompo",
+      "family": "full",
+      "name": "full-detail-PGPgiantcompo"
+    },
+    {
+      "graph": "USpowerGrid",
+      "family": "full",
+      "name": "full-detail-USpowerGrid"
+    },
+    {
+      "graph": "add20",
+      "family": "full",
+      "name": "full-detail-add20"
+    },
+    {
+      "graph": "adjnoun",
+      "family": "full",
+      "name": "full-detail-adjnoun"
+    },
+    {
+      "graph": "bcspwr10",
+      "family": "full",
+      "name": "full-detail-bcspwr10"
+    },
+    {
+      "graph": "bcsstk09",
+      "family": "full",
+      "name": "full-detail-bcsstk09"
+    },
+    {
+      "graph": "bcsstk15",
+      "family": "full",
+      "name": "full-detail-bcsstk15"
+    },
+    {
+      "graph": "bcsstk16",
+      "family": "full",
+      "name": "full-detail-bcsstk16"
+    },
+    {
+      "graph": "bcsstk17",
+      "family": "full",
+      "name": "full-detail-bcsstk17"
+    },
+    {
+      "graph": "ca-HepTh",
+      "family": "full",
+      "name": "full-detail-ca-HepTh"
+    },
+    {
+      "graph": "can_96",
+      "family": "full",
+      "name": "full-detail-can_96"
+    },
+    {
+      "graph": "celegansneural",
+      "family": "full",
+      "name": "full-detail-celegansneural"
+    },
+    {
+      "graph": "data",
+      "family": "full",
+      "name": "full-detail-data"
+    },
+    {
+      "graph": "dolphins",
+      "family": "full",
+      "name": "full-detail-dolphins"
+    },
+    {
+      "graph": "dwt_1005",
+      "family": "full",
+      "name": "full-detail-dwt_1005"
+    },
+    {
+      "graph": "dwt_198",
+      "family": "full",
+      "name": "full-detail-dwt_198"
+    },
+    {
+      "graph": "dwt_2680",
+      "family": "full",
+      "name": "full-detail-dwt_2680"
+    },
+    {
+      "graph": "dwt_419",
+      "family": "full",
+      "name": "full-detail-dwt_419"
+    },
+    {
+      "graph": "dwt_72",
+      "family": "full",
+      "name": "full-detail-dwt_72"
+    },
+    {
+      "graph": "dwt_758",
+      "family": "full",
+      "name": "full-detail-dwt_758"
+    },
+    {
+      "graph": "email",
+      "family": "full",
+      "name": "full-detail-email"
+    },
+    {
+      "graph": "fe_4elt2",
+      "family": "full",
+      "name": "full-detail-fe_4elt2"
+    },
+    {
+      "graph": "grid17",
+      "family": "full",
+      "name": "full-detail-grid17"
+    },
+    {
+      "graph": "jazz",
+      "family": "full",
+      "name": "full-detail-jazz"
+    },
+    {
+      "graph": "karate",
+      "family": "full",
+      "name": "full-detail-karate"
+    },
+    {
+      "graph": "lesmis",
+      "family": "full",
+      "name": "full-detail-lesmis"
+    },
+    {
+      "graph": "mesh3e1",
+      "family": "full",
+      "name": "full-detail-mesh3e1"
+    },
+    {
+      "graph": "netscience",
+      "family": "full",
+      "name": "full-detail-netscience"
+    },
+    {
+      "graph": "p2p-Gnutella08",
+      "family": "full",
+      "name": "full-detail-p2p-Gnutella08"
+    },
+    {
+      "graph": "polblogs",
+      "family": "full",
+      "name": "full-detail-polblogs"
+    },
+    {
+      "graph": "polbooks",
+      "family": "full",
+      "name": "full-detail-polbooks"
+    },
+    {
+      "graph": "uk",
+      "family": "full",
+      "name": "full-detail-uk"
+    },
+    {
+      "graph": "wiki-Vote",
+      "family": "full",
+      "name": "full-detail-wiki-Vote"
+    },
+    {
+      "graph": "yeast",
+      "family": "full",
+      "name": "full-detail-yeast"
+    },
+    {
+      "graph": "coPapersCiteseer",
+      "family": "sparse",
+      "name": "sparse-detail-coPapersCiteseer"
+    },
+    {
+      "graph": "la2010",
+      "family": "sparse",
+      "name": "sparse-detail-la2010"
+    },
+    {
+      "graph": "luxembourg_osm",
+      "family": "sparse",
+      "name": "sparse-detail-luxembourg_osm"
+    }
+  ]
+}

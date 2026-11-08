@@ -1,0 +1,27 @@
+{
+  "command": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/sparse-sgd-gpu",
+    "--run-id",
+    "sampled-path8001",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/validation/plan-contract-20261106/path8001.mtx",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.10000000000000001",
+    "--seed",
+    "0",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/validation/plan-contract-20261106/sampled-path8001",
+    "--run-mode",
+    "benchmark",
+    "--pivots",
+    "200"
+  ],
+  "requested_env": {
+    "SGD_STRESS_SAMPLES": "256",
+    "SGD_STRESS_SEED": "20261106"
+  }
+}

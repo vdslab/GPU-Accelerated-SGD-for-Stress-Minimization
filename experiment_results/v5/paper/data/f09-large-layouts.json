@@ -1,0 +1,42 @@
+[
+  {
+    "graph": "auto",
+    "pivots": 1000,
+    "seed": 0,
+    "vertex_stride": 5,
+    "edge_stride": 67,
+    "vertices_drawn": 89739,
+    "edges_drawn": 49472,
+    "rule": "Every ceil(n/100000)-th vertex and ceil(m/50000)-th edge in native order; edge endpoints use all coordinates. Independent full extents per graph. No cropping."
+  },
+  {
+    "graph": "Flan_1565",
+    "pivots": 200,
+    "seed": 0,
+    "vertex_stride": 16,
+    "edge_stride": 1127,
+    "vertices_drawn": 97800,
+    "edges_drawn": 49956,
+    "rule": "Every ceil(n/100000)-th vertex and ceil(m/50000)-th edge in native order; edge endpoints use all coordinates. Independent full extents per graph. No cropping."
+  },
+  {
+    "graph": "com-Orkut",
+    "pivots": 100,
+    "seed": 0,
+    "vertex_stride": 31,
+    "edge_stride": 2344,
+    "vertices_drawn": 99111,
+    "edges_drawn": 49994,
+    "rule": "Every ceil(n/100000)-th vertex and ceil(m/50000)-th edge in native order; edge endpoints use all coordinates. Independent full extents per graph. No cropping."
+  },
+  {
+    "graph": "great-britain_osm",
+    "pivots": 50,
+    "seed": 0,
+    "vertex_stride": 78,
+    "edge_stride": 164,
+    "vertices_drawn": 99152,
+    "edges_drawn": 49735,
+    "rule": "Every ceil(n/100000)-th vertex and ceil(m/50000)-th edge in native order; edge endpoints use all coordinates. Independent full extents per graph. No cropping."
+  }
+]

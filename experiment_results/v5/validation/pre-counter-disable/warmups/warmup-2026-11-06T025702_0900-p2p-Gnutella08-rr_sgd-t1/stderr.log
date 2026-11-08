@@ -1,0 +1,27 @@
+[2026-11-05T18:09:42Z ERROR wgpu_hal::metal::device] Failed to create counter sample buffer: "Cannot allocate sample buffer"
+
+thread 'main' (2210281) panicked at /Users/kose/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-27.0.1/src/backend/wgpu_core.rs:2169:18:
+Error in Buffer::get_mapped_range: Validation Error
+
+Caused by:
+  Buffer with 'download' label has been destroyed
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+        1.29 real         1.14 user         0.14 sys
+          1582153728  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              135144  page reclaims
+                   0  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                   0  voluntary context switches
+                  96  involuntary context switches
+         11577369975  instructions retired
+          5529844940  cycles elapsed
+          1154811416  peak memory footprint

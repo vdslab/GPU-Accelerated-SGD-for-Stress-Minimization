@@ -1,0 +1,38 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-jazz-atomic_sparse_sgd-tfixed-s4-r2/atomic-sparse-sgd-jazz-v5-comparison-jazz-atomic_sparse_sgd-tfixed-s4-r2.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-jazz-atomic_sparse_sgd-tfixed-s4-r2/atomic-sparse-sgd-jazz-v5-comparison-jazz-atomic_sparse_sgd-tfixed-s4-r2.final.txt.gz",
+      "original_sha256": "8d8b747c7a2d237841c6224532205d0ad7c3894d99ddada9bd192e9771151186",
+      "decompressed_sha256": "8d8b747c7a2d237841c6224532205d0ad7c3894d99ddada9bd192e9771151186",
+      "compressed_sha256": "07d9acd76cfe57c2c09c68b93cca452d40010c052edf25b19d097cf64cdf69a7",
+      "original_bytes": 27755,
+      "compressed_bytes": 11657,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-jazz-atomic_sparse_sgd-tfixed-s4-r2/atomic-sparse-sgd-jazz-v5-comparison-jazz-atomic_sparse_sgd-tfixed-s4-r2.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-jazz-atomic_sparse_sgd-tfixed-s4-r2/atomic-sparse-sgd-jazz-v5-comparison-jazz-atomic_sparse_sgd-tfixed-s4-r2.initial.txt.gz",
+      "original_sha256": "07906ce4e9e47aa9c496304b1fab0f3bae15deec455ba5ee4ebdfeef764c816f",
+      "decompressed_sha256": "07906ce4e9e47aa9c496304b1fab0f3bae15deec455ba5ee4ebdfeef764c816f",
+      "compressed_sha256": "339dcf356ad5fd70da642856463cccc704403e28b16c5ecfdea988809e6576ec",
+      "original_bytes": 28028,
+      "compressed_bytes": 11735,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-jazz-atomic_sparse_sgd-tfixed-s4-r2/atomic-sparse-sgd-jazz-v5-comparison-jazz-atomic_sparse_sgd-tfixed-s4-r2.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-jazz-atomic_sparse_sgd-tfixed-s4-r2/atomic-sparse-sgd-jazz-v5-comparison-jazz-atomic_sparse_sgd-tfixed-s4-r2.vertex-map.txt.gz",
+      "original_sha256": "3828032c0a7697762bf36378df3d2b39bf75fd39810d5260c5d8581d8be47d68",
+      "decompressed_sha256": "3828032c0a7697762bf36378df3d2b39bf75fd39810d5260c5d8581d8be47d68",
+      "compressed_sha256": "9b5c9bbd4c2b2c80d1cf7a41363b6e5b0a3bba28264ad861894645c583d75928",
+      "original_bytes": 1364,
+      "compressed_bytes": 651,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

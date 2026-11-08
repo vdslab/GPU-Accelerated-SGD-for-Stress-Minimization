@@ -1,0 +1,46 @@
+{
+  "format": "shared-gzip",
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/validation/preflight-rr_sparse_sgd-coPapersCiteseer-timestamps0/rr-sparse-sgd-coPapersCiteseer-preflight-rr_sparse_sgd-coPapersCiteseer-timestamps0.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/validation/preflight-rr_sparse_sgd-coPapersCiteseer-timestamps0/rr-sparse-sgd-coPapersCiteseer-preflight-rr_sparse_sgd-coPapersCiteseer-timestamps0.initial.shared.txt.gz",
+      "original_sha256": "47919c80f4c3f8bf4ea8a7795ad5ef5d3c9d8ead336ad0054c3f0a6093a39090",
+      "decompressed_sha256": "47919c80f4c3f8bf4ea8a7795ad5ef5d3c9d8ead336ad0054c3f0a6093a39090",
+      "original_bytes": 224476818,
+      "compressed_sha256": "2443fe727baa2a3a85583d2832e77e5ec6379a2bd3802191e26bf79a0f32a187",
+      "compressed_bytes": 54297792,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/shared-edges/rr_sparse_sgd/1d2f63ad71756124d9eab451ede52f36bcc6281d438836d5ba5ae69973e74603.edges-template.gz",
+      "shared_edge_sha256": "d6af24997318bee34ac8a6bf26feeea2e3ae7f2ba30d844592bf1d5c32dc8ed5",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/validation/preflight-rr_sparse_sgd-coPapersCiteseer-timestamps0/rr-sparse-sgd-coPapersCiteseer-preflight-rr_sparse_sgd-coPapersCiteseer-timestamps0.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/validation/preflight-rr_sparse_sgd-coPapersCiteseer-timestamps0/rr-sparse-sgd-coPapersCiteseer-preflight-rr_sparse_sgd-coPapersCiteseer-timestamps0.final.shared.txt.gz",
+      "original_sha256": "1662ce14a74a9672ed0d3ebb265eecbf3ff404e4d0dba5ebe468e63884b3a703",
+      "decompressed_sha256": "1662ce14a74a9672ed0d3ebb265eecbf3ff404e4d0dba5ebe468e63884b3a703",
+      "original_bytes": 223561352,
+      "compressed_sha256": "c9499fa4edca65cb504817d666fac1ef85804e161a40f07728c24dcf53bc7947",
+      "compressed_bytes": 54146994,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/shared-edges/rr_sparse_sgd/1d2f63ad71756124d9eab451ede52f36bcc6281d438836d5ba5ae69973e74603.edges-template.gz",
+      "shared_edge_sha256": "d6af24997318bee34ac8a6bf26feeea2e3ae7f2ba30d844592bf1d5c32dc8ed5",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/validation/preflight-rr_sparse_sgd-coPapersCiteseer-timestamps0/rr-sparse-sgd-coPapersCiteseer-preflight-rr_sparse_sgd-coPapersCiteseer-timestamps0.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/validation/preflight-rr_sparse_sgd-coPapersCiteseer-timestamps0/rr-sparse-sgd-coPapersCiteseer-preflight-rr_sparse_sgd-coPapersCiteseer-timestamps0.vertex-map.txt.gz",
+      "original_sha256": "31f2a33986306445f641802e92932fe93b8e7e285297d9255f47fca78d5d4123",
+      "original_bytes": 5855208,
+      "compressed_sha256": "9e4f56b244aa8ee944e81785ef8b0a0bef8bfc561aa20cb8a6f614e475f633b5",
+      "compressed_bytes": 1924111,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

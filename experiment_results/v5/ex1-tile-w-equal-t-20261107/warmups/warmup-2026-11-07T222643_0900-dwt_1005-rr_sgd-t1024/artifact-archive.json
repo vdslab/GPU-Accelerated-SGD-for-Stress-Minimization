@@ -1,0 +1,28 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex1-tile-w-equal-t-20261107/warmups/warmup-2026-11-07T222643_0900-dwt_1005-rr_sgd-t1024/rr-sgd-dwt_1005-warmup-2026-11-07T222643_0900-dwt_1005-rr_sgd-t1024.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex1-tile-w-equal-t-20261107/warmups/warmup-2026-11-07T222643_0900-dwt_1005-rr_sgd-t1024/rr-sgd-dwt_1005-warmup-2026-11-07T222643_0900-dwt_1005-rr_sgd-t1024.final.txt.gz",
+      "original_sha256": "78c1de01a67d4f62bcc891dc3ed9f20ae16a5838e0d25e5a7ba1648e9ba01357",
+      "decompressed_sha256": "78c1de01a67d4f62bcc891dc3ed9f20ae16a5838e0d25e5a7ba1648e9ba01357",
+      "compressed_sha256": "febc6117dbbfb665f40d2ad6afc87439a86f694c3291e5b51b449bc3662d0b7b",
+      "original_bytes": 97832,
+      "compressed_bytes": 38230,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex1-tile-w-equal-t-20261107/warmups/warmup-2026-11-07T222643_0900-dwt_1005-rr_sgd-t1024/rr-sgd-dwt_1005-warmup-2026-11-07T222643_0900-dwt_1005-rr_sgd-t1024.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex1-tile-w-equal-t-20261107/warmups/warmup-2026-11-07T222643_0900-dwt_1005-rr_sgd-t1024/rr-sgd-dwt_1005-warmup-2026-11-07T222643_0900-dwt_1005-rr_sgd-t1024.initial.txt.gz",
+      "original_sha256": "1906dce2238702a9eb3c3ff8017e43e69604da14a8d1dbf648643245386f2552",
+      "decompressed_sha256": "1906dce2238702a9eb3c3ff8017e43e69604da14a8d1dbf648643245386f2552",
+      "compressed_sha256": "14ee89450f9573ddf5b951e752fec53424e7d9b29ce082ef73f7409e288d0cd0",
+      "original_bytes": 100359,
+      "compressed_bytes": 38942,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

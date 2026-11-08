@@ -1,0 +1,37 @@
+{
+  "main.pdf": "526190405827b91bca7d90d758300397c733afee28721bc8d466205b67026bd1",
+  "section/00.abstract.tex": "ff1b339f82e4134189ac1fe13f8d0414c1bd9ccf269f79b8d8e27e46779cc935",
+  "section/01.introduction.tex": "0e76334113f90271408fdf94f473c8ebc59ad4cff0b84fcfbd1c53e8597b36bd",
+  "section/03.proposed_method.tex": "824f069de5109f9a04b88e933ad3742edb6d7a3ecfea4d97f414001ac4d22773",
+  "section/04.experiment.tex": "131b30b0a3eec491d98a4798f93fcb34f0bb5d56800997df79a1c6796666ba5b",
+  "section/05.conclusion.tex": "857ae1fda0806657c25198f440760556ed923147e904346d27b4d58fbc1f3982",
+  "figures/fig02_rr_full.pdf": "5928d52d2740a19265568121c592bd8b16dc27c6c336d244eb3ede0993b0bf67",
+  "figures/fig05_comparison.pdf": "8abc87010500b9850e48ae0dea0a96d9f5442e95589d7249433ba0a18f981216",
+  "figures/full_time_to_quality.pdf": "d35757a3450bcfc7f68a715e181bdf3ffe97cc71c4ff23f962a1ac874bebc108",
+  "figures/full_degree_scaling.pdf": "be9c915ae20708e9d2ca8ee393f3da98de09ba4d2b5852c7365f6661a064dc08",
+  "esa_japanese_url": "https://vdslab.esa.io/posts/9028",
+  "esa_japanese_revision": 68,
+  "esa_worklog_url": "https://vdslab.esa.io/posts/9051",
+  "esa_worklog_revision": 8,
+  "checks": {
+    "production_unit_tests": 6,
+    "json_integration_tests": 1,
+    "make_check": "passed",
+    "render_review": "passed",
+    "abstract_related_changes_only": "passed; non-abstract section and figure hashes unchanged"
+  },
+  "abstract_update": {
+    "date": "2026-11-05",
+    "pdf_url": "https://esa-storage-tokyo.s3-ap-northeast-1.amazonaws.com/uploads/production/attachments/8704/2026/11/05/164555/38292f28-6df1-4f7c-bf31-ef1b1d74db9f.pdf",
+    "make_check": "passed",
+    "render_review": "passed; 9 pages",
+    "previous_manifest": "abstract-update/manifest-before.json",
+    "rendered": "abstract-update/rendered"
+  },
+  "abstract_flow_update": {
+    "order": "Full speed/stress; Sparse speed/stress; 40-pivot road networks",
+    "pdf_url": "https://esa-storage-tokyo.s3-ap-northeast-1.amazonaws.com/uploads/production/attachments/8704/2026/11/05/164555/82fc6170-f311-4346-9122-88521410f521.pdf",
+    "checks": "make check and 9-page render review passed",
+    "body_and_figures_unchanged": true
+  }
+}

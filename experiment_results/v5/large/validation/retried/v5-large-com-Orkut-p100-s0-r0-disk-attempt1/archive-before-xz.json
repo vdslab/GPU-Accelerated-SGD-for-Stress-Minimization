@@ -1,0 +1,33 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-com-Orkut-p100-s0-r0/rr-sparse-sgd-com-Orkut-v5-large-com-Orkut-p100-s0-r0.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-com-Orkut-p100-s0-r0/rr-sparse-sgd-com-Orkut-v5-large-com-Orkut-p100-s0-r0.final.txt.gz",
+      "original_sha256": "365a260a5a2450702c94699b740a7c65c1000fa94c57b690ece39515c4de0a02",
+      "decompressed_sha256": "365a260a5a2450702c94699b740a7c65c1000fa94c57b690ece39515c4de0a02",
+      "compressed_sha256": "3cd047532697365b88a49166de3f278ecb563d23929b784798d232bcadfcd016",
+      "original_bytes": 1840248742,
+      "compressed_bytes": 572925671,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-com-Orkut-p100-s0-r0/rr-sparse-sgd-com-Orkut-v5-large-com-Orkut-p100-s0-r0.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-com-Orkut-p100-s0-r0/rr-sparse-sgd-com-Orkut-v5-large-com-Orkut-p100-s0-r0.vertex-map.txt.gz",
+      "original_sha256": "99c3f8e98e9ed24e8014409bbebf7d74cd6f4dfaf40ff9a915019807b667ea64",
+      "decompressed_sha256": "99c3f8e98e9ed24e8014409bbebf7d74cd6f4dfaf40ff9a915019807b667ea64",
+      "compressed_sha256": "f93334695ad7febcac8335593f01a4144c2b89ba386f1c0b633b7e48aa2d1b36",
+      "original_bytes": 46936836,
+      "compressed_bytes": 13817456,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/raw/v5-large-com-Orkut-p100-s0-r0/rr-sparse-sgd-com-Orkut-v5-large-com-Orkut-p100-s0-r0.initial.txt",
+      "error": "OSError(28, 'No space left on device')"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/baseline-sparse-sgd-non-gpu/target/release/baseline-sparse-sgd-non-gpu",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/sparse_only/web-NotreDame.mtx",
+    "--run-id",
+    "v5-comparison-web-NotreDame-sparse_sgd-tfixed-s4-r0",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "4",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/raw/comparison/v5-comparison-web-NotreDame-sparse_sgd-tfixed-s4-r0",
+    "--pivots",
+    "200"
+  ],
+  "environment": {
+    "SGD_STRESS_SAMPLES": "256",
+    "SGD_GPU_TIMESTAMPS": "0"
+  },
+  "started_at": "2026-11-06T11:22:55+09:00",
+  "memory_before": {
+    "available_bytes": 10562093056,
+    "used_bytes": 9535438848,
+    "swap_used_bytes": 2019098624,
+    "swap_in_bytes": 216373575680,
+    "swap_out_bytes": 2640478208
+  },
+  "warmup": false
+}

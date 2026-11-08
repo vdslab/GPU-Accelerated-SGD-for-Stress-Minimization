@@ -1,0 +1,36 @@
+"""Keep the requested review note limited to figures and short descriptions."""
+import re
+
+from run_v5 import ROOT, VAULT, now, save
+
+
+def main():
+    note=VAULT/'論文図表_確認用.md'
+    previous=note.read_text()
+    figures=[
+        ('平均1反復の実行時間','横軸は頂点数、縦軸はSGD15反復の経過時間÷15（ms）。CPUは×、Atomicは△、RoundRobinは○。点は5seed中央値、縦棒は最小〜最大。測定点は線で結ばない。','v5_図表/paper/f00-iteration-runtime.png'),
+        ('Atomicの仕組み','共有する頂点への更新をロックで排他する説明図。灰色の待ちは概念図で、実測時間ではない。','v5_図表/論文確認/method-atomic.pdf'),
+        ('RoundRobin Full SGDの仕組み','競合しないタイル対を並列に処理する仕組み。末尾のsegment分割の説明は旧条件なので修正対象。','v5_図表/論文確認/method-full-current-manuscript.png'),
+        ('RoundRobin Sparse SGDの仕組み','片側更新と両側更新を分ける仕組み。末尾の4分割の説明は旧条件なので修正対象。','v5_図表/論文確認/method-sparse-current-manuscript.png'),
+        ('タイルサイズと時間・品質','10グラフでタイルサイズによるSGD時間と最終Stressの変化を比較。点線は通常比較で採用したT1024。','v5_図表/paper/f01-tile.png'),
+        ('最終Stressの比較','同族CPUに対する最終Stress比。点は5seed中央値、棒は最小〜最大で、1より大きいとStressが増加。','v5_図表/paper/f03-quality.png'),
+        ('配置の比較','品質差が大きかった入力のCPU・Atomic・RoundRobinの配置。seed0・1回目を固定し、同じ行では共通スケールを使用。','v5_図表/paper/f08-layout-comparison.png'),
+        ('大規模実験の完了可否','各グラフ・pivot数での5seedの成功状況。GPU limitはGPU上限による未実行で、測定中の失敗とは区別。','v5_図表/paper/f06-feasibility.png'),
+        ('大規模のpivot数と時間・品質・メモリ','各グラフの最大成功pivot数を基準に、総計算時間・Stressの対応seed比とRSSを比較。点は中央値、棒は最小〜最大。','v5_図表/paper/f07-large-pivots.png'),
+        ('大規模グラフの描画例','各グラフで5seed成功した最大pivot数のseed0。頂点・辺は間引いて表示し、グラフ間のスケールは独立。','v5_図表/paper/f09-large-layouts.png'),
+        ('補足：SGDと総計算時間の速度比','CPU時間/GPU時間を比較し、1より上で高速。これは速度比の図で、平均1反復の絶対時間を示す主図とは別。','v5_図表/paper/f02-runtime.png'),
+        ('補足：同seed内のStressの再現性','同じseedで3回実行したときのStress変動の累積分布。ゼロは3回の値が一致したことを表す。','v5_図表/paper/f04-repeatability.png'),
+        ('補足：総計算時間に占めるSGDの割合','入力・前処理等を含む総計算時間のうち、SGD経過時間が占める割合を比較。純GPU時間の割合ではない。','v5_図表/paper/f05-bottleneck.png'),
+    ]
+    content='---\ntags: [area/大学院研究, 論文, 図表]\nupdated: '+now()[:10]+'\nstatus: 確認用\n---\n\n# 論文図表・確認用\n\n速度比較は点と縦の誤差棒で表示。記号・誤差棒の表現は[Zhengら（2019）の図2・7・8](https://arxiv.org/pdf/1710.04626)を参考にした。方式への記号の割り当ては本研究用。\n\n'
+    for title,description,path in figures:
+        assert (VAULT/path).is_file(),path
+        content+=f'## {title}\n\n{description}\n\n![[{path}]]\n\n'
+    assert set(re.findall(r'!\[\[([^\]]+)\]\]',previous)) <= {f[2] for f in figures}
+    assert not any(line.startswith('|') or line.startswith('- ') for line in content.splitlines())
+    note.write_text(content)
+    save(ROOT/'experiment_results/v5/paper/review-note-style.json',dict(at=now(),note=str(note),style='Figures and short descriptions only',figures=len(figures),result_tables=0,result_lists=0,new_charts=1,all_embed_paths_verified=True))
+    print(note)
+
+
+if __name__=='__main__':main()

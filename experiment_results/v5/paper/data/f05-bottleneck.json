@@ -1,0 +1,2258 @@
+[
+  {
+    "graph": "karate",
+    "nodes": 34,
+    "method": "sgd",
+    "median": 39.089426520284476,
+    "min": 37.94235959061052,
+    "max": 39.778895638409836
+  },
+  {
+    "graph": "dolphins",
+    "nodes": 62,
+    "method": "sgd",
+    "median": 49.93857969699318,
+    "min": 48.58473044253486,
+    "max": 50.05255079006773
+  },
+  {
+    "graph": "dwt_198",
+    "nodes": 72,
+    "method": "sgd",
+    "median": 56.88000318610857,
+    "min": 56.042812592083294,
+    "max": 58.67829100488504
+  },
+  {
+    "graph": "dwt_72",
+    "nodes": 72,
+    "method": "sgd",
+    "median": 61.472794995633656,
+    "min": 60.58259272860814,
+    "max": 62.98520130576713
+  },
+  {
+    "graph": "lesmis",
+    "nodes": 77,
+    "method": "sgd",
+    "median": 59.00140800887119,
+    "min": 57.828289178266736,
+    "max": 59.2336551724138
+  },
+  {
+    "graph": "can_96",
+    "nodes": 96,
+    "method": "sgd",
+    "median": 65.93595323156869,
+    "min": 65.77149110152861,
+    "max": 66.26425191711536
+  },
+  {
+    "graph": "polbooks",
+    "nodes": 105,
+    "method": "sgd",
+    "median": 57.670521595468486,
+    "min": 57.422570309718765,
+    "max": 58.41596902976046
+  },
+  {
+    "graph": "adjnoun",
+    "nodes": 112,
+    "method": "sgd",
+    "median": 57.68984994963567,
+    "min": 56.956669714178936,
+    "max": 57.941362581733806
+  },
+  {
+    "graph": "jazz",
+    "nodes": 198,
+    "method": "sgd",
+    "median": 47.32843019014043,
+    "min": 47.05179552111105,
+    "max": 48.99951352247152
+  },
+  {
+    "graph": "grid17",
+    "nodes": 289,
+    "method": "sgd",
+    "median": 82.02672141376327,
+    "min": 81.8859710592474,
+    "max": 82.62742866433624
+  },
+  {
+    "graph": "mesh3e1",
+    "nodes": 289,
+    "method": "sgd",
+    "median": 79.26470391358183,
+    "min": 79.0125306303607,
+    "max": 79.41496429268489
+  },
+  {
+    "graph": "celegansneural",
+    "nodes": 297,
+    "method": "sgd",
+    "median": 62.26687637805977,
+    "min": 61.6868253131469,
+    "max": 64.11786020190453
+  },
+  {
+    "graph": "netscience",
+    "nodes": 379,
+    "method": "sgd",
+    "median": 82.45478855190089,
+    "min": 82.39428115214618,
+    "max": 82.5904035480519
+  },
+  {
+    "graph": "dwt_419",
+    "nodes": 419,
+    "method": "sgd",
+    "median": 74.531782832506,
+    "min": 74.47538118347488,
+    "max": 74.63916423563913
+  },
+  {
+    "graph": "dwt_758",
+    "nodes": 758,
+    "method": "sgd",
+    "median": 82.240669667169,
+    "min": 82.1809702219598,
+    "max": 82.6712107865082
+  },
+  {
+    "graph": "dwt_1005",
+    "nodes": 1005,
+    "method": "sgd",
+    "median": 78.97677463164929,
+    "min": 78.57597010254405,
+    "max": 80.07477706711994
+  },
+  {
+    "graph": "bcsstk09",
+    "nodes": 1083,
+    "method": "sgd",
+    "median": 73.78136592666698,
+    "min": 72.94982103918548,
+    "max": 75.80249220213722
+  },
+  {
+    "graph": "email",
+    "nodes": 1133,
+    "method": "sgd",
+    "median": 68.27790544372395,
+    "min": 67.70666619584343,
+    "max": 69.62711677507492
+  },
+  {
+    "graph": "1138_bus",
+    "nodes": 1138,
+    "method": "sgd",
+    "median": 86.34595017206674,
+    "min": 86.06799863359839,
+    "max": 86.5641543352508
+  },
+  {
+    "graph": "polblogs",
+    "nodes": 1222,
+    "method": "sgd",
+    "median": 58.3216652763767,
+    "min": 57.448616367517346,
+    "max": 59.29647511351547
+  },
+  {
+    "graph": "yeast",
+    "nodes": 2224,
+    "method": "sgd",
+    "median": 79.49358842602106,
+    "min": 79.47510180222113,
+    "max": 80.07443185096452
+  },
+  {
+    "graph": "add20",
+    "nodes": 2395,
+    "method": "sgd",
+    "median": 88.59204242390734,
+    "min": 88.4961882568181,
+    "max": 89.02669150568269
+  },
+  {
+    "graph": "dwt_2680",
+    "nodes": 2680,
+    "method": "sgd",
+    "median": 85.85703288241585,
+    "min": 85.33830732272956,
+    "max": 86.08441747070582
+  },
+  {
+    "graph": "data",
+    "nodes": 2851,
+    "method": "sgd",
+    "median": 86.71412630427793,
+    "min": 86.64377658800908,
+    "max": 87.01002587058235
+  },
+  {
+    "graph": "bcsstk15",
+    "nodes": 3942,
+    "method": "sgd",
+    "median": 74.98441075661438,
+    "min": 73.75960748258589,
+    "max": 75.81013439193072
+  },
+  {
+    "graph": "CA-GrQc",
+    "nodes": 4158,
+    "method": "sgd",
+    "median": 86.88855267671214,
+    "min": 85.8493442859485,
+    "max": 87.07687677463257
+  },
+  {
+    "graph": "EVA",
+    "nodes": 4475,
+    "method": "sgd",
+    "median": 94.5154053134956,
+    "min": 93.95443073456929,
+    "max": 94.65418525341421
+  },
+  {
+    "graph": "3elt",
+    "nodes": 4720,
+    "method": "sgd",
+    "median": 89.34313793940902,
+    "min": 88.44128533814697,
+    "max": 90.05869997350233
+  },
+  {
+    "graph": "bcsstk16",
+    "nodes": 4810,
+    "method": "sgd",
+    "median": 69.93965561259387,
+    "min": 68.33675427885477,
+    "max": 70.88143366258707
+  },
+  {
+    "graph": "uk",
+    "nodes": 4824,
+    "method": "sgd",
+    "median": 92.80036360911177,
+    "min": 92.3538225832176,
+    "max": 92.97666465454127
+  },
+  {
+    "graph": "USpowerGrid",
+    "nodes": 4941,
+    "method": "sgd",
+    "median": 93.43859395451,
+    "min": 93.3022369928904,
+    "max": 93.81271640079832
+  },
+  {
+    "graph": "bcspwr10",
+    "nodes": 5300,
+    "method": "sgd",
+    "median": 90.09201490551047,
+    "min": 89.71522175414614,
+    "max": 90.44326999648727
+  },
+  {
+    "graph": "p2p-Gnutella08",
+    "nodes": 6299,
+    "method": "sgd",
+    "median": 85.10525828423603,
+    "min": 84.685007148392,
+    "max": 85.38661152864375
+  },
+  {
+    "graph": "wiki-Vote",
+    "nodes": 7066,
+    "method": "sgd",
+    "median": 78.02842956256171,
+    "min": 77.29618688909318,
+    "max": 78.55980697944545
+  },
+  {
+    "graph": "ca-HepTh",
+    "nodes": 8638,
+    "method": "sgd",
+    "median": 85.87844587276278,
+    "min": 83.89684240899967,
+    "max": 86.04082109959167
+  },
+  {
+    "graph": "bcsstk17",
+    "nodes": 10456,
+    "method": "sgd",
+    "median": 76.44195014148738,
+    "min": 76.20850484513169,
+    "max": 77.59060218569479
+  },
+  {
+    "graph": "PGPgiantcompo",
+    "nodes": 10680,
+    "method": "sgd",
+    "median": 87.1254364935433,
+    "min": 87.05288242253005,
+    "max": 87.61463336942214
+  },
+  {
+    "graph": "fe_4elt2",
+    "nodes": 11143,
+    "method": "sgd",
+    "median": 90.401086397442,
+    "min": 90.22582854744,
+    "max": 90.89170446314327
+  },
+  {
+    "graph": "karate",
+    "nodes": 34,
+    "method": "atomic_sgd",
+    "median": 31.850773968717508,
+    "min": 26.50816705856666,
+    "max": 33.19025795156763
+  },
+  {
+    "graph": "dolphins",
+    "nodes": 62,
+    "method": "atomic_sgd",
+    "median": 46.766932928283204,
+    "min": 45.74992996203664,
+    "max": 52.43405080448955
+  },
+  {
+    "graph": "dwt_72",
+    "nodes": 72,
+    "method": "atomic_sgd",
+    "median": 48.2897179659986,
+    "min": 44.51588558823503,
+    "max": 50.76667512863292
+  },
+  {
+    "graph": "dwt_198",
+    "nodes": 72,
+    "method": "atomic_sgd",
+    "median": 46.34024525209984,
+    "min": 44.25905413673387,
+    "max": 49.65180510301846
+  },
+  {
+    "graph": "lesmis",
+    "nodes": 77,
+    "method": "atomic_sgd",
+    "median": 44.09198792807564,
+    "min": 42.49288997578223,
+    "max": 47.7358368015019
+  },
+  {
+    "graph": "can_96",
+    "nodes": 96,
+    "method": "atomic_sgd",
+    "median": 45.22689798195401,
+    "min": 44.11119321716874,
+    "max": 47.378335356741715
+  },
+  {
+    "graph": "polbooks",
+    "nodes": 105,
+    "method": "atomic_sgd",
+    "median": 46.144901428939505,
+    "min": 42.103354171394464,
+    "max": 47.54948276066474
+  },
+  {
+    "graph": "adjnoun",
+    "nodes": 112,
+    "method": "atomic_sgd",
+    "median": 49.20462623307609,
+    "min": 47.0214512526211,
+    "max": 50.17265743311098
+  },
+  {
+    "graph": "jazz",
+    "nodes": 198,
+    "method": "atomic_sgd",
+    "median": 65.2850569977881,
+    "min": 64.0768809528786,
+    "max": 65.72873389771416
+  },
+  {
+    "graph": "mesh3e1",
+    "nodes": 289,
+    "method": "atomic_sgd",
+    "median": 82.84046378597645,
+    "min": 82.29091968123382,
+    "max": 83.3495099648389
+  },
+  {
+    "graph": "grid17",
+    "nodes": 289,
+    "method": "atomic_sgd",
+    "median": 82.2516932307539,
+    "min": 82.2201026442075,
+    "max": 85.10231286024522
+  },
+  {
+    "graph": "celegansneural",
+    "nodes": 297,
+    "method": "atomic_sgd",
+    "median": 83.11771712827597,
+    "min": 83.0681419100836,
+    "max": 84.05498611898223
+  },
+  {
+    "graph": "netscience",
+    "nodes": 379,
+    "method": "atomic_sgd",
+    "median": 90.83990582079409,
+    "min": 90.49972788594344,
+    "max": 91.03702348984532
+  },
+  {
+    "graph": "dwt_419",
+    "nodes": 419,
+    "method": "atomic_sgd",
+    "median": 91.76841005123674,
+    "min": 91.35104969580352,
+    "max": 91.93004481382094
+  },
+  {
+    "graph": "dwt_758",
+    "nodes": 758,
+    "method": "atomic_sgd",
+    "median": 92.96920512737167,
+    "min": 92.76918529184643,
+    "max": 93.10751890581136
+  },
+  {
+    "graph": "dwt_1005",
+    "nodes": 1005,
+    "method": "atomic_sgd",
+    "median": 93.31003710951474,
+    "min": 92.74072909033013,
+    "max": 93.63281023185685
+  },
+  {
+    "graph": "bcsstk09",
+    "nodes": 1083,
+    "method": "atomic_sgd",
+    "median": 92.58281507994812,
+    "min": 92.26571588243588,
+    "max": 92.6132645860341
+  },
+  {
+    "graph": "email",
+    "nodes": 1133,
+    "method": "atomic_sgd",
+    "median": 91.67215945047194,
+    "min": 91.4979323443415,
+    "max": 91.9978237292858
+  },
+  {
+    "graph": "1138_bus",
+    "nodes": 1138,
+    "method": "atomic_sgd",
+    "median": 94.18350487530266,
+    "min": 93.41580186436998,
+    "max": 94.52124164034014
+  },
+  {
+    "graph": "polblogs",
+    "nodes": 1222,
+    "method": "atomic_sgd",
+    "median": 89.04405701972938,
+    "min": 88.55543777736412,
+    "max": 89.31917876151402
+  },
+  {
+    "graph": "yeast",
+    "nodes": 2224,
+    "method": "atomic_sgd",
+    "median": 87.80656372608398,
+    "min": 87.74648108461516,
+    "max": 87.99861564925267
+  },
+  {
+    "graph": "add20",
+    "nodes": 2395,
+    "method": "atomic_sgd",
+    "median": 91.10582228528854,
+    "min": 90.77419872391316,
+    "max": 91.1162162119749
+  },
+  {
+    "graph": "dwt_2680",
+    "nodes": 2680,
+    "method": "atomic_sgd",
+    "median": 88.64141951441951,
+    "min": 88.26626925222493,
+    "max": 88.80409547113229
+  },
+  {
+    "graph": "data",
+    "nodes": 2851,
+    "method": "atomic_sgd",
+    "median": 88.07937418782048,
+    "min": 87.83692363861478,
+    "max": 88.51546384061056
+  },
+  {
+    "graph": "bcsstk15",
+    "nodes": 3942,
+    "method": "atomic_sgd",
+    "median": 66.98329246157117,
+    "min": 66.63599999806253,
+    "max": 67.5836869576055
+  },
+  {
+    "graph": "CA-GrQc",
+    "nodes": 4158,
+    "method": "atomic_sgd",
+    "median": 77.5382638554472,
+    "min": 77.46030891758447,
+    "max": 78.01413098269285
+  },
+  {
+    "graph": "EVA",
+    "nodes": 4475,
+    "method": "atomic_sgd",
+    "median": 85.61248184707705,
+    "min": 84.89858450406103,
+    "max": 86.12505536576869
+  },
+  {
+    "graph": "3elt",
+    "nodes": 4720,
+    "method": "atomic_sgd",
+    "median": 77.49741104863902,
+    "min": 76.49447042402029,
+    "max": 77.7995978294977
+  },
+  {
+    "graph": "bcsstk16",
+    "nodes": 4810,
+    "method": "atomic_sgd",
+    "median": 51.24435063873747,
+    "min": 50.152264045613904,
+    "max": 51.90588689112865
+  },
+  {
+    "graph": "uk",
+    "nodes": 4824,
+    "method": "atomic_sgd",
+    "median": 81.20480759667049,
+    "min": 79.92144785990388,
+    "max": 81.62278666199708
+  },
+  {
+    "graph": "USpowerGrid",
+    "nodes": 4941,
+    "method": "atomic_sgd",
+    "median": 81.6657407435844,
+    "min": 80.4470689179902,
+    "max": 82.06774053979761
+  },
+  {
+    "graph": "bcspwr10",
+    "nodes": 5300,
+    "method": "atomic_sgd",
+    "median": 73.93502996466687,
+    "min": 73.81264022604246,
+    "max": 74.28171404705269
+  },
+  {
+    "graph": "p2p-Gnutella08",
+    "nodes": 6299,
+    "method": "atomic_sgd",
+    "median": 57.120543519079035,
+    "min": 56.91667238045958,
+    "max": 57.53943496562408
+  },
+  {
+    "graph": "wiki-Vote",
+    "nodes": 7066,
+    "method": "atomic_sgd",
+    "median": 43.09038325820261,
+    "min": 42.749012764442064,
+    "max": 43.75674090004167
+  },
+  {
+    "graph": "ca-HepTh",
+    "nodes": 8638,
+    "method": "atomic_sgd",
+    "median": 52.018964223499616,
+    "min": 51.76505163135982,
+    "max": 57.98060759338189
+  },
+  {
+    "graph": "bcsstk17",
+    "nodes": 10456,
+    "method": "atomic_sgd",
+    "median": 48.16966166324834,
+    "min": 47.85066781328009,
+    "max": 48.55059067520216
+  },
+  {
+    "graph": "PGPgiantcompo",
+    "nodes": 10680,
+    "method": "atomic_sgd",
+    "median": 63.92576570424566,
+    "min": 63.625533029925954,
+    "max": 64.38418406050626
+  },
+  {
+    "graph": "fe_4elt2",
+    "nodes": 11143,
+    "method": "atomic_sgd",
+    "median": 70.36359508579837,
+    "min": 70.11547687405641,
+    "max": 70.53570991962086
+  },
+  {
+    "graph": "karate",
+    "nodes": 34,
+    "method": "rr_sgd",
+    "median": 60.103665428368245,
+    "min": 59.289450005673224,
+    "max": 60.99428883689302
+  },
+  {
+    "graph": "dolphins",
+    "nodes": 62,
+    "method": "rr_sgd",
+    "median": 60.88853320814905,
+    "min": 60.51883354571813,
+    "max": 61.04641989025495
+  },
+  {
+    "graph": "dwt_72",
+    "nodes": 72,
+    "method": "rr_sgd",
+    "median": 54.193420979695965,
+    "min": 53.13596666773691,
+    "max": 59.26145798124428
+  },
+  {
+    "graph": "dwt_198",
+    "nodes": 72,
+    "method": "rr_sgd",
+    "median": 60.78290759826359,
+    "min": 60.553124221709574,
+    "max": 61.21622579082749
+  },
+  {
+    "graph": "lesmis",
+    "nodes": 77,
+    "method": "rr_sgd",
+    "median": 53.79146258112685,
+    "min": 53.236581645575924,
+    "max": 53.92246477500594
+  },
+  {
+    "graph": "can_96",
+    "nodes": 96,
+    "method": "rr_sgd",
+    "median": 53.990443524707544,
+    "min": 53.41536261154272,
+    "max": 54.034822586959066
+  },
+  {
+    "graph": "polbooks",
+    "nodes": 105,
+    "method": "rr_sgd",
+    "median": 53.819538604980075,
+    "min": 53.08871072763304,
+    "max": 53.879527676949685
+  },
+  {
+    "graph": "adjnoun",
+    "nodes": 112,
+    "method": "rr_sgd",
+    "median": 53.37858899166475,
+    "min": 53.02230283271427,
+    "max": 53.61818622979064
+  },
+  {
+    "graph": "jazz",
+    "nodes": 198,
+    "method": "rr_sgd",
+    "median": 50.90438668286455,
+    "min": 50.5417085307254,
+    "max": 55.58070281785581
+  },
+  {
+    "graph": "mesh3e1",
+    "nodes": 289,
+    "method": "rr_sgd",
+    "median": 56.75887298977247,
+    "min": 55.904052799912506,
+    "max": 57.06169588691739
+  },
+  {
+    "graph": "grid17",
+    "nodes": 289,
+    "method": "rr_sgd",
+    "median": 56.980983182672794,
+    "min": 56.70089031132018,
+    "max": 57.266269295250105
+  },
+  {
+    "graph": "celegansneural",
+    "nodes": 297,
+    "method": "rr_sgd",
+    "median": 53.9982504121906,
+    "min": 53.89713141561899,
+    "max": 54.39429093721437
+  },
+  {
+    "graph": "netscience",
+    "nodes": 379,
+    "method": "rr_sgd",
+    "median": 55.06310511093049,
+    "min": 54.852011120948916,
+    "max": 55.19287920034464
+  },
+  {
+    "graph": "dwt_419",
+    "nodes": 419,
+    "method": "rr_sgd",
+    "median": 52.42190057650497,
+    "min": 51.97507380463574,
+    "max": 52.701046425696624
+  },
+  {
+    "graph": "dwt_758",
+    "nodes": 758,
+    "method": "rr_sgd",
+    "median": 57.788290779385136,
+    "min": 55.77089434456835,
+    "max": 58.51095407319943
+  },
+  {
+    "graph": "dwt_1005",
+    "nodes": 1005,
+    "method": "rr_sgd",
+    "median": 53.92351710131545,
+    "min": 50.00343607098008,
+    "max": 56.62943139506155
+  },
+  {
+    "graph": "bcsstk09",
+    "nodes": 1083,
+    "method": "rr_sgd",
+    "median": 53.65128854854428,
+    "min": 52.964260992320234,
+    "max": 57.09132971353285
+  },
+  {
+    "graph": "email",
+    "nodes": 1133,
+    "method": "rr_sgd",
+    "median": 47.62247124755942,
+    "min": 46.20995657984338,
+    "max": 48.68470578561696
+  },
+  {
+    "graph": "1138_bus",
+    "nodes": 1138,
+    "method": "rr_sgd",
+    "median": 63.2262453087671,
+    "min": 62.176178596736044,
+    "max": 65.5579514898353
+  },
+  {
+    "graph": "polblogs",
+    "nodes": 1222,
+    "method": "rr_sgd",
+    "median": 36.82766092530584,
+    "min": 34.98735759293177,
+    "max": 39.033730331128126
+  },
+  {
+    "graph": "yeast",
+    "nodes": 2224,
+    "method": "rr_sgd",
+    "median": 35.28436180498936,
+    "min": 32.67306909199541,
+    "max": 38.50957050477803
+  },
+  {
+    "graph": "add20",
+    "nodes": 2395,
+    "method": "rr_sgd",
+    "median": 46.16004111239813,
+    "min": 44.2525046893104,
+    "max": 46.23412113277033
+  },
+  {
+    "graph": "dwt_2680",
+    "nodes": 2680,
+    "method": "rr_sgd",
+    "median": 36.745429630982535,
+    "min": 36.56542883099626,
+    "max": 37.053948744231576
+  },
+  {
+    "graph": "data",
+    "nodes": 2851,
+    "method": "rr_sgd",
+    "median": 39.59355313854817,
+    "min": 38.9501513484653,
+    "max": 42.82769405721969
+  },
+  {
+    "graph": "bcsstk15",
+    "nodes": 3942,
+    "method": "rr_sgd",
+    "median": 13.077130051806925,
+    "min": 12.27154967429973,
+    "max": 13.859714896871676
+  },
+  {
+    "graph": "CA-GrQc",
+    "nodes": 4158,
+    "method": "rr_sgd",
+    "median": 23.20147154123958,
+    "min": 22.75882072144713,
+    "max": 26.483672611890146
+  },
+  {
+    "graph": "EVA",
+    "nodes": 4475,
+    "method": "rr_sgd",
+    "median": 35.51757232509725,
+    "min": 34.26440374500621,
+    "max": 36.18387783821311
+  },
+  {
+    "graph": "3elt",
+    "nodes": 4720,
+    "method": "rr_sgd",
+    "median": 23.284661998744763,
+    "min": 23.140310169377734,
+    "max": 23.59983776424395
+  },
+  {
+    "graph": "bcsstk16",
+    "nodes": 4810,
+    "method": "rr_sgd",
+    "median": 8.595354703821432,
+    "min": 7.9375383520995975,
+    "max": 8.772758133052601
+  },
+  {
+    "graph": "uk",
+    "nodes": 4824,
+    "method": "rr_sgd",
+    "median": 28.094990112912452,
+    "min": 27.714420284603662,
+    "max": 28.640188679874313
+  },
+  {
+    "graph": "USpowerGrid",
+    "nodes": 4941,
+    "method": "rr_sgd",
+    "median": 29.367560999608706,
+    "min": 27.900052371872338,
+    "max": 33.415493938918175
+  },
+  {
+    "graph": "bcspwr10",
+    "nodes": 5300,
+    "method": "rr_sgd",
+    "median": 20.592689294284074,
+    "min": 19.99316733327597,
+    "max": 20.781203341471148
+  },
+  {
+    "graph": "p2p-Gnutella08",
+    "nodes": 6299,
+    "method": "rr_sgd",
+    "median": 12.520099118102905,
+    "min": 12.036806365978368,
+    "max": 12.566499617397007
+  },
+  {
+    "graph": "wiki-Vote",
+    "nodes": 7066,
+    "method": "rr_sgd",
+    "median": 7.720145432562541,
+    "min": 7.489800259061063,
+    "max": 7.773781749539756
+  },
+  {
+    "graph": "ca-HepTh",
+    "nodes": 8638,
+    "method": "rr_sgd",
+    "median": 9.482807859019404,
+    "min": 9.267823207368378,
+    "max": 9.642569081592267
+  },
+  {
+    "graph": "bcsstk17",
+    "nodes": 10456,
+    "method": "rr_sgd",
+    "median": 8.592969433375758,
+    "min": 8.418310529908695,
+    "max": 8.726297480148258
+  },
+  {
+    "graph": "PGPgiantcompo",
+    "nodes": 10680,
+    "method": "rr_sgd",
+    "median": 15.567374651470956,
+    "min": 15.506914150707019,
+    "max": 15.972501698134375
+  },
+  {
+    "graph": "fe_4elt2",
+    "nodes": 11143,
+    "method": "rr_sgd",
+    "median": 18.87498849836789,
+    "min": 18.807475207530295,
+    "max": 19.070073587648192
+  },
+  {
+    "graph": "karate",
+    "nodes": 34,
+    "method": "sparse_sgd",
+    "median": 19.40791377015846,
+    "min": 19.09089079013588,
+    "max": 20.16853448275862
+  },
+  {
+    "graph": "dolphins",
+    "nodes": 62,
+    "method": "sparse_sgd",
+    "median": 22.82528435808988,
+    "min": 22.43423490181549,
+    "max": 22.857897200840508
+  },
+  {
+    "graph": "dwt_198",
+    "nodes": 72,
+    "method": "sparse_sgd",
+    "median": 24.85064255116611,
+    "min": 23.960807636337197,
+    "max": 25.552517348294696
+  },
+  {
+    "graph": "dwt_72",
+    "nodes": 72,
+    "method": "sparse_sgd",
+    "median": 25.80666158182944,
+    "min": 25.34773483167863,
+    "max": 27.787811248777746
+  },
+  {
+    "graph": "lesmis",
+    "nodes": 77,
+    "method": "sparse_sgd",
+    "median": 24.681222707423583,
+    "min": 24.547405007469067,
+    "max": 24.748204052348132
+  },
+  {
+    "graph": "can_96",
+    "nodes": 96,
+    "method": "sparse_sgd",
+    "median": 26.876447060723255,
+    "min": 26.655151062734003,
+    "max": 27.024478885098887
+  },
+  {
+    "graph": "polbooks",
+    "nodes": 105,
+    "method": "sparse_sgd",
+    "median": 24.684009778203897,
+    "min": 24.593693087888123,
+    "max": 24.734299444953756
+  },
+  {
+    "graph": "adjnoun",
+    "nodes": 112,
+    "method": "sparse_sgd",
+    "median": 24.72561722830289,
+    "min": 24.63042150274893,
+    "max": 24.87099680563519
+  },
+  {
+    "graph": "jazz",
+    "nodes": 198,
+    "method": "sparse_sgd",
+    "median": 23.084577601211905,
+    "min": 23.017985788948266,
+    "max": 23.149145096688056
+  },
+  {
+    "graph": "mesh3e1",
+    "nodes": 289,
+    "method": "sparse_sgd",
+    "median": 31.20472035621767,
+    "min": 31.11617259753305,
+    "max": 31.39744107744108
+  },
+  {
+    "graph": "grid17",
+    "nodes": 289,
+    "method": "sparse_sgd",
+    "median": 31.569884925668326,
+    "min": 31.450644559976716,
+    "max": 31.719742862847692
+  },
+  {
+    "graph": "celegansneural",
+    "nodes": 297,
+    "method": "sparse_sgd",
+    "median": 28.844136098054605,
+    "min": 28.52504623422301,
+    "max": 28.98197534382273
+  },
+  {
+    "graph": "netscience",
+    "nodes": 379,
+    "method": "sparse_sgd",
+    "median": 33.00759396820497,
+    "min": 32.85962221135288,
+    "max": 33.158745628637845
+  },
+  {
+    "graph": "dwt_419",
+    "nodes": 419,
+    "method": "sparse_sgd",
+    "median": 33.216162132444865,
+    "min": 33.18328379150159,
+    "max": 33.3804410098668
+  },
+  {
+    "graph": "dwt_758",
+    "nodes": 758,
+    "method": "sparse_sgd",
+    "median": 37.165723002051976,
+    "min": 37.021338227539864,
+    "max": 37.328062409687035
+  },
+  {
+    "graph": "dwt_1005",
+    "nodes": 1005,
+    "method": "sparse_sgd",
+    "median": 37.16669524042515,
+    "min": 36.95275850739692,
+    "max": 37.505613915502494
+  },
+  {
+    "graph": "bcsstk09",
+    "nodes": 1083,
+    "method": "sparse_sgd",
+    "median": 36.90345558762969,
+    "min": 35.49503621888044,
+    "max": 37.130945161929795
+  },
+  {
+    "graph": "email",
+    "nodes": 1133,
+    "method": "sparse_sgd",
+    "median": 35.404604703245006,
+    "min": 35.181000850008814,
+    "max": 35.5050852247355
+  },
+  {
+    "graph": "1138_bus",
+    "nodes": 1138,
+    "method": "sparse_sgd",
+    "median": 37.39306929815818,
+    "min": 36.80264029143051,
+    "max": 37.54111573933257
+  },
+  {
+    "graph": "polblogs",
+    "nodes": 1222,
+    "method": "sparse_sgd",
+    "median": 33.62753624309478,
+    "min": 33.42536528982739,
+    "max": 33.97723517104111
+  },
+  {
+    "graph": "yeast",
+    "nodes": 2224,
+    "method": "sparse_sgd",
+    "median": 37.14869991803347,
+    "min": 36.96310668589726,
+    "max": 37.364641854449175
+  },
+  {
+    "graph": "add20",
+    "nodes": 2395,
+    "method": "sparse_sgd",
+    "median": 39.07588841430604,
+    "min": 39.01635143465895,
+    "max": 39.18924010063047
+  },
+  {
+    "graph": "dwt_2680",
+    "nodes": 2680,
+    "method": "sparse_sgd",
+    "median": 39.629855178541156,
+    "min": 39.25508166729322,
+    "max": 39.80320178195546
+  },
+  {
+    "graph": "data",
+    "nodes": 2851,
+    "method": "sparse_sgd",
+    "median": 40.320801250453,
+    "min": 39.834815166109884,
+    "max": 41.84549809962695
+  },
+  {
+    "graph": "bcsstk15",
+    "nodes": 3942,
+    "method": "sparse_sgd",
+    "median": 38.97538214569489,
+    "min": 38.44999726717136,
+    "max": 39.05736025343163
+  },
+  {
+    "graph": "CA-GrQc",
+    "nodes": 4158,
+    "method": "sparse_sgd",
+    "median": 40.82310890244597,
+    "min": 39.45905154567244,
+    "max": 41.68511250554202
+  },
+  {
+    "graph": "EVA",
+    "nodes": 4475,
+    "method": "sparse_sgd",
+    "median": 44.0390065785997,
+    "min": 43.76582270953878,
+    "max": 44.357114009549704
+  },
+  {
+    "graph": "3elt",
+    "nodes": 4720,
+    "method": "sparse_sgd",
+    "median": 43.27145762210296,
+    "min": 42.04034398933012,
+    "max": 44.01244129026494
+  },
+  {
+    "graph": "bcsstk16",
+    "nodes": 4810,
+    "method": "sparse_sgd",
+    "median": 39.32138875602423,
+    "min": 39.07503195322332,
+    "max": 40.47518813696211
+  },
+  {
+    "graph": "uk",
+    "nodes": 4824,
+    "method": "sparse_sgd",
+    "median": 44.03222432515398,
+    "min": 43.73013362748045,
+    "max": 44.92526897233137
+  },
+  {
+    "graph": "USpowerGrid",
+    "nodes": 4941,
+    "method": "sparse_sgd",
+    "median": 43.47569934742067,
+    "min": 42.609014913111416,
+    "max": 44.54162541536936
+  },
+  {
+    "graph": "bcspwr10",
+    "nodes": 5300,
+    "method": "sparse_sgd",
+    "median": 44.39052846168791,
+    "min": 43.15974007318861,
+    "max": 44.74045213812685
+  },
+  {
+    "graph": "p2p-Gnutella08",
+    "nodes": 6299,
+    "method": "sparse_sgd",
+    "median": 44.31009266084732,
+    "min": 43.312149111201116,
+    "max": 44.77310409682385
+  },
+  {
+    "graph": "wiki-Vote",
+    "nodes": 7066,
+    "method": "sparse_sgd",
+    "median": 43.46845415820974,
+    "min": 43.20256221078324,
+    "max": 44.23858730314268
+  },
+  {
+    "graph": "ca-HepTh",
+    "nodes": 8638,
+    "method": "sparse_sgd",
+    "median": 46.21839440769048,
+    "min": 45.485198741149986,
+    "max": 47.25971613329961
+  },
+  {
+    "graph": "bcsstk17",
+    "nodes": 10456,
+    "method": "sparse_sgd",
+    "median": 49.84282090050483,
+    "min": 49.67283669975022,
+    "max": 50.418358708844096
+  },
+  {
+    "graph": "PGPgiantcompo",
+    "nodes": 10680,
+    "method": "sparse_sgd",
+    "median": 50.393053674951275,
+    "min": 49.66624094723262,
+    "max": 50.87765239738118
+  },
+  {
+    "graph": "fe_4elt2",
+    "nodes": 11143,
+    "method": "sparse_sgd",
+    "median": 52.050480338598845,
+    "min": 51.89466905304395,
+    "max": 52.70141262556156
+  },
+  {
+    "graph": "ca-AstroPh",
+    "nodes": 17903,
+    "method": "sparse_sgd",
+    "median": 51.08820790639837,
+    "min": 50.722393811260055,
+    "max": 51.30126713827836
+  },
+  {
+    "graph": "email-Enron",
+    "nodes": 33696,
+    "method": "sparse_sgd",
+    "median": 54.85027133024853,
+    "min": 54.54126036359637,
+    "max": 55.04821957288438
+  },
+  {
+    "graph": "bcsstk31",
+    "nodes": 35586,
+    "method": "sparse_sgd",
+    "median": 53.67455813469597,
+    "min": 53.21308458580578,
+    "max": 53.98352405376575
+  },
+  {
+    "graph": "bcsstk32",
+    "nodes": 44609,
+    "method": "sparse_sgd",
+    "median": 53.14272359147221,
+    "min": 52.839825997121174,
+    "max": 53.31452208887041
+  },
+  {
+    "graph": "venkat50",
+    "nodes": 62424,
+    "method": "sparse_sgd",
+    "median": 55.04843536460536,
+    "min": 55.002733190401784,
+    "max": 55.65991630080282
+  },
+  {
+    "graph": "p2p-Gnutella31",
+    "nodes": 62561,
+    "method": "sparse_sgd",
+    "median": 55.568534240788814,
+    "min": 55.27054861039256,
+    "max": 56.33737442282829
+  },
+  {
+    "graph": "soc-Epinions1",
+    "nodes": 75877,
+    "method": "sparse_sgd",
+    "median": 55.09201908641068,
+    "min": 54.809600011142024,
+    "max": 55.476804929052555
+  },
+  {
+    "graph": "soc-Slashdot0811",
+    "nodes": 77360,
+    "method": "sparse_sgd",
+    "median": 54.43596859167623,
+    "min": 54.13702840325644,
+    "max": 54.81925150715165
+  },
+  {
+    "graph": "luxembourg_osm",
+    "nodes": 114599,
+    "method": "sparse_sgd",
+    "median": 57.62556121855682,
+    "min": 57.21390568632205,
+    "max": 57.92753173837837
+  },
+  {
+    "graph": "fe_ocean",
+    "nodes": 143437,
+    "method": "sparse_sgd",
+    "median": 57.90845829931771,
+    "min": 57.502649552086936,
+    "max": 58.080936110931184
+  },
+  {
+    "graph": "la2010",
+    "nodes": 204447,
+    "method": "sparse_sgd",
+    "median": 56.571543842729696,
+    "min": 56.10115680849376,
+    "max": 57.27136241113706
+  },
+  {
+    "graph": "email-EuAll",
+    "nodes": 224832,
+    "method": "sparse_sgd",
+    "median": 58.003633398452294,
+    "min": 57.55798525089041,
+    "max": 58.362393181336486
+  },
+  {
+    "graph": "coAuthorsCiteseer",
+    "nodes": 227320,
+    "method": "sparse_sgd",
+    "median": 55.27938274581061,
+    "min": 55.12548201207847,
+    "max": 55.86844679731729
+  },
+  {
+    "graph": "web-Stanford",
+    "nodes": 255265,
+    "method": "sparse_sgd",
+    "median": 53.398661425457014,
+    "min": 53.12081345986259,
+    "max": 53.78874779368751
+  },
+  {
+    "graph": "com-DBLP",
+    "nodes": 317080,
+    "method": "sparse_sgd",
+    "median": 54.36535982817374,
+    "min": 54.21590770197929,
+    "max": 54.94084169118642
+  },
+  {
+    "graph": "web-NotreDame",
+    "nodes": 325729,
+    "method": "sparse_sgd",
+    "median": 56.96289706432708,
+    "min": 56.32717033358208,
+    "max": 57.17872727217174
+  },
+  {
+    "graph": "com-Amazon",
+    "nodes": 334863,
+    "method": "sparse_sgd",
+    "median": 53.45016621790224,
+    "min": 49.51564216811729,
+    "max": 53.89972576447766
+  },
+  {
+    "graph": "coPapersCiteseer",
+    "nodes": 434102,
+    "method": "sparse_sgd",
+    "median": 44.63024289588191,
+    "min": 43.923016392823925,
+    "max": 44.871464262660666
+  },
+  {
+    "graph": "karate",
+    "nodes": 34,
+    "method": "atomic_sparse_sgd",
+    "median": 30.025906175103547,
+    "min": 26.715098060919033,
+    "max": 31.84320828345683
+  },
+  {
+    "graph": "dolphins",
+    "nodes": 62,
+    "method": "atomic_sparse_sgd",
+    "median": 44.194182688326705,
+    "min": 39.915330825939776,
+    "max": 45.300350175379016
+  },
+  {
+    "graph": "dwt_72",
+    "nodes": 72,
+    "method": "atomic_sparse_sgd",
+    "median": 45.87840886091553,
+    "min": 42.639194819358266,
+    "max": 47.77884077154077
+  },
+  {
+    "graph": "dwt_198",
+    "nodes": 72,
+    "method": "atomic_sparse_sgd",
+    "median": 47.80341965695289,
+    "min": 46.241540755453066,
+    "max": 49.046262482507274
+  },
+  {
+    "graph": "lesmis",
+    "nodes": 77,
+    "method": "atomic_sparse_sgd",
+    "median": 43.602650872017186,
+    "min": 43.139940035322184,
+    "max": 47.19973209656932
+  },
+  {
+    "graph": "can_96",
+    "nodes": 96,
+    "method": "atomic_sparse_sgd",
+    "median": 46.850843357717224,
+    "min": 46.25939023858318,
+    "max": 49.70452986595987
+  },
+  {
+    "graph": "polbooks",
+    "nodes": 105,
+    "method": "atomic_sparse_sgd",
+    "median": 48.560735795750645,
+    "min": 47.856727736134,
+    "max": 50.74089067576312
+  },
+  {
+    "graph": "adjnoun",
+    "nodes": 112,
+    "method": "atomic_sparse_sgd",
+    "median": 48.15859028021386,
+    "min": 45.91078406365925,
+    "max": 51.03740873800871
+  },
+  {
+    "graph": "jazz",
+    "nodes": 198,
+    "method": "atomic_sparse_sgd",
+    "median": 55.70948387903154,
+    "min": 53.30473949510295,
+    "max": 56.721739482924214
+  },
+  {
+    "graph": "grid17",
+    "nodes": 289,
+    "method": "atomic_sparse_sgd",
+    "median": 52.12096781471577,
+    "min": 50.5561975451288,
+    "max": 58.23251100968844
+  },
+  {
+    "graph": "mesh3e1",
+    "nodes": 289,
+    "method": "atomic_sparse_sgd",
+    "median": 53.61864934883441,
+    "min": 50.49868650819846,
+    "max": 55.64934271092409
+  },
+  {
+    "graph": "celegansneural",
+    "nodes": 297,
+    "method": "atomic_sparse_sgd",
+    "median": 51.97063783029779,
+    "min": 51.76294027049919,
+    "max": 54.1757873889333
+  },
+  {
+    "graph": "netscience",
+    "nodes": 379,
+    "method": "atomic_sparse_sgd",
+    "median": 52.18928193008114,
+    "min": 50.91414855376666,
+    "max": 54.18937958189402
+  },
+  {
+    "graph": "dwt_419",
+    "nodes": 419,
+    "method": "atomic_sparse_sgd",
+    "median": 50.53048587802545,
+    "min": 49.54047490166394,
+    "max": 53.0778030654844
+  },
+  {
+    "graph": "dwt_758",
+    "nodes": 758,
+    "method": "atomic_sparse_sgd",
+    "median": 44.83769863337179,
+    "min": 40.65930600114609,
+    "max": 47.3345844382819
+  },
+  {
+    "graph": "dwt_1005",
+    "nodes": 1005,
+    "method": "atomic_sparse_sgd",
+    "median": 40.83593783348868,
+    "min": 39.73961551107373,
+    "max": 42.384745630429094
+  },
+  {
+    "graph": "bcsstk09",
+    "nodes": 1083,
+    "method": "atomic_sparse_sgd",
+    "median": 40.886979391259615,
+    "min": 37.96427645652655,
+    "max": 43.14476792712597
+  },
+  {
+    "graph": "email",
+    "nodes": 1133,
+    "method": "atomic_sparse_sgd",
+    "median": 36.6564434627834,
+    "min": 35.47576444857358,
+    "max": 37.16967806701862
+  },
+  {
+    "graph": "1138_bus",
+    "nodes": 1138,
+    "method": "atomic_sparse_sgd",
+    "median": 39.56520919040224,
+    "min": 36.84193748067995,
+    "max": 43.39845365740429
+  },
+  {
+    "graph": "polblogs",
+    "nodes": 1222,
+    "method": "atomic_sparse_sgd",
+    "median": 36.239165095667815,
+    "min": 33.55071132273398,
+    "max": 37.390355822938
+  },
+  {
+    "graph": "yeast",
+    "nodes": 2224,
+    "method": "atomic_sparse_sgd",
+    "median": 33.456969426148866,
+    "min": 30.706005366277225,
+    "max": 34.041588145816135
+  },
+  {
+    "graph": "add20",
+    "nodes": 2395,
+    "method": "atomic_sparse_sgd",
+    "median": 34.128733339071566,
+    "min": 33.803520275651586,
+    "max": 34.35819440196086
+  },
+  {
+    "graph": "dwt_2680",
+    "nodes": 2680,
+    "method": "atomic_sparse_sgd",
+    "median": 35.64674672831622,
+    "min": 33.889978762563864,
+    "max": 36.43555035883103
+  },
+  {
+    "graph": "data",
+    "nodes": 2851,
+    "method": "atomic_sparse_sgd",
+    "median": 34.70248782362025,
+    "min": 33.74217806019427,
+    "max": 35.327530566519506
+  },
+  {
+    "graph": "bcsstk15",
+    "nodes": 3942,
+    "method": "atomic_sparse_sgd",
+    "median": 29.850224550277797,
+    "min": 29.06106544712704,
+    "max": 30.99704270858305
+  },
+  {
+    "graph": "CA-GrQc",
+    "nodes": 4158,
+    "method": "atomic_sparse_sgd",
+    "median": 31.94050384037224,
+    "min": 31.093328401136283,
+    "max": 32.56561258756844
+  },
+  {
+    "graph": "EVA",
+    "nodes": 4475,
+    "method": "atomic_sparse_sgd",
+    "median": 33.634647947205124,
+    "min": 33.450692015713315,
+    "max": 34.08473213483417
+  },
+  {
+    "graph": "3elt",
+    "nodes": 4720,
+    "method": "atomic_sparse_sgd",
+    "median": 32.612528298287216,
+    "min": 32.20881186047428,
+    "max": 33.81284814308031
+  },
+  {
+    "graph": "bcsstk16",
+    "nodes": 4810,
+    "method": "atomic_sparse_sgd",
+    "median": 27.048627718883612,
+    "min": 26.542294509436687,
+    "max": 27.515019012247315
+  },
+  {
+    "graph": "uk",
+    "nodes": 4824,
+    "method": "atomic_sparse_sgd",
+    "median": 33.055042329478944,
+    "min": 32.86296228383033,
+    "max": 33.97658713414798
+  },
+  {
+    "graph": "USpowerGrid",
+    "nodes": 4941,
+    "method": "atomic_sparse_sgd",
+    "median": 32.69704375643646,
+    "min": 31.500820919385923,
+    "max": 33.615253776552365
+  },
+  {
+    "graph": "bcspwr10",
+    "nodes": 5300,
+    "method": "atomic_sparse_sgd",
+    "median": 31.95741850469799,
+    "min": 30.73032982281687,
+    "max": 32.442333955008245
+  },
+  {
+    "graph": "p2p-Gnutella08",
+    "nodes": 6299,
+    "method": "atomic_sparse_sgd",
+    "median": 29.59385503033965,
+    "min": 28.972431171744102,
+    "max": 30.058865995310075
+  },
+  {
+    "graph": "wiki-Vote",
+    "nodes": 7066,
+    "method": "atomic_sparse_sgd",
+    "median": 27.820590242752928,
+    "min": 27.752144345124453,
+    "max": 28.700710418433378
+  },
+  {
+    "graph": "ca-HepTh",
+    "nodes": 8638,
+    "method": "atomic_sparse_sgd",
+    "median": 28.577501640419403,
+    "min": 28.365380124234886,
+    "max": 29.885047703548153
+  },
+  {
+    "graph": "bcsstk17",
+    "nodes": 10456,
+    "method": "atomic_sparse_sgd",
+    "median": 31.66322418517159,
+    "min": 31.651866282179814,
+    "max": 32.08688832403073
+  },
+  {
+    "graph": "PGPgiantcompo",
+    "nodes": 10680,
+    "method": "atomic_sparse_sgd",
+    "median": 33.62200855708243,
+    "min": 33.43080793318491,
+    "max": 34.07495347783891
+  },
+  {
+    "graph": "fe_4elt2",
+    "nodes": 11143,
+    "method": "atomic_sparse_sgd",
+    "median": 35.37504315502228,
+    "min": 34.75489488682509,
+    "max": 35.68775087681728
+  },
+  {
+    "graph": "ca-AstroPh",
+    "nodes": 17903,
+    "method": "atomic_sparse_sgd",
+    "median": 30.1641180132576,
+    "min": 30.021724339476084,
+    "max": 30.93278809609892
+  },
+  {
+    "graph": "email-Enron",
+    "nodes": 33696,
+    "method": "atomic_sparse_sgd",
+    "median": 31.30665631979679,
+    "min": 30.913748069213725,
+    "max": 31.887317041427583
+  },
+  {
+    "graph": "bcsstk31",
+    "nodes": 35586,
+    "method": "atomic_sparse_sgd",
+    "median": 29.529336497362028,
+    "min": 29.076058855998447,
+    "max": 29.67396633580593
+  },
+  {
+    "graph": "bcsstk32",
+    "nodes": 44609,
+    "method": "atomic_sparse_sgd",
+    "median": 28.06600934568017,
+    "min": 27.597242401537734,
+    "max": 28.21077632823763
+  },
+  {
+    "graph": "venkat50",
+    "nodes": 62424,
+    "method": "atomic_sparse_sgd",
+    "median": 29.525808826868044,
+    "min": 29.135180735047495,
+    "max": 29.82454933845413
+  },
+  {
+    "graph": "p2p-Gnutella31",
+    "nodes": 62561,
+    "method": "atomic_sparse_sgd",
+    "median": 30.735721396576302,
+    "min": 30.37801359806082,
+    "max": 31.32054460625671
+  },
+  {
+    "graph": "soc-Epinions1",
+    "nodes": 75877,
+    "method": "atomic_sparse_sgd",
+    "median": 29.402174231644977,
+    "min": 29.39138687875118,
+    "max": 30.026099589971178
+  },
+  {
+    "graph": "soc-Slashdot0811",
+    "nodes": 77360,
+    "method": "atomic_sparse_sgd",
+    "median": 28.8884036547183,
+    "min": 28.61160339352303,
+    "max": 29.500216861722077
+  },
+  {
+    "graph": "luxembourg_osm",
+    "nodes": 114599,
+    "method": "atomic_sparse_sgd",
+    "median": 31.374412779753616,
+    "min": 31.117512196336786,
+    "max": 31.855910173970827
+  },
+  {
+    "graph": "fe_ocean",
+    "nodes": 143437,
+    "method": "atomic_sparse_sgd",
+    "median": 31.392492228572447,
+    "min": 31.02227027934119,
+    "max": 31.720521777142146
+  },
+  {
+    "graph": "la2010",
+    "nodes": 204447,
+    "method": "atomic_sparse_sgd",
+    "median": 30.138574155895736,
+    "min": 29.77456872223349,
+    "max": 30.260618104274492
+  },
+  {
+    "graph": "email-EuAll",
+    "nodes": 224832,
+    "method": "atomic_sparse_sgd",
+    "median": 31.359737720744246,
+    "min": 30.747635681966823,
+    "max": 31.83023946297012
+  },
+  {
+    "graph": "coAuthorsCiteseer",
+    "nodes": 227320,
+    "method": "atomic_sparse_sgd",
+    "median": 28.932995816844297,
+    "min": 28.62956267530613,
+    "max": 29.419265917847834
+  },
+  {
+    "graph": "web-Stanford",
+    "nodes": 255265,
+    "method": "atomic_sparse_sgd",
+    "median": 27.201440240490385,
+    "min": 26.85906995988435,
+    "max": 27.678020832763757
+  },
+  {
+    "graph": "com-DBLP",
+    "nodes": 317080,
+    "method": "atomic_sparse_sgd",
+    "median": 28.275100613530462,
+    "min": 28.076823554190977,
+    "max": 28.93262185598296
+  },
+  {
+    "graph": "web-NotreDame",
+    "nodes": 325729,
+    "method": "atomic_sparse_sgd",
+    "median": 29.807145111752046,
+    "min": 25.97320370977651,
+    "max": 30.981830208033468
+  },
+  {
+    "graph": "com-Amazon",
+    "nodes": 334863,
+    "method": "atomic_sparse_sgd",
+    "median": 27.15928474568282,
+    "min": 22.174679054276037,
+    "max": 28.633840409065375
+  },
+  {
+    "graph": "coPapersCiteseer",
+    "nodes": 434102,
+    "method": "atomic_sparse_sgd",
+    "median": 18.676906846376415,
+    "min": 17.22991051986839,
+    "max": 18.824017041663215
+  },
+  {
+    "graph": "karate",
+    "nodes": 34,
+    "method": "rr_sparse_sgd",
+    "median": 59.65471904542922,
+    "min": 58.3931630161449,
+    "max": 60.94904718223645
+  },
+  {
+    "graph": "dolphins",
+    "nodes": 62,
+    "method": "rr_sparse_sgd",
+    "median": 58.761074197120706,
+    "min": 58.27528426967937,
+    "max": 59.16954974119554
+  },
+  {
+    "graph": "dwt_72",
+    "nodes": 72,
+    "method": "rr_sparse_sgd",
+    "median": 69.62595195509203,
+    "min": 65.04747311802964,
+    "max": 72.9419293050542
+  },
+  {
+    "graph": "dwt_198",
+    "nodes": 72,
+    "method": "rr_sparse_sgd",
+    "median": 71.93092159969049,
+    "min": 68.05074307818985,
+    "max": 73.6642012939234
+  },
+  {
+    "graph": "lesmis",
+    "nodes": 77,
+    "method": "rr_sparse_sgd",
+    "median": 66.40523947616173,
+    "min": 65.20379166241973,
+    "max": 66.62465083888702
+  },
+  {
+    "graph": "can_96",
+    "nodes": 96,
+    "method": "rr_sparse_sgd",
+    "median": 62.727279292638705,
+    "min": 62.02268658027982,
+    "max": 67.3396240443117
+  },
+  {
+    "graph": "polbooks",
+    "nodes": 105,
+    "method": "rr_sparse_sgd",
+    "median": 62.652017350940945,
+    "min": 60.70754198922727,
+    "max": 63.9600129595638
+  },
+  {
+    "graph": "adjnoun",
+    "nodes": 112,
+    "method": "rr_sparse_sgd",
+    "median": 63.74342518439369,
+    "min": 60.391276731538824,
+    "max": 64.13247525346019
+  },
+  {
+    "graph": "jazz",
+    "nodes": 198,
+    "method": "rr_sparse_sgd",
+    "median": 60.963941405633314,
+    "min": 60.00940824538572,
+    "max": 64.39062542269568
+  },
+  {
+    "graph": "mesh3e1",
+    "nodes": 289,
+    "method": "rr_sparse_sgd",
+    "median": 61.35538761310328,
+    "min": 60.2923959333414,
+    "max": 66.86636179729756
+  },
+  {
+    "graph": "grid17",
+    "nodes": 289,
+    "method": "rr_sparse_sgd",
+    "median": 61.66586569136452,
+    "min": 61.1101135157207,
+    "max": 66.46945855532151
+  },
+  {
+    "graph": "celegansneural",
+    "nodes": 297,
+    "method": "rr_sparse_sgd",
+    "median": 62.49755238023145,
+    "min": 61.011880492671246,
+    "max": 71.86215734363998
+  },
+  {
+    "graph": "netscience",
+    "nodes": 379,
+    "method": "rr_sparse_sgd",
+    "median": 64.34826635523694,
+    "min": 60.50299025775605,
+    "max": 65.00948975636724
+  },
+  {
+    "graph": "dwt_419",
+    "nodes": 419,
+    "method": "rr_sparse_sgd",
+    "median": 59.59415554821652,
+    "min": 56.32240777799712,
+    "max": 64.93344457188583
+  },
+  {
+    "graph": "dwt_758",
+    "nodes": 758,
+    "method": "rr_sparse_sgd",
+    "median": 56.96598047900882,
+    "min": 51.285906747423134,
+    "max": 60.4306156155753
+  },
+  {
+    "graph": "dwt_1005",
+    "nodes": 1005,
+    "method": "rr_sparse_sgd",
+    "median": 52.32801051490985,
+    "min": 51.0901435401321,
+    "max": 53.45889102919416
+  },
+  {
+    "graph": "bcsstk09",
+    "nodes": 1083,
+    "method": "rr_sparse_sgd",
+    "median": 52.253983343085764,
+    "min": 47.82938633094385,
+    "max": 57.67473502824981
+  },
+  {
+    "graph": "email",
+    "nodes": 1133,
+    "method": "rr_sparse_sgd",
+    "median": 48.844053295482176,
+    "min": 42.840909918722204,
+    "max": 57.7414267880821
+  },
+  {
+    "graph": "1138_bus",
+    "nodes": 1138,
+    "method": "rr_sparse_sgd",
+    "median": 50.537059537010926,
+    "min": 47.473683579852434,
+    "max": 51.821660630671445
+  },
+  {
+    "graph": "polblogs",
+    "nodes": 1222,
+    "method": "rr_sparse_sgd",
+    "median": 43.96832998099948,
+    "min": 42.560166295149,
+    "max": 47.33925416297962
+  },
+  {
+    "graph": "yeast",
+    "nodes": 2224,
+    "method": "rr_sparse_sgd",
+    "median": 36.30204656586951,
+    "min": 33.18056308548144,
+    "max": 37.888720090520394
+  },
+  {
+    "graph": "add20",
+    "nodes": 2395,
+    "method": "rr_sparse_sgd",
+    "median": 37.81261363059998,
+    "min": 35.23024021624086,
+    "max": 47.81858420765825
+  },
+  {
+    "graph": "dwt_2680",
+    "nodes": 2680,
+    "method": "rr_sparse_sgd",
+    "median": 43.91826330213768,
+    "min": 39.15611971315176,
+    "max": 44.14314127675201
+  },
+  {
+    "graph": "data",
+    "nodes": 2851,
+    "method": "rr_sparse_sgd",
+    "median": 33.873206342041605,
+    "min": 30.762895576367445,
+    "max": 35.51964059049156
+  },
+  {
+    "graph": "bcsstk15",
+    "nodes": 3942,
+    "method": "rr_sparse_sgd",
+    "median": 23.890588068361307,
+    "min": 20.656435569854317,
+    "max": 24.824121779858366
+  },
+  {
+    "graph": "CA-GrQc",
+    "nodes": 4158,
+    "method": "rr_sparse_sgd",
+    "median": 30.925453109803783,
+    "min": 24.135842093181186,
+    "max": 34.54353848301741
+  },
+  {
+    "graph": "EVA",
+    "nodes": 4475,
+    "method": "rr_sparse_sgd",
+    "median": 34.817912959873894,
+    "min": 33.885903292651705,
+    "max": 40.57417641015176
+  },
+  {
+    "graph": "3elt",
+    "nodes": 4720,
+    "method": "rr_sparse_sgd",
+    "median": 29.066575122239957,
+    "min": 22.26316076951931,
+    "max": 33.53084007756461
+  },
+  {
+    "graph": "bcsstk16",
+    "nodes": 4810,
+    "method": "rr_sparse_sgd",
+    "median": 18.861780176389722,
+    "min": 16.28658369057631,
+    "max": 23.436989260273354
+  },
+  {
+    "graph": "uk",
+    "nodes": 4824,
+    "method": "rr_sparse_sgd",
+    "median": 33.832530492126324,
+    "min": 24.74412110674075,
+    "max": 34.201185211657354
+  },
+  {
+    "graph": "USpowerGrid",
+    "nodes": 4941,
+    "method": "rr_sparse_sgd",
+    "median": 28.651398019741958,
+    "min": 22.391821568664966,
+    "max": 33.7303469696037
+  },
+  {
+    "graph": "bcspwr10",
+    "nodes": 5300,
+    "method": "rr_sparse_sgd",
+    "median": 24.397610884128607,
+    "min": 23.42341014143267,
+    "max": 29.766427497080436
+  },
+  {
+    "graph": "p2p-Gnutella08",
+    "nodes": 6299,
+    "method": "rr_sparse_sgd",
+    "median": 19.673203781441522,
+    "min": 19.146820164499506,
+    "max": 22.081971292924266
+  },
+  {
+    "graph": "wiki-Vote",
+    "nodes": 7066,
+    "method": "rr_sparse_sgd",
+    "median": 23.165144206334507,
+    "min": 22.86926622447299,
+    "max": 24.88464958331743
+  },
+  {
+    "graph": "ca-HepTh",
+    "nodes": 8638,
+    "method": "rr_sparse_sgd",
+    "median": 14.778931528217441,
+    "min": 13.454077238104608,
+    "max": 17.16937602551512
+  },
+  {
+    "graph": "bcsstk17",
+    "nodes": 10456,
+    "method": "rr_sparse_sgd",
+    "median": 13.412398217785446,
+    "min": 12.276195987216914,
+    "max": 15.020412114417965
+  },
+  {
+    "graph": "PGPgiantcompo",
+    "nodes": 10680,
+    "method": "rr_sparse_sgd",
+    "median": 17.058059116289286,
+    "min": 14.780824921925145,
+    "max": 22.526033785973983
+  },
+  {
+    "graph": "fe_4elt2",
+    "nodes": 11143,
+    "method": "rr_sparse_sgd",
+    "median": 17.291946149873432,
+    "min": 15.33953823411285,
+    "max": 19.15375520882105
+  },
+  {
+    "graph": "ca-AstroPh",
+    "nodes": 17903,
+    "method": "rr_sparse_sgd",
+    "median": 11.233266429590186,
+    "min": 10.91269390638947,
+    "max": 16.525579443330564
+  },
+  {
+    "graph": "email-Enron",
+    "nodes": 33696,
+    "method": "rr_sparse_sgd",
+    "median": 13.66397141590626,
+    "min": 13.534483181001812,
+    "max": 14.196832857035837
+  },
+  {
+    "graph": "bcsstk31",
+    "nodes": 35586,
+    "method": "rr_sparse_sgd",
+    "median": 5.998616265634091,
+    "min": 5.753881786430052,
+    "max": 6.0690103871093095
+  },
+  {
+    "graph": "bcsstk32",
+    "nodes": 44609,
+    "method": "rr_sparse_sgd",
+    "median": 5.668308696253929,
+    "min": 5.506765229962054,
+    "max": 5.7588982430223385
+  },
+  {
+    "graph": "venkat50",
+    "nodes": 62424,
+    "method": "rr_sparse_sgd",
+    "median": 4.955104651691535,
+    "min": 4.820134127380322,
+    "max": 4.994180422291877
+  },
+  {
+    "graph": "p2p-Gnutella31",
+    "nodes": 62561,
+    "method": "rr_sparse_sgd",
+    "median": 6.057220211794177,
+    "min": 6.013541959228206,
+    "max": 6.143617731562478
+  },
+  {
+    "graph": "soc-Epinions1",
+    "nodes": 75877,
+    "method": "rr_sparse_sgd",
+    "median": 10.755230874736194,
+    "min": 10.416487761299654,
+    "max": 10.902520230275712
+  },
+  {
+    "graph": "soc-Slashdot0811",
+    "nodes": 77360,
+    "method": "rr_sparse_sgd",
+    "median": 9.241103841915104,
+    "min": 8.814511195844023,
+    "max": 9.587789611264775
+  },
+  {
+    "graph": "luxembourg_osm",
+    "nodes": 114599,
+    "method": "rr_sparse_sgd",
+    "median": 5.849521170183302,
+    "min": 5.769399323209387,
+    "max": 5.915460528203562
+  },
+  {
+    "graph": "fe_ocean",
+    "nodes": 143437,
+    "method": "rr_sparse_sgd",
+    "median": 5.3223324989764285,
+    "min": 5.298044211608681,
+    "max": 5.414051912815752
+  },
+  {
+    "graph": "la2010",
+    "nodes": 204447,
+    "method": "rr_sparse_sgd",
+    "median": 4.598603618765634,
+    "min": 4.564197113060834,
+    "max": 4.654450711841923
+  },
+  {
+    "graph": "email-EuAll",
+    "nodes": 224832,
+    "method": "rr_sparse_sgd",
+    "median": 10.431115132177903,
+    "min": 10.280989696159654,
+    "max": 10.471056886996973
+  },
+  {
+    "graph": "coAuthorsCiteseer",
+    "nodes": 227320,
+    "method": "rr_sparse_sgd",
+    "median": 4.779309233765235,
+    "min": 4.764090013213299,
+    "max": 4.842556054497356
+  },
+  {
+    "graph": "web-Stanford",
+    "nodes": 255265,
+    "method": "rr_sparse_sgd",
+    "median": 13.966201330270806,
+    "min": 13.91961380909139,
+    "max": 14.038173747314115
+  },
+  {
+    "graph": "com-DBLP",
+    "nodes": 317080,
+    "method": "rr_sparse_sgd",
+    "median": 3.6940099885274096,
+    "min": 3.6341341054508427,
+    "max": 3.7554771808397804
+  },
+  {
+    "graph": "web-NotreDame",
+    "nodes": 325729,
+    "method": "rr_sparse_sgd",
+    "median": 9.427882231811235,
+    "min": 8.506038127429136,
+    "max": 9.46742142180705
+  },
+  {
+    "graph": "com-Amazon",
+    "nodes": 334863,
+    "method": "rr_sparse_sgd",
+    "median": 3.669396879512572,
+    "min": 3.2585472958707373,
+    "max": 3.722751811957931
+  },
+  {
+    "graph": "coPapersCiteseer",
+    "nodes": 434102,
+    "method": "rr_sparse_sgd",
+    "median": 1.6276815001514042,
+    "min": 1.570376130801098,
+    "max": 1.6415962860010298
+  }
+]

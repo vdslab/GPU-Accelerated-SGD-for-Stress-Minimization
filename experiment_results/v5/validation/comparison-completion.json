@@ -1,0 +1,95 @@
+{
+  "formal_comparison_runs": 4230,
+  "tile_runs": 1800,
+  "total_formal_runs": 6030,
+  "success_runs": 4230,
+  "failed_runs": 0,
+  "retained_graphs": 56,
+  "conditions": 282,
+  "seeds_per_condition": 5,
+  "repetitions_per_seed": 3,
+  "missing_runs": 0,
+  "exact_stress_runs": 3060,
+  "sampled_stress_runs": 1170,
+  "archive_files_checked_for_existence_and_size": 10980,
+  "archive_original_and_decompressed_hashes_match": true,
+  "archive_crc_verified_at_creation": true,
+  "all_binaries_match_frozen_hashes": true,
+  "initial_fingerprint_mismatches_within_family": [],
+  "sparse_preprocessing_mismatches": [],
+  "large_graphs_not_executed": [
+    "AS365",
+    "Flan_1565",
+    "NACA0015",
+    "asia_osm",
+    "auto",
+    "belgium_osm",
+    "com-LiveJournal",
+    "com-Orkut",
+    "europe_osm",
+    "germany_osm",
+    "great-britain_osm",
+    "italy_osm",
+    "netherlands_osm",
+    "road_usa"
+  ],
+  "deferred_graphs": [
+    "AS365",
+    "great-britain_osm",
+    "asia_osm",
+    "auto",
+    "NACA0015",
+    "Flan_1565"
+  ],
+  "gpu_pass_timestamps": false,
+  "within_seed_stress_repeatability": [
+    {
+      "method": "sgd",
+      "graph_seed_groups": 190,
+      "variable_stress_groups": 0,
+      "max_relative_stress_range": 0.0,
+      "worst_graph": "lesmis",
+      "worst_seed": 0
+    },
+    {
+      "method": "atomic_sgd",
+      "graph_seed_groups": 190,
+      "variable_stress_groups": 190,
+      "max_relative_stress_range": 1.573398026325939,
+      "worst_graph": "3elt",
+      "worst_seed": 0
+    },
+    {
+      "method": "rr_sgd",
+      "graph_seed_groups": 190,
+      "variable_stress_groups": 0,
+      "max_relative_stress_range": 0.0,
+      "worst_graph": "dolphins",
+      "worst_seed": 0
+    },
+    {
+      "method": "sparse_sgd",
+      "graph_seed_groups": 280,
+      "variable_stress_groups": 0,
+      "max_relative_stress_range": 0.0,
+      "worst_graph": "email",
+      "worst_seed": 0
+    },
+    {
+      "method": "atomic_sparse_sgd",
+      "graph_seed_groups": 280,
+      "variable_stress_groups": 280,
+      "max_relative_stress_range": 1.172896010403414,
+      "worst_graph": "dwt_198",
+      "worst_seed": 4
+    },
+    {
+      "method": "rr_sparse_sgd",
+      "graph_seed_groups": 280,
+      "variable_stress_groups": 0,
+      "max_relative_stress_range": 0.0,
+      "worst_graph": "EVA",
+      "worst_seed": 0
+    }
+  ]
+}

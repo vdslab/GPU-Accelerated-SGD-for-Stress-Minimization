@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-07T00:15:12+09:00",
+  "passed": true,
+  "fixture": "Positions marker starts at 2MiB minus5 bytes and crosses the 1MiB read boundary",
+  "checks": [
+    "Header+edge+coordinate segments reconstruct all bytes",
+    "SHA256/length equality",
+    "ordinary gzip source decoding"
+  ]
+}

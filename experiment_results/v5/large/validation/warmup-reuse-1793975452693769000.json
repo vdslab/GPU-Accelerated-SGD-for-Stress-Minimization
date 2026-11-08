@@ -1,0 +1,18 @@
+{
+  "at": "2026-11-06T23:30:52+09:00",
+  "reason": "Capacity-only resume; measurement binary and parameters unchanged",
+  "reused": [
+    {
+      "graph": "AS365",
+      "pivots": 50,
+      "source_record": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/warmups/v5-large-AS365-p50-s0-r0-warmup-1793973893937356000/record.json",
+      "age_seconds": 937.0
+    },
+    {
+      "graph": "AS365",
+      "pivots": 100,
+      "source_record": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large/warmups/v5-large-AS365-p100-s0-r0-warmup-1793973893937356000/record.json",
+      "age_seconds": 1487.0
+    }
+  ]
+}

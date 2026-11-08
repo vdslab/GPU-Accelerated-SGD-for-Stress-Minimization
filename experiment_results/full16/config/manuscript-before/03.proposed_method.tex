@@ -1,0 +1,172 @@
+% !TeX root = ../main.tex
+\section{Round-Robin GPU Scheduling for Stress Minimization}
+\label{sec:method}
+We present RoundRobin Full SGD and RoundRobin Sparse SGD to accelerate Full and Sparse SGD on the GPU.
+
+\subsection{SGD and Atomic Updates}
+\label{sec:sgd-atomic}
+We describe the SGD updates for a connected, undirected, unweighted graph $G=(V,E)$ with $n$ vertices and $m$ edges.
+Let $x_i$ be the two-dimensional coordinate of vertex $i$, and $d_{ij}$ the shortest-path distance.
+Zheng et al.'s SGD~\cite{ref28} updates vertex pairs sequentially; we call the formulation over all vertex pairs Full SGD.
+An \emph{iteration} is one complete pass over the update set, with distance computation and term construction treated as preprocessing.
+
+Following Zheng et al.~\cite{ref28}, the displacement is computed from the difference between the current and target distances.
+For $x_i\ne x_j$, the pre-update coordinates give
+\begin{equation}
+r_{ij}=\frac{\lVert x_i-x_j\rVert-d_{ij}}{2}\frac{x_i-x_j}{\lVert x_i-x_j\rVert}.
+\label{eq:displacement}
+\end{equation}
+With endpoint weights $w_{ij}^{(i)},w_{ij}^{(j)}$ and learning rate $\eta_t$ at iteration $t$, the update is
+\begin{equation}
+\begin{aligned}
+\mu_i&=\min\{1,\eta_t w_{ij}^{(i)}\},& x_i&\leftarrow x_i-\mu_i r_{ij},\\
+\mu_j&=\min\{1,\eta_t w_{ij}^{(j)}\},& x_j&\leftarrow x_j+\mu_j r_{ij}.
+\end{aligned}
+\label{eq:update}
+\end{equation}
+Full SGD uses $d_{ij}^{-2}$ at both endpoints and updates both from the same pre-update $r_{ij}$.
+Each implementation applies its own numerical handling when the current distance is extremely small.
+
+Sparse SGD optimizes Sparse Stress using actual edges and terms representing distant relationships through a small pivot set~\cite{ref20,ref28}.
+Let $P$ be the pivot set and $p=|P|$.
+Each vertex is assigned to the region of its nearest pivot, and weights are derived from region information.
+Compared with Full SGD, the sparse formulation reduces the number of terms to $O(m+np)$ and avoids storing all-pairs distances.
+It uses endpoint-specific weights in \eqref{eq:update} and fixes an endpoint whose weight is zero.
+A non-edge pair between a non-pivot and a pivot moves only the non-pivot endpoint; actual edges and pivot--pivot pairs move both endpoints.
+We call these one-sided and two-sided updates, respectively.
+A two-sided update uses the same pre-update $r_{ij}$ for both endpoints, and actual-edge terms take precedence when removing duplicates.
+
+The CPU implementation shuffles the update set at every iteration and uses coordinates reflecting the immediately preceding update.
+If $(j,k)$ follows $(i,j)$, it reads the updated $x_j$.
+Executing both directly in parallel can cause write conflicts or inconsistent reads of the two endpoints.
+Making coordinate additions atomic alone does not make the entire pair update mutually exclusive.
+
+We implement the Atomic baselines directly using the Metal API.
+The Atomic scheme locks both endpoints and executes the read--update--write sequence exclusively~\cite{ref15}.
+It attempts to acquire the lower-ID endpoint first, applies \eqref{eq:displacement} and \eqref{eq:update} after obtaining both locks, and releases them after writing.
+If only one lock is acquired, it releases that lock and retries.
+Atomic Full uses device-scope fences after successful lock acquisition and before release, and atomic operations on coordinate components. In Atomic Sparse, relaxed atomic lock operations alone do not guarantee the visibility of coordinate updates to the next lock holder.
+We therefore place device-scope memory fences after acquiring both endpoint locks and before releasing them, ensuring that coordinate updates made by the previous lock holder are visible to the next holder when it reads the coordinates.
+In \autoref{fig:atomic}, updates A and B share vertex $j$ and proceed in sequence, while independent update C can run concurrently.
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig01_atomic.pdf}
+\caption{The Atomic scheme holds both endpoint locks while reading and updating coordinates, then releases them. Updates sharing a vertex are ordered by lock acquisition. Gray intervals indicate retries; their lengths do not represent measured waiting times.}
+\label{fig:atomic}
+\end{figure}
+
+The Full and Sparse Atomic implementations differ in completion handling and update ordering.
+Full retries lock acquisition and checks the update count after GPU execution.
+Sparse gathers unfinished terms on the CPU and resubmits them.
+Even one-sided updates lock both endpoints to prevent another update from changing a pivot while it is being read.
+Atomic Full submits pairs without an explicit shuffle, whereas Atomic Sparse shuffles pair IDs before each iteration.
+In both implementations, when two updates share a vertex, the thread that first acquires both endpoint locks applies its update first.
+Even with a fixed submission order, the relative timing of lock attempts and retries can change which update runs first.
+This runtime ordering does not guarantee a uniformly random permutation of the pairs.
+
+\subsection{Mini-Batch SGD}
+Mini-batch SGD groups several objective terms into a batch and updates the parameters using their gradients~\cite{ref4}.
+Compared with processing one term at a time, computation within a batch exposes parallel work that can be assigned to a GPU.
+For an objective expressed as a sum or average of terms $f_a(\theta)$, a conventional update for a selected set $B_t$ is
+\begin{equation}
+\theta_{t+1}=\theta_t-\frac{\alpha_t}{|B_t|}\sum_{a\in B_t}\nabla f_a(\theta_t),
+\label{eq:minibatch}
+\end{equation}
+where $\alpha_t$ is the learning rate.
+All gradients in a batch are evaluated at the same $\theta_t$, then aggregated for a single parameter update.
+
+This idea of processing multiple terms together motivates our grouping of vertex-pair updates for graph drawing.
+Directly executing updates that share a vertex can cause conflicting coordinate reads and writes.
+We therefore construct groups of updates that can run concurrently, applying \eqref{eq:displacement} and \eqref{eq:update} to each pair.
+The resulting execution groups retain the existing pairwise update rule rather than introducing the gradient average in \eqref{eq:minibatch}.
+
+\subsection{RoundRobin Full SGD}
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.83\textwidth]{fig02_rr_full.pdf}
+\caption{Two-level scheduling in RoundRobin Full SGD. (a) Partition all vertex pairs into blocks. (b) Process tiles with disjoint blocks in the same outer round. (c) Partition a tile between distinct blocks into cyclic matchings. Here $T=4$; row vertices 1--4 and column vertices 5--8 are distinct sets. Self-tiles use a separate RR schedule. The illustrated round order is explanatory; execution orders are shuffled.}
+\label{fig:full}
+\end{figure*}
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.83\textwidth]{fig03_rr_sparse.pdf}
+\caption{Update separation in RoundRobin Sparse SGD. (a) Partition the update set. (b) In the one-sided phase, each thread owns a non-pivot vertex and updates its local coordinate while reading pivots without modifying them. Dotted arrows denote coordinate reads. (c) In the two-sided phase, process successive matchings with disjoint endpoints. Each phase is split into four segments and the segments alternate, covering all terms once per iteration.}
+\label{fig:sparse}
+\end{figure*}
+Pairs with disjoint endpoints can be updated independently without aggregating gradients.
+An update of $(i,j)$ reads and modifies only $x_i$ and $x_j$, so it does not change the inputs of a disjoint pair $(u,v)$.
+A set of such pairs is a \emph{matching}.
+Applying the same update rule to pairs within one matching introduces no mathematical dependence between their sequential and simultaneous execution, allowing parallelization without shared-vertex locks.
+
+RR partitions all pairings into rounds in which each participant appears once.
+For four vertices, $(1,2),(3,4)$; $(1,3),(2,4)$; and $(1,4),(2,3)$ cover all six pairs exactly once in three rounds.
+For an even number of participants, the number of rounds is one less than the number of participants.
+For an odd number, we add a dummy participant and discard pairs containing it.
+Pairs within a round run in parallel, and the next round waits for completion.
+
+Independence within a round does not imply that different round orders yield the same final layout.
+RR imposes ordering constraints that differ from the CPU's unrestricted shuffle of all pairs, so we evaluate both iteration time and layout quality.
+
+RoundRobin Full SGD constructs independent updates at two levels: between blocks and within blocks.
+We group vertices in ID order into blocks of at most $T$ vertices, where $T$ is the \emph{tile size}.
+All pairs between two distinct blocks form a tile; pairs within one block form a self-tile.
+We first choose tiles that can run concurrently and then choose concurrent pair updates inside each tile.
+
+The outer RR schedule ensures that each block participates in at most one tile in a round.
+The upper triangle in \autoref{fig:full}(a) contains tiles between distinct blocks.
+Tiles with the same R label share no blocks and can run in parallel.
+Diagonal self-tiles S form a separate round, and duplicated lower-triangular tiles are omitted.
+This covers every vertex pair exactly once.
+
+Within a tile, we construct matchings in which each vertex has only one partner.
+Numbering vertices in each of two distinct blocks from $0$ to $T-1$, inner round $r$ pairs vertex $a$ with vertex $(a+r)\bmod T$ in the other block.
+Rounds $r=0,\ldots,T-1$ cover all $T^2$ pairs once.
+Each number in \autoref{fig:full}(c) appears once in every row and column.
+Since rows and columns represent different blocks, diagonal entries are valid pairs.
+Self-tiles use RR on the actual vertices, excluding self-pairs and duplicates.
+
+Coordinates remain in shared memory during tile processing and are reused across updates.
+Each tile is assigned to one workgroup, a group of threads that can share memory and synchronize with barriers.
+The workgroup loads coordinates from both blocks and processes each inner matching in parallel.
+All threads participate in a barrier after each matching so that the next matching uses updated coordinates.
+After all inner rounds, the coordinates are written back to global memory.
+Blocks smaller than $T$ are padded with dummy vertices; only pairs with two actual endpoints are updated.
+
+Coordinate reuse reduces global-memory reads and writes.
+For two blocks of $T$ vertices, a tile contains $T^2$ pairs.
+Reading and writing both endpoints for each pair requires $2T^2$ coordinate reads and $2T^2$ writes.
+Loading all $2T$ vertices once and writing them once at the end reduces each count to $2T$.
+These counts treat one two-dimensional coordinate as one access.
+Distance-matrix accesses remain, so this reduction does not imply an equal runtime speedup.
+
+At every iteration, we shuffle the outer rounds, including the self-tile round, and the inner matching order.
+Tiles of the same type and size within an outer round share the inner order.
+We wait for GPU completion between outer rounds, changing the order while preserving independence and coordinate reuse.
+
+Tile size affects both reuse and parallelism.
+Larger $T$ reduces the number of outer rounds, but increases updates and synchronization within each tile and reduces the number of tiles that can run concurrently.
+It also changes update order and can affect quality.
+All-pairs updates and distance storage remain $O(n^2)$; the scheme improves work grouping and coordinate accesses.
+
+\subsection{RoundRobin Sparse SGD}
+
+RoundRobin Sparse SGD parallelizes the one-sided and two-sided updates of the existing Sparse SGD formulation described in Section~\ref{sec:sgd-atomic}.
+CPU, Atomic, and RoundRobin Sparse SGD use distances and endpoint weights from common preprocessing.
+
+One-sided updates are grouped by the vertex they modify and processed independently.
+In \autoref{fig:sparse}(b), one thread is assigned to each non-pivot vertex.
+It loads the coordinate into a local variable, sequentially applies the pivot terms assigned to that segment, and writes back at the end of the segment.
+Terms that modify pivots run in a separate stage.
+Our implementation excludes pivot vertices from one-sided update targets and performs no pivot writes in this phase.
+This allows threads to read shared pivots while reusing their assigned vertex coordinates.
+
+Two-sided updates avoid concurrent writes through RR for pivot pairs and matchings for actual edges.
+After constructing RR rounds for pivot pairs, we reorder the remaining edges and insert each into the first round in which neither endpoint is used, creating a round if necessary.
+A pivot pair that is also an actual edge appears only once.
+Every round is a matching and can run without locks, although edges concentrated at particular vertices can require many rounds.
+
+We call the stages for the two update types the one-sided and two-sided phases and wait for a stage to finish before proceeding.
+At each iteration, we shuffle a common pivot permutation and the two-sided round order.
+A permutation based on vertex ID, iteration, and seed determines each vertex's pivot order.
+We alternate four segments of each phase, selecting the starting phase per iteration and covering every term once.
+The update rule, weights, learning rate, and displacement cap are unchanged; execution order differs from the CPU term shuffle.

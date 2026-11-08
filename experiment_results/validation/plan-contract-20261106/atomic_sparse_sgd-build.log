@@ -1,0 +1,29 @@
+warning: unexpected `cfg` condition value: `cargo-clippy`
+ --> src/../../../../shared/gpu-timing/metal.rs:9:31
+  |
+9 |     let start: f64 = unsafe { msg_send![command, GPUStartTime] };
+  |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: no expected values for `feature`
+  = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+  = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+  = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+  = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+  = note: `#[warn(unexpected_cfgs)]` on by default
+  = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `cargo-clippy`
+  --> src/../../../../shared/gpu-timing/metal.rs:10:29
+   |
+10 |     let end: f64 = unsafe { msg_send![command, GPUEndTime] };
+   |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: no expected values for `feature`
+   = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+   = help: try referring to `sel_impl` crate for guidance on how handle this unexpected cfg
+   = help: the macro `sel_impl` may come from an old version of the `objc` crate, try updating your dependency with `cargo update -p objc`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+   = note: this warning originates in the macro `sel_impl` which comes from the expansion of the macro `msg_send` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: `vram-lock-sparse` (lib) generated 2 warnings
+    Finished `release` profile [optimized] target(s) in 0.03s

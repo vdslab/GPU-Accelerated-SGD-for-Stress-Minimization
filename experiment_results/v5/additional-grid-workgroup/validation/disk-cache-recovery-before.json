@@ -1,0 +1,68 @@
+{
+  "at": "2026-11-07T15:16:40+09:00",
+  "free_before": 3102318592,
+  "paths": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/sparse-workgroup/target",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/sparse-audit/target",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/mtx-import-test/target",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/deps",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/build",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/baseline-sparse-sgd-non-gpu/target/release/deps",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/baseline-sparse-sgd-non-gpu/target/release/build",
+    "/Users/kose/Library/Caches/Firefox",
+    "/Users/kose/Library/Caches/Steam",
+    "/Users/kose/Library/Caches/us.zoom.xos",
+    "/Users/kose/Library/Caches/node-gyp"
+  ],
+  "preserved_executables": [
+    {
+      "source": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/sparse-workgroup/target/release/sparse-sgd-gpu",
+      "backup": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/validation/build-executable-backups/db97e4a0e7f2615c104fbd90fb9495c36c2e615d4d221ba12f1edde044d6bf82-sparse-sgd-gpu",
+      "sha256": "db97e4a0e7f2615c104fbd90fb9495c36c2e615d4d221ba12f1edde044d6bf82"
+    },
+    {
+      "source": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/sparse-audit/target/release/speed-probe",
+      "backup": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/validation/build-executable-backups/c4586bee97762264c1c81a47ba0266757ffb15da543ce12c6a00382832b0cd68-speed-probe",
+      "sha256": "c4586bee97762264c1c81a47ba0266757ffb15da543ce12c6a00382832b0cd68"
+    },
+    {
+      "source": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/sparse-audit/target/release/order-probe",
+      "backup": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/validation/build-executable-backups/554e7729826183cf40b7d044491a00a66e056a9d507a16c452460322199e54be-order-probe",
+      "sha256": "554e7729826183cf40b7d044491a00a66e056a9d507a16c452460322199e54be"
+    },
+    {
+      "source": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/sparse-audit/target/release/sparse-audit",
+      "backup": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/validation/build-executable-backups/494bf54c141c2c4538afa0f87b1910d549e019937f6fee7d54c3b85be8f822de-sparse-audit",
+      "sha256": "494bf54c141c2c4538afa0f87b1910d549e019937f6fee7d54c3b85be8f822de"
+    },
+    {
+      "source": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/sparse-audit/target/debug/deps/sparse_audit-be6cff3e76ce1ff7",
+      "backup": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/validation/build-executable-backups/67518dcb8e9d617eb5ca1519daf3b77e2879e823bee71b58e09989d6932b9c58-sparse_audit-be6cff3e76ce1ff7",
+      "sha256": "67518dcb8e9d617eb5ca1519daf3b77e2879e823bee71b58e09989d6932b9c58"
+    },
+    {
+      "source": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/sparse-audit/target/debug/deps/order_probe-92fad5f48bc2760c",
+      "backup": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/validation/build-executable-backups/086027152bb2ad5921680736cd237efb262f7ac2b6fe4406ed64c6800ae61da2-order_probe-92fad5f48bc2760c",
+      "sha256": "086027152bb2ad5921680736cd237efb262f7ac2b6fe4406ed64c6800ae61da2"
+    },
+    {
+      "source": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/sparse-audit/target/debug/deps/sparse_audit-010a31ce2b645a3d",
+      "backup": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/validation/build-executable-backups/2b31c1f94c3deab16b9e3f65fd4f84024934e233a0b1c7e2d6398c64bf680d55-sparse_audit-010a31ce2b645a3d",
+      "sha256": "2b31c1f94c3deab16b9e3f65fd4f84024934e233a0b1c7e2d6398c64bf680d55"
+    },
+    {
+      "source": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/mtx-import-test/target/release/mtx-import-test",
+      "backup": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/validation/build-executable-backups/f46c4023eaa1fa5829e5f38b3a196f930c76e3808db83334de71d186ec70d140-mtx-import-test",
+      "sha256": "f46c4023eaa1fa5829e5f38b3a196f930c76e3808db83334de71d186ec70d140"
+    },
+    {
+      "source": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/tools/diagnostics/mtx-import-test/target/debug/mtx-import-test",
+      "backup": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/validation/build-executable-backups/5c8369f422ed29b03e8ca86dbc58b456ee660537879754f7f4e763e7ce469823-mtx-import-test",
+      "sha256": "5c8369f422ed29b03e8ca86dbc58b456ee660537879754f7f4e763e7ce469823"
+    }
+  ],
+  "skipped_active_app_caches": [
+    "/Users/kose/Library/Caches/composer"
+  ],
+  "preserved": "All eight measurement binaries, all inputs/results, Codex/browser runtime, active application/updater caches; no Git prune/expiry"
+}

@@ -1,0 +1,102 @@
+[
+  {
+    "graph": "auto",
+    "pivots": 1000,
+    "seed": 0,
+    "vertex_stride": 5,
+    "edge_stride": 67,
+    "vertices_drawn": 89739,
+    "edges_drawn": 49472,
+    "rule": "Every ceil(n/100000)-th vertex and ceil(m/50000)-th edge in native order; edge endpoints use all coordinates. Independent full extents per graph. No cropping."
+  },
+  {
+    "graph": "NACA0015",
+    "pivots": 500,
+    "seed": 0,
+    "vertex_stride": 11,
+    "edge_stride": 63,
+    "vertices_drawn": 94472,
+    "edges_drawn": 49442,
+    "rule": "Every ceil(n/100000)-th vertex and ceil(m/50000)-th edge in native order; edge endpoints use all coordinates. Independent full extents per graph. No cropping."
+  },
+  {
+    "graph": "belgium_osm",
+    "pivots": 200,
+    "seed": 0,
+    "vertex_stride": 15,
+    "edge_stride": 31,
+    "vertices_drawn": 96087,
+    "edges_drawn": 50000,
+    "rule": "Every ceil(n/100000)-th vertex and ceil(m/50000)-th edge in native order; edge endpoints use all coordinates. Independent full extents per graph. No cropping."
+  },
+  {
+    "graph": "Flan_1565",
+    "pivots": 200,
+    "seed": 0,
+    "vertex_stride": 16,
+    "edge_stride": 1127,
+    "vertices_drawn": 97800,
+    "edges_drawn": 49956,
+    "rule": "Every ceil(n/100000)-th vertex and ceil(m/50000)-th edge in native order; edge endpoints use all coordinates. Independent full extents per graph. No cropping."
+  },
+  {
+    "graph": "netherlands_osm",
+    "pivots": 200,
+    "seed": 0,
+    "vertex_stride": 23,
+    "edge_stride": 49,
+    "vertices_drawn": 96378,
+    "edges_drawn": 49822,
+    "rule": "Every ceil(n/100000)-th vertex and ceil(m/50000)-th edge in native order; edge endpoints use all coordinates. Independent full extents per graph. No cropping."
+  },
+  {
+    "graph": "com-Orkut",
+    "pivots": 100,
+    "seed": 0,
+    "vertex_stride": 31,
+    "edge_stride": 2344,
+    "vertices_drawn": 99111,
+    "edges_drawn": 49994,
+    "rule": "Every ceil(n/100000)-th vertex and ceil(m/50000)-th edge in native order; edge endpoints use all coordinates. Independent full extents per graph. No cropping."
+  },
+  {
+    "graph": "AS365",
+    "pivots": 100,
+    "seed": 0,
+    "vertex_stride": 38,
+    "edge_stride": 228,
+    "vertices_drawn": 99981,
+    "edges_drawn": 49860,
+    "rule": "Every ceil(n/100000)-th vertex and ceil(m/50000)-th edge in native order; edge endpoints use all coordinates. Independent full extents per graph. No cropping."
+  },
+  {
+    "graph": "com-LiveJournal",
+    "pivots": 100,
+    "seed": 0,
+    "vertex_stride": 40,
+    "edge_stride": 694,
+    "vertices_drawn": 99950,
+    "edges_drawn": 49973,
+    "rule": "Every ceil(n/100000)-th vertex and ceil(m/50000)-th edge in native order; edge endpoints use all coordinates. Independent full extents per graph. No cropping."
+  },
+  {
+    "graph": "italy_osm",
+    "pivots": 50,
+    "seed": 0,
+    "vertex_stride": 67,
+    "edge_stride": 141,
+    "vertices_drawn": 99799,
+    "edges_drawn": 49745,
+    "rule": "Every ceil(n/100000)-th vertex and ceil(m/50000)-th edge in native order; edge endpoints use all coordinates. Independent full extents per graph. No cropping."
+  },
+  {
+    "graph": "great-britain_osm",
+    "pivots": 50,
+    "seed": 0,
+    "vertex_stride": 78,
+    "edge_stride": 164,
+    "vertices_drawn": 99152,
+    "edges_drawn": 49735,
+    "rule": "Every ceil(n/100000)-th vertex and ceil(m/50000)-th edge in native order; edge endpoints use all coordinates. Independent full extents per graph. No cropping."
+  }
+]

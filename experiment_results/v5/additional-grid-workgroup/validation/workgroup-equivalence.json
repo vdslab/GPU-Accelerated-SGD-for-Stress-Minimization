@@ -1,0 +1,74 @@
+{
+  "at": "2026-11-07T14:51:48+09:00",
+  "status": "passed",
+  "checks": [
+    {
+      "graph": "grid17",
+      "pivots": 200,
+      "variant": "w256",
+      "exact_final_coordinates": true,
+      "exact_stress": true,
+      "initial_and_preprocess_fingerprint_match": true
+    },
+    {
+      "graph": "grid17",
+      "pivots": 200,
+      "variant": "w1024",
+      "exact_final_coordinates": true,
+      "exact_stress": true,
+      "initial_and_preprocess_fingerprint_match": true
+    },
+    {
+      "graph": "grid2d_64x64",
+      "pivots": 200,
+      "variant": "w256",
+      "exact_final_coordinates": true,
+      "exact_stress": true,
+      "initial_and_preprocess_fingerprint_match": true
+    },
+    {
+      "graph": "grid2d_64x64",
+      "pivots": 200,
+      "variant": "w1024",
+      "exact_final_coordinates": true,
+      "exact_stress": true,
+      "initial_and_preprocess_fingerprint_match": true
+    },
+    {
+      "graph": "grid2d_64x64",
+      "pivots": 1000,
+      "variant": "w256",
+      "exact_final_coordinates": true,
+      "exact_stress": true,
+      "initial_and_preprocess_fingerprint_match": true
+    },
+    {
+      "graph": "grid2d_64x64",
+      "pivots": 1000,
+      "variant": "w1024",
+      "exact_final_coordinates": true,
+      "exact_stress": true,
+      "initial_and_preprocess_fingerprint_match": true
+    }
+  ],
+  "binaries": [
+    {
+      "workgroup_size": 256,
+      "manifest": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/source-snapshot/sparse-w256/Cargo.toml",
+      "binary": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/bin/rr-sparse-w256",
+      "code_changes": "Workgroup size constant and two shader declarations only; frozen reference/timing sources copied locally; p, arithmetic and update schedule unchanged",
+      "package_name": "sparse-workgroup-w256",
+      "sha256": "48338d34a3aef6f934a745b4d5440bab2d3e9bf79f56bbd0992431d395ae1262"
+    },
+    {
+      "workgroup_size": 1024,
+      "manifest": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/source-snapshot/sparse-w1024/Cargo.toml",
+      "binary": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/additional-grid-workgroup/bin/rr-sparse-w1024",
+      "code_changes": "Workgroup size constant and two shader declarations only; frozen reference/timing sources copied locally; p, arithmetic and update schedule unchanged",
+      "package_name": "sparse-workgroup-w1024",
+      "sha256": "74456261a9d17e07f418f18248e0a5f9a9358642165ea37e0c01278c8560a65a"
+    }
+  ],
+  "production_binary_sha256": "61dd5fcb9ec4235c300242b10c4bda43bf958579380521a612cc1231b5af4092",
+  "used_for_timing": false
+}

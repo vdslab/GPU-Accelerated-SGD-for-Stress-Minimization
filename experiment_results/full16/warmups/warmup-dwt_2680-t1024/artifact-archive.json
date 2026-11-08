@@ -1,0 +1,28 @@
+{
+  "format": "gzip",
+  "compresslevel": 1,
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/warmups/warmup-dwt_2680-t1024/rr-sgd-dwt_2680-warmup-dwt_2680-t1024.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/warmups/warmup-dwt_2680-t1024/rr-sgd-dwt_2680-warmup-dwt_2680-t1024.final.txt.gz",
+      "original_sha256": "1ebf5bb1f762ddb9f9a8227fe7bca1232e0209d14fb9f7a06c3e9f4a71668042",
+      "decompressed_sha256": "1ebf5bb1f762ddb9f9a8227fe7bca1232e0209d14fb9f7a06c3e9f4a71668042",
+      "compressed_sha256": "a007d5d8e563d74035896c39ed6afe43972f6c88e9c6413fcadc52f6b3823f24",
+      "original_bytes": 204495,
+      "compressed_bytes": 84841,
+      "gzip_crc_validated": true
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/warmups/warmup-dwt_2680-t1024/rr-sgd-dwt_2680-warmup-dwt_2680-t1024.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/full16/warmups/warmup-dwt_2680-t1024/rr-sgd-dwt_2680-warmup-dwt_2680-t1024.initial.txt.gz",
+      "original_sha256": "2adf8fec399c91f06e143edaa24cec5698c829e356ab60c14312e476516a3521",
+      "decompressed_sha256": "2adf8fec399c91f06e143edaa24cec5698c829e356ab60c14312e476516a3521",
+      "compressed_sha256": "b11f1fb87fd0574bf456a06edcc2f19a3b7e0c8c46e9e924f626ae812c3a1898",
+      "original_bytes": 210991,
+      "compressed_bytes": 87280,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,2258 @@
+[
+  {
+    "graph": "la2010",
+    "nodes": 204447,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 291.0378722,
+    "min_ms": 290.5598361333333,
+    "max_ms": 292.82216946666665
+  },
+  {
+    "graph": "email",
+    "nodes": 1133,
+    "method": "sparse_sgd",
+    "median_ms": 2.224511133333333,
+    "min_ms": 2.2196388666666667,
+    "max_ms": 2.247819466666667
+  },
+  {
+    "graph": "bcsstk32",
+    "nodes": 44609,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 66.0206444,
+    "min_ms": 65.57111386666666,
+    "max_ms": 66.25566113333333
+  },
+  {
+    "graph": "EVA",
+    "nodes": 4475,
+    "method": "rr_sparse_sgd",
+    "median_ms": 4.406702733333333,
+    "min_ms": 4.265891666666667,
+    "max_ms": 5.573858333333333
+  },
+  {
+    "graph": "dolphins",
+    "nodes": 62,
+    "method": "rr_sgd",
+    "median_ms": 1.3780416666666668,
+    "min_ms": 1.3653805333333333,
+    "max_ms": 1.3931972666666668
+  },
+  {
+    "graph": "lesmis",
+    "nodes": 77,
+    "method": "sgd",
+    "median_ms": 0.021483333333333333,
+    "min_ms": 0.021363866666666665,
+    "max_ms": 0.021577799999999998
+  },
+  {
+    "graph": "bcsstk17",
+    "nodes": 10456,
+    "method": "sgd",
+    "median_ms": 929.1113916666668,
+    "min_ms": 925.9457194666666,
+    "max_ms": 987.2908083333333
+  },
+  {
+    "graph": "ca-AstroPh",
+    "nodes": 17903,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.9254416666666665,
+    "min_ms": 3.8289750000000002,
+    "max_ms": 6.245808333333333
+  },
+  {
+    "graph": "1138_bus",
+    "nodes": 1138,
+    "method": "rr_sgd",
+    "median_ms": 4.370147200000001,
+    "min_ms": 4.353722199999999,
+    "max_ms": 5.211588866666667
+  },
+  {
+    "graph": "add20",
+    "nodes": 2395,
+    "method": "sparse_sgd",
+    "median_ms": 5.256238866666666,
+    "min_ms": 5.217605533333333,
+    "max_ms": 5.266838933333333
+  },
+  {
+    "graph": "grid17",
+    "nodes": 289,
+    "method": "sgd",
+    "median_ms": 0.3397444666666667,
+    "min_ms": 0.3386833333333333,
+    "max_ms": 0.3411527333333334
+  },
+  {
+    "graph": "data",
+    "nodes": 2851,
+    "method": "rr_sgd",
+    "median_ms": 9.785630533333334,
+    "min_ms": 9.247230533333333,
+    "max_ms": 11.234611066666666
+  },
+  {
+    "graph": "3elt",
+    "nodes": 4720,
+    "method": "sparse_sgd",
+    "median_ms": 12.571816666666667,
+    "min_ms": 12.380958333333332,
+    "max_ms": 12.856611133333333
+  },
+  {
+    "graph": "ca-HepTh",
+    "nodes": 8638,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 15.587863866666668,
+    "min_ms": 15.346274999999999,
+    "max_ms": 15.837833333333332
+  },
+  {
+    "graph": "3elt",
+    "nodes": 4720,
+    "method": "sgd",
+    "median_ms": 254.2975472,
+    "min_ms": 234.37540833333333,
+    "max_ms": 273.846875
+  },
+  {
+    "graph": "CA-GrQc",
+    "nodes": 4158,
+    "method": "rr_sparse_sgd",
+    "median_ms": 4.0276056,
+    "min_ms": 2.8807166666666664,
+    "max_ms": 4.703858333333334
+  },
+  {
+    "graph": "CA-GrQc",
+    "nodes": 4158,
+    "method": "sparse_sgd",
+    "median_ms": 10.645116666666667,
+    "min_ms": 10.483561133333334,
+    "max_ms": 11.087966666666667
+  },
+  {
+    "graph": "EVA",
+    "nodes": 4475,
+    "method": "sgd",
+    "median_ms": 240.3675278,
+    "min_ms": 222.46885833333334,
+    "max_ms": 252.71137219999997
+  },
+  {
+    "graph": "dwt_72",
+    "nodes": 72,
+    "method": "rr_sgd",
+    "median_ms": 1.3769416666666667,
+    "min_ms": 1.3210083333333331,
+    "max_ms": 1.4541528
+  },
+  {
+    "graph": "p2p-Gnutella08",
+    "nodes": 6299,
+    "method": "sparse_sgd",
+    "median_ms": 19.3577194,
+    "min_ms": 18.774511133333338,
+    "max_ms": 19.633558333333333
+  },
+  {
+    "graph": "dwt_2680",
+    "nodes": 2680,
+    "method": "atomic_sgd",
+    "median_ms": 114.85289719999999,
+    "min_ms": 114.67335553333334,
+    "max_ms": 115.5207472
+  },
+  {
+    "graph": "dwt_419",
+    "nodes": 419,
+    "method": "rr_sparse_sgd",
+    "median_ms": 2.8309889333333333,
+    "min_ms": 2.4752555999999997,
+    "max_ms": 3.6150360666666668
+  },
+  {
+    "graph": "mesh3e1",
+    "nodes": 289,
+    "method": "sgd",
+    "median_ms": 0.33900833333333336,
+    "min_ms": 0.3386333333333333,
+    "max_ms": 0.3393083333333334
+  },
+  {
+    "graph": "data",
+    "nodes": 2851,
+    "method": "sgd",
+    "median_ms": 71.40633333333332,
+    "min_ms": 68.60648333333333,
+    "max_ms": 73.63754446666667
+  },
+  {
+    "graph": "email-Enron",
+    "nodes": 33696,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 49.80683613333334,
+    "min_ms": 49.61799166666666,
+    "max_ms": 50.09295553333334
+  },
+  {
+    "graph": "dwt_758",
+    "nodes": 758,
+    "method": "atomic_sgd",
+    "median_ms": 50.920330533333335,
+    "min_ms": 50.795775000000006,
+    "max_ms": 51.030925
+  },
+  {
+    "graph": "karate",
+    "nodes": 34,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 1.1241528,
+    "min_ms": 1.0457194666666667,
+    "max_ms": 1.2254778000000002
+  },
+  {
+    "graph": "bcsstk17",
+    "nodes": 10456,
+    "method": "rr_sgd",
+    "median_ms": 29.974766666666667,
+    "min_ms": 29.46420553333333,
+    "max_ms": 29.996100000000002
+  },
+  {
+    "graph": "coAuthorsCiteseer",
+    "nodes": 227320,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 322.7782694666667,
+    "min_ms": 321.2133111333333,
+    "max_ms": 324.5769944
+  },
+  {
+    "graph": "bcsstk09",
+    "nodes": 1083,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 4.906986066666667,
+    "min_ms": 4.364038933333333,
+    "max_ms": 5.110305533333333
+  },
+  {
+    "graph": "dwt_419",
+    "nodes": 419,
+    "method": "sgd",
+    "median_ms": 0.8055249999999999,
+    "min_ms": 0.8045694666666666,
+    "max_ms": 0.8117778
+  },
+  {
+    "graph": "venkat50",
+    "nodes": 62424,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 90.5712278,
+    "min_ms": 89.95875,
+    "max_ms": 91.2216444
+  },
+  {
+    "graph": "polbooks",
+    "nodes": 105,
+    "method": "atomic_sgd",
+    "median_ms": 2.6283861333333336,
+    "min_ms": 2.2094778,
+    "max_ms": 2.79755
+  },
+  {
+    "graph": "celegansneural",
+    "nodes": 297,
+    "method": "sparse_sgd",
+    "median_ms": 0.3516833333333334,
+    "min_ms": 0.35109446666666666,
+    "max_ms": 0.35617219999999994
+  },
+  {
+    "graph": "com-Amazon",
+    "nodes": 334863,
+    "method": "rr_sparse_sgd",
+    "median_ms": 20.2006194,
+    "min_ms": 19.955825,
+    "max_ms": 23.668830533333335
+  },
+  {
+    "graph": "bcsstk16",
+    "nodes": 4810,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 10.230138866666666,
+    "min_ms": 9.951316666666667,
+    "max_ms": 10.344052799999998
+  },
+  {
+    "graph": "dwt_419",
+    "nodes": 419,
+    "method": "rr_sgd",
+    "median_ms": 1.5962444666666664,
+    "min_ms": 1.5873638666666667,
+    "max_ms": 1.5991777333333335
+  },
+  {
+    "graph": "email",
+    "nodes": 1133,
+    "method": "atomic_sgd",
+    "median_ms": 72.10161666666666,
+    "min_ms": 71.4467222,
+    "max_ms": 72.8469
+  },
+  {
+    "graph": "1138_bus",
+    "nodes": 1138,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 4.5861222,
+    "min_ms": 4.246013866666667,
+    "max_ms": 5.5168722
+  },
+  {
+    "graph": "3elt",
+    "nodes": 4720,
+    "method": "atomic_sgd",
+    "median_ms": 135.15155833333333,
+    "min_ms": 123.05937226666667,
+    "max_ms": 135.96658886666668
+  },
+  {
+    "graph": "netscience",
+    "nodes": 379,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 4.691258333333334,
+    "min_ms": 4.469658333333333,
+    "max_ms": 4.95755
+  },
+  {
+    "graph": "add20",
+    "nodes": 2395,
+    "method": "atomic_sgd",
+    "median_ms": 105.69996386666668,
+    "min_ms": 105.26483886666666,
+    "max_ms": 106.32511946666666
+  },
+  {
+    "graph": "3elt",
+    "nodes": 4720,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 10.025613866666667,
+    "min_ms": 9.560274999999999,
+    "max_ms": 10.324005533333333
+  },
+  {
+    "graph": "polblogs",
+    "nodes": 1222,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 4.7204222,
+    "min_ms": 3.9783278,
+    "max_ms": 5.163888933333334
+  },
+  {
+    "graph": "mesh3e1",
+    "nodes": 289,
+    "method": "sparse_sgd",
+    "median_ms": 0.3331222,
+    "min_ms": 0.3330111333333334,
+    "max_ms": 0.33414726666666666
+  },
+  {
+    "graph": "soc-Slashdot0811",
+    "nodes": 77360,
+    "method": "rr_sparse_sgd",
+    "median_ms": 11.88195,
+    "min_ms": 11.205363866666666,
+    "max_ms": 12.348458333333333
+  },
+  {
+    "graph": "bcspwr10",
+    "nodes": 5300,
+    "method": "rr_sgd",
+    "median_ms": 12.2956528,
+    "min_ms": 11.9960528,
+    "max_ms": 12.493002800000001
+  },
+  {
+    "graph": "bcspwr10",
+    "nodes": 5300,
+    "method": "sgd",
+    "median_ms": 352.104825,
+    "min_ms": 338.58364446666667,
+    "max_ms": 356.9941166666667
+  },
+  {
+    "graph": "grid17",
+    "nodes": 289,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 4.3203306,
+    "min_ms": 4.089186066666667,
+    "max_ms": 4.929708333333334
+  },
+  {
+    "graph": "lesmis",
+    "nodes": 77,
+    "method": "rr_sparse_sgd",
+    "median_ms": 2.4453360666666666,
+    "min_ms": 2.3369750000000002,
+    "max_ms": 2.686775
+  },
+  {
+    "graph": "PGPgiantcompo",
+    "nodes": 10680,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.003394466666667,
+    "min_ms": 2.592333333333334,
+    "max_ms": 4.162519466666667
+  },
+  {
+    "graph": "fe_4elt2",
+    "nodes": 11143,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.111044466666667,
+    "min_ms": 2.6793972,
+    "max_ms": 3.578533333333333
+  },
+  {
+    "graph": "dwt_1005",
+    "nodes": 1005,
+    "method": "sgd",
+    "median_ms": 5.197747199999999,
+    "min_ms": 5.174116666666666,
+    "max_ms": 5.262483333333334
+  },
+  {
+    "graph": "soc-Epinions1",
+    "nodes": 75877,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 107.77646106666667,
+    "min_ms": 107.6606722,
+    "max_ms": 108.67855000000002
+  },
+  {
+    "graph": "bcsstk17",
+    "nodes": 10456,
+    "method": "sparse_sgd",
+    "median_ms": 32.2952972,
+    "min_ms": 32.15726393333333,
+    "max_ms": 32.62968613333333
+  },
+  {
+    "graph": "celegansneural",
+    "nodes": 297,
+    "method": "atomic_sgd",
+    "median_ms": 16.467138933333334,
+    "min_ms": 15.895022266666667,
+    "max_ms": 16.52895
+  },
+  {
+    "graph": "polbooks",
+    "nodes": 105,
+    "method": "sparse_sgd",
+    "median_ms": 0.044283333333333334,
+    "min_ms": 0.04415553333333333,
+    "max_ms": 0.044352800000000005
+  },
+  {
+    "graph": "coAuthorsCiteseer",
+    "nodes": 227320,
+    "method": "rr_sparse_sgd",
+    "median_ms": 16.248711133333334,
+    "min_ms": 16.1697306,
+    "max_ms": 16.4576222
+  },
+  {
+    "graph": "yeast",
+    "nodes": 2224,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 5.979572199999999,
+    "min_ms": 5.351594466666667,
+    "max_ms": 6.069330533333333
+  },
+  {
+    "graph": "la2010",
+    "nodes": 204447,
+    "method": "rr_sparse_sgd",
+    "median_ms": 13.027527733333333,
+    "min_ms": 12.986836133333332,
+    "max_ms": 13.229530533333334
+  },
+  {
+    "graph": "wiki-Vote",
+    "nodes": 7066,
+    "method": "atomic_sgd",
+    "median_ms": 155.73116666666664,
+    "min_ms": 155.6130222,
+    "max_ms": 156.2781138666667
+  },
+  {
+    "graph": "bcsstk16",
+    "nodes": 4810,
+    "method": "sparse_sgd",
+    "median_ms": 15.180275,
+    "min_ms": 15.0208222,
+    "max_ms": 15.624
+  },
+  {
+    "graph": "luxembourg_osm",
+    "nodes": 114599,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 162.784525,
+    "min_ms": 162.3065472,
+    "max_ms": 163.73932779999998
+  },
+  {
+    "graph": "coPapersCiteseer",
+    "nodes": 434102,
+    "method": "sparse_sgd",
+    "median_ms": 2110.715041666667,
+    "min_ms": 2085.5696194666666,
+    "max_ms": 2300.0544028
+  },
+  {
+    "graph": "dwt_198",
+    "nodes": 72,
+    "method": "sgd",
+    "median_ms": 0.012319466666666667,
+    "min_ms": 0.01225,
+    "max_ms": 0.012361133333333333
+  },
+  {
+    "graph": "jazz",
+    "nodes": 198,
+    "method": "sparse_sgd",
+    "median_ms": 0.16358053333333336,
+    "min_ms": 0.16332779999999997,
+    "max_ms": 0.16375833333333334
+  },
+  {
+    "graph": "bcsstk32",
+    "nodes": 44609,
+    "method": "rr_sparse_sgd",
+    "median_ms": 5.4998528,
+    "min_ms": 5.3835277999999995,
+    "max_ms": 5.699319399999999
+  },
+  {
+    "graph": "jazz",
+    "nodes": 198,
+    "method": "rr_sparse_sgd",
+    "median_ms": 2.5546194666666664,
+    "min_ms": 2.384675,
+    "max_ms": 2.8895721999999995
+  },
+  {
+    "graph": "EVA",
+    "nodes": 4475,
+    "method": "rr_sgd",
+    "median_ms": 12.657602800000001,
+    "min_ms": 12.201772199999999,
+    "max_ms": 12.901577733333335
+  },
+  {
+    "graph": "p2p-Gnutella31",
+    "nodes": 62561,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 90.35844726666666,
+    "min_ms": 90.14639166666667,
+    "max_ms": 91.202275
+  },
+  {
+    "graph": "p2p-Gnutella08",
+    "nodes": 6299,
+    "method": "sgd",
+    "median_ms": 529.7728972,
+    "min_ms": 512.4891610666667,
+    "max_ms": 546.5035444666667
+  },
+  {
+    "graph": "email-EuAll",
+    "nodes": 224832,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 319.997475,
+    "min_ms": 319.0073166666667,
+    "max_ms": 322.3079055333334
+  },
+  {
+    "graph": "luxembourg_osm",
+    "nodes": 114599,
+    "method": "rr_sparse_sgd",
+    "median_ms": 8.245394466666667,
+    "min_ms": 8.159705533333334,
+    "max_ms": 8.356861133333334
+  },
+  {
+    "graph": "ca-HepTh",
+    "nodes": 8638,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.1458056,
+    "min_ms": 2.4766694666666664,
+    "max_ms": 3.772875
+  },
+  {
+    "graph": "netscience",
+    "nodes": 379,
+    "method": "sgd",
+    "median_ms": 0.6434221999999999,
+    "min_ms": 0.6424638666666667,
+    "max_ms": 0.6456139333333333
+  },
+  {
+    "graph": "bcsstk16",
+    "nodes": 4810,
+    "method": "atomic_sgd",
+    "median_ms": 134.96679166666667,
+    "min_ms": 134.62366386666667,
+    "max_ms": 135.1398222
+  },
+  {
+    "graph": "add20",
+    "nodes": 2395,
+    "method": "rr_sgd",
+    "median_ms": 7.848891666666666,
+    "min_ms": 7.513211133333333,
+    "max_ms": 8.01145
+  },
+  {
+    "graph": "yeast",
+    "nodes": 2224,
+    "method": "atomic_sgd",
+    "median_ms": 100.29084719999999,
+    "min_ms": 100.0223722,
+    "max_ms": 101.35453053333335
+  },
+  {
+    "graph": "com-Amazon",
+    "nodes": 334863,
+    "method": "sparse_sgd",
+    "median_ms": 1385.6496805333334,
+    "min_ms": 1343.779875,
+    "max_ms": 1576.1385416666667
+  },
+  {
+    "graph": "celegansneural",
+    "nodes": 297,
+    "method": "sgd",
+    "median_ms": 0.36355833333333337,
+    "min_ms": 0.3624889333333333,
+    "max_ms": 0.36663053333333334
+  },
+  {
+    "graph": "fe_4elt2",
+    "nodes": 11143,
+    "method": "sgd",
+    "median_ms": 1061.6227083333333,
+    "min_ms": 1059.0739861333334,
+    "max_ms": 1124.8521278
+  },
+  {
+    "graph": "USpowerGrid",
+    "nodes": 4941,
+    "method": "sgd",
+    "median_ms": 297.90662499999996,
+    "min_ms": 292.26313053333337,
+    "max_ms": 318.5318805333334
+  },
+  {
+    "graph": "bcsstk16",
+    "nodes": 4810,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.7053694666666663,
+    "min_ms": 3.0934722,
+    "max_ms": 4.775711133333333
+  },
+  {
+    "graph": "jazz",
+    "nodes": 198,
+    "method": "atomic_sgd",
+    "median_ms": 6.1332778,
+    "min_ms": 5.8759194,
+    "max_ms": 6.266386066666667
+  },
+  {
+    "graph": "dolphins",
+    "nodes": 62,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 2.076863866666667,
+    "min_ms": 1.8404194000000003,
+    "max_ms": 2.3477972
+  },
+  {
+    "graph": "celegansneural",
+    "nodes": 297,
+    "method": "rr_sgd",
+    "median_ms": 1.6125360666666668,
+    "min_ms": 1.6065,
+    "max_ms": 1.6205388666666667
+  },
+  {
+    "graph": "netscience",
+    "nodes": 379,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.2341778,
+    "min_ms": 2.8050194666666664,
+    "max_ms": 3.4150694
+  },
+  {
+    "graph": "ca-AstroPh",
+    "nodes": 17903,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 27.635041666666666,
+    "min_ms": 27.486711133333337,
+    "max_ms": 27.891336066666668
+  },
+  {
+    "graph": "bcsstk09",
+    "nodes": 1083,
+    "method": "rr_sgd",
+    "median_ms": 4.1969,
+    "min_ms": 4.09115,
+    "max_ms": 4.892713866666667
+  },
+  {
+    "graph": "adjnoun",
+    "nodes": 112,
+    "method": "atomic_sgd",
+    "median_ms": 2.7435444666666666,
+    "min_ms": 2.6694028,
+    "max_ms": 3.033975
+  },
+  {
+    "graph": "PGPgiantcompo",
+    "nodes": 10680,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 17.583547266666663,
+    "min_ms": 17.360927733333334,
+    "max_ms": 17.733591666666666
+  },
+  {
+    "graph": "dwt_2680",
+    "nodes": 2680,
+    "method": "sparse_sgd",
+    "median_ms": 6.112605533333334,
+    "min_ms": 6.0554,
+    "max_ms": 6.120877733333333
+  },
+  {
+    "graph": "bcsstk32",
+    "nodes": 44609,
+    "method": "sparse_sgd",
+    "median_ms": 175.77263053333334,
+    "min_ms": 175.72420833333337,
+    "max_ms": 176.1052944
+  },
+  {
+    "graph": "CA-GrQc",
+    "nodes": 4158,
+    "method": "atomic_sgd",
+    "median_ms": 133.24462226666668,
+    "min_ms": 132.446725,
+    "max_ms": 134.569975
+  },
+  {
+    "graph": "PGPgiantcompo",
+    "nodes": 10680,
+    "method": "sgd",
+    "median_ms": 977.0738777999999,
+    "min_ms": 967.4519111333334,
+    "max_ms": 1029.3869778
+  },
+  {
+    "graph": "yeast",
+    "nodes": 2224,
+    "method": "sparse_sgd",
+    "median_ms": 4.8394528,
+    "min_ms": 4.800333333333333,
+    "max_ms": 4.8676444666666665
+  },
+  {
+    "graph": "p2p-Gnutella08",
+    "nodes": 6299,
+    "method": "rr_sgd",
+    "median_ms": 15.4274528,
+    "min_ms": 15.1314528,
+    "max_ms": 15.783616666666667
+  },
+  {
+    "graph": "adjnoun",
+    "nodes": 112,
+    "method": "sgd",
+    "median_ms": 0.04588606666666666,
+    "min_ms": 0.045597200000000004,
+    "max_ms": 0.0460194
+  },
+  {
+    "graph": "CA-GrQc",
+    "nodes": 4158,
+    "method": "rr_sgd",
+    "median_ms": 11.236191666666667,
+    "min_ms": 11.102011066666668,
+    "max_ms": 13.191480533333333
+  },
+  {
+    "graph": "dwt_72",
+    "nodes": 72,
+    "method": "rr_sparse_sgd",
+    "median_ms": 2.5038055333333333,
+    "min_ms": 2.211338866666667,
+    "max_ms": 2.5494416666666666
+  },
+  {
+    "graph": "can_96",
+    "nodes": 96,
+    "method": "rr_sparse_sgd",
+    "median_ms": 2.1736888666666667,
+    "min_ms": 2.0929556000000002,
+    "max_ms": 2.6937083333333334
+  },
+  {
+    "graph": "fe_ocean",
+    "nodes": 143437,
+    "method": "sparse_sgd",
+    "median_ms": 553.4898499999999,
+    "min_ms": 553.3067472666667,
+    "max_ms": 563.8412028
+  },
+  {
+    "graph": "ca-HepTh",
+    "nodes": 8638,
+    "method": "rr_sgd",
+    "median_ms": 21.429816666666667,
+    "min_ms": 21.186361133333335,
+    "max_ms": 21.76068613333333
+  },
+  {
+    "graph": "dwt_72",
+    "nodes": 72,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 2.3456221999999998,
+    "min_ms": 1.9939722000000002,
+    "max_ms": 2.3941222666666664
+  },
+  {
+    "graph": "adjnoun",
+    "nodes": 112,
+    "method": "rr_sparse_sgd",
+    "median_ms": 2.3149611333333335,
+    "min_ms": 2.071458333333333,
+    "max_ms": 2.3365916666666666
+  },
+  {
+    "graph": "p2p-Gnutella08",
+    "nodes": 6299,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.3583194666666665,
+    "min_ms": 3.2624805333333335,
+    "max_ms": 3.8432944
+  },
+  {
+    "graph": "com-Amazon",
+    "nodes": 334863,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 494.2505361333333,
+    "min_ms": 490.0176305333333,
+    "max_ms": 516.4964416666667
+  },
+  {
+    "graph": "email",
+    "nodes": 1133,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.4124528,
+    "min_ms": 3.2399861333333333,
+    "max_ms": 4.710247266666666
+  },
+  {
+    "graph": "dwt_72",
+    "nodes": 72,
+    "method": "atomic_sgd",
+    "median_ms": 2.4392944666666665,
+    "min_ms": 2.1229139333333333,
+    "max_ms": 2.8225388666666666
+  },
+  {
+    "graph": "data",
+    "nodes": 2851,
+    "method": "sparse_sgd",
+    "median_ms": 6.725372266666667,
+    "min_ms": 6.595680533333334,
+    "max_ms": 7.288172266666667
+  },
+  {
+    "graph": "PGPgiantcompo",
+    "nodes": 10680,
+    "method": "atomic_sgd",
+    "median_ms": 294.08704166666666,
+    "min_ms": 293.94153893333333,
+    "max_ms": 294.22160833333334
+  },
+  {
+    "graph": "mesh3e1",
+    "nodes": 289,
+    "method": "rr_sgd",
+    "median_ms": 1.61985,
+    "min_ms": 1.6118360666666667,
+    "max_ms": 1.6300111333333331
+  },
+  {
+    "graph": "grid17",
+    "nodes": 289,
+    "method": "rr_sgd",
+    "median_ms": 1.6192833333333332,
+    "min_ms": 1.611825,
+    "max_ms": 1.6221583333333334
+  },
+  {
+    "graph": "karate",
+    "nodes": 34,
+    "method": "atomic_sgd",
+    "median_ms": 1.1771527333333331,
+    "min_ms": 1.0384722666666666,
+    "max_ms": 1.2269028
+  },
+  {
+    "graph": "jazz",
+    "nodes": 198,
+    "method": "rr_sgd",
+    "median_ms": 1.3763694666666666,
+    "min_ms": 1.3657333333333335,
+    "max_ms": 1.6278444666666667
+  },
+  {
+    "graph": "mesh3e1",
+    "nodes": 289,
+    "method": "rr_sparse_sgd",
+    "median_ms": 2.6029443999999997,
+    "min_ms": 2.5068306,
+    "max_ms": 3.2960306
+  },
+  {
+    "graph": "dwt_1005",
+    "nodes": 1005,
+    "method": "rr_sgd",
+    "median_ms": 3.2192444,
+    "min_ms": 2.728594466666667,
+    "max_ms": 3.6578444
+  },
+  {
+    "graph": "lesmis",
+    "nodes": 77,
+    "method": "sparse_sgd",
+    "median_ms": 0.02355,
+    "min_ms": 0.023475000000000003,
+    "max_ms": 0.023663866666666665
+  },
+  {
+    "graph": "web-Stanford",
+    "nodes": 255265,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 364.32313059999996,
+    "min_ms": 363.65347499999996,
+    "max_ms": 366.8839722666667
+  },
+  {
+    "graph": "web-Stanford",
+    "nodes": 255265,
+    "method": "rr_sparse_sgd",
+    "median_ms": 101.52264166666667,
+    "min_ms": 101.4556,
+    "max_ms": 101.7388722
+  },
+  {
+    "graph": "1138_bus",
+    "nodes": 1138,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.2211027333333333,
+    "min_ms": 2.7257305333333335,
+    "max_ms": 3.3453444
+  },
+  {
+    "graph": "email",
+    "nodes": 1133,
+    "method": "rr_sgd",
+    "median_ms": 4.178313866666667,
+    "min_ms": 4.066050000000001,
+    "max_ms": 4.475388933333334
+  },
+  {
+    "graph": "dwt_758",
+    "nodes": 758,
+    "method": "rr_sgd",
+    "median_ms": 2.609175,
+    "min_ms": 2.5188916666666668,
+    "max_ms": 2.712111133333333
+  },
+  {
+    "graph": "bcsstk31",
+    "nodes": 35586,
+    "method": "sparse_sgd",
+    "median_ms": 133.12246946666667,
+    "min_ms": 132.9589778,
+    "max_ms": 133.22523606666667
+  },
+  {
+    "graph": "dwt_419",
+    "nodes": 419,
+    "method": "atomic_sgd",
+    "median_ms": 37.05377226666667,
+    "min_ms": 36.8133944,
+    "max_ms": 37.456955533333335
+  },
+  {
+    "graph": "venkat50",
+    "nodes": 62424,
+    "method": "sparse_sgd",
+    "median_ms": 242.1303972,
+    "min_ms": 242.03513333333333,
+    "max_ms": 242.47944719999998
+  },
+  {
+    "graph": "uk",
+    "nodes": 4824,
+    "method": "rr_sgd",
+    "median_ms": 12.733361133333334,
+    "min_ms": 12.591758333333335,
+    "max_ms": 12.9604722
+  },
+  {
+    "graph": "dwt_1005",
+    "nodes": 1005,
+    "method": "atomic_sgd",
+    "median_ms": 65.95934446666666,
+    "min_ms": 61.51856946666667,
+    "max_ms": 66.51129440000001
+  },
+  {
+    "graph": "fe_ocean",
+    "nodes": 143437,
+    "method": "rr_sparse_sgd",
+    "median_ms": 9.725616666666665,
+    "min_ms": 9.644138933333332,
+    "max_ms": 9.856625000000001
+  },
+  {
+    "graph": "bcsstk15",
+    "nodes": 3942,
+    "method": "sparse_sgd",
+    "median_ms": 10.415630599999998,
+    "min_ms": 10.245986066666665,
+    "max_ms": 10.452597200000001
+  },
+  {
+    "graph": "dwt_758",
+    "nodes": 758,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 4.662861066666666,
+    "min_ms": 3.8537805333333335,
+    "max_ms": 4.8165778
+  },
+  {
+    "graph": "uk",
+    "nodes": 4824,
+    "method": "atomic_sgd",
+    "median_ms": 135.79306946666665,
+    "min_ms": 123.38570833333333,
+    "max_ms": 136.29156393333332
+  },
+  {
+    "graph": "bcspwr10",
+    "nodes": 5300,
+    "method": "atomic_sgd",
+    "median_ms": 136.83461386666667,
+    "min_ms": 135.97168893333333,
+    "max_ms": 137.35224166666666
+  },
+  {
+    "graph": "dwt_2680",
+    "nodes": 2680,
+    "method": "rr_sparse_sgd",
+    "median_ms": 4.702863933333333,
+    "min_ms": 3.831230533333333,
+    "max_ms": 4.7228444
+  },
+  {
+    "graph": "USpowerGrid",
+    "nodes": 4941,
+    "method": "atomic_sgd",
+    "median_ms": 135.920825,
+    "min_ms": 123.10083333333334,
+    "max_ms": 136.97401666666667
+  },
+  {
+    "graph": "fe_4elt2",
+    "nodes": 11143,
+    "method": "sparse_sgd",
+    "median_ms": 31.205766666666666,
+    "min_ms": 31.075166666666668,
+    "max_ms": 31.595697266666665
+  },
+  {
+    "graph": "add20",
+    "nodes": 2395,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.127186133333333,
+    "min_ms": 2.8511138666666667,
+    "max_ms": 4.743305533333333
+  },
+  {
+    "graph": "grid17",
+    "nodes": 289,
+    "method": "sparse_sgd",
+    "median_ms": 0.3333583333333333,
+    "min_ms": 0.33322219999999997,
+    "max_ms": 0.3354
+  },
+  {
+    "graph": "fe_4elt2",
+    "nodes": 11143,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 18.241972200000003,
+    "min_ms": 18.0786556,
+    "max_ms": 18.401655533333333
+  },
+  {
+    "graph": "bcsstk17",
+    "nodes": 10456,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.0187638666666663,
+    "min_ms": 2.7192333333333334,
+    "max_ms": 3.434925
+  },
+  {
+    "graph": "can_96",
+    "nodes": 96,
+    "method": "rr_sgd",
+    "median_ms": 1.3805,
+    "min_ms": 1.3758111333333334,
+    "max_ms": 1.389588933333333
+  },
+  {
+    "graph": "CA-GrQc",
+    "nodes": 4158,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 9.21445,
+    "min_ms": 9.122069466666668,
+    "max_ms": 9.419472266666668
+  },
+  {
+    "graph": "PGPgiantcompo",
+    "nodes": 10680,
+    "method": "sparse_sgd",
+    "median_ms": 29.649774999999998,
+    "min_ms": 29.344986066666667,
+    "max_ms": 31.392141666666664
+  },
+  {
+    "graph": "data",
+    "nodes": 2851,
+    "method": "atomic_sgd",
+    "median_ms": 118.9324194,
+    "min_ms": 118.73405273333333,
+    "max_ms": 119.56164166666667
+  },
+  {
+    "graph": "USpowerGrid",
+    "nodes": 4941,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 10.270891666666667,
+    "min_ms": 9.9848222,
+    "max_ms": 10.748194466666666
+  },
+  {
+    "graph": "dwt_2680",
+    "nodes": 2680,
+    "method": "rr_sgd",
+    "median_ms": 7.985805533333333,
+    "min_ms": 7.862341666666667,
+    "max_ms": 8.377716666666666
+  },
+  {
+    "graph": "email-Enron",
+    "nodes": 33696,
+    "method": "sparse_sgd",
+    "median_ms": 118.43816946666668,
+    "min_ms": 118.2899306,
+    "max_ms": 119.12431666666666
+  },
+  {
+    "graph": "coPapersCiteseer",
+    "nodes": 434102,
+    "method": "rr_sparse_sgd",
+    "median_ms": 30.732238866666663,
+    "min_ms": 29.781994466666667,
+    "max_ms": 33.047344466666665
+  },
+  {
+    "graph": "dwt_198",
+    "nodes": 72,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 2.5382778,
+    "min_ms": 2.4872610666666666,
+    "max_ms": 2.7789750000000004
+  },
+  {
+    "graph": "wiki-Vote",
+    "nodes": 7066,
+    "method": "rr_sgd",
+    "median_ms": 16.914727733333333,
+    "min_ms": 16.794205533333333,
+    "max_ms": 17.032752733333336
+  },
+  {
+    "graph": "dwt_198",
+    "nodes": 72,
+    "method": "rr_sgd",
+    "median_ms": 1.3841278000000001,
+    "min_ms": 1.3807694,
+    "max_ms": 1.3884638666666667
+  },
+  {
+    "graph": "com-DBLP",
+    "nodes": 317080,
+    "method": "rr_sparse_sgd",
+    "median_ms": 18.602675,
+    "min_ms": 18.3931528,
+    "max_ms": 19.0908028
+  },
+  {
+    "graph": "karate",
+    "nodes": 34,
+    "method": "rr_sparse_sgd",
+    "median_ms": 1.3631,
+    "min_ms": 1.3323666666666665,
+    "max_ms": 1.4356499999999999
+  },
+  {
+    "graph": "soc-Slashdot0811",
+    "nodes": 77360,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 110.09854446666667,
+    "min_ms": 109.7402278,
+    "max_ms": 110.93454446666667
+  },
+  {
+    "graph": "web-Stanford",
+    "nodes": 255265,
+    "method": "sparse_sgd",
+    "median_ms": 1032.9170722,
+    "min_ms": 1031.5326416666667,
+    "max_ms": 1033.5763166666666
+  },
+  {
+    "graph": "karate",
+    "nodes": 34,
+    "method": "sparse_sgd",
+    "median_ms": 0.0031611333333333327,
+    "min_ms": 0.003130533333333333,
+    "max_ms": 0.0035222
+  },
+  {
+    "graph": "dwt_198",
+    "nodes": 72,
+    "method": "rr_sparse_sgd",
+    "median_ms": 2.5028333333333332,
+    "min_ms": 2.0663416666666667,
+    "max_ms": 2.595775
+  },
+  {
+    "graph": "polblogs",
+    "nodes": 1222,
+    "method": "rr_sgd",
+    "median_ms": 4.2557,
+    "min_ms": 4.049716666666667,
+    "max_ms": 4.4870556
+  },
+  {
+    "graph": "email",
+    "nodes": 1133,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 4.2827611333333335,
+    "min_ms": 4.226441666666667,
+    "max_ms": 4.482708333333333
+  },
+  {
+    "graph": "USpowerGrid",
+    "nodes": 4941,
+    "method": "rr_sgd",
+    "median_ms": 12.8339472,
+    "min_ms": 12.3831778,
+    "max_ms": 15.538180533333332
+  },
+  {
+    "graph": "bcsstk15",
+    "nodes": 3942,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 8.7671028,
+    "min_ms": 8.486433333333334,
+    "max_ms": 8.996166666666666
+  },
+  {
+    "graph": "can_96",
+    "nodes": 96,
+    "method": "sgd",
+    "median_ms": 0.03385,
+    "min_ms": 0.03373893333333333,
+    "max_ms": 0.033933333333333336
+  },
+  {
+    "graph": "bcsstk16",
+    "nodes": 4810,
+    "method": "rr_sgd",
+    "median_ms": 12.214533333333332,
+    "min_ms": 12.202158333333333,
+    "max_ms": 12.566863866666667
+  },
+  {
+    "graph": "can_96",
+    "nodes": 96,
+    "method": "sparse_sgd",
+    "median_ms": 0.037088866666666664,
+    "min_ms": 0.03699446666666666,
+    "max_ms": 0.037358333333333334
+  },
+  {
+    "graph": "dwt_198",
+    "nodes": 72,
+    "method": "sparse_sgd",
+    "median_ms": 0.013402733333333333,
+    "min_ms": 0.013188933333333335,
+    "max_ms": 0.015083333333333334
+  },
+  {
+    "graph": "p2p-Gnutella08",
+    "nodes": 6299,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 12.177241666666667,
+    "min_ms": 11.848625,
+    "max_ms": 12.454655599999999
+  },
+  {
+    "graph": "dwt_1005",
+    "nodes": 1005,
+    "method": "sparse_sgd",
+    "median_ms": 1.9528056,
+    "min_ms": 1.9493889333333334,
+    "max_ms": 1.9678083333333334
+  },
+  {
+    "graph": "EVA",
+    "nodes": 4475,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 9.484258333333335,
+    "min_ms": 9.417863933333333,
+    "max_ms": 9.807652733333333
+  },
+  {
+    "graph": "web-NotreDame",
+    "nodes": 325729,
+    "method": "sparse_sgd",
+    "median_ms": 1303.7689722666667,
+    "min_ms": 1297.7397972,
+    "max_ms": 1508.0947666666666
+  },
+  {
+    "graph": "wiki-Vote",
+    "nodes": 7066,
+    "method": "rr_sparse_sgd",
+    "median_ms": 5.752841666666667,
+    "min_ms": 5.669158333333333,
+    "max_ms": 6.2470528000000005
+  },
+  {
+    "graph": "yeast",
+    "nodes": 2224,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.0246250000000003,
+    "min_ms": 2.7392472000000003,
+    "max_ms": 3.2414389333333338
+  },
+  {
+    "graph": "ca-HepTh",
+    "nodes": 8638,
+    "method": "sparse_sgd",
+    "median_ms": 28.4874944,
+    "min_ms": 27.949122199999998,
+    "max_ms": 29.383975
+  },
+  {
+    "graph": "add20",
+    "nodes": 2395,
+    "method": "sgd",
+    "median_ms": 44.77773893333334,
+    "min_ms": 44.555258333333335,
+    "max_ms": 47.08695833333333
+  },
+  {
+    "graph": "lesmis",
+    "nodes": 77,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 2.50605,
+    "min_ms": 2.3042528,
+    "max_ms": 2.7090666666666663
+  },
+  {
+    "graph": "polbooks",
+    "nodes": 105,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 3.1209721999999998,
+    "min_ms": 2.9641500000000005,
+    "max_ms": 3.441347266666667
+  },
+  {
+    "graph": "fe_4elt2",
+    "nodes": 11143,
+    "method": "atomic_sgd",
+    "median_ms": 319.7410416666666,
+    "min_ms": 319.58605280000006,
+    "max_ms": 319.8992472
+  },
+  {
+    "graph": "EVA",
+    "nodes": 4475,
+    "method": "sparse_sgd",
+    "median_ms": 11.641002799999999,
+    "min_ms": 11.475741666666666,
+    "max_ms": 11.78225
+  },
+  {
+    "graph": "3elt",
+    "nodes": 4720,
+    "method": "rr_sgd",
+    "median_ms": 12.479644466666667,
+    "min_ms": 12.337388933333333,
+    "max_ms": 12.602547200000002
+  },
+  {
+    "graph": "USpowerGrid",
+    "nodes": 4941,
+    "method": "sparse_sgd",
+    "median_ms": 13.274494466666665,
+    "min_ms": 13.010127733333333,
+    "max_ms": 13.9425
+  },
+  {
+    "graph": "netscience",
+    "nodes": 379,
+    "method": "sparse_sgd",
+    "median_ms": 0.5280361333333333,
+    "min_ms": 0.5264444666666667,
+    "max_ms": 0.5344833333333334
+  },
+  {
+    "graph": "bcsstk15",
+    "nodes": 3942,
+    "method": "atomic_sgd",
+    "median_ms": 131.706975,
+    "min_ms": 131.5651972,
+    "max_ms": 132.33443053333335
+  },
+  {
+    "graph": "uk",
+    "nodes": 4824,
+    "method": "sparse_sgd",
+    "median_ms": 12.900869466666666,
+    "min_ms": 12.778908333333334,
+    "max_ms": 13.246483333333334
+  },
+  {
+    "graph": "dwt_2680",
+    "nodes": 2680,
+    "method": "sgd",
+    "median_ms": 59.209844399999994,
+    "min_ms": 58.4173972,
+    "max_ms": 59.4468
+  },
+  {
+    "graph": "dwt_419",
+    "nodes": 419,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 4.372675,
+    "min_ms": 4.2370472,
+    "max_ms": 4.635336133333333
+  },
+  {
+    "graph": "data",
+    "nodes": 2851,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.3605277333333334,
+    "min_ms": 2.8181,
+    "max_ms": 3.5454027999999997
+  },
+  {
+    "graph": "p2p-Gnutella31",
+    "nodes": 62561,
+    "method": "rr_sparse_sgd",
+    "median_ms": 5.31255,
+    "min_ms": 5.304661133333334,
+    "max_ms": 5.4172861333333335
+  },
+  {
+    "graph": "netscience",
+    "nodes": 379,
+    "method": "rr_sgd",
+    "median_ms": 1.5973638666666665,
+    "min_ms": 1.5895527333333335,
+    "max_ms": 1.6023916666666667
+  },
+  {
+    "graph": "adjnoun",
+    "nodes": 112,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 3.1784278,
+    "min_ms": 2.8552666666666666,
+    "max_ms": 3.3352833333333334
+  },
+  {
+    "graph": "jazz",
+    "nodes": 198,
+    "method": "sgd",
+    "median_ms": 0.1466528,
+    "min_ms": 0.14656113333333332,
+    "max_ms": 0.14846666666666666
+  },
+  {
+    "graph": "dolphins",
+    "nodes": 62,
+    "method": "sparse_sgd",
+    "median_ms": 0.0098472,
+    "min_ms": 0.009775,
+    "max_ms": 0.010955600000000001
+  },
+  {
+    "graph": "fe_4elt2",
+    "nodes": 11143,
+    "method": "rr_sgd",
+    "median_ms": 32.955255533333336,
+    "min_ms": 32.79763333333334,
+    "max_ms": 33.082541666666664
+  },
+  {
+    "graph": "uk",
+    "nodes": 4824,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 10.146088866666668,
+    "min_ms": 9.938536066666666,
+    "max_ms": 10.356266666666668
+  },
+  {
+    "graph": "dwt_1005",
+    "nodes": 1005,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.248755533333333,
+    "min_ms": 3.030441666666667,
+    "max_ms": 3.5437749999999997
+  },
+  {
+    "graph": "polbooks",
+    "nodes": 105,
+    "method": "rr_sgd",
+    "median_ms": 1.3865916666666669,
+    "min_ms": 1.3787028,
+    "max_ms": 1.3926639333333335
+  },
+  {
+    "graph": "bcsstk31",
+    "nodes": 35586,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 53.076922266666664,
+    "min_ms": 52.68777773333333,
+    "max_ms": 53.18688613333333
+  },
+  {
+    "graph": "luxembourg_osm",
+    "nodes": 114599,
+    "method": "sparse_sgd",
+    "median_ms": 433.754525,
+    "min_ms": 433.6047778,
+    "max_ms": 434.0626722
+  },
+  {
+    "graph": "1138_bus",
+    "nodes": 1138,
+    "method": "sparse_sgd",
+    "median_ms": 2.2133028,
+    "min_ms": 2.21145,
+    "max_ms": 2.2262056
+  },
+  {
+    "graph": "ca-HepTh",
+    "nodes": 8638,
+    "method": "atomic_sgd",
+    "median_ms": 217.14888053333334,
+    "min_ms": 198.20770559999997,
+    "max_ms": 217.3730528
+  },
+  {
+    "graph": "bcsstk09",
+    "nodes": 1083,
+    "method": "sparse_sgd",
+    "median_ms": 2.1494360666666665,
+    "min_ms": 2.1446472666666665,
+    "max_ms": 2.1759028000000002
+  },
+  {
+    "graph": "soc-Slashdot0811",
+    "nodes": 77360,
+    "method": "sparse_sgd",
+    "median_ms": 294.2092055333333,
+    "min_ms": 293.9445083333333,
+    "max_ms": 297.6282444666667
+  },
+  {
+    "graph": "polblogs",
+    "nodes": 1222,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.2990305333333336,
+    "min_ms": 3.0973416666666664,
+    "max_ms": 3.8319416666666664
+  },
+  {
+    "graph": "dwt_198",
+    "nodes": 72,
+    "method": "atomic_sgd",
+    "median_ms": 2.2997583333333336,
+    "min_ms": 2.1615778000000003,
+    "max_ms": 2.5254027999999997
+  },
+  {
+    "graph": "soc-Epinions1",
+    "nodes": 75877,
+    "method": "rr_sparse_sgd",
+    "median_ms": 13.147380533333335,
+    "min_ms": 12.641766666666665,
+    "max_ms": 13.2489028
+  },
+  {
+    "graph": "polblogs",
+    "nodes": 1222,
+    "method": "atomic_sgd",
+    "median_ms": 75.85423886666668,
+    "min_ms": 74.57561393333334,
+    "max_ms": 76.28369719999999
+  },
+  {
+    "graph": "can_96",
+    "nodes": 96,
+    "method": "atomic_sgd",
+    "median_ms": 2.5847472000000002,
+    "min_ms": 2.4274389333333333,
+    "max_ms": 2.7682528
+  },
+  {
+    "graph": "mesh3e1",
+    "nodes": 289,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 4.293280533333333,
+    "min_ms": 3.938588933333333,
+    "max_ms": 4.6307610666666665
+  },
+  {
+    "graph": "web-NotreDame",
+    "nodes": 325729,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 469.52043606666666,
+    "min_ms": 465.35776393333333,
+    "max_ms": 487.8258027333333
+  },
+  {
+    "graph": "jazz",
+    "nodes": 198,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 4.568402799999999,
+    "min_ms": 4.2189250000000005,
+    "max_ms": 4.7174528
+  },
+  {
+    "graph": "wiki-Vote",
+    "nodes": 7066,
+    "method": "sgd",
+    "median_ms": 693.9374583333334,
+    "min_ms": 667.1776472,
+    "max_ms": 709.6059028000001
+  },
+  {
+    "graph": "coPapersCiteseer",
+    "nodes": 434102,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 663.370775,
+    "min_ms": 651.3315306000001,
+    "max_ms": 679.4278944666665
+  },
+  {
+    "graph": "USpowerGrid",
+    "nodes": 4941,
+    "method": "rr_sparse_sgd",
+    "median_ms": 4.068319466666667,
+    "min_ms": 2.7221806,
+    "max_ms": 4.762263866666667
+  },
+  {
+    "graph": "dwt_72",
+    "nodes": 72,
+    "method": "sparse_sgd",
+    "median_ms": 0.014986133333333334,
+    "min_ms": 0.014947266666666669,
+    "max_ms": 0.020583333333333332
+  },
+  {
+    "graph": "email-EuAll",
+    "nodes": 224832,
+    "method": "sparse_sgd",
+    "median_ms": 877.8721611333334,
+    "min_ms": 877.3511083333334,
+    "max_ms": 878.9811333333332
+  },
+  {
+    "graph": "karate",
+    "nodes": 34,
+    "method": "sgd",
+    "median_ms": 0.0030528,
+    "min_ms": 0.003022266666666667,
+    "max_ms": 0.0031
+  },
+  {
+    "graph": "CA-GrQc",
+    "nodes": 4158,
+    "method": "sgd",
+    "median_ms": 200.73333893333333,
+    "min_ms": 189.97040280000002,
+    "max_ms": 204.16325833333335
+  },
+  {
+    "graph": "com-DBLP",
+    "nodes": 317080,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 455.5731556,
+    "min_ms": 453.62320273333336,
+    "max_ms": 458.95467220000006
+  },
+  {
+    "graph": "celegansneural",
+    "nodes": 297,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.0311000000000003,
+    "min_ms": 2.7878,
+    "max_ms": 4.51475
+  },
+  {
+    "graph": "la2010",
+    "nodes": 204447,
+    "method": "sparse_sgd",
+    "median_ms": 798.3638389333335,
+    "min_ms": 798.2526639333333,
+    "max_ms": 839.6174750000001
+  },
+  {
+    "graph": "polblogs",
+    "nodes": 1222,
+    "method": "sparse_sgd",
+    "median_ms": 2.5221027333333335,
+    "min_ms": 2.5186528,
+    "max_ms": 2.5564028
+  },
+  {
+    "graph": "bcspwr10",
+    "nodes": 5300,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.3420416666666664,
+    "min_ms": 3.1426083333333334,
+    "max_ms": 4.367072266666667
+  },
+  {
+    "graph": "1138_bus",
+    "nodes": 1138,
+    "method": "sgd",
+    "median_ms": 6.834136133333333,
+    "min_ms": 6.803911066666667,
+    "max_ms": 6.843016666666666
+  },
+  {
+    "graph": "1138_bus",
+    "nodes": 1138,
+    "method": "atomic_sgd",
+    "median_ms": 72.52870833333333,
+    "min_ms": 71.41339719999999,
+    "max_ms": 73.12479726666668
+  },
+  {
+    "graph": "lesmis",
+    "nodes": 77,
+    "method": "atomic_sgd",
+    "median_ms": 2.469944466666667,
+    "min_ms": 2.0556333333333336,
+    "max_ms": 2.5813110666666663
+  },
+  {
+    "graph": "polblogs",
+    "nodes": 1222,
+    "method": "sgd",
+    "median_ms": 8.072711066666667,
+    "min_ms": 8.021194466666666,
+    "max_ms": 8.195675
+  },
+  {
+    "graph": "dwt_1005",
+    "nodes": 1005,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 4.6282556,
+    "min_ms": 4.355916666666667,
+    "max_ms": 4.785550000000001
+  },
+  {
+    "graph": "karate",
+    "nodes": 34,
+    "method": "rr_sgd",
+    "median_ms": 1.3637472,
+    "min_ms": 1.3442444,
+    "max_ms": 1.3845305333333333
+  },
+  {
+    "graph": "coAuthorsCiteseer",
+    "nodes": 227320,
+    "method": "sparse_sgd",
+    "median_ms": 898.9657306000001,
+    "min_ms": 898.1488556,
+    "max_ms": 899.4321722
+  },
+  {
+    "graph": "bcsstk09",
+    "nodes": 1083,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.6397583333333334,
+    "min_ms": 2.940688866666667,
+    "max_ms": 4.401341666666666
+  },
+  {
+    "graph": "com-DBLP",
+    "nodes": 317080,
+    "method": "sparse_sgd",
+    "median_ms": 1270.0670444666664,
+    "min_ms": 1264.8602333333333,
+    "max_ms": 1271.9591305333333
+  },
+  {
+    "graph": "add20",
+    "nodes": 2395,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 6.118941666666666,
+    "min_ms": 5.9935028,
+    "max_ms": 6.2555971999999995
+  },
+  {
+    "graph": "bcsstk15",
+    "nodes": 3942,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.2572972000000004,
+    "min_ms": 2.749302733333333,
+    "max_ms": 3.472530533333333
+  },
+  {
+    "graph": "polbooks",
+    "nodes": 105,
+    "method": "rr_sparse_sgd",
+    "median_ms": 2.173186133333333,
+    "min_ms": 2.000583333333333,
+    "max_ms": 2.3273805333333333
+  },
+  {
+    "graph": "grid17",
+    "nodes": 289,
+    "method": "rr_sparse_sgd",
+    "median_ms": 2.5993833333333334,
+    "min_ms": 2.4943111333333334,
+    "max_ms": 3.397675
+  },
+  {
+    "graph": "yeast",
+    "nodes": 2224,
+    "method": "rr_sgd",
+    "median_ms": 6.784908333333334,
+    "min_ms": 6.086475000000001,
+    "max_ms": 7.7075194
+  },
+  {
+    "graph": "adjnoun",
+    "nodes": 112,
+    "method": "sparse_sgd",
+    "median_ms": 0.05060833333333334,
+    "min_ms": 0.0504,
+    "max_ms": 0.050624999999999996
+  },
+  {
+    "graph": "web-NotreDame",
+    "nodes": 325729,
+    "method": "rr_sparse_sgd",
+    "median_ms": 43.510036066666665,
+    "min_ms": 43.25828053333333,
+    "max_ms": 46.67075
+  },
+  {
+    "graph": "uk",
+    "nodes": 4824,
+    "method": "rr_sparse_sgd",
+    "median_ms": 4.6900778,
+    "min_ms": 3.0439778,
+    "max_ms": 4.753163866666666
+  },
+  {
+    "graph": "bcsstk31",
+    "nodes": 35586,
+    "method": "rr_sparse_sgd",
+    "median_ms": 4.010436066666667,
+    "min_ms": 3.8923139333333334,
+    "max_ms": 4.101608333333333
+  },
+  {
+    "graph": "venkat50",
+    "nodes": 62424,
+    "method": "rr_sparse_sgd",
+    "median_ms": 5.3896,
+    "min_ms": 5.1888472,
+    "max_ms": 5.517227733333333
+  },
+  {
+    "graph": "fe_ocean",
+    "nodes": 143437,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 204.33519166666667,
+    "min_ms": 203.7168806,
+    "max_ms": 205.28538886666666
+  },
+  {
+    "graph": "ca-AstroPh",
+    "nodes": 17903,
+    "method": "sparse_sgd",
+    "median_ms": 58.850202800000005,
+    "min_ms": 58.7540444,
+    "max_ms": 58.9301778
+  },
+  {
+    "graph": "mesh3e1",
+    "nodes": 289,
+    "method": "atomic_sgd",
+    "median_ms": 14.967324999999999,
+    "min_ms": 14.7214306,
+    "max_ms": 15.509994466666667
+  },
+  {
+    "graph": "data",
+    "nodes": 2851,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 7.025011066666667,
+    "min_ms": 6.937611133333333,
+    "max_ms": 7.4527194
+  },
+  {
+    "graph": "dwt_758",
+    "nodes": 758,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.235375,
+    "min_ms": 2.62095,
+    "max_ms": 3.750313933333333
+  },
+  {
+    "graph": "polbooks",
+    "nodes": 105,
+    "method": "sgd",
+    "median_ms": 0.04032500000000001,
+    "min_ms": 0.040213866666666674,
+    "max_ms": 0.040486133333333334
+  },
+  {
+    "graph": "bcsstk16",
+    "nodes": 4810,
+    "method": "sgd",
+    "median_ms": 282.1130555333333,
+    "min_ms": 263.06285,
+    "max_ms": 302.69048333333325
+  },
+  {
+    "graph": "dwt_758",
+    "nodes": 758,
+    "method": "sparse_sgd",
+    "median_ms": 1.3644528,
+    "min_ms": 1.3626083333333334,
+    "max_ms": 1.3737972
+  },
+  {
+    "graph": "bcspwr10",
+    "nodes": 5300,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 10.727102733333332,
+    "min_ms": 10.3032556,
+    "max_ms": 11.0600278
+  },
+  {
+    "graph": "p2p-Gnutella08",
+    "nodes": 6299,
+    "method": "atomic_sgd",
+    "median_ms": 142.80171113333333,
+    "min_ms": 141.82026666666667,
+    "max_ms": 143.72534166666668
+  },
+  {
+    "graph": "email-Enron",
+    "nodes": 33696,
+    "method": "rr_sparse_sgd",
+    "median_ms": 7.418236133333334,
+    "min_ms": 7.311027800000001,
+    "max_ms": 7.706675
+  },
+  {
+    "graph": "lesmis",
+    "nodes": 77,
+    "method": "rr_sgd",
+    "median_ms": 1.3723666666666667,
+    "min_ms": 1.3664416666666668,
+    "max_ms": 1.387775
+  },
+  {
+    "graph": "soc-Epinions1",
+    "nodes": 75877,
+    "method": "sparse_sgd",
+    "median_ms": 286.7651778,
+    "min_ms": 286.6565694666667,
+    "max_ms": 286.8305666666667
+  },
+  {
+    "graph": "dwt_2680",
+    "nodes": 2680,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 7.208611133333333,
+    "min_ms": 6.623683333333334,
+    "max_ms": 7.236719466666666
+  },
+  {
+    "graph": "bcsstk17",
+    "nodes": 10456,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 17.488038933333332,
+    "min_ms": 17.44045,
+    "max_ms": 17.612491666666664
+  },
+  {
+    "graph": "ca-HepTh",
+    "nodes": 8638,
+    "method": "sgd",
+    "median_ms": 1085.1257861333333,
+    "min_ms": 630.1113388666666,
+    "max_ms": 1088.0414305333334
+  },
+  {
+    "graph": "yeast",
+    "nodes": 2224,
+    "method": "sgd",
+    "median_ms": 37.25128053333333,
+    "min_ms": 36.91455553333333,
+    "max_ms": 38.10748886666667
+  },
+  {
+    "graph": "wiki-Vote",
+    "nodes": 7066,
+    "method": "sparse_sgd",
+    "median_ms": 23.7864222,
+    "min_ms": 23.49909166666667,
+    "max_ms": 24.288283333333332
+  },
+  {
+    "graph": "bcsstk15",
+    "nodes": 3942,
+    "method": "rr_sgd",
+    "median_ms": 9.225825000000002,
+    "min_ms": 9.142888866666668,
+    "max_ms": 10.567102733333334
+  },
+  {
+    "graph": "bcsstk17",
+    "nodes": 10456,
+    "method": "atomic_sgd",
+    "median_ms": 282.2219556,
+    "min_ms": 282.11437779999994,
+    "max_ms": 282.2995305333333
+  },
+  {
+    "graph": "3elt",
+    "nodes": 4720,
+    "method": "rr_sparse_sgd",
+    "median_ms": 3.842786133333333,
+    "min_ms": 2.7360555333333334,
+    "max_ms": 4.7579722
+  },
+  {
+    "graph": "p2p-Gnutella31",
+    "nodes": 62561,
+    "method": "sparse_sgd",
+    "median_ms": 229.66473606666668,
+    "min_ms": 229.59738333333334,
+    "max_ms": 229.89436666666668
+  },
+  {
+    "graph": "email-EuAll",
+    "nodes": 224832,
+    "method": "rr_sparse_sgd",
+    "median_ms": 31.442752733333336,
+    "min_ms": 31.0127028,
+    "max_ms": 31.68351386666667
+  },
+  {
+    "graph": "bcsstk15",
+    "nodes": 3942,
+    "method": "sgd",
+    "median_ms": 164.98669719999998,
+    "min_ms": 159.10354166666667,
+    "max_ms": 169.47856113333333
+  },
+  {
+    "graph": "dolphins",
+    "nodes": 62,
+    "method": "atomic_sgd",
+    "median_ms": 2.4047528,
+    "min_ms": 2.253441666666667,
+    "max_ms": 2.8695583333333334
+  },
+  {
+    "graph": "dolphins",
+    "nodes": 62,
+    "method": "rr_sparse_sgd",
+    "median_ms": 1.3321722666666669,
+    "min_ms": 1.327375,
+    "max_ms": 1.4026777333333333
+  },
+  {
+    "graph": "dwt_419",
+    "nodes": 419,
+    "method": "sparse_sgd",
+    "median_ms": 0.6158860666666666,
+    "min_ms": 0.6149166666666666,
+    "max_ms": 0.6246416666666667
+  },
+  {
+    "graph": "adjnoun",
+    "nodes": 112,
+    "method": "rr_sgd",
+    "median_ms": 1.3777666666666666,
+    "min_ms": 1.3765610666666668,
+    "max_ms": 1.3800916666666667
+  },
+  {
+    "graph": "bcsstk09",
+    "nodes": 1083,
+    "method": "atomic_sgd",
+    "median_ms": 69.82301106666665,
+    "min_ms": 69.01876393333332,
+    "max_ms": 70.64945833333334
+  },
+  {
+    "graph": "celegansneural",
+    "nodes": 297,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 4.443441666666668,
+    "min_ms": 4.1270278,
+    "max_ms": 4.529636066666667
+  },
+  {
+    "graph": "bcsstk09",
+    "nodes": 1083,
+    "method": "sgd",
+    "median_ms": 6.136663866666667,
+    "min_ms": 6.0855250000000005,
+    "max_ms": 6.1823277999999995
+  },
+  {
+    "graph": "dolphins",
+    "nodes": 62,
+    "method": "sgd",
+    "median_ms": 0.009233333333333335,
+    "min_ms": 0.009213866666666666,
+    "max_ms": 0.010747200000000002
+  },
+  {
+    "graph": "dwt_72",
+    "nodes": 72,
+    "method": "sgd",
+    "median_ms": 0.014086133333333334,
+    "min_ms": 0.013747199999999998,
+    "max_ms": 0.019152800000000005
+  },
+  {
+    "graph": "uk",
+    "nodes": 4824,
+    "method": "sgd",
+    "median_ms": 275.1229861333333,
+    "min_ms": 255.6356528,
+    "max_ms": 281.94694726666665
+  },
+  {
+    "graph": "dwt_758",
+    "nodes": 758,
+    "method": "sgd",
+    "median_ms": 2.8553,
+    "min_ms": 2.8432083333333336,
+    "max_ms": 2.862366666666667
+  },
+  {
+    "graph": "grid17",
+    "nodes": 289,
+    "method": "atomic_sgd",
+    "median_ms": 15.1324528,
+    "min_ms": 14.856511066666666,
+    "max_ms": 15.428761133333333
+  },
+  {
+    "graph": "wiki-Vote",
+    "nodes": 7066,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 13.768575,
+    "min_ms": 13.483450000000001,
+    "max_ms": 14.307272266666667
+  },
+  {
+    "graph": "email",
+    "nodes": 1133,
+    "method": "sgd",
+    "median_ms": 6.754816666666667,
+    "min_ms": 6.697872266666667,
+    "max_ms": 7.1204972
+  },
+  {
+    "graph": "bcspwr10",
+    "nodes": 5300,
+    "method": "sparse_sgd",
+    "median_ms": 14.694033333333334,
+    "min_ms": 14.364869466666667,
+    "max_ms": 14.881525
+  },
+  {
+    "graph": "netscience",
+    "nodes": 379,
+    "method": "atomic_sgd",
+    "median_ms": 31.0576472,
+    "min_ms": 30.988477733333337,
+    "max_ms": 31.339366666666667
+  },
+  {
+    "graph": "PGPgiantcompo",
+    "nodes": 10680,
+    "method": "rr_sgd",
+    "median_ms": 30.057380600000002,
+    "min_ms": 29.8887222,
+    "max_ms": 30.336297199999997
+  },
+  {
+    "graph": "EVA",
+    "nodes": 4475,
+    "method": "atomic_sgd",
+    "median_ms": 135.05473886666667,
+    "min_ms": 134.80150553333334,
+    "max_ms": 136.97912499999998
+  },
+  {
+    "graph": "can_96",
+    "nodes": 96,
+    "method": "atomic_sparse_sgd",
+    "median_ms": 2.8394694666666664,
+    "min_ms": 2.7014750000000003,
+    "max_ms": 2.975408333333333
+  }
+]

@@ -1,0 +1,18 @@
+Reading: /Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/warmups/warmup-2026-11-08T041634_0900-celegansneural-rr_sgd/rr-sgd-celegansneural-warmup-2026-11-08T041634_0900-celegansneural-rr_sgd.final.txt
+  nodes=297, edges=4296 (0.4ms)
+Stress: skipped (--stress off, 0.1ms)
+Edges: 4296/4296 (all)
+Initialising GPU renderer ...
+GPU: Apple M4 Pro (Metal)
+Rendering 2048×2048 px (node_r=1.00px) ...
+FRAME_READY_MONOTONIC_MS=55346578.329000
+Saved: /Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex2-rr128-speed-stress-20261108/warmups/warmup-2026-11-08T041634_0900-celegansneural-rr_sgd/after.png
+Timing:
+  read:                      0.4ms
+  stress:                    0.1ms
+  GPU init:                   9.8ms
+  GPU prepare/upload:         1.2ms
+  GPU render/readback:       13.8ms
+  PNG encode/save:           18.4ms
+Total: 44.0ms
+

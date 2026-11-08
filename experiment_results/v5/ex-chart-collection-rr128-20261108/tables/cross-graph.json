@@ -1,0 +1,50 @@
+[
+  {
+    "family": "full",
+    "method": "sgd",
+    "graphs": 38,
+    "sgd_speedup_gmean": 1.0,
+    "total_speedup_gmean": 1.0,
+    "stress_ratio_gmean": 1.0
+  },
+  {
+    "family": "full",
+    "method": "atomic_sgd",
+    "graphs": 38,
+    "sgd_speedup_gmean": 0.17269106526339761,
+    "total_speedup_gmean": 0.15936137233342815,
+    "stress_ratio_gmean": 1.1784030376637742
+  },
+  {
+    "family": "full",
+    "method": "rr_sgd",
+    "graphs": 38,
+    "sgd_speedup_gmean": 2.1928616188645136,
+    "total_speedup_gmean": 0.7484243104746262,
+    "stress_ratio_gmean": 1.0470079393094796
+  },
+  {
+    "family": "sparse",
+    "method": "sparse_sgd",
+    "graphs": 56,
+    "sgd_speedup_gmean": 1.0,
+    "total_speedup_gmean": 1.0,
+    "stress_ratio_gmean": 1.0
+  },
+  {
+    "family": "sparse",
+    "method": "atomic_sparse_sgd",
+    "graphs": 56,
+    "sgd_speedup_gmean": 0.5224599641328952,
+    "total_speedup_gmean": 0.45272595153593465,
+    "stress_ratio_gmean": 1.0083277218587574
+  },
+  {
+    "family": "sparse",
+    "method": "rr_sparse_sgd",
+    "graphs": 56,
+    "sgd_speedup_gmean": 2.1760824052195367,
+    "total_speedup_gmean": 1.1408446961166117,
+    "stress_ratio_gmean": 1.0171246402095768
+  }
+]

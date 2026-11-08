@@ -1,0 +1,23 @@
+{
+  "at": "2026-11-06T20:39:07+09:00",
+  "source": "experiment_results/v5/large/raw/v5-large-com-Orkut-p100-s0-r0/rr-sparse-sgd-com-Orkut-v5-large-com-Orkut-p100-s0-r0.initial.txt",
+  "sample_bytes": 67108864,
+  "representativeness": "First64MiB of com-Orkut initial layout; mostly edges. Descriptive storage benchmark, not layout measurement.",
+  "results": [
+    {
+      "preset": 0,
+      "bytes": 14184728,
+      "seconds": 1.2149823749787174
+    },
+    {
+      "preset": 1,
+      "bytes": 14005632,
+      "seconds": 1.5233386250038166
+    },
+    {
+      "preset": 3,
+      "bytes": 14063628,
+      "seconds": 7.8614650000236
+    }
+  ]
+}
