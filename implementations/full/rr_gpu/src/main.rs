@@ -152,7 +152,7 @@ fn main() -> Result<()> {
     ));
 
     let preprocess_started = Instant::now();
-    let params = graph.prepare_sgd_params_with_backend(
+    let (params, bfs_timing) = graph.prepare_sgd_params_with_backend(
         config.iterations,
         config.epsilon,
         config.center,
@@ -161,6 +161,13 @@ fn main() -> Result<()> {
     )?;
     let constraint_count = params.constraint_count;
     let common_preprocess_time = preprocess_started.elapsed();
+    config.log(format!(
+        "BFS: engine={:?} (init={:.2} ms, kernel={:.2} ms, compaction={:.2} ms)",
+        config.bfs_engine,
+        bfs_timing.engine_init_time_ms,
+        bfs_timing.bfs_kernel_time_ms,
+        bfs_timing.compaction_time_ms,
+    ));
 
     let setup_started = Instant::now();
     let block_count = (graph.node_size as u32).div_ceil(config.kernel.tile_size);
@@ -303,9 +310,19 @@ fn main() -> Result<()> {
             value["rr_outer_shuffle"] = config.kernel.outer_shuffle.into();
             value["rr_inner_shuffle"] = config.kernel.inner_shuffle.into();
             value["bfs_engine"] = format!("{:?}", config.bfs_engine).to_lowercase().into();
+            value["bfs_init_time_ms"] = bfs_timing.engine_init_time_ms.into();
+            value["bfs_kernel_time_ms"] = bfs_timing.bfs_kernel_time_ms.into();
+            value["bfs_compaction_time_ms"] = bfs_timing.compaction_time_ms.into();
             println!("{}", serde_json::to_string(&value)?);
         }
         OutputFormat::Human => {
+            println!(
+                "BFS engine={:?}: init={:.3} ms, kernel={:.3} ms, compaction={:.3} ms",
+                config.bfs_engine,
+                bfs_timing.engine_init_time_ms,
+                bfs_timing.bfs_kernel_time_ms,
+                bfs_timing.compaction_time_ms,
+            );
             println!(
                 "Rounds={}, dispatches={}, Iteration={:.3} ms, Algorithm={:.3} ms, CLI total={:.3} ms",
                 schedule.len(),

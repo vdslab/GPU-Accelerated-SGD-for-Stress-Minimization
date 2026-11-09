@@ -4,6 +4,33 @@ use std::time::Instant;
 use webgpu_bfs_core::CsrGraph;
 use webgpu_bfs_gpu::engine::{GpuBfsEngine, GpuBfsMethod};
 
+/// Maximum vertex count supported by Full SGD's 4-bank 512 MiB distance storage (N <= 16,384).
+pub const FULL_SGD_MAX_NODES: usize = 16_384;
+
+/// Threshold at or above which GPU APSP BFS is selected under `Auto`.
+///
+/// On WSL2 Mesa Gallium D3D12, initializing a standalone `GpuBfsEngine` and compiling
+/// WGSL compute pipelines to DXIL incurs ~2.2 - 2.7 seconds of latency. Meanwhile,
+/// unweighted CPU FIFO BFS is extremely fast (0.18 ms at N=128, 116 ms at N=2,000,
+/// and 2.4 s at N=8,000). Consequently, CPU BFS strictly outperforms cold GPU BFS for all
+/// graphs that fit within Full SGD's multi-bank VRAM saturation boundary (N <= 16,384).
+///
+/// Setting `GPU_APSP_THRESHOLD = FULL_SGD_MAX_NODES + 1` ensures that `--bfs-engine auto`
+/// selects CPU BFS for all valid Full SGD inputs (preventing up to 15,000x regression), while
+/// explicit `--bfs-engine gpu` remains available for benchmarking and profiling.
+pub const GPU_APSP_THRESHOLD: usize = FULL_SGD_MAX_NODES + 1;
+
+/// Timing breakdown for APSP BFS execution.
+#[derive(Debug, Clone, Copy, Default, PartialEq)]
+pub struct BfsTiming {
+    /// WebGPU device & pipeline initialization time in milliseconds (0.0 for CPU BFS).
+    pub engine_init_time_ms: f64,
+    /// Pure BFS kernel dispatch / traversal execution time in milliseconds.
+    pub bfs_kernel_time_ms: f64,
+    /// Distance matrix compaction time into lossless u16 buffer.
+    pub compaction_time_ms: f64,
+}
+
 /// Outcome of APSP preprocessing ready for RoundRobin Full SGD.
 #[derive(Debug, Clone)]
 pub struct FullBfsOutcome {
@@ -11,8 +38,7 @@ pub struct FullBfsOutcome {
     pub dmin: f64,
     pub dmax: f64,
     pub constraint_count: usize,
-    pub bfs_time_ms: f64,
-    pub compaction_time_ms: f64,
+    pub timing: BfsTiming,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
@@ -35,9 +61,6 @@ impl std::str::FromStr for BfsBackend {
     }
 }
 
-/// Threshold below which CPU BFS is faster due to GPU kernel dispatch & staging overhead.
-pub const GPU_APSP_THRESHOLD: usize = 128;
-
 /// Computes APSP distance matrix and prepares lossless u16 multi-bank buffer.
 pub fn compute_apsp(
     graph: &super::Graph,
@@ -50,8 +73,7 @@ pub fn compute_apsp(
             dmin: f64::INFINITY,
             dmax: 0.0,
             constraint_count: 0,
-            bfs_time_ms: 0.0,
-            compaction_time_ms: 0.0,
+            timing: BfsTiming::default(),
         });
     }
 
@@ -70,7 +92,6 @@ pub fn compute_apsp(
 
 pub fn compute_apsp_gpu(graph: &super::Graph) -> Result<FullBfsOutcome> {
     let n = graph.node_size;
-    let bfs_start = Instant::now();
 
     // 1. Build symmetric CSR graph
     let mut edges = Vec::with_capacity(graph.edge_size * 2);
@@ -82,19 +103,24 @@ pub fn compute_apsp_gpu(graph: &super::Graph) -> Result<FullBfsOutcome> {
     }
     let csr = CsrGraph::from_edge_list(n, &edges);
 
-    // 2. Execute GPU Multi-Source BFS across all N sources
-    // Auto selects MultiWordBitParallel for large batches on general graphs
-    // or WorkgroupPersistentBfs on road networks.
+    // 2. Isolate engine initialization (wgpu device creation + shader compilation)
+    let init_start = Instant::now();
     let engine = GpuBfsEngine::default_with_method(GpuBfsMethod::Auto)
         .context("Failed to initialize webgpu-bfs GPU engine")?;
+    let engine_init_time_ms = init_start.elapsed().as_secs_f64() * 1000.0;
+
+    // 3. Execute pure GPU Multi-Source BFS across all N sources
+    // Auto selects MultiWordBitParallel for large batches on general graphs
+    // or WorkgroupPersistentBfs on road networks.
+    let kernel_start = Instant::now();
     let sources: Vec<u32> = (0..n as u32).collect();
     let mut dist_flat_u32 = vec![u32::MAX; n * n];
     engine
         .run_ms_bfs_into(&csr, &sources, &mut dist_flat_u32)
         .context("GPU BFS execution failed")?;
-    let bfs_time_ms = bfs_start.elapsed().as_secs_f64() * 1000.0;
+    let bfs_kernel_time_ms = kernel_start.elapsed().as_secs_f64() * 1000.0;
 
-    // 3. Compact into lossless u16 multi-bank buffer & calculate dmin/dmax/constraints
+    // 4. Compact into lossless u16 multi-bank buffer & calculate dmin/dmax/constraints
     // Directly without allocating gigabytes of EdgeInfo or Vec<Vec<usize>>
     let compaction_start = Instant::now();
     let total_distances = n * n;
@@ -126,13 +152,16 @@ pub fn compute_apsp_gpu(graph: &super::Graph) -> Result<FullBfsOutcome> {
         dmin,
         dmax,
         constraint_count,
-        bfs_time_ms,
-        compaction_time_ms,
+        timing: BfsTiming {
+            engine_init_time_ms,
+            bfs_kernel_time_ms,
+            compaction_time_ms,
+        },
     })
 }
 
 pub fn compute_apsp_cpu(graph: &super::Graph) -> Result<FullBfsOutcome> {
-    let bfs_start = Instant::now();
+    let kernel_start = Instant::now();
     let n = graph.node_size;
     let total_distances = n * n;
     let total_words = total_distances.div_ceil(2);
@@ -175,15 +204,18 @@ pub fn compute_apsp_cpu(graph: &super::Graph) -> Result<FullBfsOutcome> {
             }
         }
     }
-    let bfs_time_ms = bfs_start.elapsed().as_secs_f64() * 1000.0;
+    let bfs_kernel_time_ms = kernel_start.elapsed().as_secs_f64() * 1000.0;
 
     Ok(FullBfsOutcome {
         dist_u16,
         dmin,
         dmax,
         constraint_count,
-        bfs_time_ms,
-        compaction_time_ms: 0.0,
+        timing: BfsTiming {
+            engine_init_time_ms: 0.0,
+            bfs_kernel_time_ms,
+            compaction_time_ms: 0.0,
+        },
     })
 }
 
@@ -209,5 +241,12 @@ mod tests {
         assert_eq!(cpu_outcome.dmin, gpu_outcome.dmin);
         assert_eq!(cpu_outcome.dmax, gpu_outcome.dmax);
         assert_eq!(cpu_outcome.dist_u16, gpu_outcome.dist_u16);
+    }
+
+    #[test]
+    fn test_auto_routing_protects_against_cold_gpu_regression() {
+        // Under Auto, graphs with N <= FULL_SGD_MAX_NODES (16,384) use CPU BFS
+        assert!(GPU_APSP_THRESHOLD > FULL_SGD_MAX_NODES);
+        assert_eq!(FULL_SGD_MAX_NODES, 16_384);
     }
 }

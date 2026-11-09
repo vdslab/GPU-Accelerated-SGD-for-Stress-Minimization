@@ -22,6 +22,7 @@ pub struct SgdParams {
     pub dist_u16: Vec<u16>,
     pub constraint_count: usize,
     pub pairs: Vec<EdgeInfo>,
+    #[allow(dead_code)]
     pub center: bool,
 }
 
@@ -30,6 +31,7 @@ pub struct EdgeInfo {
     pub u: usize,
     pub v: usize,
     pub dij: f64,
+    #[allow(dead_code)]
     pub wij: f64,
 }
 
@@ -69,6 +71,7 @@ impl Graph {
         adj
     }
 
+    #[allow(dead_code)]
     pub fn calc_dist_matrix(&self) -> Vec<Vec<usize>> {
         let adj = Self::calc_adj_matrix(self);
         let n = adj.len();
@@ -97,6 +100,7 @@ impl Graph {
             .collect()
     }
 
+    #[allow(dead_code)]
     pub fn calc_edge_info(&self, dist: &[Vec<usize>]) -> (Vec<EdgeInfo>, f64, f64) {
         let n = dist.len();
 
@@ -140,6 +144,7 @@ impl Graph {
     }
 
     /// Precompute SGD parameters
+    #[allow(dead_code)]
     pub fn prepare_sgd_params(
         &self,
         iterations: usize,
@@ -147,14 +152,16 @@ impl Graph {
         center: bool,
         seed: u64,
     ) -> SgdParams {
-        self.prepare_sgd_params_with_backend(
-            iterations,
-            epsilon,
-            center,
-            seed,
-            self::bfs::BfsBackend::Auto,
-        )
-        .expect("APSP calculation failed")
+        let (params, _timing) = self
+            .prepare_sgd_params_with_backend(
+                iterations,
+                epsilon,
+                center,
+                seed,
+                self::bfs::BfsBackend::Auto,
+            )
+            .expect("APSP calculation failed");
+        params
     }
 
     pub fn prepare_sgd_params_with_backend(
@@ -164,7 +171,7 @@ impl Graph {
         center: bool,
         seed: u64,
         backend: self::bfs::BfsBackend,
-    ) -> Result<SgdParams> {
+    ) -> Result<(SgdParams, self::bfs::BfsTiming)> {
         let outcome = self::bfs::compute_apsp(self, backend)?;
         let (wmin, wmax) = if outcome.dmin.is_finite() && outcome.dmax > 0.0 {
             (
@@ -176,14 +183,15 @@ impl Graph {
         };
         let etas = calc_learning_rate(iterations, wmin, wmax, epsilon);
         let positions = experiment_common::seed::seeded_positions(self.node_size, seed, center);
-        Ok(SgdParams {
+        let params = SgdParams {
             etas,
             positions,
             dist_u16: outcome.dist_u16,
             constraint_count: outcome.constraint_count,
             pairs: Vec::new(),
             center,
-        })
+        };
+        Ok((params, outcome.timing))
     }
 }
 
