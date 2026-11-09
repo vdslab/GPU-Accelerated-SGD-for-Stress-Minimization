@@ -76,20 +76,9 @@ impl GpuContext {
     }
 
     pub fn new() -> Result<Self> {
-        let instance = wgpu::Instance::new(&wgpu::InstanceDescriptor::default());
-        let adapter =
-            pollster::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions::default()))
-                .map_err(|e| anyhow::anyhow!("GPUアダプタが見つかりません: {e:?}"))?;
+        let (_instance, adapter, device, queue) =
+            experiment_common::gpu::init_gpu_context(wgpu::PowerPreference::HighPerformance)?;
         let info = adapter.get_info();
-        let (device, queue) = pollster::block_on(adapter.request_device(&wgpu::DeviceDescriptor {
-            label: Some("Sparse SGD GPU device"),
-            required_features: adapter.features() & wgpu::Features::TIMESTAMP_QUERY,
-            required_limits: adapter.limits(),
-            experimental_features: wgpu::ExperimentalFeatures::disabled(),
-            memory_hints: wgpu::MemoryHints::MemoryUsage,
-            trace: wgpu::Trace::Off,
-        }))
-        .context("GPUデバイスを作成できません")?;
         let shader = device.create_shader_module(wgpu::include_wgsl!("shader.wgsl"));
         Ok(Self {
             device,
@@ -345,6 +334,26 @@ impl GpuContext {
             });
         let one_pipeline = self.create_pipeline(&pipeline_layout, "one_sided_phase");
         let two_pipeline = self.create_pipeline(&pipeline_layout, "two_sided_round");
+
+        // Warm up Mesa NIR->DXIL compilation for both pipelines before timed iteration loops
+        experiment_common::gpu::run_warmup_dispatch(
+            &self.device,
+            &self.queue,
+            &one_pipeline,
+            &bind_group,
+            &[0],
+        )?;
+        experiment_common::gpu::run_warmup_dispatch(
+            &self.device,
+            &self.queue,
+            &two_pipeline,
+            &bind_group,
+            &[0],
+        )?;
+        self.queue
+            .write_buffer(&positions_buffer, 0, bytemuck::cast_slice(&position_data));
+        self.queue.submit([]);
+        self.device.poll(wgpu::PollType::wait_indefinitely())?;
         let mut timer =
             timing::PassTimer::new(&self.device, params.etas.len() * submission_ranges.len());
         let preparation_time = preparation_started.elapsed();

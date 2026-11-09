@@ -272,30 +272,11 @@ pub fn build_schedule(big_b: u32) -> Vec<Vec<(u32, u32)>> {
 impl GpuContext {
     pub fn new(kernel: KernelConfig) -> Result<Self> {
         kernel.validate()?;
-        let instance = wgpu::Instance::new(&wgpu::InstanceDescriptor::default());
-
-        let adapter =
-            pollster::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions::default()))
-                .map_err(|e| anyhow::anyhow!("GPU アダプタが見つかりません: {:?}", e))?;
+        let (_instance, adapter, device, queue) =
+            experiment_common::gpu::init_gpu_context(wgpu::PowerPreference::HighPerformance)?;
 
         let info = adapter.get_info();
-        let supported_features = adapter.features();
-        let timestamp_supported = supported_features.contains(wgpu::Features::TIMESTAMP_QUERY);
-        let required_features = if timestamp_supported {
-            wgpu::Features::TIMESTAMP_QUERY
-        } else {
-            wgpu::Features::empty()
-        };
-
-        let (device, queue) = pollster::block_on(adapter.request_device(&wgpu::DeviceDescriptor {
-            label: None,
-            required_features,
-            required_limits: adapter.limits(),
-            experimental_features: wgpu::ExperimentalFeatures::disabled(),
-            memory_hints: wgpu::MemoryHints::MemoryUsage,
-            trace: wgpu::Trace::Off,
-        }))
-        .map_err(|e| anyhow::anyhow!("デバイス作成失敗: {}", e))?;
+        let timestamp_supported = device.features().contains(wgpu::Features::TIMESTAMP_QUERY);
 
         anyhow::ensure!(
             kernel.workgroup_size <= device.limits().max_compute_invocations_per_workgroup,
@@ -570,6 +551,19 @@ impl GpuContext {
                 compilation_options: wgpu::PipelineCompilationOptions::default(),
                 cache: None,
             });
+
+        // Warm up Mesa NIR->DXIL compilation before timed iteration loops
+        experiment_common::gpu::run_warmup_dispatch(
+            &self.device,
+            &self.queue,
+            &pipeline,
+            &bind_group,
+            &[],
+        )?;
+        self.queue
+            .write_buffer(&positions_buffer, 0, bytemuck::cast_slice(&positions_flat));
+        self.queue.submit([]);
+        self.device.poll(wgpu::PollType::wait_indefinitely())?;
 
         // ── SGD 実行 ───────────────────────────────────────────────────────────
         let num_iterations = etas.len();
