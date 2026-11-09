@@ -1,0 +1,13 @@
+{
+  "completed_at": "2026-11-08T16:14:52.570300+09:00",
+  "scope": "experiment_results, output, archive/experiments; layout payloads, coordinate snapshots, generated vertex maps and experiment caches only",
+  "deleted_files": 38534,
+  "deleted_logical_bytes": 90456874862,
+  "trimmed_info_files": 103,
+  "trimmed_bytes": 4382113561,
+  "preserved_files_verified": 83555,
+  "preservation_failures": [],
+  "free_bytes_before": 7162028032,
+  "free_bytes_after": 75865882624,
+  "note": "Numerical records, timing/stress histories, configurations, logs, tables, figures and reports retained. Historical coordinate/cache paths in records and archive manifests now refer to intentionally deleted artifacts. Re-rendering from coordinates requires rerunning experiments. Source input data, source code and git history untouched."
+}
