@@ -1,5 +1,8 @@
 # Paper charts: previous CPU / Atomic vs RR128
 
+> 2026-11-09整理：旧CPU/Atomic対EX2 RR128の16図。正式測定の追加はなし。 [v5総覧](../README.md)。
+> 保存状態：2026-11-08の容量整理で座標等は削除済み。以下の座標保存・復元の説明は実行当時の記録。数値結果・既存図表は保持。再描画には座標の再取得が必要。
+
 See [the chart book](reports/CHARTS.md) and Obsidian `EX_チャート集`. All 16 figures are exported as PNG and vector PDF. Full Stress is exact for all three Full methods; saved CPU/Atomic coordinates were reevaluated for four graphs. Original measurements remain unchanged. Previous CPU/Atomic vs EX2 RR are different sessions and timestamp settings; figure footnotes disclose this.
 
 - Full — CPU / Atomic / RR128 (38 graphs): [PNG](figures/full-sgd-time.png), [PDF](figures/full-sgd-time.pdf)

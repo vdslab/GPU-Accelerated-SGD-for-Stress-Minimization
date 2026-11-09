@@ -1,5 +1,8 @@
 # RR128 vs RR1024, per graph
 
+> 2026-11-09整理：Full38・Sparse3グラフの対応比較。正式測定の追加はなし。 [v5総覧](../README.md)。
+> 保存状態：2026-11-08の容量整理で座標等は削除済み。以下の座標保存・復元の説明は実行当時の記録。数値結果・既存図表は保持。再描画には座標の再取得が必要。
+
 [Japanese chart book](reports/COMPARISON.md). Full38 graphs; Sparse3 graphs with actual matched W1024/p200 data. Other Sparse W1024 cases are unmeasured, not replaced with W256.
 
 - Full: T=W128 vs T=W1024 — Mean elapsed time per SGD iteration (ms): [PNG](figures/full-pergraph-sgd-time.png), [PDF](figures/full-pergraph-sgd-time.pdf)

@@ -4,14 +4,13 @@ Full / Sparse SGDのGPU並列化と評価。CPU・Atomic・Round-robin方式の�
 
 ## 実験結果
 
-現行の [v2](experiment_results/v2/README.md) — **14グラフ・6手法・2,260正式実行、全件成功**。
-小・中規模の主比較は25 seed、大規模・RR設定比較は10 seed。
-速度・stress・shared memory・タイルサイズ・workgroupサイズを比較し、9図をPNG / SVG / PDFで保存。
+現行の [v5 実験総覧](experiment_results/v5/README.md) — **正式測定10,180成功、実測失敗0、GPU上限による未実行220条件**。
+初回6,030件に加え、大規模・grid/workgroup・EX1（W=T）・EX2（RR128）まで完了。
 
-[結果と考察](experiment_results/v2/report/RESULTS.md) · [集計表](experiment_results/v2/tables/summary.csv) · [図](experiment_results/v2/figures/) · [検証](experiment_results/v2/tables/validation.json)
+[RR128とCPU/Atomicの図表](experiment_results/v5/ex-chart-collection-rr128-20261108/README.md) · [EX2の結果と考察](experiment_results/v5/ex2-rr128-speed-stress-20261108/reports/RESULTS.md) · [128対1024](experiment_results/v5/rr128-vs1024-charts-20261108/README.md)
 
-以前の [v1](experiment_results/v1/README.md) — 16グラフ・6手法・654正式実行の暫定評価（10 / 3 seed）。保存済み結果は維持。
-[実験一覧](experiment_results/README.md)
+旧結果：[v2](experiment_results/v2/README.md)（2,260正式実行）・[v1](experiment_results/v1/README.md)（654正式実行）。[実験一覧](experiment_results/README.md)。
+容量整理後の座標データの所在と再生成上の制約は [v5の保存状態](experiment_results/v5/README.md#現在の保存状態2026-11-09確認) を参照。
 
 ## 実装
 
@@ -48,6 +47,7 @@ Full / Sparse SGDのGPU並列化と評価。CPU・Atomic・Round-robin方式の�
 │   ├── schema/
 │   └── tests/
 ├── experiment_results/
+│   ├── v5/                 現行：初回・大規模・追加実験・EX1・EX2
 │   ├── v2/
 │   │   ├── config/
 │   │   ├── raw/

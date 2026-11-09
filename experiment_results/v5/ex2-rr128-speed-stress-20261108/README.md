@@ -1,5 +1,8 @@
 # EX2 RR128 speed and Stress experiment
 
+> 2026-11-09整理：1,410/1,410成功、[完了記録](completion.json)・[結果](reports/RESULTS.md)。 [v5総覧](../README.md)。
+> 保存状態：2026-11-08の容量整理で座標等は削除済み。以下の座標保存・復元の説明は実行当時の記録。数値結果・既存図表は保持。再描画には座標の再取得が必要。
+
 The original v5 and EX1 results are read-only. This directory is an additional experiment.
 
 Run/resume: `python3 experiments/run_ex2_rr128.py --run`.

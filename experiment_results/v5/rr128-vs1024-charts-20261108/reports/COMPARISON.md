@@ -24,81 +24,81 @@ SGD速度比は1024/128で**1より大きいほど128が高速**。Stress比は1
 
 ### Full: T=W128 vs T=W1024 — Mean elapsed time per SGD iteration (ms)
 
-![[EX_128対1024_図表/full-pergraph-sgd-time.png]]
+![full-pergraph-sgd-time](../figures/full-pergraph-sgd-time.png)
 
 ### Full: T=W128 vs T=W1024 — Total compute, input to CPU coordinates (s)
 
-![[EX_128対1024_図表/full-pergraph-total-time.png]]
+![full-pergraph-total-time](../figures/full-pergraph-total-time.png)
 
 ### Full: T=W128 vs T=W1024 — SGD time1024 / time128 (higher = 128 faster)
 
-![[EX_128対1024_図表/full-pergraph-sgd-speedup.png]]
+![full-pergraph-sgd-speedup](../figures/full-pergraph-sgd-speedup.png)
 
 ### Full: T=W128 vs T=W1024 — Final Stress128 / Stress1024 (lower = 128 better)
 
-![[EX_128対1024_図表/full-pergraph-stress-ratio.png]]
+![full-pergraph-stress-ratio](../figures/full-pergraph-stress-ratio.png)
 
 ### Sparse: W128 vs W1024, p=200 (3 matched graphs only) — Mean elapsed time per SGD iteration (ms)
 
-![[EX_128対1024_図表/sparse-pergraph-sgd-time.png]]
+![sparse-pergraph-sgd-time](../figures/sparse-pergraph-sgd-time.png)
 
 ### Sparse: W128 vs W1024, p=200 (3 matched graphs only) — Total compute, input to CPU coordinates (s)
 
-![[EX_128対1024_図表/sparse-pergraph-total-time.png]]
+![sparse-pergraph-total-time](../figures/sparse-pergraph-total-time.png)
 
 ### Sparse: W128 vs W1024, p=200 (3 matched graphs only) — SGD time1024 / time128 (higher = 128 faster)
 
-![[EX_128対1024_図表/sparse-pergraph-sgd-speedup.png]]
+![sparse-pergraph-sgd-speedup](../figures/sparse-pergraph-sgd-speedup.png)
 
 ### Sparse: W128 vs W1024, p=200 (3 matched graphs only) — Final Stress128 / Stress1024 (lower = 128 better)
 
-![[EX_128対1024_図表/sparse-pergraph-stress-ratio.png]]
+![sparse-pergraph-stress-ratio](../figures/sparse-pergraph-stress-ratio.png)
 
 ## グラフ別の数値と個別図
 
 | 族 | グラフ | SGD速度比1024/128 | Stress比128/1024 | 個別図（時間・総時間・Stress） |
 |---|---|---:|---:|---|
-| full | karate | 0.963 | 1.00599 | [[EX_128対1024_図表/full-detail-karate.png\|開く]] |
-| full | dolphins | 1.031 | 0.99298 | [[EX_128対1024_図表/full-detail-dolphins.png\|開く]] |
-| full | dwt_198 | 1.021 | 0.99907 | [[EX_128対1024_図表/full-detail-dwt_198.png\|開く]] |
-| full | dwt_72 | 1.015 | 1.00052 | [[EX_128対1024_図表/full-detail-dwt_72.png\|開く]] |
-| full | lesmis | 1.043 | 1.00784 | [[EX_128対1024_図表/full-detail-lesmis.png\|開く]] |
-| full | can_96 | 1.032 | 0.99544 | [[EX_128対1024_図表/full-detail-can_96.png\|開く]] |
-| full | polbooks | 1.039 | 1.01860 | [[EX_128対1024_図表/full-detail-polbooks.png\|開く]] |
-| full | adjnoun | 1.029 | 1.03099 | [[EX_128対1024_図表/full-detail-adjnoun.png\|開く]] |
-| full | jazz | 0.964 | 1.02336 | [[EX_128対1024_図表/full-detail-jazz.png\|開く]] |
-| full | grid17 | 0.598 | 1.00190 | [[EX_128対1024_図表/full-detail-grid17.png\|開く]] |
-| full | mesh3e1 | 0.664 | 1.00116 | [[EX_128対1024_図表/full-detail-mesh3e1.png\|開く]] |
-| full | celegansneural | 0.652 | 1.03818 | [[EX_128対1024_図表/full-detail-celegansneural.png\|開く]] |
-| full | netscience | 0.646 | 1.01877 | [[EX_128対1024_図表/full-detail-netscience.png\|開く]] |
-| full | dwt_419 | 0.659 | 1.00012 | [[EX_128対1024_図表/full-detail-dwt_419.png\|開く]] |
-| full | dwt_758 | 1.016 | 0.99800 | [[EX_128対1024_図表/full-detail-dwt_758.png\|開く]] |
-| full | dwt_1005 | 1.187 | 1.00907 | [[EX_128対1024_図表/full-detail-dwt_1005.png\|開く]] |
-| full | bcsstk09 | 1.607 | 1.00068 | [[EX_128対1024_図表/full-detail-bcsstk09.png\|開く]] |
-| full | email | 1.538 | 1.07919 | [[EX_128対1024_図表/full-detail-email.png\|開く]] |
-| full | 1138_bus | 1.609 | 1.06091 | [[EX_128対1024_図表/full-detail-1138_bus.png\|開く]] |
-| full | polblogs | 1.591 | 1.06024 | [[EX_128対1024_図表/full-detail-polblogs.png\|開く]] |
-| full | yeast | 2.472 | 1.01662 | [[EX_128対1024_図表/full-detail-yeast.png\|開く]] |
-| full | add20 | 2.319 | 1.05863 | [[EX_128対1024_図表/full-detail-add20.png\|開く]] |
-| full | dwt_2680 | 2.498 | 0.99883 | [[EX_128対1024_図表/full-detail-dwt_2680.png\|開く]] |
-| full | data | 2.768 | 0.99508 | [[EX_128対1024_図表/full-detail-data.png\|開く]] |
-| full | bcsstk15 | 2.204 | 0.97608 | [[EX_128対1024_図表/full-detail-bcsstk15.png\|開く]] |
-| full | CA-GrQc | 2.673 | 0.99382 | [[EX_128対1024_図表/full-detail-CA-GrQc.png\|開く]] |
-| full | EVA | 2.631 | 0.97659 | [[EX_128対1024_図表/full-detail-EVA.png\|開く]] |
-| full | 3elt | 2.846 | 0.99543 | [[EX_128対1024_図表/full-detail-3elt.png\|開く]] |
-| full | bcsstk16 | 2.441 | 0.99896 | [[EX_128対1024_図表/full-detail-bcsstk16.png\|開く]] |
-| full | uk | 2.696 | 0.99801 | [[EX_128対1024_図表/full-detail-uk.png\|開く]] |
-| full | USpowerGrid | 2.549 | 0.99168 | [[EX_128対1024_図表/full-detail-USpowerGrid.png\|開く]] |
-| full | bcspwr10 | 2.295 | 0.99921 | [[EX_128対1024_図表/full-detail-bcspwr10.png\|開く]] |
-| full | p2p-Gnutella08 | 2.531 | 0.77342 | [[EX_128対1024_図表/full-detail-p2p-Gnutella08.png\|開く]] |
-| full | wiki-Vote | 2.589 | 0.76624 | [[EX_128対1024_図表/full-detail-wiki-Vote.png\|開く]] |
-| full | ca-HepTh | 2.940 | 0.91237 | [[EX_128対1024_図表/full-detail-ca-HepTh.png\|開く]] |
-| full | bcsstk17 | 3.340 | 0.95817 | [[EX_128対1024_図表/full-detail-bcsstk17.png\|開く]] |
-| full | PGPgiantcompo | 3.292 | 0.81950 | [[EX_128対1024_図表/full-detail-PGPgiantcompo.png\|開く]] |
-| full | fe_4elt2 | 3.406 | 0.99448 | [[EX_128対1024_図表/full-detail-fe_4elt2.png\|開く]] |
-| sparse | luxembourg_osm | 0.993 | 1.00000 | [[EX_128対1024_図表/sparse-detail-luxembourg_osm.png\|開く]] |
-| sparse | la2010 | 1.030 | 1.00000 | [[EX_128対1024_図表/sparse-detail-la2010.png\|開く]] |
-| sparse | coPapersCiteseer | 1.043 | 1.00000 | [[EX_128対1024_図表/sparse-detail-coPapersCiteseer.png\|開く]] |
+| full | karate | 0.963 | 1.00599 | [開く](../figures/full-detail-karate.png) |
+| full | dolphins | 1.031 | 0.99298 | [開く](../figures/full-detail-dolphins.png) |
+| full | dwt_198 | 1.021 | 0.99907 | [開く](../figures/full-detail-dwt_198.png) |
+| full | dwt_72 | 1.015 | 1.00052 | [開く](../figures/full-detail-dwt_72.png) |
+| full | lesmis | 1.043 | 1.00784 | [開く](../figures/full-detail-lesmis.png) |
+| full | can_96 | 1.032 | 0.99544 | [開く](../figures/full-detail-can_96.png) |
+| full | polbooks | 1.039 | 1.01860 | [開く](../figures/full-detail-polbooks.png) |
+| full | adjnoun | 1.029 | 1.03099 | [開く](../figures/full-detail-adjnoun.png) |
+| full | jazz | 0.964 | 1.02336 | [開く](../figures/full-detail-jazz.png) |
+| full | grid17 | 0.598 | 1.00190 | [開く](../figures/full-detail-grid17.png) |
+| full | mesh3e1 | 0.664 | 1.00116 | [開く](../figures/full-detail-mesh3e1.png) |
+| full | celegansneural | 0.652 | 1.03818 | [開く](../figures/full-detail-celegansneural.png) |
+| full | netscience | 0.646 | 1.01877 | [開く](../figures/full-detail-netscience.png) |
+| full | dwt_419 | 0.659 | 1.00012 | [開く](../figures/full-detail-dwt_419.png) |
+| full | dwt_758 | 1.016 | 0.99800 | [開く](../figures/full-detail-dwt_758.png) |
+| full | dwt_1005 | 1.187 | 1.00907 | [開く](../figures/full-detail-dwt_1005.png) |
+| full | bcsstk09 | 1.607 | 1.00068 | [開く](../figures/full-detail-bcsstk09.png) |
+| full | email | 1.538 | 1.07919 | [開く](../figures/full-detail-email.png) |
+| full | 1138_bus | 1.609 | 1.06091 | [開く](../figures/full-detail-1138_bus.png) |
+| full | polblogs | 1.591 | 1.06024 | [開く](../figures/full-detail-polblogs.png) |
+| full | yeast | 2.472 | 1.01662 | [開く](../figures/full-detail-yeast.png) |
+| full | add20 | 2.319 | 1.05863 | [開く](../figures/full-detail-add20.png) |
+| full | dwt_2680 | 2.498 | 0.99883 | [開く](../figures/full-detail-dwt_2680.png) |
+| full | data | 2.768 | 0.99508 | [開く](../figures/full-detail-data.png) |
+| full | bcsstk15 | 2.204 | 0.97608 | [開く](../figures/full-detail-bcsstk15.png) |
+| full | CA-GrQc | 2.673 | 0.99382 | [開く](../figures/full-detail-CA-GrQc.png) |
+| full | EVA | 2.631 | 0.97659 | [開く](../figures/full-detail-EVA.png) |
+| full | 3elt | 2.846 | 0.99543 | [開く](../figures/full-detail-3elt.png) |
+| full | bcsstk16 | 2.441 | 0.99896 | [開く](../figures/full-detail-bcsstk16.png) |
+| full | uk | 2.696 | 0.99801 | [開く](../figures/full-detail-uk.png) |
+| full | USpowerGrid | 2.549 | 0.99168 | [開く](../figures/full-detail-USpowerGrid.png) |
+| full | bcspwr10 | 2.295 | 0.99921 | [開く](../figures/full-detail-bcspwr10.png) |
+| full | p2p-Gnutella08 | 2.531 | 0.77342 | [開く](../figures/full-detail-p2p-Gnutella08.png) |
+| full | wiki-Vote | 2.589 | 0.76624 | [開く](../figures/full-detail-wiki-Vote.png) |
+| full | ca-HepTh | 2.940 | 0.91237 | [開く](../figures/full-detail-ca-HepTh.png) |
+| full | bcsstk17 | 3.340 | 0.95817 | [開く](../figures/full-detail-bcsstk17.png) |
+| full | PGPgiantcompo | 3.292 | 0.81950 | [開く](../figures/full-detail-PGPgiantcompo.png) |
+| full | fe_4elt2 | 3.406 | 0.99448 | [開く](../figures/full-detail-fe_4elt2.png) |
+| sparse | luxembourg_osm | 0.993 | 1.00000 | [開く](../figures/sparse-detail-luxembourg_osm.png) |
+| sparse | la2010 | 1.030 | 1.00000 | [開く](../figures/sparse-detail-la2010.png) |
+| sparse | coPapersCiteseer | 1.043 | 1.00000 | [開く](../figures/sparse-detail-coPapersCiteseer.png) |
 
 ## 保存先
 

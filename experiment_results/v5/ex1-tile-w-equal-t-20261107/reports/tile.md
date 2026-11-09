@@ -36,13 +36,13 @@ W=TでTを増やすと、座標再利用が増える一方、1WGの仕事量・S
 
 ## 図表
 
-![[EX1_v5_図表/tile-time.png]]
+![tile-time](../figures/tile-time.png)
 
-![[EX1_v5_図表/tile-stress.png]]
+![tile-stress](../figures/tile-stress.png)
 
-![[EX1_v5_図表/tile-stress-ratio.png]]
+![tile-stress-ratio](../figures/tile-stress-ratio.png)
 
-![[EX1_v5_図表/tile-previous-time.png]]
+![tile-previous-time](../figures/tile-previous-time.png)
 
 ## 保存先
 

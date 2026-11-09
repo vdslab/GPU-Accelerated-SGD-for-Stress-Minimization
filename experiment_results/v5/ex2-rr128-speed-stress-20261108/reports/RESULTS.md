@@ -30,21 +30,21 @@ Fullは今回厳密Stress、前回は大きいグラフで推定Stressだった�
 
 ## 図表
 
-![[EX2_v5_図表/full-all-timings.png]]
+![full-all-timings](../figures/full-all-timings.png)
 
-![[EX2_v5_図表/full-previous-speedup.png]]
+![full-previous-speedup](../figures/full-previous-speedup.png)
 
-![[EX2_v5_図表/full-stress.png]]
+![full-stress](../figures/full-stress.png)
 
-![[EX2_v5_図表/full-speed-stress.png]]
+![full-speed-stress](../figures/full-speed-stress.png)
 
-![[EX2_v5_図表/sparse-all-timings.png]]
+![sparse-all-timings](../figures/sparse-all-timings.png)
 
-![[EX2_v5_図表/sparse-previous-speedup.png]]
+![sparse-previous-speedup](../figures/sparse-previous-speedup.png)
 
-![[EX2_v5_図表/sparse-stress.png]]
+![sparse-stress](../figures/sparse-stress.png)
 
-![[EX2_v5_図表/sparse-speed-stress.png]]
+![sparse-speed-stress](../figures/sparse-speed-stress.png)
 
 ## 保存先
 
