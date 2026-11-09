@@ -10,16 +10,40 @@ struct Uniforms {
     partial_self_perm_offset: u32,
     chunk: u32,
     chunks: u32,
+    tiles_offset: u32,
+    perm_offset: u32,
+    subround_start: u32,
+    subround_end: u32,
     padding: vec2<u32>,
 }
 
 @group(0) @binding(0) var<uniform> uniforms: Uniforms;
 @group(0) @binding(1) var<storage, read_write> positions: array<vec2<f32>>;
-@group(0) @binding(2) var<storage, read> dist_flat: array<f32>;
+@group(0) @binding(2) var<storage, read> dist_bank0: array<u32>;
 @group(0) @binding(3) var<storage, read> block_lens: array<u32>;
 @group(0) @binding(4) var<storage, read> tiles: array<vec2<u32>>;
 // Packed exact permutations: cross T offsets, full self rounds, partial self rounds.
 @group(0) @binding(5) var<storage, read> inner_perm: array<u32>;
+@group(0) @binding(6) var<storage, read> dist_bank1: array<u32>;
+@group(0) @binding(7) var<storage, read> dist_bank2: array<u32>;
+@group(0) @binding(8) var<storage, read> dist_bank3: array<u32>;
+
+fn get_distance(u: u32, v: u32) -> f32 {
+    let linear_idx = u * uniforms.n + v;
+    let word_idx = linear_idx >> 1u;
+    let half_idx = linear_idx & 1u;
+    let bank_idx = word_idx >> 25u;
+    let local_idx = word_idx & 0x01ffffffu;
+    var word: u32;
+    switch bank_idx {
+        case 0u: { word = dist_bank0[local_idx]; }
+        case 1u: { word = dist_bank1[local_idx]; }
+        case 2u: { word = dist_bank2[local_idx]; }
+        default: { word = dist_bank3[local_idx]; }
+    }
+    let d_u16 = (word >> (half_idx * 16u)) & 0xffffu;
+    return f32(d_u16);
+}
 
 __MEMORY_HELPERS__
 
@@ -37,7 +61,7 @@ fn sgd_rr(
     @builtin(workgroup_id) wg: vec3<u32>,
     @builtin(local_invocation_id) lid: vec3<u32>,
 ) {
-    let tile = tiles[wg.x];
+    let tile = tiles[uniforms.tiles_offset + wg.x];
     let i = tile.x;
     let j = tile.y;
     let li = block_lens[i];
@@ -49,14 +73,14 @@ fn sgd_rr(
         // Both sides are padded to T. The cyclic offset is a bijection on T,
         // so every subround is a disjoint matching even for a partial last tile.
         // Skipping dummies still visits every real cross pair exactly once.
-        for (var s = uniforms.chunk * BLOCK_T / uniforms.chunks; s < (uniforms.chunk + 1u) * BLOCK_T / uniforms.chunks; s++) {
-            let offset = inner_perm[s];
+        for (var s = uniforms.subround_start; s < uniforms.subround_end; s++) {
+            let offset = inner_perm[uniforms.perm_offset + s];
             for (var local = tx; local < li; local += WORKGROUP_SIZE) {
                 let other = (local + offset) % BLOCK_T;
                 if other < lj {
                     let gu = i * BLOCK_T + local;
                     let gv = j * BLOCK_T + other;
-                    let d = dist_flat[gu * uniforms.n + gv];
+                    let d = get_distance(gu, gv);
                     if d >= 0.5 {
                         let pos_u = read_i(i, local);
                         let pos_v = read_j(j, other);
@@ -78,10 +102,10 @@ fn sgd_rr(
     if li > 1u {
         let effective_len = li + li % 2u;
         let rounds = effective_len - 1u;
-        let perm_offset = select(uniforms.full_self_perm_offset,
-                                 uniforms.partial_self_perm_offset, li < BLOCK_T);
+        let domain_offset = select(uniforms.full_self_perm_offset,
+                                   uniforms.partial_self_perm_offset, li < BLOCK_T);
         for (var s = uniforms.chunk * rounds / uniforms.chunks; s < (uniforms.chunk + 1u) * rounds / uniforms.chunks; s++) {
-            let r = inner_perm[perm_offset + s];
+            let r = inner_perm[uniforms.perm_offset + domain_offset + s];
             for (var slot = tx; slot < effective_len / 2u; slot += WORKGROUP_SIZE) {
                 var lu = effective_len - 1u;
                 var lv = r;
@@ -92,7 +116,7 @@ fn sgd_rr(
                 if lu < li && lv < li {
                     let gu = i * BLOCK_T + lu;
                     let gv = i * BLOCK_T + lv;
-                    let d = dist_flat[gu * uniforms.n + gv];
+                    let d = get_distance(gu, gv);
                     if d >= 0.5 {
                         let pos_u = read_i(i, lu);
                         let pos_v = read_i(i, lv);
