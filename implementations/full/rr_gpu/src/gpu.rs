@@ -357,14 +357,19 @@ impl GpuContext {
         );
         const BANK_WORDS: usize = 33_554_432; // 128 MiB = 2^25 words
 
-        let total_distances = (n * n) as usize;
-        let total_words = total_distances.div_ceil(2);
-        let mut dist_u16 = vec![0u16; total_words * 2];
-        for e in &params.pairs {
-            let d = e.dij as u16;
-            dist_u16[e.u * n as usize + e.v] = d;
-            dist_u16[e.v * n as usize + e.u] = d;
-        }
+        let dist_u16 = if !params.dist_u16.is_empty() {
+            params.dist_u16
+        } else {
+            let total_distances = (n * n) as usize;
+            let total_words = total_distances.div_ceil(2);
+            let mut dist_u16 = vec![0u16; total_words * 2];
+            for e in &params.pairs {
+                let d = e.dij as u16;
+                dist_u16[e.u * n as usize + e.v] = d;
+                dist_u16[e.v * n as usize + e.u] = d;
+            }
+            dist_u16
+        };
         let dist_words: &[u32] = bytemuck::cast_slice(&dist_u16);
 
         let get_bank_slice = |bank_idx: usize| -> &[u32] {
@@ -1050,24 +1055,28 @@ mod tests {
     }
 
     fn fixture(n: u32) -> graph::SgdParams {
+        let pairs: Vec<_> = (0..n)
+            .flat_map(|u| {
+                ((u + 1)..n).map(move |v| {
+                    let d = (1 + (u + v) % 5) as f64;
+                    graph::EdgeInfo {
+                        u: u as usize,
+                        v: v as usize,
+                        dij: d,
+                        wij: 1.0 / (d * d),
+                    }
+                })
+            })
+            .collect();
+        let constraint_count = pairs.len();
         graph::SgdParams {
             etas: vec![0.2, 0.05],
             positions: (0..n)
                 .map(|u| [u as f64 * 0.3, ((u * u + 1) % 11) as f64 * 0.4])
                 .collect(),
-            pairs: (0..n)
-                .flat_map(|u| {
-                    ((u + 1)..n).map(move |v| {
-                        let d = (1 + (u + v) % 5) as f64;
-                        graph::EdgeInfo {
-                            u: u as usize,
-                            v: v as usize,
-                            dij: d,
-                            wij: 1.0 / (d * d),
-                        }
-                    })
-                })
-                .collect(),
+            dist_u16: Vec::new(),
+            constraint_count,
+            pairs,
             center: false,
         }
     }
@@ -1086,9 +1095,17 @@ mod tests {
             .map(|p| [p[0] as f32, p[1] as f32])
             .collect();
         let mut distances = vec![0.0_f32; n as usize * n as usize];
-        for pair in &params.pairs {
-            distances[pair.u * n as usize + pair.v] = pair.dij as f32;
-            distances[pair.v * n as usize + pair.u] = pair.dij as f32;
+        if !params.dist_u16.is_empty() {
+            for u in 0..n as usize {
+                for v in 0..n as usize {
+                    distances[u * n as usize + v] = params.dist_u16[u * n as usize + v] as f32;
+                }
+            }
+        } else {
+            for pair in &params.pairs {
+                distances[pair.u * n as usize + pair.v] = pair.dij as f32;
+                distances[pair.v * n as usize + pair.u] = pair.dij as f32;
+            }
         }
         for &eta in &params.etas {
             if config.outer_shuffle {

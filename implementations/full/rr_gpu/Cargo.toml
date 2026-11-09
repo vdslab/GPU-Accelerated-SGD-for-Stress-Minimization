@@ -15,5 +15,9 @@ sprs = "0.11.4"
 serde_json = "1"
 wgpu = "27.0.1"
 
+# WebGPU BFS integration for accelerated APSP preprocessing
+webgpu-bfs-core = { path = "../../../../webgpu-bfs/crates/core" }
+webgpu-bfs-gpu = { path = "../../../../webgpu-bfs/crates/gpu_bfs" }
+
 [dev-dependencies]
 tempfile = "3"

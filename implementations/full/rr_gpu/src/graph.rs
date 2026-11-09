@@ -12,10 +12,15 @@ pub struct Graph {
     pub edge_dst: Vec<usize>,
 }
 
-#[derive(Debug)]
+#[path = "bfs.rs"]
+pub mod bfs;
+
+#[derive(Debug, Clone)]
 pub struct SgdParams {
     pub etas: Vec<f64>,
     pub positions: Vec<[f64; 2]>,
+    pub dist_u16: Vec<u16>,
+    pub constraint_count: usize,
     pub pairs: Vec<EdgeInfo>,
     pub center: bool,
 }
@@ -55,7 +60,7 @@ impl Graph {
         })
     }
 
-    fn calc_adj_matrix(&self) -> Vec<Vec<usize>> {
+    pub fn calc_adj_matrix(&self) -> Vec<Vec<usize>> {
         let mut adj = vec![Vec::new(); self.node_size];
         for i in 0..self.edge_size {
             adj[self.edge_src[i]].push(self.edge_dst[i]);
@@ -142,19 +147,43 @@ impl Graph {
         center: bool,
         seed: u64,
     ) -> SgdParams {
-        let dist = self.calc_dist_matrix();
-        let (pairs, wmin, wmax) = self.calc_edge_info(&dist);
+        self.prepare_sgd_params_with_backend(
+            iterations,
+            epsilon,
+            center,
+            seed,
+            self::bfs::BfsBackend::Auto,
+        )
+        .expect("APSP calculation failed")
+    }
 
+    pub fn prepare_sgd_params_with_backend(
+        &self,
+        iterations: usize,
+        epsilon: f64,
+        center: bool,
+        seed: u64,
+        backend: self::bfs::BfsBackend,
+    ) -> Result<SgdParams> {
+        let outcome = self::bfs::compute_apsp(self, backend)?;
+        let (wmin, wmax) = if outcome.dmin.is_finite() && outcome.dmax > 0.0 {
+            (
+                1.0 / (outcome.dmax * outcome.dmax),
+                1.0 / (outcome.dmin * outcome.dmin),
+            )
+        } else {
+            (1.0, 1.0)
+        };
         let etas = calc_learning_rate(iterations, wmin, wmax, epsilon);
-
         let positions = experiment_common::seed::seeded_positions(self.node_size, seed, center);
-
-        SgdParams {
+        Ok(SgdParams {
             etas,
             positions,
-            pairs,
+            dist_u16: outcome.dist_u16,
+            constraint_count: outcome.constraint_count,
+            pairs: Vec::new(),
             center,
-        }
+        })
     }
 }
 
