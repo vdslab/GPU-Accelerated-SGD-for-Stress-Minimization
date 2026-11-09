@@ -19,7 +19,6 @@ pub struct GpuPair {
     pub dij: f32,
     pub weight_u: f32,
     pub weight_v: f32,
-    pub _pad: u32,
 }
 
 impl GpuPair {
@@ -30,7 +29,6 @@ impl GpuPair {
             dij: edge.dij as f32,
             weight_u: edge.weight_u as f32,
             weight_v: edge.weight_v as f32,
-            _pad: 0,
         })
     }
 }
@@ -178,64 +176,86 @@ fn build_schedule_compact(
         .try_reserve(graph_pair_indices.len())
         .context("two-sided assignment allocation failed")?;
 
-    // Each assignment contributes exactly one round ID to each endpoint. Capacities
-    // are derived from graph degrees; pivots reserve their complete pivot-pair set.
-    let mut vertex_rounds = Vec::with_capacity(n);
-    for vertex in 0..n {
-        let pivot_capacity = usize::from(pivot_set.contains(&vertex))
-            .checked_mul(h.saturating_sub(1))
-            .context("pivot round membership capacity overflow")?;
-        let capacity = graph
-            .neighbors(vertex)
-            .len()
-            .checked_add(pivot_capacity)
-            .context("vertex round membership capacity overflow")?;
-        vertex_rounds.push(Vec::<u32>::with_capacity(capacity));
+    // Maintain a bitmask of used round slots for each vertex (used[v][w]).
+    // Word w covers rounds 64 * w .. 64 * w + 63.
+    let mut used = vec![Vec::<u64>::new(); n];
+    let base_words = base_rounds.div_ceil(64);
+    for &pivot in &prepared.pivots {
+        if pivot < n {
+            used[pivot].resize(base_words, 0);
+        }
     }
     for assignment in &assignments {
         let edge = &prepared.pairs[assignment.pair_index];
-        vertex_rounds[edge.u].push(assignment.round);
-        vertex_rounds[edge.v].push(assignment.round);
+        let round = usize::try_from(assignment.round).context("round ID exceeds usize")?;
+        let word = round / 64;
+        let mask = 1_u64 << (round % 64);
+        if word >= used[edge.u].len() {
+            used[edge.u].resize(word + 1, 0);
+        }
+        used[edge.u][word] |= mask;
+        if word >= used[edge.v].len() {
+            used[edge.v].resize(word + 1, 0);
+        }
+        used[edge.v][word] |= mask;
     }
 
     let mut rng = StdRng::seed_from_u64(seed ^ 0x5350_4152_5345_5347);
     graph_pair_indices.shuffle(&mut rng);
-    let mut round_marks = vec![0_u32; base_rounds];
-    let mut epoch = 0_u32;
+    let mut round_count = base_rounds;
     for &pair_index_in_prepared in &graph_pair_indices {
-        epoch = next_epoch(&mut round_marks, epoch);
         let edge = &prepared.pairs[pair_index_in_prepared];
-        for &round in vertex_rounds[edge.u].iter().chain(&vertex_rounds[edge.v]) {
-            let round = usize::try_from(round).context("round ID exceeds usize")?;
-            ensure!(
-                round < round_marks.len(),
-                "vertex round membership is out of range"
-            );
-            round_marks[round] = epoch;
-        }
+        let u = edge.u;
+        let v = edge.v;
 
-        let round = if let Some(round) = round_marks.iter().position(|&mark| mark != epoch) {
-            round
-        } else {
-            let round = round_marks.len();
-            ensure!(
-                round < u32::MAX as usize,
-                "two-sided round count exceeds u32"
-            );
-            round_marks.push(0);
-            round
+        // Find the lowest unused round index using 64-bit word bitwise operations.
+        // A round is free for edge (u, v) iff neither u nor v has its bit set.
+        let mut w = 0_usize;
+        let (round, word, mask) = loop {
+            let u_mask = used[u].get(w).copied().unwrap_or(0);
+            let v_mask = used[v].get(w).copied().unwrap_or(0);
+            let free = !(u_mask | v_mask);
+            if free != 0 {
+                let bit = free.trailing_zeros();
+                let round = w
+                    .checked_mul(64)
+                    .and_then(|base| base.checked_add(bit as usize))
+                    .context("round ID overflow")?;
+                let mask = 1_u64 << bit;
+                break (round, w, mask);
+            }
+            w = w.checked_add(1).context("word index overflow")?;
         };
-        let round = u32::try_from(round).context("round ID exceeds u32")?;
-        vertex_rounds[edge.u].push(round);
-        vertex_rounds[edge.v].push(round);
+
+        ensure!(
+            round < u32::MAX as usize,
+            "two-sided round count exceeds u32"
+        );
+        let round_u32 = round as u32;
+
+        if word >= used[u].len() {
+            used[u].resize(word + 1, 0);
+        }
+        used[u][word] |= mask;
+
+        if word >= used[v].len() {
+            used[v].resize(word + 1, 0);
+        }
+        used[v][word] |= mask;
+
+        round_count = round_count.max(round + 1);
         assignments.push(AssignedPair {
             pair_index: pair_index_in_prepared,
-            round,
+            round: round_u32,
         });
     }
 
-    let round_membership_count = vertex_rounds.iter().try_fold(0_usize, |sum, rounds| {
-        sum.checked_add(rounds.len())
+    let round_membership_count = used.iter().try_fold(0_usize, |sum, rounds| {
+        let vertex_memberships = rounds
+            .iter()
+            .map(|&w| w.count_ones() as usize)
+            .sum::<usize>();
+        sum.checked_add(vertex_memberships)
             .context("round membership count overflow")
     })?;
     let expected_memberships = assignments
@@ -246,9 +266,7 @@ fn build_schedule_compact(
         round_membership_count == expected_memberships,
         "each two-sided assignment must have two vertex memberships"
     );
-    let round_count = round_marks.len();
-    drop(vertex_rounds);
-    drop(round_marks);
+    drop(used);
     drop(graph_pair_indices);
 
     let classified_count = one_sided_count
@@ -633,5 +651,11 @@ mod tests {
             graph.node_size,
         )
         .unwrap();
+    }
+
+    #[test]
+    fn gpu_pair_has_20_bytes() {
+        assert_eq!(std::mem::size_of::<GpuPair>(), 20);
+        assert_eq!(std::mem::align_of::<GpuPair>(), 4);
     }
 }
