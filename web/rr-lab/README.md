@@ -4,7 +4,7 @@
 
 公開URL: https://vdslab.github.io/GPU-Accelerated-SGD-for-Stress-Minimization/
 
-画面の見出しは「RR-SGD — Round-Robin SGD」。見出し横のⓘから概要、Full／Sparseの違い、使い方を確認できます。
+サイト名・ブラウザのタイトル・画面の見出しは「RR-SGD」。見出し横のⓘから概要、Full／Sparseの違い、使い方を確認できます。
 
 MTXファイルの前処理、RR Full / RR Sparse SGD、stress評価をブラウザ内で実行する静的サイトです。計算にはMDNで説明されている[WebGPU API](https://developer.mozilla.org/ja/docs/Web/API/WebGPU_API)を直接使用します。`navigator.gpu.requestAdapter()` → `adapter.requestDevice()` → WGSL compute pipeline → `dispatchWorkgroups()` の経路です。描画もWebGPUのrender pipelineを使い、専用Worker上のOffscreenCanvasへ辺と円形ノードをGPU描画します。Canvas 2Dは完成した画像の画面への合成と、WebGPU非対応環境のフォールバックにのみ使用します。
 

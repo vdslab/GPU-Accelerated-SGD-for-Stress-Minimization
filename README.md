@@ -4,7 +4,7 @@ Full / Sparse SGDのGPU並列化と評価。CPU・Atomic・Round-robin方式の�
 
 ## ブラウザで実行
 
-[**RR-SGD — Round-Robin SGD**](https://vdslab.github.io/GPU-Accelerated-SGD-for-Stress-Minimization/): MTXを読み込み、Full／Sparse SGDと描画をブラウザのWebGPUで実行するサイトです。[ソースと使い方](web/rr-lab/README.md)。
+[**RR-SGD**](https://vdslab.github.io/GPU-Accelerated-SGD-for-Stress-Minimization/): MTXを読み込み、Full／Sparse SGDと描画をブラウザのWebGPUで実行するサイトです。[ソースと使い方](web/rr-lab/README.md)。
 
 ## 実験結果
 

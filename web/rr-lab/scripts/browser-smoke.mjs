@@ -24,7 +24,8 @@ try {
   await page.goto(base);
   await page.waitForFunction(() => document.getElementById('status').textContent === '準備完了');
   assert.match(await page.locator('#gpu-state').innerText(), /利用可能/);
-  assert.match(await page.locator('h1').innerText(), /RR-SGD.*Round-Robin/);
+  assert.equal(await page.locator('h1').innerText(), 'RR-SGD');
+  assert.equal(await page.title(), 'RR-SGD');
   assert.equal(await page.locator('.app-shell > .active-graph').count(), 0);
   assert.equal(await page.locator('.source-panel .active-graph').count(), 1);
   assert.equal(
