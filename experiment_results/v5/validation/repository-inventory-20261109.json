@@ -1,0 +1,81 @@
+{
+  "checked_on": "2026-11-09",
+  "scope": "Existing formal v5 record.json files and pre-documentation-edit retention hashes; no experiments rerun or payloads deleted.",
+  "git_head": "d1387c0f9da9c01106971a1e7fddee1776216453",
+  "stages": [
+    {
+      "path": "experiment_results/v5/raw/tile",
+      "records": 1800,
+      "status_counts": {
+        "success": 1800
+      },
+      "unique_run_ids": true,
+      "warmups_included": false
+    },
+    {
+      "path": "experiment_results/v5/raw/comparison",
+      "records": 4230,
+      "status_counts": {
+        "success": 4230
+      },
+      "unique_run_ids": true,
+      "warmups_included": false
+    },
+    {
+      "path": "experiment_results/v5/large/raw",
+      "records": 350,
+      "status_counts": {
+        "preflight_unavailable": 220,
+        "success": 130
+      },
+      "unique_run_ids": true,
+      "warmups_included": false
+    },
+    {
+      "path": "experiment_results/v5/additional-grid-workgroup/raw",
+      "records": 810,
+      "status_counts": {
+        "success": 810
+      },
+      "unique_run_ids": true,
+      "warmups_included": false
+    },
+    {
+      "path": "experiment_results/v5/ex1-tile-w-equal-t-20261107/raw",
+      "records": 1800,
+      "status_counts": {
+        "success": 1800
+      },
+      "unique_run_ids": true,
+      "warmups_included": false
+    },
+    {
+      "path": "experiment_results/v5/ex2-rr128-speed-stress-20261108/raw",
+      "records": 1410,
+      "status_counts": {
+        "success": 1410
+      },
+      "unique_run_ids": true,
+      "warmups_included": false
+    }
+  ],
+  "total_success": 10180,
+  "total_preflight_unavailable": 220,
+  "total_other_statuses": 0,
+  "retention_hash_audit_before_documentation_edits": {
+    "manifest": "experiment_results/storage-cleanup-20261108/retained-sha256.json.gz",
+    "v5_files_checked": 62308,
+    "missing": [],
+    "changed": []
+  },
+  "tracked_deletions": [
+    "experiment_results/validation/atomic-sparse-20261106/cli-smoke/each/atomic-sparse-sgd-cycle6-cli-each.final.txt",
+    "experiment_results/validation/atomic-sparse-20261106/cli-smoke/each/atomic-sparse-sgd-cycle6-cli-each.initial.txt",
+    "experiment_results/validation/atomic-sparse-20261106/cli-smoke/each/atomic-sparse-sgd-cycle6-cli-each.vertex-map.txt",
+    "experiment_results/validation/atomic-sparse-20261106/cli-smoke/once/atomic-sparse-sgd-cycle6-cli-once.final.txt",
+    "experiment_results/validation/atomic-sparse-20261106/cli-smoke/once/atomic-sparse-sgd-cycle6-cli-once.initial.txt",
+    "experiment_results/validation/atomic-sparse-20261106/cli-smoke/once/atomic-sparse-sgd-cycle6-cli-once.vertex-map.txt"
+  ],
+  "all_tracked_deletions_documented_in_cleanup_manifest": true,
+  "current_payload_state": "Coordinate, vertex-map and cache payloads were removed by the 2026-11-08 cleanup. Historical archive verification is not a current existence check. Existing numerical records and figures remain."
+}
