@@ -4,20 +4,16 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-anyhow = "1.0.100"
-bytemuck = "1.24.0"
+anyhow = "1"
+bytemuck = { version = "1", features = ["derive"] }
 chrono = "0.4"
-env_logger = "0.11.8"
-experiment-common = { path = "../../../shared/experiment-common" }
-metal = "0.30"
-objc = "0.2"
-pollster = "0.4.0"
-rand = "0.9.2"
-rustfmt = "0.10.0"
-sprs = "0.11.4"
-tokio = "1.48.0"
-wgpu = "27.0.1"
+env_logger = "0.11"
+experiment-common = { path = "../../../shared/experiment-common", features = ["gpu"] }
+pollster = "0.4"
+rand = "0.9"
+serde_json = "1"
+sprs = "0.11"
+wgpu = "27"
 
 [dev-dependencies]
-serde_json = "1"
 tempfile = "3"

@@ -12,6 +12,7 @@ pub struct Graph {
     pub edge_dst: Vec<usize>,
 }
 
+#[allow(dead_code)]
 #[derive(Debug)]
 pub struct SgdParams {
     pub etas: Vec<f64>,
@@ -92,6 +93,7 @@ impl Graph {
         dist_matrix
     }
 
+    #[allow(clippy::needless_range_loop)]
     pub fn calc_edge_info(&self, dist: &[Vec<usize>]) -> (Vec<EdgeInfo>, f64, f64) {
         let mut pairs = Vec::new();
         let mut dmin: f64 = f64::INFINITY;

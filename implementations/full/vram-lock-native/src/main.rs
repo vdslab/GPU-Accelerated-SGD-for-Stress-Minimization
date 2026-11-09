@@ -1,5 +1,5 @@
+mod gpu;
 mod graph;
-mod metal;
 
 use anyhow::{bail, Context, Result};
 use chrono::Local;
@@ -22,6 +22,7 @@ struct Config {
     epsilon: f64,
     seed: u64,
     center: bool,
+    chunk_size: Option<u32>,
 }
 
 impl Default for Config {
@@ -33,6 +34,7 @@ impl Default for Config {
             epsilon: 0.1,
             seed: 0,
             center: true,
+            chunk_size: None,
         }
     }
 }
@@ -71,6 +73,9 @@ impl Config {
                 }
                 "--verbose" => config.common.verbose = true,
                 "--no-center" => config.center = false,
+                "--chunk-size" => {
+                    config.chunk_size = Some(next(&mut args, "--chunk-size")?.parse()?)
+                }
                 value if !value.starts_with('-') && !positional => {
                     config.input = value.into();
                     positional = true;
@@ -136,13 +141,20 @@ fn main() -> Result<()> {
     let common_preprocess_time = preprocess_started.elapsed();
 
     let runtime_started = Instant::now();
-    let context = metal::MetalContext::new()?;
+    let context = gpu::GpuContext::new()?;
     let runtime_init_time = runtime_started.elapsed();
-    config.log(format!("GPU: {} (Metal)", context.device_name));
+    config.log(format!(
+        "GPU: {} ({})",
+        context.adapter_name, context.backend
+    ));
 
     let before_execution = input_started.elapsed();
-    let mut run =
-        context.execute_sgd(params, config.common.verbose, config.common.output_format)?;
+    let mut run = context.execute_sgd(
+        params,
+        config.chunk_size,
+        config.common.verbose,
+        config.common.output_format,
+    )?;
 
     let postprocess_started = Instant::now();
     if config.center {
@@ -196,7 +208,10 @@ fn main() -> Result<()> {
             iterations: config.iterations,
             epsilon: config.epsilon,
         },
-        environment_metadata(Some(context.device_name.clone()), Some("Metal".to_owned())),
+        environment_metadata(
+            Some(context.adapter_name.clone()),
+            Some(context.backend.clone()),
+        ),
         TimingBreakdown {
             result_ready_monotonic_ms: Some(run.result_ready_monotonic_ms),
             iteration_times_ms: run

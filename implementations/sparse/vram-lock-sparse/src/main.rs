@@ -12,8 +12,8 @@ use std::io::Write;
 use std::path::{Path, PathBuf};
 use std::time::{Duration, Instant};
 use vram_lock_sparse::{
+    gpu::GpuContext,
     graph::{Graph, SgdParams},
-    metal::MetalContext,
 };
 
 const PIVOT_SELECTION: &str = "max-min-random-sp-distance-proportional";
@@ -154,9 +154,12 @@ fn main() -> Result<()> {
     let preprocess_sha256 = sparse_preprocess_sha256(&params);
 
     let runtime_started = Instant::now();
-    let context = MetalContext::new()?;
+    let context = GpuContext::new()?;
     let runtime_init_time = runtime_started.elapsed();
-    config.log(format!("GPU: {} ({})", context.device_name, "Metal"));
+    config.log(format!(
+        "GPU: {} ({})",
+        context.device_name, context.backend
+    ));
 
     let before_execution = input_started.elapsed();
     let run = context.execute_sgd_with_cpu_shuffle(
@@ -227,7 +230,10 @@ fn main() -> Result<()> {
             iterations: config.iterations,
             epsilon: config.epsilon,
         },
-        environment_metadata(Some(context.device_name.clone()), Some("Metal".to_owned())),
+        environment_metadata(
+            Some(context.device_name.clone()),
+            Some(context.backend.clone()),
+        ),
         TimingBreakdown {
             result_ready_monotonic_ms: Some(run.result_ready_monotonic_ms),
             iteration_times_ms: run
