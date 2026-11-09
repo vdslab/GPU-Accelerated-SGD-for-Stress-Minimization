@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; worker-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'"
+    />
+    <title>RR-SGD | Round-Robin SGD Graph Layout</title>
+    <meta
+      name="description"
+      content="RR-SGD: WebGPU-Accelerated Graph Layout with Round-Robin SGD. ブラウザ内でFull／Sparse SGDによるグラフレイアウトを実行できます。"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="app.js" type="module"></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="app-header">
+        <div class="app-title">
+          <h1>RR-SGD — Round-Robin SGD</h1>
+          <button
+            type="button"
+            class="info-button"
+            popovertarget="about-rrgraph"
+            aria-haspopup="dialog"
+            aria-label="RR-SGDの概要を読む"
+            title="RR-SGDについて"
+          >
+            ⓘ
+          </button>
+        </div>
+        <p id="gpu-state" role="status">GPUを確認中…</p>
+      </header>
+      <div class="app-layout">
+        <aside class="sidebar" aria-label="グラフの読み込みとパラメータ設定">
+          <section class="source-panel" aria-labelledby="active-graph-label">
+            <div class="active-graph" aria-labelledby="active-graph-label">
+              <div class="active-graph-heading">
+                <h2 id="active-graph-label">現在のグラフ</h2>
+                <span id="active-graph-kind" class="source-badge">未読み込み</span>
+              </div>
+              <div class="active-graph-details">
+                <strong id="active-graph-name">グラフを読み込んでください</strong>
+                <p id="active-graph-stats">読み込みが完了すると、ここに表示されます。</p>
+              </div>
+              <span id="active-graph-state" class="visually-hidden">未読み込み</span>
+              <p id="active-graph-pending" hidden></p>
+            </div>
+
+            <fieldset class="source-modes">
+              <legend class="visually-hidden">読み込み元</legend>
+              <label
+                ><input
+                  id="source-sample"
+                  type="radio"
+                  name="source-mode"
+                  value="sample"
+                  checked
+                />サンプル</label
+              >
+              <label
+                ><input
+                  id="source-upload"
+                  type="radio"
+                  name="source-mode"
+                  value="upload"
+                />ファイル</label
+              >
+            </fieldset>
+            <div id="sample-source">
+              <label for="sample" class="visually-hidden">サンプルの候補</label>
+              <select id="sample"></select>
+              <button id="load-sample" type="button">読み込む</button>
+              <p class="sample-credits muted">
+                <a href="https://sparse.tamu.edu/Pajek/USpowerGrid" target="_blank" rel="noreferrer"
+                  >USpowerGrid</a
+                >
+                ·
+                <a
+                  href="https://sparse.tamu.edu/DIMACS10/luxembourg_osm"
+                  target="_blank"
+                  rel="noreferrer"
+                  >Luxembourg</a
+                >
+                ·
+                <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer"
+                  >© OpenStreetMap contributors</a
+                >
+              </p>
+            </div>
+            <div id="upload-source" hidden>
+              <label for="file" class="visually-hidden">MTXファイルを選択</label>
+              <div id="drop">
+                <input
+                  id="file"
+                  type="file"
+                  accept=".mtx,text/plain"
+                  aria-label="MTXファイルを選択"
+                />
+                <p class="muted">ドロップ可 · 大容量MTX対応 · 端末内で処理</p>
+              </div>
+            </div>
+            <p id="source-hint" class="source-hint" role="status">
+              候補を選び、読み込みボタンを押してください。
+            </p>
+          </section>
+          <section class="settings-panel" aria-labelledby="parameters-heading">
+            <div class="settings-heading"><h2 id="parameters-heading">パラメータ設定</h2></div>
+            <div class="fields">
+              <label class="method-field"
+                >手法<select id="method" aria-describedby="method-support">
+                  <option value="full">RR Full SGD</option>
+                  <option value="sparse">RR Sparse SGD</option>
+                </select></label
+              >
+              <label
+                >pivots <span id="pivot-limit"></span
+                ><input id="pivots" type="number" min="1" max="1000" value="200"
+              /></label>
+              <label
+                >反復回数<input id="iterations" type="number" min="1" max="500" value="15"
+              /></label>
+              <label
+                >epsilon<input
+                  id="epsilon"
+                  type="number"
+                  min="0.0001"
+                  max="1"
+                  step="0.01"
+                  value="0.1"
+              /></label>
+              <label
+                >seed<input id="seed" type="number" min="0" max="4294967295" value="0"
+              /></label>
+            </div>
+            <p id="method-support" class="method-support" role="status" hidden></p>
+            <div
+              class="render-settings"
+              title="Before／After・拡大表示・PNG保存に適用。計算結果を保ったまま変更できます。"
+            >
+              <label for="resolution">画像解像度</label>
+              <select id="resolution">
+                <option value="512">512 × 512</option>
+                <option value="1024">1024 × 1024</option>
+                <option value="2048">2048 × 2048</option>
+                <option value="4096" selected>4096 × 4096</option>
+              </select>
+            </div>
+            <button id="run" type="button" disabled>レイアウトを計算</button>
+            <p id="run-hint" class="muted" role="status">パラメータを指定して計算してください。</p>
+            <div class="actions run-actions">
+              <button id="pause" type="button" disabled>一時停止</button
+              ><button id="cancel" type="button" disabled>前処理を中止</button>
+            </div>
+          </section>
+        </aside>
+        <section class="work-area" aria-label="計算結果とグラフ">
+          <section class="results-panel">
+            <div class="panel-heading">
+              <h2>計算結果</h2>
+              <p id="status" role="status" aria-live="polite">未実行</p>
+            </div>
+            <div class="progress-row">
+              <progress id="progress" max="1" value="0" aria-label="進捗"></progress
+              ><span id="percent">0%</span>
+            </div>
+            <div class="result-grid">
+              <div class="measurements">
+                <table aria-label="計算結果">
+                  <tbody>
+                    <tr>
+                      <th>グラフ</th>
+                      <td><span id="graph-title">—</span></td>
+                    </tr>
+                    <tr>
+                      <th>頂点 / 辺</th>
+                      <td><span id="nodes">—</span> / <span id="edges">—</span></td>
+                    </tr>
+                    <tr>
+                      <th>反復回数</th>
+                      <td id="epoch">0 / 15</td>
+                    </tr>
+                    <tr>
+                      <th>反復経過時間</th>
+                      <td id="elapsed">—</td>
+                    </tr>
+                    <tr>
+                      <th>前処理時間</th>
+                      <td id="preprocess-time">—</td>
+                    </tr>
+                    <tr>
+                      <th>評価方法</th>
+                      <td id="evaluation-kind">—</td>
+                    </tr>
+                    <tr>
+                      <th>初期 stress</th>
+                      <td id="initial-stress">—</td>
+                    </tr>
+                    <tr>
+                      <th>現在の stress</th>
+                      <td>
+                        <span id="stress">—</span> <span id="stress-change" class="muted"></span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p class="timing-note">
+                  反復経過時間はGPU実行・座標転送・描画要求を含みます。描画Workerの完了待ち・前処理・stress評価・フレーム待ちは含みません。CLIのGPU計算時間とは計測区間が異なります。
+                </p>
+                <p class="actions export-actions">
+                  <button id="json" disabled>座標JSONを保存</button>
+                </p>
+              </div>
+              <div class="copy-panel">
+                <div class="actions">
+                  <button id="copy-result" disabled>結果をコピー</button
+                  ><button id="copy-json" disabled>JSONをコピー</button
+                  ><span id="copy-status" role="status"></span>
+                </div>
+                <textarea
+                  id="result-text"
+                  rows="9"
+                  readonly
+                  spellcheck="false"
+                  aria-label="コピー用の結果"
+                  placeholder="実行結果が表示されます"
+                ></textarea>
+              </div>
+            </div>
+          </section>
+          <section class="images" aria-label="グラフ画像">
+            <figure>
+              <figcaption>
+                Before（初期配置）
+                <button id="expand-before" class="expand" type="button" disabled>拡大</button>
+              </figcaption>
+              <div class="canvas-wrap" id="before-wrap">
+                <canvas id="before" aria-label="計算前のグラフ配置"></canvas>
+                <p id="before-placeholder" class="canvas-placeholder">
+                  計算開始後に初期配置を表示します
+                </p>
+              </div>
+            </figure>
+            <figure>
+              <figcaption>
+                After（実行後）
+                <span class="figure-actions">
+                  <button
+                    id="png"
+                    type="button"
+                    disabled
+                    title="表示中のAfterグラフを選択した解像度のPNGで保存"
+                  >
+                    PNGを保存
+                  </button>
+                  <button id="expand-after" class="expand" type="button" disabled>拡大</button>
+                </span>
+              </figcaption>
+              <div class="canvas-wrap" id="canvas-wrap">
+                <canvas
+                  id="graph"
+                  aria-label="実行後のグラフ配置。ドラッグで移動、スクロールで拡大"
+                ></canvas>
+                <p id="after-placeholder" class="canvas-placeholder">
+                  計算結果は実行後に表示します
+                </p>
+              </div>
+              <div class="actions canvas-actions">
+                <button id="fit">全体表示</button><button id="zoom-in" aria-label="拡大">＋</button
+                ><button id="zoom-out" aria-label="縮小">−</button
+                ><select
+                  id="edge-detail"
+                  aria-label="辺の表示数"
+                  title="大規模グラフの概要表示では辺を間引きます。SGDの計算には全辺を使います。"
+                >
+                  <option value="0" selected>辺：すべて</option>
+                  <option value="100000">辺：自動</option></select
+                ><span id="view-caption" class="muted">ドラッグで移動・スクロールでズーム</span>
+              </div>
+            </figure>
+          </section>
+        </section>
+      </div>
+    </main>
+    <section id="about-rrgraph" popover="auto" role="dialog" aria-labelledby="about-title">
+      <div class="overview-heading">
+        <h2 id="about-title">RR-SGDについて</h2>
+        <button
+          type="button"
+          popovertarget="about-rrgraph"
+          popovertargetaction="hide"
+          aria-label="概要を閉じる"
+        >
+          閉じる
+        </button>
+      </div>
+      <p class="overview-subtitle">RR-SGD: WebGPU-Accelerated Graph Layout with Round-Robin SGD</p>
+      <p>
+        グラフのつながりを2次元の配置として可視化するツールです。グラフ上の最短路距離と画面上の距離のずれ（stress）を、SGDで小さくします。
+      </p>
+      <h3>Round-Robin（RR）とは</h3>
+      <p>
+        同時に同じ頂点を書き換えないよう、座標更新をRound-Robinのmatchingに分けてGPUへ割り当てます。FullとSparseの両方で、競合を避けながら並列に更新します。
+      </p>
+      <ul>
+        <li>
+          <strong>RR Full SGD：</strong
+          >全頂点対の最短路距離を使います。距離行列のメモリは頂点数の2乗に比例します。
+        </li>
+        <li>
+          <strong>RR Sparse SGD：</strong
+          >pivotを使う制約と元グラフの辺を処理します。片側更新と両側matchingを組み合わせ、大きなグラフを省メモリで配置します。
+        </li>
+      </ul>
+      <h3>使い方</h3>
+      <ol>
+        <li>サンプルを読み込むか、Matrix Market形式のMTXファイルを選択します。</li>
+        <li>Full／Sparse、反復回数、seedなどを指定して「レイアウトを計算」を押します。</li>
+        <li>Before／Afterで配置を比較し、必要に応じて座標JSONやPNGを保存します。</li>
+      </ol>
+      <details class="method-settings">
+        <summary>実装・入力条件</summary>
+        <p><button id="reset" type="button" disabled>初期配置に戻す</button></p>
+        <p>Full: 全点対距離を使用。tile 128 / workgroup 64 / shared。</p>
+        <p>
+          Sparse: pivot距離と方向別重みを使用。片側更新＋両側matching / workgroup
+          256。頂点ごとにFeistel置換でpivot順序をシャッフル。
+        </p>
+        <p>
+          最大連結成分を使用し、無向・非重み付きとして読み込みます。自己ループ・重複辺を除去。行列値は使用しません。
+        </p>
+        <p>
+          固定の4,096頂点制限はありません。GPUのメモリ上限を確認して実行します。大きいグラフにはRR
+          Sparseを選択してください。
+        </p>
+        <p>
+          ファイルは送信しません。前処理・評価はWorker、SGD計算はブラウザの<a
+            href="https://developer.mozilla.org/ja/docs/Web/API/WebGPU_API"
+            target="_blank"
+            rel="noreferrer"
+            >WebGPU API</a
+          >で実行します。
+        </p>
+      </details>
+      <p class="overview-note">
+        計算はブラウザのWebGPU、前処理・評価はWeb
+        Workerで実行します。選択したファイルをサーバーへ送信することはありません。大規模グラフではSparseの利用を推奨します。実行可能な規模はGPUメモリに依存し、stressはexact／sampledを区別して表示します。
+      </p>
+    </section>
+    <dialog id="image-dialog" aria-labelledby="image-title">
+      <div class="dialog-heading">
+        <h2 id="image-title"></h2>
+        <button id="close-image" type="button">閉じる</button>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="expanded-image" aria-label="拡大したグラフ"></canvas>
+      </div>
+      <div class="actions canvas-actions">
+        <button id="image-fit" type="button">全体表示</button>
+        <button id="image-zoom-in" type="button" aria-label="拡大">＋</button>
+        <button id="image-zoom-out" type="button" aria-label="縮小">−</button>
+        <span class="muted">ドラッグで移動・スクロールでズーム</span>
+      </div>
+    </dialog>
+  </body>
+</html>

@@ -1,0 +1,2 @@
+# Preserve upstream dataset bytes, without flooding source diffs with numeric rows.
+dist/samples/*.mtx -diff -whitespace

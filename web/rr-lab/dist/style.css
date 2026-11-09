@@ -1,0 +1,946 @@
+/* Shared visual structure with tools/single_run: settings, results, Before / After. */
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #f5f5f5;
+  color: #222;
+  font:
+    13px system-ui,
+    sans-serif;
+}
+h1 {
+  margin: 0;
+  font-size: 19px;
+}
+h2 {
+  margin: 0;
+  font-size: 15px;
+}
+p {
+  margin: 0;
+  line-height: 1.5;
+}
+a {
+  color: #1650a0;
+}
+
+/* Desktop layout keeps each pane independently scrollable. */
+.app-shell {
+  height: 100vh;
+  height: 100dvh;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+}
+.app-header,
+.panel-heading,
+.dialog-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.app-layout {
+  display: grid;
+  grid-template-columns: 270px minmax(0, 1fr);
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+}
+.settings-panel,
+.results-panel,
+figure {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.settings-panel {
+  padding: 12px;
+  overflow: auto;
+}
+.settings-heading {
+  margin-bottom: 12px;
+}
+.work-area {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  min-height: 0;
+  min-width: 0;
+}
+.results-panel {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: auto;
+  min-height: 0;
+}
+.panel-heading {
+  align-items: flex-start;
+}
+
+/* Inputs and buttons intentionally use the same plain controls as single_run. */
+.fields {
+  display: grid;
+  gap: 10px;
+}
+label {
+  display: block;
+}
+select,
+input,
+button,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+select,
+input,
+textarea {
+  padding: 6px 8px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  background: white;
+}
+select,
+.fields input {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  height: 32px;
+  min-width: 0;
+}
+button {
+  padding: 6px 10px;
+  border: 1px solid #999;
+  border-radius: 3px;
+  background: #eee;
+  cursor: pointer;
+  white-space: nowrap;
+}
+button:hover:enabled {
+  background: #e0e0e0;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+select:disabled {
+  background: #eee;
+}
+#run {
+  width: 100%;
+  margin-top: 10px;
+}
+.run-actions {
+  margin-top: 8px;
+}
+#drop {
+  margin-top: 4px;
+  border: 1px dashed #aaa;
+  padding: 8px;
+}
+#drop.over {
+  background: #e6edf6;
+}
+#drop input {
+  height: auto;
+  padding: 0;
+  border: 0;
+  font-size: 11px;
+}
+#drop .muted {
+  margin-top: 8px;
+}
+#drop + label {
+  margin-top: 10px;
+}
+#load-sample {
+  margin: 8px 0;
+}
+.muted,
+#gpu-state,
+.timing-note {
+  font-size: 11px;
+  color: #666;
+}
+.method-settings {
+  margin-top: 16px;
+  border-top: 1px solid #ddd;
+  padding-top: 12px;
+  font-size: 11px;
+  color: #555;
+}
+.method-settings p {
+  margin-top: 8px;
+}
+summary {
+  cursor: pointer;
+}
+
+/* Progress, measurements, and export controls. */
+#status {
+  color: #666;
+  font-size: 12px;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+#status.error,
+#gpu-state.error {
+  color: #a11212;
+}
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 11px;
+}
+progress {
+  width: 100%;
+  height: 10px;
+}
+.result-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+  flex: 1;
+  min-height: 0;
+}
+.measurements {
+  min-width: 0;
+  overflow: auto;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+}
+th,
+td {
+  padding: 6px 8px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+th {
+  width: 48%;
+  font-weight: normal;
+}
+td {
+  overflow-wrap: anywhere;
+}
+.timing-note {
+  margin-top: 8px;
+}
+.copy-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  min-width: 0;
+}
+textarea {
+  width: 100%;
+  font:
+    12px/1.45 ui-monospace,
+    monospace;
+  resize: none;
+}
+#result-text {
+  flex: 1;
+  min-height: 100px;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.actions button {
+  font-size: 12px;
+}
+#copy-status {
+  font-size: 11px;
+}
+.export-actions {
+  margin-top: 10px;
+}
+
+/* Canvas presentation is isolated from graph/solver code. */
+.images {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  min-height: 0;
+}
+figure {
+  padding: 10px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+}
+figcaption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 12px;
+}
+.canvas-wrap {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  position: relative;
+}
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: white;
+}
+#graph,
+#expanded-image {
+  touch-action: none;
+  cursor: grab;
+}
+#graph:active,
+#expanded-image:active {
+  cursor: grabbing;
+}
+.canvas-actions {
+  gap: 4px;
+}
+.canvas-actions button {
+  padding: 3px 7px;
+  font-size: 11px;
+}
+.figure-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.figure-actions button {
+  font-size: 12px;
+  padding: 4px 8px;
+  font-weight: 400;
+}
+.expand {
+  font-size: 11px;
+  padding: 2px 7px;
+}
+#view-caption {
+  font-size: 10px;
+}
+
+dialog {
+  width: min(94vw, 1100px);
+  max-width: 94vw;
+  height: min(92vh, 1100px);
+  height: min(92dvh, 1100px);
+  max-height: 92dvh;
+  padding: 14px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  background: white;
+}
+dialog[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+dialog::backdrop {
+  background: rgb(0 0 0 / 0.55);
+}
+#expanded-image {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  object-fit: contain;
+}
+[hidden] {
+  display: none !important;
+}
+
+@media (max-width: 1000px) and (min-width: 721px) {
+  .app-layout {
+    grid-template-columns: 250px minmax(0, 1fr);
+  }
+  .result-grid {
+    grid-template-columns: 1fr;
+  }
+  .copy-panel {
+    min-height: 160px;
+  }
+  th,
+  td {
+    padding: 5px 4px;
+  }
+}
+@media (max-height: 700px) and (min-width: 721px) {
+  .fields {
+    gap: 6px;
+  }
+  select,
+  .fields input {
+    height: 29px;
+    margin-top: 2px;
+  }
+}
+@media (max-width: 720px) {
+  .app-shell {
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+  .app-header {
+    align-items: flex-start;
+  }
+  h1 {
+    font-size: 16px;
+  }
+  .app-layout {
+    grid-template-columns: 1fr;
+  }
+  .fields {
+    grid-template-columns: 1fr 1fr;
+  }
+  .fields > label:first-of-type {
+    grid-column: 1 / -1;
+  }
+  .settings-panel {
+    overflow: visible;
+  }
+  .work-area {
+    grid-template-rows: auto auto;
+  }
+  .result-grid {
+    grid-template-columns: 1fr;
+  }
+  .measurements {
+    overflow: visible;
+  }
+  .copy-panel {
+    min-height: 180px;
+  }
+  .images {
+    height: 300px;
+  }
+  .canvas-actions .muted {
+    display: none;
+  }
+}
+@media (max-width: 400px) {
+  .images {
+    grid-template-columns: 1fr;
+    height: 550px;
+  }
+  .app-header {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+/* The overview uses a native popover: keyboard, Escape, and outside-click dismissal. */
+.app-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.info-button {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-size: 18px;
+  line-height: 1;
+  color: #666;
+}
+.info-button:hover:enabled {
+  background: transparent;
+  color: #222;
+}
+
+#about-rrgraph {
+  width: min(620px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  overflow: auto;
+  padding: 20px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  color: #222;
+  background: white;
+  font-size: 13px;
+  line-height: 1.7;
+}
+#about-rrgraph::backdrop {
+  background: rgb(0 0 0 / 0.25);
+}
+.overview-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+#about-rrgraph p {
+  margin-top: 12px;
+}
+#about-rrgraph h3 {
+  margin: 18px 0 8px;
+  font-size: 13px;
+}
+#about-rrgraph ul,
+#about-rrgraph ol {
+  margin: 8px 0;
+  padding-left: 22px;
+}
+#about-rrgraph li + li {
+  margin-top: 7px;
+}
+.overview-subtitle,
+.overview-note {
+  color: #555;
+  font-size: 12px;
+}
+@media (max-width: 400px) {
+  .app-title {
+    align-items: flex-start;
+  }
+  #about-rrgraph {
+    padding: 16px;
+  }
+}
+
+/* Read-only graph identity is separate from candidate inputs and solver parameters. */
+/* Active graph stays in the left source panel, beside the source choices. */
+.active-graph {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
+  margin: 12px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #ddd;
+}
+.active-graph-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.active-graph-heading h3 {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 500;
+}
+.active-graph-details {
+  min-width: 0;
+}
+#active-graph-name {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+#active-graph-stats,
+#active-graph-state,
+#active-graph-pending {
+  color: #666;
+  font-size: 11px;
+}
+#active-graph-stats {
+  margin-top: 3px;
+}
+#run-hint {
+  margin-top: 6px;
+  line-height: 1.6;
+}
+#run-hint.error {
+  color: #a11212;
+}
+.source-badge {
+  padding: 2px 6px;
+  font-size: 11px;
+  background: #eee;
+  border-radius: 3px;
+}
+.source-badge[data-kind='sample'] {
+  color: #23517a;
+  background: #edf4fb;
+}
+.source-badge[data-kind='upload'] {
+  color: #444;
+  background: #eee;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+  min-height: 0;
+}
+.source-panel {
+  padding: 12px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.source-panel {
+  flex: 0 0 auto;
+}
+.sidebar .settings-panel {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.source-modes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 0;
+  margin: 12px 0;
+  border: 0;
+}
+.source-modes label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.source-modes label:has(input:checked) {
+  background: #edf3fa;
+  border-color: #9bb3cb;
+}
+.source-modes label:has(input:disabled) {
+  cursor: default;
+  opacity: 0.65;
+}
+.source-modes input {
+  margin: 0;
+  padding: 0;
+  width: auto;
+  height: auto;
+}
+.source-panel .muted {
+  margin-top: 8px;
+}
+.source-hint {
+  margin-top: 10px;
+  color: #555;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+@media (max-width: 720px) {
+  .sidebar {
+    overflow: visible;
+  }
+  .sidebar .settings-panel {
+    flex: 0 0 auto;
+    overflow: visible;
+  }
+}
+
+/* Preserve square high-resolution bitmaps without stretching them to the pane aspect ratio. */
+canvas {
+  object-fit: contain;
+}
+.render-settings {
+  padding-top: 12px;
+  margin-top: 14px;
+  border-top: 1px solid #ddd;
+}
+.render-settings .muted {
+  margin-top: 6px;
+}
+
+/* Use the available height for readable controls, with tighter spacing on short screens. */
+.sidebar {
+  --panel-padding: clamp(10px, calc(10px + (100dvh - 700px) * 0.015), 16px);
+  --field-gap: clamp(5px, calc(5px + (100dvh - 700px) * 0.015), 10px);
+  --control-height: clamp(28px, calc(28px + (100dvh - 700px) * 0.03), 38px);
+  gap: 12px;
+  overflow: auto;
+}
+.sidebar .source-panel,
+.sidebar .settings-panel {
+  padding: var(--panel-padding);
+  overflow: visible;
+}
+.sidebar .settings-panel {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+.active-graph {
+  gap: 5px;
+  margin: 0 0 var(--field-gap);
+  padding-bottom: var(--field-gap);
+}
+.active-graph-heading h2 {
+  margin: 0;
+  font-size: 14px;
+}
+#active-graph-name {
+  font-size: 15px;
+}
+#active-graph-stats {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.source-modes {
+  margin: var(--field-gap) 0;
+  gap: 8px;
+}
+.source-modes label {
+  padding: 6px 8px;
+  font-size: 13px;
+}
+#sample-source {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px;
+  align-items: center;
+}
+#sample,
+#load-sample {
+  height: var(--control-height);
+  margin: 0;
+  padding: 4px 6px;
+  font-size: 13px;
+}
+.sample-credits {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  line-height: 1.4;
+}
+.source-panel .muted {
+  margin-top: 4px;
+}
+#drop {
+  padding: 8px;
+  margin-top: 4px;
+}
+#drop .muted {
+  margin-top: 5px;
+  font-size: 11px;
+}
+#drop input {
+  width: 100%;
+}
+.source-hint {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.settings-heading {
+  margin-bottom: var(--field-gap);
+}
+.settings-heading h2 {
+  font-size: 15px;
+}
+.fields {
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: repeat(5, minmax(min-content, 1fr));
+  align-items: center;
+  gap: var(--field-gap) 12px;
+}
+.fields > label {
+  min-width: 0;
+  font-size: 13px;
+}
+.fields .method-field {
+  grid-column: auto;
+}
+.sidebar .fields input,
+.sidebar .fields select {
+  height: var(--control-height);
+  margin-top: 4px;
+  padding: 4px 8px;
+  font-size: 14px;
+}
+
+#pivot-limit {
+  color: #666;
+  font-size: 11px;
+}
+.method-support {
+  margin-top: var(--field-gap);
+  padding: 5px 7px;
+  border-left: 2px solid #c4a16b;
+  background: #fff9ef;
+  color: #704b18;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.render-settings {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  padding-top: var(--field-gap);
+  margin-top: var(--field-gap);
+}
+.render-settings label {
+  font-size: 13px;
+}
+#resolution {
+  height: var(--control-height);
+  margin: 0;
+  padding: 4px 6px;
+  font-size: 14px;
+}
+#run {
+  min-height: var(--control-height);
+  margin-top: var(--field-gap);
+  padding: 7px 8px;
+  font-size: 14px;
+}
+#run-hint {
+  margin-top: 5px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.run-actions {
+  margin-top: var(--field-gap);
+  gap: 8px;
+}
+.run-actions button {
+  padding: 5px 8px;
+  font-size: 12px;
+}
+@media (min-width: 1001px) {
+  .app-layout {
+    grid-template-columns: 300px minmax(0, 1fr);
+  }
+}
+@media (min-width: 721px) and (max-height: 850px) {
+  .fields > label {
+    display: grid;
+    grid-template-columns: 85px minmax(0, 1fr);
+    align-items: center;
+    column-gap: 8px;
+  }
+  .fields > label:has(#pivot-limit) {
+    grid-template-columns: 38px 47px minmax(0, 1fr);
+    column-gap: 4px;
+  }
+  #pivot-limit {
+    font-size: 10px;
+    line-height: 1.3;
+  }
+  .sidebar .fields input,
+  .sidebar .fields select {
+    margin-top: 0;
+  }
+}
+@media (min-width: 721px) and (max-height: 700px) {
+  .app-shell {
+    padding: 8px;
+    gap: 8px;
+  }
+  .sidebar {
+    gap: 8px;
+  }
+  .source-modes label {
+    padding: 4px 6px;
+  }
+  .settings-heading {
+    margin-bottom: 6px;
+  }
+}
+@media (min-width: 721px) and (max-height: 640px) {
+  .sidebar {
+    --panel-padding: 6px;
+    --field-gap: 4px;
+    --control-height: 26px;
+  }
+}
+@media (max-width: 720px) {
+  .sidebar {
+    --panel-padding: 14px;
+    --field-gap: 12px;
+    --control-height: 36px;
+    overflow: visible;
+  }
+  .sidebar .settings-panel {
+    flex: 0 0 auto;
+  }
+}
+
+/* Equal hit areas for both zoom directions, regardless of glyph width. */
+#zoom-in,
+#zoom-out,
+#image-zoom-in,
+#image-zoom-out {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 28px;
+  flex: 0 0 30px;
+  padding: 0;
+  font-size: 16px;
+  line-height: 1;
+}
+
+#edge-detail {
+  width: auto;
+  max-width: 110px;
+  height: 28px;
+  margin: 0;
+  padding: 2px 4px;
+  font-size: 11px;
+}
+
+.canvas-wrap:has(canvas[data-rendering='true'])::after {
+  content: '描画中…';
+  pointer-events: none;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 8px;
+  background: rgb(255 255 255 / 90%);
+  color: #555;
+  font-size: 12px;
+}
+
+.canvas-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  color: #777;
+  font-size: 12px;
+  text-align: center;
+  pointer-events: none;
+}

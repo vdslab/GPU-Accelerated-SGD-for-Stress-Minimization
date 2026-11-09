@@ -1,0 +1,22 @@
+{
+  "name": "rr-sgd",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "dev": "python3 -m http.server 4173 --directory dist",
+    "deploy": "wrangler deploy --profile stmtech",
+    "deploy:check": "wrangler deploy --dry-run --profile stmtech",
+    "format": "prettier --write dist tests scripts *.json *.jsonc *.md",
+    "format:check": "prettier --check dist tests scripts *.json *.jsonc *.md",
+    "test:browser": "node scripts/browser-smoke.mjs",
+    "test:layout": "node scripts/layout-check.mjs",
+    "test:large": "node scripts/large-graphs.mjs",
+    "test:load": "node scripts/load-only.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "4.125.0",
+    "prettier": "3.9.10",
+    "@playwright/test": "1.64.1"
+  }
+}

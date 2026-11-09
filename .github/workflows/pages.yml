@@ -1,0 +1,49 @@
+name: Deploy RR-SGD to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'web/rr-lab/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: |
+            web/rr-lab
+            .github/workflows
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Test graph algorithms and run controls
+        run: node --test web/rr-lab/tests/*.test.js
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: web/rr-lab/dist
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

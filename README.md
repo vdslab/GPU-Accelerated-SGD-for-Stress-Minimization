@@ -2,6 +2,10 @@
 
 Full / Sparse SGDのGPU並列化と評価。CPU・Atomic・Round-robin方式の比較。
 
+## ブラウザで実行
+
+[**RR-SGD — Round-Robin SGD**](https://vdslab.github.io/GPU-Accelerated-SGD-for-Stress-Minimization/): MTXを読み込み、Full／Sparse SGDと描画をブラウザのWebGPUで実行するサイトです。[ソースと使い方](web/rr-lab/README.md)。
+
 ## 実験結果
 
 現行の [v5 実験総覧](experiment_results/v5/README.md) — **正式測定10,180成功、実測失敗0、GPU上限による未実行220条件**。

@@ -1,12 +1,12 @@
 # Webアプリの管理範囲
 
-`web/rr-lab/` は自身の `.git/` を持つ独立リポジトリ。研究リポジトリではこのディレクトリをignoreし、ソース・デプロイ設定・履歴はアプリ側で管理する。研究側へgitlinkとして誤登録しない。
+`web/rr-lab/` は、この研究リポジトリの一部として管理します。独立したGitリポジトリやgitlinkは使用しません。リポジトリをcloneすると、サイトのソース・テスト・デプロイ設定も含まれます。
 
-アプリの用途・実行方法・検証記録はローカルの `web/rr-lab/README.md` を参照。変更確認はリポジトリ直下から：
+アプリの用途・実行方法・検証記録は `web/rr-lab/README.md` を参照してください。リポジトリ直下から変更を確認できます。
 
 ```sh
-git -C web/rr-lab status --short
-git -C web/rr-lab diff --stat
+git status --short
+git diff -- web/rr-lab/
 ```
 
-2026-11-09の研究側の整理では、アプリの未コミット変更を保持した。ignoreはアプリ側の変更をコミットする処理ではなく、研究リポジトリをcloneしてもアプリは同梱されない。
+`node_modules/`、`.wrangler/`、ローカル環境変数ファイルは `web/rr-lab/.gitignore` で除外します。GitHub Pagesへの公開対象は `web/rr-lab/dist/` の静的ファイルのみです。更新は `.github/workflows/pages.yml` で自動公開します。
