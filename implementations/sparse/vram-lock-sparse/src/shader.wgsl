@@ -7,6 +7,10 @@ struct Uniforms {
     chunk_count: u32,
     epoch: u32,
     eta: f32,
+    pair_count: u32,
+    _pad0: u32,
+    _pad1: u32,
+    _pad2: u32,
 }
 
 struct Pair {
@@ -23,6 +27,7 @@ struct Pair {
 @group(0) @binding(3) var<storage, read> pending: array<u32>;
 @group(0) @binding(4) var<storage, read_write> completed: array<u32>;
 @group(0) @binding(5) var<uniform> uniforms: Uniforms;
+@group(0) @binding(6) var<storage, read_write> incomplete_counts: array<atomic<u32>>;
 
 fn try_lock(node: u32) -> bool {
     let old = atomicExchange(&locks[node], 1u);
@@ -54,9 +59,10 @@ fn acquire_locks(first: u32, second: u32) {
 
 @compute @workgroup_size(1, 1, 1)
 fn sparse_sgd(
-    @builtin(workgroup_id) group_id: vec3<u32>
+    @builtin(workgroup_id) group_id: vec3<u32>,
+    @builtin(num_workgroups) num_workgroups: vec3<u32>,
 ) {
-    let slot_in_chunk = group_id.y * 65535u + group_id.x;
+    let slot_in_chunk = group_id.y * num_workgroups.x + group_id.x;
     if (slot_in_chunk >= uniforms.chunk_count) {
         return;
     }
@@ -115,4 +121,15 @@ fn sparse_sgd(
 
     // Record completion epoch
     completed[slot] = uniforms.epoch;
+}
+
+@compute @workgroup_size(256)
+fn verify_epoch(@builtin(global_invocation_id) gid: vec3<u32>) {
+    let idx = gid.x;
+    if (idx >= uniforms.pair_count) {
+        return;
+    }
+    if (completed[idx] != uniforms.epoch) {
+        atomicAdd(&incomplete_counts[uniforms.epoch - 1u], 1u);
+    }
 }

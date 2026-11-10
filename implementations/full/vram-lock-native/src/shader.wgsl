@@ -68,8 +68,11 @@ fn release_locks(node1: u32, node2: u32) {
 }
 
 @compute @workgroup_size(1, 1, 1)
-fn sgd(@builtin(workgroup_id) workgroup_id: vec3<u32>) {
-    let local_pair_idx = workgroup_id.y * 65535u + workgroup_id.x;
+fn sgd(
+    @builtin(workgroup_id) workgroup_id: vec3<u32>,
+    @builtin(num_workgroups) num_workgroups: vec3<u32>,
+) {
+    let local_pair_idx = workgroup_id.y * num_workgroups.x + workgroup_id.x;
     if (local_pair_idx >= uniforms.chunk_size) {
         return;
     }

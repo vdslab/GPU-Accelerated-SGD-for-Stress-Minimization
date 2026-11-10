@@ -6,11 +6,13 @@ use chrono::Local;
 use experiment_common::{
     current_binary, dataset_name, environment_metadata, git_metadata, measure_auto_f32,
     positions_sha256_f64, sha256_file, Artifacts, CommonExperimentArgs, ExperimentRecord,
-    GraphMetrics, Method, MethodStats, OutputFormat, Parameters, RecordIdentity, RunMode,
-    TimingBreakdown,
+    FingerprintBuilder, GraphMetrics, Method, MethodStats, OutputFormat, Parameters,
+    RecordIdentity, RunMode, TimingBreakdown,
 };
+use experiment_common::seed::{rng_for_stream, FULL_UPDATE_STREAM};
+use rand::seq::SliceRandom;
 use std::fs::{create_dir_all, File};
-use std::io::Write;
+use std::io::{BufWriter, Write};
 use std::path::{Path, PathBuf};
 use std::time::{Duration, Instant};
 
@@ -34,7 +36,7 @@ impl Default for Config {
             epsilon: 0.1,
             seed: 0,
             center: true,
-            chunk_size: None,
+            chunk_size: Some(0),
         }
     }
 }
@@ -131,7 +133,7 @@ fn main() -> Result<()> {
     ));
 
     let preprocess_started = Instant::now();
-    let params = graph.prepare_sgd_params(
+    let mut params = graph.prepare_sgd_params(
         config.iterations,
         config.epsilon,
         config.center,
@@ -139,6 +141,10 @@ fn main() -> Result<()> {
     );
     let constraint_count = params.pairs.len();
     let common_preprocess_time = preprocess_started.elapsed();
+    let _full_preprocess_sha256 = full_preprocess_sha256(&params.pairs);
+
+    let mut shuffle_rng = rng_for_stream(config.seed, FULL_UPDATE_STREAM);
+    params.pairs.shuffle(&mut shuffle_rng);
 
     let runtime_started = Instant::now();
     let context = gpu::GpuContext::new()?;
@@ -245,7 +251,7 @@ fn main() -> Result<()> {
             completed_updates: Some(run.completed_updates),
             retry_failures: Some(retry_failures),
             rounds: None,
-            dispatches: Some(config.iterations as u64),
+            dispatches: Some(run.dispatches),
         },
         Artifacts {
             final_positions_path: Some(final_path.display().to_string()),
@@ -331,7 +337,7 @@ fn save_result(
     positions: impl IntoIterator<Item = [f64; 2]>,
     config: &Config,
 ) -> Result<()> {
-    let mut file = File::create(path)?;
+    let mut file = BufWriter::with_capacity(1024 * 1024, File::create(path)?);
     writeln!(file, "# Rust GPU Result (vram-lock-native) - {stage}")?;
     writeln!(file, "# Dataset: {}", config.input.display())?;
     writeln!(file, "# Node count: {}", graph.node_size)?;
@@ -349,11 +355,25 @@ fn save_result(
     for position in positions {
         writeln!(file, "{} {}", position[0], position[1])?;
     }
+    file.flush()?;
     Ok(())
 }
 
 fn ms(duration: Duration) -> f64 {
     duration.as_secs_f64() * 1_000.0
+}
+
+fn full_preprocess_sha256(pairs: &[graph::EdgeInfo]) -> String {
+    let mut fingerprint = FingerprintBuilder::new("full-preprocess-v1");
+    fingerprint.usize(pairs.len());
+    for pair in pairs {
+        fingerprint
+            .usize(pair.u)
+            .usize(pair.v)
+            .f64(pair.dij)
+            .f64(pair.wij);
+    }
+    fingerprint.finish()
 }
 
 #[cfg(test)]
