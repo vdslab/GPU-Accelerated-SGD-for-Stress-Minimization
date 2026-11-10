@@ -1,0 +1,5702 @@
+[
+  {
+    "stage": "comparison",
+    "graph": "karate",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-karate-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-karate-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "karate",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-karate-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-karate-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "karate",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-karate-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-karate-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "karate",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-karate-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-karate-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "karate",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-karate-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-karate-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "karate",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-karate-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-karate-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "karate",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-karate-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-karate-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "karate",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-karate-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-karate-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "karate",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-karate-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-karate-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "karate",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-karate-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-karate-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "karate",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-karate-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-karate-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "karate",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-karate-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-karate-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "karate",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-karate-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-karate-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "karate",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-karate-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-karate-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "karate",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-karate-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-karate-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dolphins",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dolphins-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-dolphins-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dolphins",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dolphins-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-dolphins-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dolphins",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dolphins-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-dolphins-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dolphins",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dolphins-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-dolphins-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dolphins",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dolphins-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-dolphins-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dolphins",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dolphins-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-dolphins-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dolphins",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dolphins-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-dolphins-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dolphins",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dolphins-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-dolphins-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dolphins",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dolphins-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-dolphins-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dolphins",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dolphins-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-dolphins-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dolphins",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dolphins-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-dolphins-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dolphins",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dolphins-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-dolphins-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dolphins",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dolphins-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-dolphins-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dolphins",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dolphins-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-dolphins-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dolphins",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dolphins-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-dolphins-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_198",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_198-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-dwt_198-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_198",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_198-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-dwt_198-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_198",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_198-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-dwt_198-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_198",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_198-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-dwt_198-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_198",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_198-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-dwt_198-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_198",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_198-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-dwt_198-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_198",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_198-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-dwt_198-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_198",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_198-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-dwt_198-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_198",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_198-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-dwt_198-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_198",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_198-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-dwt_198-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_198",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_198-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-dwt_198-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_198",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_198-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-dwt_198-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_198",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_198-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-dwt_198-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_198",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_198-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-dwt_198-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_198",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_198-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-dwt_198-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_72",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_72-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-dwt_72-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_72",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_72-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-dwt_72-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_72",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_72-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-dwt_72-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_72",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_72-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-dwt_72-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_72",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_72-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-dwt_72-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_72",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_72-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-dwt_72-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_72",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_72-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-dwt_72-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_72",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_72-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-dwt_72-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_72",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_72-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-dwt_72-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_72",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_72-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-dwt_72-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_72",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_72-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-dwt_72-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_72",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_72-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-dwt_72-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_72",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_72-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-dwt_72-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_72",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_72-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-dwt_72-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_72",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_72-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-dwt_72-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "lesmis",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-lesmis-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-lesmis-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "lesmis",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-lesmis-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-lesmis-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "lesmis",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-lesmis-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-lesmis-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "lesmis",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-lesmis-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-lesmis-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "lesmis",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-lesmis-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-lesmis-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "lesmis",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-lesmis-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-lesmis-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "lesmis",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-lesmis-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-lesmis-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "lesmis",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-lesmis-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-lesmis-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "lesmis",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-lesmis-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-lesmis-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "lesmis",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-lesmis-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-lesmis-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "lesmis",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-lesmis-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-lesmis-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "lesmis",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-lesmis-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-lesmis-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "lesmis",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-lesmis-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-lesmis-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "lesmis",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-lesmis-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-lesmis-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "lesmis",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-lesmis-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-lesmis-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "can_96",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-can_96-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-can_96-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "can_96",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-can_96-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-can_96-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "can_96",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-can_96-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-can_96-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "can_96",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-can_96-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-can_96-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "can_96",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-can_96-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-can_96-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "can_96",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-can_96-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-can_96-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "can_96",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-can_96-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-can_96-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "can_96",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-can_96-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-can_96-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "can_96",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-can_96-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-can_96-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "can_96",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-can_96-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-can_96-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "can_96",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-can_96-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-can_96-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "can_96",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-can_96-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-can_96-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "can_96",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-can_96-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-can_96-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "can_96",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-can_96-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-can_96-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "can_96",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-can_96-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-can_96-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polbooks",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-polbooks-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-polbooks-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polbooks",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-polbooks-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-polbooks-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polbooks",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-polbooks-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-polbooks-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polbooks",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-polbooks-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-polbooks-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polbooks",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-polbooks-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-polbooks-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polbooks",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-polbooks-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-polbooks-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polbooks",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-polbooks-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-polbooks-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polbooks",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-polbooks-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-polbooks-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polbooks",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-polbooks-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-polbooks-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polbooks",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-polbooks-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-polbooks-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polbooks",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-polbooks-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-polbooks-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polbooks",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-polbooks-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-polbooks-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polbooks",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-polbooks-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-polbooks-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polbooks",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-polbooks-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-polbooks-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polbooks",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-polbooks-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-polbooks-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "adjnoun",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-adjnoun-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-adjnoun-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "adjnoun",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-adjnoun-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-adjnoun-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "adjnoun",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-adjnoun-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-adjnoun-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "adjnoun",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-adjnoun-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-adjnoun-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "adjnoun",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-adjnoun-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-adjnoun-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "adjnoun",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-adjnoun-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-adjnoun-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "adjnoun",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-adjnoun-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-adjnoun-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "adjnoun",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-adjnoun-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-adjnoun-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "adjnoun",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-adjnoun-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-adjnoun-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "adjnoun",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-adjnoun-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-adjnoun-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "adjnoun",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-adjnoun-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-adjnoun-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "adjnoun",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-adjnoun-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-adjnoun-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "adjnoun",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-adjnoun-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-adjnoun-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "adjnoun",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-adjnoun-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-adjnoun-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "adjnoun",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-adjnoun-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-adjnoun-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "jazz",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-jazz-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-jazz-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "jazz",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-jazz-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-jazz-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "jazz",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-jazz-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-jazz-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "jazz",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-jazz-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-jazz-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "jazz",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-jazz-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-jazz-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "jazz",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-jazz-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-jazz-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "jazz",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-jazz-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-jazz-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "jazz",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-jazz-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-jazz-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "jazz",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-jazz-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-jazz-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "jazz",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-jazz-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-jazz-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "jazz",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-jazz-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-jazz-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "jazz",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-jazz-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-jazz-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "jazz",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-jazz-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-jazz-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "jazz",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-jazz-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-jazz-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "jazz",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-jazz-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-jazz-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "grid17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-grid17-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-grid17-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "grid17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-grid17-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-grid17-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "grid17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-grid17-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-grid17-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "grid17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-grid17-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-grid17-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "grid17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-grid17-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-grid17-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "grid17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-grid17-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-grid17-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "grid17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-grid17-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-grid17-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "grid17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-grid17-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-grid17-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "grid17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-grid17-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-grid17-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "grid17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-grid17-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-grid17-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "grid17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-grid17-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-grid17-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "grid17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-grid17-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-grid17-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "grid17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-grid17-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-grid17-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "grid17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-grid17-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-grid17-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "grid17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-grid17-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-grid17-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "mesh3e1",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-mesh3e1-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-mesh3e1-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "mesh3e1",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-mesh3e1-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-mesh3e1-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "mesh3e1",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-mesh3e1-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-mesh3e1-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "mesh3e1",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-mesh3e1-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-mesh3e1-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "mesh3e1",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-mesh3e1-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-mesh3e1-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "mesh3e1",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-mesh3e1-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-mesh3e1-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "mesh3e1",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-mesh3e1-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-mesh3e1-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "mesh3e1",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-mesh3e1-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-mesh3e1-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "mesh3e1",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-mesh3e1-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-mesh3e1-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "mesh3e1",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-mesh3e1-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-mesh3e1-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "mesh3e1",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-mesh3e1-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-mesh3e1-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "mesh3e1",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-mesh3e1-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-mesh3e1-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "mesh3e1",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-mesh3e1-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-mesh3e1-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "mesh3e1",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-mesh3e1-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-mesh3e1-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "mesh3e1",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-mesh3e1-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-mesh3e1-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "celegansneural",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-celegansneural-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-celegansneural-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "celegansneural",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-celegansneural-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-celegansneural-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "celegansneural",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-celegansneural-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-celegansneural-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "celegansneural",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-celegansneural-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-celegansneural-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "celegansneural",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-celegansneural-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-celegansneural-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "celegansneural",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-celegansneural-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-celegansneural-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "celegansneural",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-celegansneural-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-celegansneural-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "celegansneural",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-celegansneural-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-celegansneural-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "celegansneural",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-celegansneural-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-celegansneural-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "celegansneural",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-celegansneural-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-celegansneural-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "celegansneural",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-celegansneural-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-celegansneural-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "celegansneural",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-celegansneural-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-celegansneural-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "celegansneural",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-celegansneural-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-celegansneural-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "celegansneural",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-celegansneural-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-celegansneural-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "celegansneural",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-celegansneural-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-celegansneural-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "netscience",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-netscience-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-netscience-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "netscience",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-netscience-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-netscience-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "netscience",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-netscience-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-netscience-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "netscience",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-netscience-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-netscience-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "netscience",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-netscience-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-netscience-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "netscience",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-netscience-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-netscience-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "netscience",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-netscience-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-netscience-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "netscience",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-netscience-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-netscience-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "netscience",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-netscience-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-netscience-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "netscience",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-netscience-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-netscience-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "netscience",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-netscience-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-netscience-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "netscience",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-netscience-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-netscience-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "netscience",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-netscience-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-netscience-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "netscience",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-netscience-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-netscience-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "netscience",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-netscience-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-netscience-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_419",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_419-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-dwt_419-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_419",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_419-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-dwt_419-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_419",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_419-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-dwt_419-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_419",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_419-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-dwt_419-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_419",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_419-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-dwt_419-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_419",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_419-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-dwt_419-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_419",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_419-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-dwt_419-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_419",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_419-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-dwt_419-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_419",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_419-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-dwt_419-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_419",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_419-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-dwt_419-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_419",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_419-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-dwt_419-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_419",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_419-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-dwt_419-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_419",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_419-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-dwt_419-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_419",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_419-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-dwt_419-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_419",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_419-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-dwt_419-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_758",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_758-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-dwt_758-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_758",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_758-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-dwt_758-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_758",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_758-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-dwt_758-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_758",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_758-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-dwt_758-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_758",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_758-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-dwt_758-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_758",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_758-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-dwt_758-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_758",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_758-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-dwt_758-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_758",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_758-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-dwt_758-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_758",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_758-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-dwt_758-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_758",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_758-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-dwt_758-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_758",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_758-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-dwt_758-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_758",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_758-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-dwt_758-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_758",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_758-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-dwt_758-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_758",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_758-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-dwt_758-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_758",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_758-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-dwt_758-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_1005",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_1005-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-dwt_1005-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_1005",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_1005-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-dwt_1005-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_1005",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_1005-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-dwt_1005-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_1005",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_1005-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-dwt_1005-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_1005",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_1005-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-dwt_1005-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_1005",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_1005-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-dwt_1005-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_1005",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_1005-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-dwt_1005-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_1005",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_1005-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-dwt_1005-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_1005",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_1005-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-dwt_1005-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_1005",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_1005-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-dwt_1005-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_1005",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_1005-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-dwt_1005-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_1005",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_1005-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-dwt_1005-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_1005",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_1005-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-dwt_1005-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_1005",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_1005-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-dwt_1005-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_1005",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_1005-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-dwt_1005-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk09",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcsstk09-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-bcsstk09-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk09",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcsstk09-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-bcsstk09-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk09",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcsstk09-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-bcsstk09-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk09",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcsstk09-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-bcsstk09-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk09",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcsstk09-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-bcsstk09-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk09",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcsstk09-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-bcsstk09-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk09",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcsstk09-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-bcsstk09-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk09",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcsstk09-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-bcsstk09-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk09",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcsstk09-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-bcsstk09-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk09",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcsstk09-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-bcsstk09-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk09",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcsstk09-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-bcsstk09-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk09",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcsstk09-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-bcsstk09-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk09",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcsstk09-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-bcsstk09-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk09",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcsstk09-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-bcsstk09-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk09",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcsstk09-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-bcsstk09-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "email",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-email-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-email-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "email",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-email-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-email-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "email",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-email-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-email-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "email",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-email-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-email-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "email",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-email-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-email-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "email",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-email-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-email-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "email",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-email-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-email-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "email",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-email-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-email-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "email",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-email-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-email-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "email",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-email-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-email-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "email",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-email-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-email-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "email",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-email-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-email-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "email",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-email-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-email-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "email",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-email-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-email-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "email",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-email-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-email-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "1138_bus",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-1138_bus-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-1138_bus-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "1138_bus",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-1138_bus-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-1138_bus-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "1138_bus",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-1138_bus-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-1138_bus-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "1138_bus",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-1138_bus-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-1138_bus-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "1138_bus",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-1138_bus-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-1138_bus-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "1138_bus",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-1138_bus-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-1138_bus-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "1138_bus",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-1138_bus-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-1138_bus-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "1138_bus",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-1138_bus-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-1138_bus-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "1138_bus",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-1138_bus-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-1138_bus-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "1138_bus",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-1138_bus-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-1138_bus-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "1138_bus",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-1138_bus-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-1138_bus-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "1138_bus",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-1138_bus-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-1138_bus-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "1138_bus",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-1138_bus-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-1138_bus-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "1138_bus",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-1138_bus-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-1138_bus-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "1138_bus",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-1138_bus-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-1138_bus-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polblogs",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-polblogs-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-polblogs-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polblogs",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-polblogs-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-polblogs-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polblogs",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-polblogs-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-polblogs-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polblogs",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-polblogs-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-polblogs-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polblogs",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-polblogs-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-polblogs-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polblogs",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-polblogs-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-polblogs-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polblogs",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-polblogs-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-polblogs-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polblogs",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-polblogs-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-polblogs-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polblogs",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-polblogs-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-polblogs-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polblogs",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-polblogs-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-polblogs-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polblogs",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-polblogs-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-polblogs-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polblogs",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-polblogs-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-polblogs-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polblogs",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-polblogs-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-polblogs-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polblogs",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-polblogs-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-polblogs-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "polblogs",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-polblogs-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-polblogs-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "yeast",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-yeast-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-yeast-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "yeast",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-yeast-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-yeast-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "yeast",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-yeast-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-yeast-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "yeast",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-yeast-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-yeast-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "yeast",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-yeast-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-yeast-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "yeast",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-yeast-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-yeast-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "yeast",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-yeast-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-yeast-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "yeast",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-yeast-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-yeast-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "yeast",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-yeast-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-yeast-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "yeast",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-yeast-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-yeast-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "yeast",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-yeast-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-yeast-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "yeast",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-yeast-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-yeast-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "yeast",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-yeast-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-yeast-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "yeast",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-yeast-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-yeast-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "yeast",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-yeast-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-yeast-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "add20",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-add20-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-add20-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "add20",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-add20-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-add20-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "add20",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-add20-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-add20-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "add20",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-add20-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-add20-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "add20",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-add20-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-add20-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "add20",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-add20-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-add20-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "add20",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-add20-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-add20-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "add20",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-add20-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-add20-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "add20",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-add20-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-add20-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "add20",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-add20-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-add20-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "add20",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-add20-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-add20-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "add20",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-add20-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-add20-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "add20",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-add20-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-add20-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "add20",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-add20-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-add20-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "add20",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-add20-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-add20-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_2680",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_2680-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-dwt_2680-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_2680",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_2680-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-dwt_2680-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_2680",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_2680-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-dwt_2680-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_2680",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_2680-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-dwt_2680-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_2680",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_2680-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-dwt_2680-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_2680",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_2680-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-dwt_2680-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_2680",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_2680-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-dwt_2680-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_2680",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_2680-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-dwt_2680-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_2680",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_2680-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-dwt_2680-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_2680",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_2680-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-dwt_2680-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_2680",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_2680-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-dwt_2680-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_2680",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_2680-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-dwt_2680-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_2680",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-dwt_2680-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-dwt_2680-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_2680",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-dwt_2680-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-dwt_2680-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "dwt_2680",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-dwt_2680-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-dwt_2680-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "data",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-data-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-data-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "data",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-data-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-data-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "data",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-data-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-data-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "data",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-data-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-data-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "data",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-data-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-data-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "data",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-data-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-data-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "data",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-data-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-data-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "data",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-data-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-data-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "data",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-data-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-data-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "data",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-data-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-data-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "data",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-data-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-data-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "data",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-data-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-data-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "data",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-data-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-data-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "data",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-data-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-data-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "data",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-data-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-data-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk15",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcsstk15-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-bcsstk15-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk15",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcsstk15-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-bcsstk15-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk15",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcsstk15-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-bcsstk15-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk15",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcsstk15-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-bcsstk15-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk15",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcsstk15-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-bcsstk15-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk15",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcsstk15-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-bcsstk15-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk15",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcsstk15-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-bcsstk15-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk15",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcsstk15-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-bcsstk15-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk15",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcsstk15-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-bcsstk15-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk15",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcsstk15-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-bcsstk15-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk15",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcsstk15-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-bcsstk15-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk15",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcsstk15-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-bcsstk15-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk15",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcsstk15-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-bcsstk15-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk15",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcsstk15-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-bcsstk15-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk15",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcsstk15-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-bcsstk15-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "CA-GrQc",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-CA-GrQc-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-CA-GrQc-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "CA-GrQc",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-CA-GrQc-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-CA-GrQc-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "CA-GrQc",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-CA-GrQc-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-CA-GrQc-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "CA-GrQc",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-CA-GrQc-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-CA-GrQc-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "CA-GrQc",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-CA-GrQc-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-CA-GrQc-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "CA-GrQc",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-CA-GrQc-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-CA-GrQc-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "CA-GrQc",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-CA-GrQc-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-CA-GrQc-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "CA-GrQc",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-CA-GrQc-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-CA-GrQc-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "CA-GrQc",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-CA-GrQc-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-CA-GrQc-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "CA-GrQc",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-CA-GrQc-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-CA-GrQc-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "CA-GrQc",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-CA-GrQc-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-CA-GrQc-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "CA-GrQc",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-CA-GrQc-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-CA-GrQc-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "CA-GrQc",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-CA-GrQc-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-CA-GrQc-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "CA-GrQc",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-CA-GrQc-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-CA-GrQc-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "CA-GrQc",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-CA-GrQc-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-CA-GrQc-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "EVA",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-EVA-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-EVA-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "EVA",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-EVA-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-EVA-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "EVA",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-EVA-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-EVA-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "EVA",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-EVA-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-EVA-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "EVA",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-EVA-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-EVA-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "EVA",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-EVA-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-EVA-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "EVA",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-EVA-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-EVA-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "EVA",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-EVA-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-EVA-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "EVA",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-EVA-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-EVA-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "EVA",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-EVA-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-EVA-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "EVA",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-EVA-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-EVA-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "EVA",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-EVA-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-EVA-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "EVA",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-EVA-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-EVA-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "EVA",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-EVA-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-EVA-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "EVA",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-EVA-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-EVA-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "3elt",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-3elt-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-3elt-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "3elt",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-3elt-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-3elt-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "3elt",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-3elt-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-3elt-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "3elt",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-3elt-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-3elt-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "3elt",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-3elt-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-3elt-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "3elt",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-3elt-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-3elt-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "3elt",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-3elt-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-3elt-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "3elt",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-3elt-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-3elt-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "3elt",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-3elt-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-3elt-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "3elt",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-3elt-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-3elt-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "3elt",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-3elt-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-3elt-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "3elt",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-3elt-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-3elt-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "3elt",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-3elt-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-3elt-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "3elt",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-3elt-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-3elt-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "3elt",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-3elt-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-3elt-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk16",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcsstk16-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-bcsstk16-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk16",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcsstk16-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-bcsstk16-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk16",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcsstk16-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-bcsstk16-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk16",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcsstk16-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-bcsstk16-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk16",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcsstk16-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-bcsstk16-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk16",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcsstk16-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-bcsstk16-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk16",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcsstk16-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-bcsstk16-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk16",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcsstk16-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-bcsstk16-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk16",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcsstk16-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-bcsstk16-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk16",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcsstk16-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-bcsstk16-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk16",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcsstk16-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-bcsstk16-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk16",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcsstk16-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-bcsstk16-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk16",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcsstk16-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-bcsstk16-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk16",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcsstk16-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-bcsstk16-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk16",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcsstk16-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-bcsstk16-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "uk",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-uk-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-uk-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "uk",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-uk-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-uk-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "uk",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-uk-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-uk-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "uk",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-uk-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-uk-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "uk",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-uk-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-uk-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "uk",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-uk-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-uk-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "uk",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-uk-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-uk-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "uk",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-uk-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-uk-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "uk",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-uk-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-uk-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "uk",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-uk-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-uk-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "uk",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-uk-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-uk-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "uk",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-uk-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-uk-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "uk",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-uk-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-uk-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "uk",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-uk-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-uk-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "uk",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-uk-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-uk-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "USpowerGrid",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-USpowerGrid-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-USpowerGrid-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "USpowerGrid",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-USpowerGrid-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-USpowerGrid-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "USpowerGrid",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-USpowerGrid-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-USpowerGrid-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "USpowerGrid",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-USpowerGrid-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-USpowerGrid-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "USpowerGrid",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-USpowerGrid-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-USpowerGrid-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "USpowerGrid",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-USpowerGrid-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-USpowerGrid-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "USpowerGrid",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-USpowerGrid-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-USpowerGrid-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "USpowerGrid",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-USpowerGrid-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-USpowerGrid-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "USpowerGrid",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-USpowerGrid-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-USpowerGrid-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "USpowerGrid",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-USpowerGrid-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-USpowerGrid-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "USpowerGrid",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-USpowerGrid-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-USpowerGrid-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "USpowerGrid",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-USpowerGrid-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-USpowerGrid-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "USpowerGrid",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-USpowerGrid-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-USpowerGrid-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "USpowerGrid",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-USpowerGrid-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-USpowerGrid-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "USpowerGrid",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-USpowerGrid-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-USpowerGrid-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcspwr10",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcspwr10-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-bcspwr10-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcspwr10",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcspwr10-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-bcspwr10-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcspwr10",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcspwr10-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-bcspwr10-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcspwr10",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcspwr10-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-bcspwr10-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcspwr10",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcspwr10-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-bcspwr10-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcspwr10",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcspwr10-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-bcspwr10-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcspwr10",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcspwr10-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-bcspwr10-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcspwr10",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcspwr10-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-bcspwr10-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcspwr10",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcspwr10-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-bcspwr10-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcspwr10",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcspwr10-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-bcspwr10-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcspwr10",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcspwr10-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-bcspwr10-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcspwr10",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcspwr10-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-bcspwr10-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcspwr10",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcspwr10-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-bcspwr10-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcspwr10",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcspwr10-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-bcspwr10-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcspwr10",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcspwr10-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-bcspwr10-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "p2p-Gnutella08",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-p2p-Gnutella08-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-p2p-Gnutella08-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "p2p-Gnutella08",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-p2p-Gnutella08-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-p2p-Gnutella08-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "p2p-Gnutella08",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-p2p-Gnutella08-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-p2p-Gnutella08-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "p2p-Gnutella08",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-p2p-Gnutella08-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-p2p-Gnutella08-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "p2p-Gnutella08",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-p2p-Gnutella08-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-p2p-Gnutella08-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "p2p-Gnutella08",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-p2p-Gnutella08-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-p2p-Gnutella08-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "p2p-Gnutella08",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-p2p-Gnutella08-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-p2p-Gnutella08-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "p2p-Gnutella08",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-p2p-Gnutella08-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-p2p-Gnutella08-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "p2p-Gnutella08",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-p2p-Gnutella08-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-p2p-Gnutella08-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "p2p-Gnutella08",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-p2p-Gnutella08-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-p2p-Gnutella08-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "p2p-Gnutella08",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-p2p-Gnutella08-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-p2p-Gnutella08-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "p2p-Gnutella08",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-p2p-Gnutella08-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-p2p-Gnutella08-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "p2p-Gnutella08",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-p2p-Gnutella08-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-p2p-Gnutella08-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "p2p-Gnutella08",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-p2p-Gnutella08-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-p2p-Gnutella08-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "p2p-Gnutella08",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-p2p-Gnutella08-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-p2p-Gnutella08-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "wiki-Vote",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-wiki-Vote-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-wiki-Vote-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "wiki-Vote",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-wiki-Vote-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-wiki-Vote-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "wiki-Vote",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-wiki-Vote-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-wiki-Vote-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "wiki-Vote",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-wiki-Vote-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-wiki-Vote-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "wiki-Vote",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-wiki-Vote-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-wiki-Vote-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "wiki-Vote",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-wiki-Vote-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-wiki-Vote-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "wiki-Vote",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-wiki-Vote-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-wiki-Vote-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "wiki-Vote",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-wiki-Vote-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-wiki-Vote-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "wiki-Vote",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-wiki-Vote-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-wiki-Vote-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "wiki-Vote",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-wiki-Vote-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-wiki-Vote-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "wiki-Vote",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-wiki-Vote-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-wiki-Vote-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "wiki-Vote",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-wiki-Vote-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-wiki-Vote-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "wiki-Vote",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-wiki-Vote-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-wiki-Vote-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "wiki-Vote",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-wiki-Vote-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-wiki-Vote-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "wiki-Vote",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-wiki-Vote-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-wiki-Vote-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "ca-HepTh",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-ca-HepTh-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-ca-HepTh-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "ca-HepTh",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-ca-HepTh-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-ca-HepTh-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "ca-HepTh",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-ca-HepTh-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-ca-HepTh-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "ca-HepTh",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-ca-HepTh-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-ca-HepTh-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "ca-HepTh",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-ca-HepTh-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-ca-HepTh-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "ca-HepTh",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-ca-HepTh-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-ca-HepTh-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "ca-HepTh",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-ca-HepTh-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-ca-HepTh-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "ca-HepTh",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-ca-HepTh-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-ca-HepTh-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "ca-HepTh",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-ca-HepTh-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-ca-HepTh-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "ca-HepTh",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-ca-HepTh-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-ca-HepTh-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "ca-HepTh",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-ca-HepTh-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-ca-HepTh-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "ca-HepTh",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-ca-HepTh-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-ca-HepTh-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "ca-HepTh",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-ca-HepTh-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-ca-HepTh-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "ca-HepTh",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-ca-HepTh-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-ca-HepTh-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "ca-HepTh",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-ca-HepTh-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-ca-HepTh-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcsstk17-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-bcsstk17-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcsstk17-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-bcsstk17-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcsstk17-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-bcsstk17-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcsstk17-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-bcsstk17-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcsstk17-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-bcsstk17-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcsstk17-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-bcsstk17-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcsstk17-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-bcsstk17-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcsstk17-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-bcsstk17-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcsstk17-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-bcsstk17-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcsstk17-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-bcsstk17-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcsstk17-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-bcsstk17-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcsstk17-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-bcsstk17-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-bcsstk17-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-bcsstk17-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-bcsstk17-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-bcsstk17-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "bcsstk17",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-bcsstk17-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-bcsstk17-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "PGPgiantcompo",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-PGPgiantcompo-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-PGPgiantcompo-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "PGPgiantcompo",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-PGPgiantcompo-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-PGPgiantcompo-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "PGPgiantcompo",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-PGPgiantcompo-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-PGPgiantcompo-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "PGPgiantcompo",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-PGPgiantcompo-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-PGPgiantcompo-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "PGPgiantcompo",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-PGPgiantcompo-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-PGPgiantcompo-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "PGPgiantcompo",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-PGPgiantcompo-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-PGPgiantcompo-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "PGPgiantcompo",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-PGPgiantcompo-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-PGPgiantcompo-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "PGPgiantcompo",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-PGPgiantcompo-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-PGPgiantcompo-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "PGPgiantcompo",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-PGPgiantcompo-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-PGPgiantcompo-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "PGPgiantcompo",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-PGPgiantcompo-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-PGPgiantcompo-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "PGPgiantcompo",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-PGPgiantcompo-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-PGPgiantcompo-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "PGPgiantcompo",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-PGPgiantcompo-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-PGPgiantcompo-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "PGPgiantcompo",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-PGPgiantcompo-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-PGPgiantcompo-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "PGPgiantcompo",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-PGPgiantcompo-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-PGPgiantcompo-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "PGPgiantcompo",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-PGPgiantcompo-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-PGPgiantcompo-atomic_sgd-tfixed-s4-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "fe_4elt2",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-fe_4elt2-atomic_sgd-tfixed-s0-r0",
+    "previous_run_id": "v5-comparison-fe_4elt2-atomic_sgd-tfixed-s0-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "fe_4elt2",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-fe_4elt2-atomic_sgd-tfixed-s0-r1",
+    "previous_run_id": "v5-comparison-fe_4elt2-atomic_sgd-tfixed-s0-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "fe_4elt2",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 0,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-fe_4elt2-atomic_sgd-tfixed-s0-r2",
+    "previous_run_id": "v5-comparison-fe_4elt2-atomic_sgd-tfixed-s0-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "fe_4elt2",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-fe_4elt2-atomic_sgd-tfixed-s1-r0",
+    "previous_run_id": "v5-comparison-fe_4elt2-atomic_sgd-tfixed-s1-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "fe_4elt2",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-fe_4elt2-atomic_sgd-tfixed-s1-r1",
+    "previous_run_id": "v5-comparison-fe_4elt2-atomic_sgd-tfixed-s1-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "fe_4elt2",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 1,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-fe_4elt2-atomic_sgd-tfixed-s1-r2",
+    "previous_run_id": "v5-comparison-fe_4elt2-atomic_sgd-tfixed-s1-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "fe_4elt2",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-fe_4elt2-atomic_sgd-tfixed-s2-r0",
+    "previous_run_id": "v5-comparison-fe_4elt2-atomic_sgd-tfixed-s2-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "fe_4elt2",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-fe_4elt2-atomic_sgd-tfixed-s2-r1",
+    "previous_run_id": "v5-comparison-fe_4elt2-atomic_sgd-tfixed-s2-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "fe_4elt2",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 2,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-fe_4elt2-atomic_sgd-tfixed-s2-r2",
+    "previous_run_id": "v5-comparison-fe_4elt2-atomic_sgd-tfixed-s2-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "fe_4elt2",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-fe_4elt2-atomic_sgd-tfixed-s3-r0",
+    "previous_run_id": "v5-comparison-fe_4elt2-atomic_sgd-tfixed-s3-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "fe_4elt2",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-fe_4elt2-atomic_sgd-tfixed-s3-r1",
+    "previous_run_id": "v5-comparison-fe_4elt2-atomic_sgd-tfixed-s3-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "fe_4elt2",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 3,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-fe_4elt2-atomic_sgd-tfixed-s3-r2",
+    "previous_run_id": "v5-comparison-fe_4elt2-atomic_sgd-tfixed-s3-r2"
+  },
+  {
+    "stage": "comparison",
+    "graph": "fe_4elt2",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 0,
+    "run_id": "v55-atomic-full-fe_4elt2-atomic_sgd-tfixed-s4-r0",
+    "previous_run_id": "v5-comparison-fe_4elt2-atomic_sgd-tfixed-s4-r0"
+  },
+  {
+    "stage": "comparison",
+    "graph": "fe_4elt2",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 1,
+    "run_id": "v55-atomic-full-fe_4elt2-atomic_sgd-tfixed-s4-r1",
+    "previous_run_id": "v5-comparison-fe_4elt2-atomic_sgd-tfixed-s4-r1"
+  },
+  {
+    "stage": "comparison",
+    "graph": "fe_4elt2",
+    "method": "atomic_sgd",
+    "tile_size": null,
+    "seed": 4,
+    "repetition": 2,
+    "run_id": "v55-atomic-full-fe_4elt2-atomic_sgd-tfixed-s4-r2",
+    "previous_run_id": "v5-comparison-fe_4elt2-atomic_sgd-tfixed-s4-r2"
+  }
+]
