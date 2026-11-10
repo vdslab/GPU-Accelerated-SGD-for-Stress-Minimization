@@ -1,13 +1,17 @@
+#[cfg(not(target_arch = "wasm32"))]
 #[path = "../../../../shared/gpu-timing/wgpu.rs"]
 mod timing;
+#[cfg(not(target_arch = "wasm32"))]
 use crate::graph;
 use anyhow::{Context, Result};
 use bytemuck::{Pod, Zeroable};
 use experiment_common::seed::{rng_for_stream, FULL_UPDATE_STREAM};
+#[cfg(not(target_arch = "wasm32"))]
 use experiment_common::OutputFormat;
 use rand::seq::SliceRandom;
 use rand::Rng;
 use std::num::NonZeroU64;
+#[cfg(not(target_arch = "wasm32"))]
 use std::time::{Duration, Instant};
 
 pub const DEFAULT_TILE_SIZE: u32 = 1024;
@@ -193,6 +197,7 @@ fn submission_ranges(invocation_count: usize) -> Vec<std::ops::Range<usize>> {
     ranges
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 pub struct GpuContext {
     pub device: wgpu::Device,
     pub queue: wgpu::Queue,
@@ -203,6 +208,7 @@ pub struct GpuContext {
     pub kernel: KernelConfig,
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 #[derive(Debug)]
 pub struct GpuRunResult {
     pub initial_positions: Vec<[f64; 2]>,
@@ -288,6 +294,7 @@ pub fn build_schedule(big_b: u32) -> Vec<Vec<(u32, u32)>> {
 
 // ── GPU コンテキスト ──────────────────────────────────────────────────────────
 
+#[cfg(not(target_arch = "wasm32"))]
 impl GpuContext {
     pub fn new(kernel: KernelConfig) -> Result<Self> {
         kernel.validate()?;
@@ -1222,6 +1229,7 @@ mod tests {
 
 /// Read a completed iteration only for an enabled convergence checkpoint.
 /// This transfer is measured by IterationTrace as excluded overhead.
+#[cfg(not(target_arch = "wasm32"))]
 fn trace_positions(
     device: &wgpu::Device,
     queue: &wgpu::Queue,
@@ -1248,4 +1256,492 @@ fn trace_positions(
     drop(mapped);
     download.unmap();
     result
+}
+
+/// Interactive / step-by-epoch RoundRobin Full SGD GPU engine (shared by native and WebAssembly).
+#[allow(dead_code)]
+pub struct FullStepper {
+    pipeline: wgpu::ComputePipeline,
+    bind_group: wgpu::BindGroup,
+    positions_buffer: wgpu::Buffer,
+    download_buffer: wgpu::Buffer,
+    uniforms_buffer: wgpu::Buffer,
+    perm_buffer: wgpu::Buffer,
+    kernel: KernelConfig,
+    n: u32,
+    last_block_len: u32,
+    full_self_perm_offset: u32,
+    partial_self_perm_offset: u32,
+    perm_len: u32,
+    slot_size: usize,
+    schedule: Vec<Vec<(u32, u32)>>,
+    schedule_tile_offsets: Vec<u32>,
+    submission_ranges: Vec<std::ops::Range<usize>>,
+    rng: rand::rngs::StdRng,
+    round_order: Vec<usize>,
+    uniform_bytes: Vec<u8>,
+    all_perms: Vec<u32>,
+    initial_positions_flat: Vec<f32>,
+    initial_seed: u64,
+    total_tiles: usize,
+}
+
+#[allow(dead_code)]
+impl FullStepper {
+    pub fn new(
+        device: &wgpu::Device,
+        queue: &wgpu::Queue,
+        kernel: KernelConfig,
+        n: u32,
+        dist_u16: &[u16],
+        initial_positions_flat: &[f32],
+        seed: u64,
+    ) -> Result<Self> {
+        kernel.validate()?;
+        anyhow::ensure!(
+            n <= 16384,
+            "Full SGD supports up to N=16384 for 4-bank binding (got N={n})"
+        );
+        anyhow::ensure!(
+            kernel.workgroup_size <= device.limits().max_compute_invocations_per_workgroup,
+            "workgroup size exceeds this GPU's invocation limit"
+        );
+        anyhow::ensure!(
+            kernel.workgroup_size <= device.limits().max_compute_workgroup_size_x,
+            "workgroup size exceeds this GPU's x-dimension limit"
+        );
+        if kernel.memory_mode == MemoryMode::Shared {
+            anyhow::ensure!(
+                kernel.tile_size * 16 <= device.limits().max_compute_workgroup_storage_size,
+                "tile size exceeds this GPU's shared memory limit"
+            );
+        }
+
+        let module = device.create_shader_module(wgpu::ShaderModuleDescriptor {
+            label: Some("race-free two-level RR SGD"),
+            source: wgpu::ShaderSource::Wgsl(shader_source(kernel).into()),
+        });
+
+        let tile_size = kernel.tile_size;
+        let phase_chunks = kernel.phase_chunks.min(tile_size);
+
+        const BANK_WORDS: usize = 33_554_432; // 128 MiB = 2^25 words
+        let dist_words: &[u32] = bytemuck::cast_slice(dist_u16);
+        let get_bank_slice = |bank_idx: usize| -> &[u32] {
+            let start = (bank_idx * BANK_WORDS).min(dist_words.len());
+            let end = ((bank_idx + 1) * BANK_WORDS).min(dist_words.len());
+            &dist_words[start..end]
+        };
+        let bank0_words = get_bank_slice(0);
+        let bank1_words = get_bank_slice(1);
+        let bank2_words = get_bank_slice(2);
+        let bank3_words = get_bank_slice(3);
+
+        let big_b = n.div_ceil(tile_size);
+        let block_lens: Vec<u32> = (0..big_b)
+            .map(|bi| tile_size.min(n - bi * tile_size))
+            .collect();
+        let last_block_len = *block_lens.last().context("no vertices")?;
+        let full_self_perm_offset = tile_size;
+        let partial_self_perm_offset = tile_size + self_round_count(tile_size);
+
+        let schedule = build_schedule(big_b);
+        let total_tiles: usize = schedule.iter().map(|r| r.len()).sum();
+        let mut all_tiles = Vec::with_capacity(total_tiles * 2);
+        let mut schedule_tile_offsets = Vec::with_capacity(schedule.len());
+        for round in &schedule {
+            schedule_tile_offsets.push((all_tiles.len() / 2) as u32);
+            for &(ti, tj) in round {
+                all_tiles.push(ti);
+                all_tiles.push(tj);
+            }
+        }
+
+        let perm_len = tile_size + self_round_count(tile_size) + self_round_count(last_block_len);
+        let total_perm_elements = schedule.len() * perm_len as usize;
+
+        let alignment = device.limits().min_uniform_buffer_offset_alignment as usize;
+        let slot_size = std::mem::size_of::<Uniforms>().div_ceil(alignment) * alignment;
+        let invocation_count = (phase_chunks as usize) * schedule.len();
+        let submission_ranges = submission_ranges(invocation_count);
+
+        let make_buf = |label: Option<&str>, byte_len: usize, usage: wgpu::BufferUsages| {
+            device.create_buffer(&wgpu::BufferDescriptor {
+                label,
+                size: byte_len.max(16) as u64,
+                usage: usage | wgpu::BufferUsages::COPY_DST,
+                mapped_at_creation: false,
+            })
+        };
+
+        let positions_buffer = make_buf(
+            Some("positions"),
+            std::mem::size_of_val(initial_positions_flat),
+            wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_SRC,
+        );
+        let dist_bank0_buffer = make_buf(
+            Some("dist_bank0"),
+            bank0_words.len() * 4,
+            wgpu::BufferUsages::STORAGE,
+        );
+        let dist_bank1_buffer = make_buf(
+            Some("dist_bank1"),
+            bank1_words.len() * 4,
+            wgpu::BufferUsages::STORAGE,
+        );
+        let dist_bank2_buffer = make_buf(
+            Some("dist_bank2"),
+            bank2_words.len() * 4,
+            wgpu::BufferUsages::STORAGE,
+        );
+        let dist_bank3_buffer = make_buf(
+            Some("dist_bank3"),
+            bank3_words.len() * 4,
+            wgpu::BufferUsages::STORAGE,
+        );
+        let block_lens_buffer = make_buf(
+            Some("block_lens"),
+            block_lens.len() * 4,
+            wgpu::BufferUsages::STORAGE,
+        );
+        let uniforms_buffer = device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("uniforms"),
+            size: (slot_size * invocation_count.max(1)) as u64,
+            usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
+            mapped_at_creation: false,
+        });
+        let tiles_buffer = make_buf(
+            Some("tiles"),
+            all_tiles.len() * 4,
+            wgpu::BufferUsages::STORAGE,
+        );
+        let perm_buffer = make_buf(
+            Some("inner_perm"),
+            total_perm_elements * 4,
+            wgpu::BufferUsages::STORAGE,
+        );
+        let download_buffer = device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("download"),
+            size: positions_buffer.size(),
+            usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
+            mapped_at_creation: false,
+        });
+
+        let bgl = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
+            label: None,
+            entries: &[
+                wgpu::BindGroupLayoutEntry {
+                    binding: 0,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Uniform,
+                        has_dynamic_offset: true,
+                        min_binding_size: Some(
+                            NonZeroU64::new(std::mem::size_of::<Uniforms>() as u64).unwrap(),
+                        ),
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 1,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: false },
+                        has_dynamic_offset: false,
+                        min_binding_size: Some(NonZeroU64::new(8).unwrap()),
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 2,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: true },
+                        has_dynamic_offset: false,
+                        min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 3,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: true },
+                        has_dynamic_offset: false,
+                        min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 4,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: true },
+                        has_dynamic_offset: false,
+                        min_binding_size: Some(NonZeroU64::new(8).unwrap()),
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 5,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: true },
+                        has_dynamic_offset: false,
+                        min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 6,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: true },
+                        has_dynamic_offset: false,
+                        min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 7,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: true },
+                        has_dynamic_offset: false,
+                        min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 8,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: true },
+                        has_dynamic_offset: false,
+                        min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                    },
+                    count: None,
+                },
+            ],
+        });
+
+        let bind_group = device.create_bind_group(&wgpu::BindGroupDescriptor {
+            label: None,
+            layout: &bgl,
+            entries: &[
+                wgpu::BindGroupEntry {
+                    binding: 0,
+                    resource: wgpu::BindingResource::Buffer(wgpu::BufferBinding {
+                        buffer: &uniforms_buffer,
+                        offset: 0,
+                        size: NonZeroU64::new(std::mem::size_of::<Uniforms>() as u64),
+                    }),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 1,
+                    resource: positions_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 2,
+                    resource: dist_bank0_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 3,
+                    resource: block_lens_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 4,
+                    resource: tiles_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 5,
+                    resource: perm_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 6,
+                    resource: dist_bank1_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 7,
+                    resource: dist_bank2_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 8,
+                    resource: dist_bank3_buffer.as_entire_binding(),
+                },
+            ],
+        });
+
+        let pipeline_layout = device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
+            label: None,
+            bind_group_layouts: &[&bgl],
+            push_constant_ranges: &[],
+        });
+
+        let pipeline = device.create_compute_pipeline(&wgpu::ComputePipelineDescriptor {
+            label: None,
+            layout: Some(&pipeline_layout),
+            module: &module,
+            entry_point: None,
+            compilation_options: wgpu::PipelineCompilationOptions::default(),
+            cache: None,
+        });
+
+        queue.write_buffer(
+            &positions_buffer,
+            0,
+            bytemuck::cast_slice(initial_positions_flat),
+        );
+        if !bank0_words.is_empty() {
+            queue.write_buffer(&dist_bank0_buffer, 0, bytemuck::cast_slice(bank0_words));
+        }
+        if !bank1_words.is_empty() {
+            queue.write_buffer(&dist_bank1_buffer, 0, bytemuck::cast_slice(bank1_words));
+        }
+        if !bank2_words.is_empty() {
+            queue.write_buffer(&dist_bank2_buffer, 0, bytemuck::cast_slice(bank2_words));
+        }
+        if !bank3_words.is_empty() {
+            queue.write_buffer(&dist_bank3_buffer, 0, bytemuck::cast_slice(bank3_words));
+        }
+        queue.write_buffer(&block_lens_buffer, 0, bytemuck::cast_slice(&block_lens));
+        if !all_tiles.is_empty() {
+            queue.write_buffer(&tiles_buffer, 0, bytemuck::cast_slice(&all_tiles));
+        }
+        queue.submit([]);
+
+        let rng = rng_for_stream(seed, FULL_UPDATE_STREAM);
+        let round_order = (0..schedule.len()).collect();
+
+        Ok(Self {
+            pipeline,
+            bind_group,
+            positions_buffer,
+            download_buffer,
+            uniforms_buffer,
+            perm_buffer,
+            kernel,
+            n,
+            last_block_len,
+            full_self_perm_offset,
+            partial_self_perm_offset,
+            perm_len,
+            slot_size,
+            schedule,
+            schedule_tile_offsets,
+            submission_ranges,
+            rng,
+            round_order,
+            uniform_bytes: vec![0u8; slot_size * invocation_count],
+            all_perms: Vec::with_capacity(total_perm_elements),
+            initial_positions_flat: initial_positions_flat.to_vec(),
+            initial_seed: seed,
+            total_tiles,
+        })
+    }
+
+    pub fn reset(&mut self, queue: &wgpu::Queue) {
+        queue.write_buffer(
+            &self.positions_buffer,
+            0,
+            bytemuck::cast_slice(&self.initial_positions_flat),
+        );
+        queue.submit([]);
+        self.rng = rng_for_stream(self.initial_seed, FULL_UPDATE_STREAM);
+        self.round_order.clear();
+        self.round_order.extend(0..self.schedule.len());
+    }
+
+    pub fn step_epoch(&mut self, device: &wgpu::Device, queue: &wgpu::Queue, eta: f32) {
+        let tile_size = self.kernel.tile_size;
+        let phase_chunks = self.kernel.phase_chunks.min(tile_size);
+
+        if self.kernel.outer_shuffle {
+            self.round_order.shuffle(&mut self.rng);
+        }
+
+        self.all_perms.clear();
+        for _ in 0..self.round_order.len() {
+            let perm = build_inner_permutation(
+                tile_size,
+                self.last_block_len,
+                self.kernel.inner_shuffle,
+                &mut self.rng,
+            );
+            self.all_perms.extend_from_slice(&perm);
+        }
+        if !self.all_perms.is_empty() {
+            queue.write_buffer(&self.perm_buffer, 0, bytemuck::cast_slice(&self.all_perms));
+        }
+
+        let mut slot = 0;
+        for chunk in 0..phase_chunks {
+            let subround_start = chunk * tile_size / phase_chunks;
+            let subround_end = (chunk + 1) * tile_size / phase_chunks;
+            for (round_position, &ri) in self.round_order.iter().enumerate() {
+                let uni = Uniforms {
+                    n: self.n,
+                    eta,
+                    full_self_perm_offset: self.full_self_perm_offset,
+                    partial_self_perm_offset: self.partial_self_perm_offset,
+                    chunk,
+                    chunks: phase_chunks,
+                    tiles_offset: self.schedule_tile_offsets[ri],
+                    perm_offset: (round_position as u32) * self.perm_len,
+                    subround_start,
+                    subround_end,
+                    padding: [0; 2],
+                };
+                let offset = slot * self.slot_size;
+                self.uniform_bytes[offset..offset + std::mem::size_of::<Uniforms>()]
+                    .copy_from_slice(bytemuck::bytes_of(&uni));
+                slot += 1;
+            }
+        }
+        if !self.uniform_bytes.is_empty() {
+            queue.write_buffer(&self.uniforms_buffer, 0, &self.uniform_bytes);
+        }
+
+        let num_batches = self.submission_ranges.len();
+        for (batch_idx, batch_range) in self.submission_ranges.iter().enumerate() {
+            let mut encoder =
+                device.create_command_encoder(&wgpu::CommandEncoderDescriptor { label: None });
+            {
+                let mut pass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
+                    label: None,
+                    timestamp_writes: None,
+                });
+                pass.set_pipeline(&self.pipeline);
+                for slot in batch_range.clone() {
+                    let round_position = slot % self.schedule.len();
+                    let ri = self.round_order[round_position];
+                    let round = &self.schedule[ri];
+                    pass.set_bind_group(0, &self.bind_group, &[(slot * self.slot_size) as u32]);
+                    pass.dispatch_workgroups(round.len() as u32, 1, 1);
+                }
+            }
+            if batch_idx + 1 == num_batches {
+                encoder.copy_buffer_to_buffer(
+                    &self.positions_buffer,
+                    0,
+                    &self.download_buffer,
+                    0,
+                    self.positions_buffer.size(),
+                );
+            }
+            queue.submit([encoder.finish()]);
+        }
+    }
+
+    pub fn download_buffer(&self) -> &wgpu::Buffer {
+        &self.download_buffer
+    }
+
+    pub fn schedule_rounds(&self) -> usize {
+        self.schedule.len()
+    }
+
+    pub fn tile_count(&self) -> usize {
+        self.total_tiles
+    }
 }

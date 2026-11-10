@@ -5,7 +5,7 @@ pub mod record;
 pub mod seed;
 pub mod stress;
 
-#[cfg(feature = "gpu")]
+#[cfg(all(feature = "gpu", not(target_arch = "wasm32")))]
 pub mod gpu;
 
 pub use cli::{CommonExperimentArgs, OutputFormat};
@@ -27,6 +27,7 @@ pub mod trace;
 
 /// System-wide monotonic clock, comparable between the solver and renderer.
 /// Unlike a wall clock this is unaffected by clock synchronization.
+#[cfg(not(target_arch = "wasm32"))]
 pub fn monotonic_time_ms() -> f64 {
     let mut value = libc::timespec {
         tv_sec: 0,
@@ -35,4 +36,9 @@ pub fn monotonic_time_ms() -> f64 {
     let result = unsafe { libc::clock_gettime(libc::CLOCK_MONOTONIC, &mut value) };
     assert_eq!(result, 0, "monotonic clock unavailable");
     value.tv_sec as f64 * 1000.0 + value.tv_nsec as f64 / 1_000_000.0
+}
+
+#[cfg(target_arch = "wasm32")]
+pub fn monotonic_time_ms() -> f64 {
+    0.0
 }

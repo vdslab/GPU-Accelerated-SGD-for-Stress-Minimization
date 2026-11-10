@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build:wasm": "wasm-pack build --target web --release --out-dir ../dist/pkg wasm && rm -f dist/pkg/.gitignore",
     "test": "node --test tests/*.test.js",
     "dev": "python3 -m http.server 4173 --directory dist",
     "deploy": "wrangler deploy --profile stmtech",

@@ -26,6 +26,7 @@ impl std::str::FromStr for BfsBackend {
     }
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 fn graph_to_csr(graph: &Graph) -> webgpu_bfs_core::CsrGraph {
     let num_vertices = graph.node_size;
     let mut row_offsets = Vec::with_capacity(num_vertices + 1);
@@ -49,23 +50,25 @@ pub struct PreparedRun {
     pub one_sided: Vec<OneSidedEntry>,
     pub one_sided_count: usize,
     pub constraint_count: usize,
+    pub wmin: f64,
+    pub wmax: f64,
     pub fingerprint: String,
 }
 
-struct Distances {
-    pivots: Vec<usize>,
-    slot: Vec<usize>,
-    flat_distances: Vec<u32>,
-    prefix: Vec<Vec<usize>>,
+pub struct Distances {
+    pub pivots: Vec<usize>,
+    pub slot: Vec<usize>,
+    pub flat_distances: Vec<u32>,
+    pub prefix: Vec<Vec<usize>>,
 }
 
 impl Distances {
     #[allow(dead_code)]
-    fn new<R: Rng + ?Sized>(graph: &Graph, h: usize, rng: &mut R) -> Result<Self> {
+    pub fn new<R: Rng + ?Sized>(graph: &Graph, h: usize, rng: &mut R) -> Result<Self> {
         Self::new_with_backend(graph, h, rng, BfsBackend::Auto)
     }
 
-    fn new_with_backend<R: Rng + ?Sized>(
+    pub fn new_with_backend<R: Rng + ?Sized>(
         graph: &Graph,
         h: usize,
         rng: &mut R,
@@ -79,13 +82,18 @@ impl Distances {
         let h = h.min(n);
 
         // Topology-aware method selection
-        let max_degree = (0..n).map(|u| graph.neighbors(u).len()).max().unwrap_or(0);
-        let is_road_or_narrow = max_degree <= 8 && graph.edge_size <= 4 * n;
-        let use_gpu = match backend {
-            BfsBackend::Auto => is_road_or_narrow && n >= 20_000 && n <= 114_688,
-            BfsBackend::Gpu => true,
-            BfsBackend::Cpu => false,
+        #[cfg(not(target_arch = "wasm32"))]
+        let use_gpu = {
+            let max_degree = (0..n).map(|u| graph.neighbors(u).len()).max().unwrap_or(0);
+            let is_road_or_narrow = max_degree <= 8 && graph.edge_size <= 4 * n;
+            match backend {
+                BfsBackend::Auto => is_road_or_narrow && n >= 20_000 && n <= 114_688,
+                BfsBackend::Gpu => true,
+                BfsBackend::Cpu => false,
+            }
         };
+        #[cfg(target_arch = "wasm32")]
+        let _ = backend;
 
         let mut flat_distances = vec![u32::MAX; h * n];
         let mut queue = Vec::with_capacity(n);
@@ -93,6 +101,7 @@ impl Distances {
         let mut regions = vec![0; n];
         let mut pivots = Vec::with_capacity(h);
 
+        #[cfg(not(target_arch = "wasm32"))]
         let (csr, gpu_engine, mut gpu_row) = if use_gpu {
             let csr = graph_to_csr(graph);
             let engine = webgpu_bfs_gpu::engine::GpuBfsEngine::default_with_method(
@@ -106,13 +115,15 @@ impl Distances {
         };
 
         let mut run_bfs = |source: usize, row_dest: &mut [u32]| -> Result<()> {
+            #[cfg(not(target_arch = "wasm32"))]
             if use_gpu {
                 let engine = gpu_engine.as_ref().unwrap();
                 let sources = [source as u32];
                 engine.run_ms_bfs_into(csr.as_ref().unwrap(), &sources, &mut gpu_row)?;
                 row_dest.copy_from_slice(&gpu_row[..n]);
-                Ok(())
-            } else {
+                return Ok(());
+            }
+            {
                 row_dest.fill(u32::MAX);
                 queue.clear();
                 queue.push(source);
@@ -396,6 +407,8 @@ pub fn prepare_with_backend<R: Rng + ?Sized>(
         one_sided,
         one_sided_count,
         constraint_count,
+        wmin,
+        wmax,
         fingerprint: fingerprint.finish(),
     })
 }

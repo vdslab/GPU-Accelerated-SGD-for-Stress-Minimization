@@ -8,9 +8,17 @@ const { server, base: localBase } = await startStaticServer(root);
 const base = process.env.RR_TEST_URL ?? localBase;
 const browser = await chromium.launch({
   executablePath:
-    process.env.CHROME_PATH ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+    process.env.CHROME_PATH ??
+    (process.platform === 'linux'
+      ? '/usr/bin/google-chrome'
+      : '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'),
   headless: true,
-  args: ['--enable-unsafe-webgpu'],
+  args: [
+    '--enable-unsafe-webgpu',
+    ...(process.platform === 'linux'
+      ? ['--use-angle=vulkan', '--enable-features=Vulkan,DefaultANGLEVulkan,VulkanFromANGLE']
+      : []),
+  ],
 });
 const page = await browser.newPage({ viewport: { width: 1366, height: 768 } });
 page.on('pageerror', (error) => console.error('Browser error:', error.message));

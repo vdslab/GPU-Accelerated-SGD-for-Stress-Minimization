@@ -81,7 +81,7 @@ test('Sparse constraints match an independent all-pairs definition, including di
     for (let r = 0; r < prepared.roundOffsets.length - 1; r++) {
       const touched = new Set();
       for (let i = prepared.roundOffsets[r]; i < prepared.roundOffsets[r + 1]; i++) {
-        const at = i * 6,
+        const at = i * 5,
           u = ints[at],
           v = ints[at + 1];
         assert(!touched.has(u));
@@ -96,7 +96,7 @@ test('Sparse constraints match an independent all-pairs definition, including di
   }
 });
 test('capacity checks use required bytes, not a fixed node cutoff', () => {
-  assert.equal(fullMemoryBytes(4941), 97653924);
+  assert.equal(fullMemoryBytes(4941), 48826962);
   assert.throws(() => prepareFull(cycle(114599), {}, limits), /RR Sparse/);
   assert.throws(
     () =>

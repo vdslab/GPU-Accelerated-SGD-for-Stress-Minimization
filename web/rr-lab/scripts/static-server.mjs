@@ -12,6 +12,7 @@ export async function startStaticServer(root, prefix = process.env.RR_TEST_BASE_
     '.html': 'text/html',
     '.css': 'text/css',
     '.json': 'application/json',
+    '.wasm': 'application/wasm',
   };
   const server = createServer(async (request, response) => {
     try {

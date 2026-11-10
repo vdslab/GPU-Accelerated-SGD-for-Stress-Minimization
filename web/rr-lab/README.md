@@ -6,7 +6,7 @@
 
 サイト名・ブラウザのタイトル・画面の見出しは「RR-SGD」。見出し横のⓘから概要、Full／Sparseの違い、使い方を確認できます。
 
-MTXファイルの前処理、RR Full / RR Sparse SGD、stress評価をブラウザ内で実行する静的サイトです。計算にはMDNで説明されている[WebGPU API](https://developer.mozilla.org/ja/docs/Web/API/WebGPU_API)を直接使用します。`navigator.gpu.requestAdapter()` → `adapter.requestDevice()` → WGSL compute pipeline → `dispatchWorkgroups()` の経路です。描画もWebGPUのrender pipelineを使い、専用Worker上のOffscreenCanvasへ辺と円形ノードをGPU描画します。Canvas 2Dは完成した画像の画面への合成と、WebGPU非対応環境のフォールバックにのみ使用します。
+MTXファイルの前処理、RR Full / RR Sparse SGD、stress評価をブラウザ内で実行する静的サイトです。前処理およびRR Full / RR Sparse SGDのGPUソルバーは、Rust実装（`implementations/full/rr_gpu`, `implementations/sparse/sparse-sgd-gpu`, `shared/experiment-common`）を `wasm32-unknown-unknown`（`wgpu` WebGPU backend + `wasm-bindgen`）へコンパイルしたWebAssemblyパッケージ（`web/rr-lab/wasm` → `dist/pkg/`）を共有して実行します。描画もWebGPUのrender pipelineを使い、専用Worker上のOffscreenCanvasへ辺と円形ノードをGPU描画します。Canvas 2Dは完成した画像の画面への合成と、WebGPU非対応環境のフォールバックにのみ使用します。
 
 「現在のグラフ」は左側の読み込み欄に表示し、サンプル／アップロードの種別・名前・使用頂点数・辺数を明記します。サンプル候補や読み込み元のラジオボタンを変えただけでは、読み込み済みのグラフは切り替わりません。読み込み成功後にまとめて切り替え、失敗時は直前のグラフと結果を保持します。
 
@@ -35,48 +35,52 @@ http://localhost:4173 を開きます。アプリ自体の依存パッケージ�
 ## 責務と処理の流れ
 
 ```text
+wasm/                       Rust crates (rr_gpu, sparse-sgd-gpu) の WebAssembly / wgpu ブリッジ
+dist/pkg/                   ビルド済み WASM バイナリと wasm-bindgen JS バインディング
+dist/wasm/index.js          ブラウザ / Node 共通 WASM ローダー
 dist/app.js                 画面操作と計算状態の調停
   ui/                       設定、結果表示・保存、Workerクライアント
   render/                   WebGPU描画・WGSL頂点／フラグメントシェーダー
   workers/graph-worker.js   読み込み・前処理・評価のWorker入口
     graph/                  MTX、最大連結成分、CSR/BFS、サンプル、stress評価
-    preprocess/full.js      全点対距離と重み範囲
-    preprocess/sparse.js    pivot選択、領域、方向別重み、競合なしmatching
+    preprocess/full.js      全点対u16距離と重み範囲（Rust WASM連携）
+    preprocess/sparse.js    pivot選択、O(N)領域構築、方向別重み、u64ビットマスク競合なしmatching（Rust WASM連携）
   sgd/context.js            WebGPU初期化、buffer所有権、座標の読戻し
-  sgd/initialization.js     seed付き初期座標
+  sgd/initialization.js     seed付き初期座標（Rust WASM StdRng共有）
   sgd/learning-rate.js      学習率スケジュール
   sgd/full-schedule.js      Fullの2段階RRスケジュール
-  sgd/full-engine.js        Full GPU投入
-  sgd/sparse-engine.js      Sparse GPU投入
-  sgd/full.wgsl             Full座標更新
-  sgd/sparse.wgsl           Sparse座標更新
+  sgd/full-engine.js        Full GPU投入（Rust wgpu FullStepper）
+  sgd/sparse-engine.js      Sparse GPU投入（Rust wgpu SparseStepper）
+  sgd/full.wgsl             Full座標更新（u16 4-bank距離・shared座標）
+  sgd/sparse.wgsl           Sparse座標更新（sharedメモリpivotキャッシュ・20B GpuPair・4-bank片側表）
 ```
 
-前処理・評価にDOMやGPU依存はありません。SGDエンジンは読み込み・画面操作を知りません。Workerの通信は `ui/graph-client.js` に閉じ込めています。大きいCPU前処理バッファはGPU転送後に解放します。
+前処理・評価にDOMやGPU依存はありません。SGDエンジンは読み込み・画面操作を知りません。Workerの通信は `ui/graph-client.js` に閉じ込めています。大きいCPU前処理バッファはGPU転送後に解放します。Rust側のソルバー変更を反映する場合は `npm run build:wasm` で `dist/pkg/` を再生成できます。
 
 ## FullとSparse
 
-Fullは `implementations/full/rr_gpu` のタイル間・タイル内RRを移植しています。tile 128、workgroup 64、shared座標。全頂点対を反復ごとに1回更新し、外側・内側の順をシャッフルします。
+Fullは `implementations/full/rr_gpu` のタイル間・タイル内RR（Phase 1A高速化）をWebAssembly + `wgpu` でそのまま実行します。tile 128、workgroup 64、shared座標。全頂点対を反復ごとに1回更新し、外側・内側の順をシャッフルします。
 
-Sparseは `implementations/sparse/sparse-sgd-gpu` の前処理と2相更新を移植しています。
+- 距離行列を `u16`（2 bytes/pair、`array<u32>` に2要素パック）で無損失保持し、4バンクのストレージバッファ（`dist_bank0..3`）へ分割バインド。
+- 静的タイル対リストの事前パッキング、内側順列の単一 `write_buffer` 転送、動的ユニフォームオフセット、および最大256ディスパッチ単位の単一 `ComputePass` バッチ投入によりCPU-GPU間の発行オーバーヘッドを最小化。
 
-- 距離に比例したpivotサンプリング。領域の同距離tieは先に選ばれたpivotを優先。
+Sparseは `implementations/sparse/sparse-sgd-gpu` の前処理と2相更新（Phase 1B / Phase 3高速化）をWebAssembly + `wgpu` でそのまま実行します。
+
+- 距離に比例したpivotサンプリング。領域の同距離tieは先に選ばれたpivotを優先し、$O(N)$ の1パス領域カウントでCSR領域を構築（Phase 3）。
 - 方向別重み `s_ip / d_ip²`。元グラフの辺は両方向とも重み1で上書き。
-- 片側相は1 invocationが1非pivot頂点を所有し、pivotを読むだけ。pivot行は書き戻さない。
-- 両側相はpivotのcircle matchingと、元グラフ辺をfirst-fitで詰めたmatching。各dispatchの両端書き込みは競合しない。
-- 頂点ごとのpivot順序はnative版と同じ4段Feistel＋cycle walking。相順・matching順・共通pivot順もシャッフル。
+- 片側相は1 invocationが1非pivot頂点を所有し、pivotの順列・ID・座標をワークグループ共有メモリ（`wg_pivot_perm`, `wg_pivot_id`, `wg_pivot_pos`）へ一括協調ロードしてグローバルメモリ帯域を削減（Phase 1B）。片側表は4バンク（`one_sided_bank0..3`）に分割バインド。
+- 両側相はpivotのcircle matchingと、`u64` ビットマスクによる高速First-Fit辺彩色（Phase 1B）で詰めたmatching。20-byteのパディングなし `GpuPair` と単一 `ComputePass` バッチ投入を使用。各dispatchの両端書き込みは競合しない。
+- 頂点ごとのpivot順序は4段Feistel＋cycle walking。相順・matching順・共通pivot順もシャッフル。
 - 学習率は `1 / w_min` から `epsilon / w_max` へ指数減衰。座標更新はf32、atomic・lockは使用しない。
-
-乱数生成器・浮動小数点処理・辺の格納順がRust版と異なるため、Rust版と同じseedでも座標の完全一致は保証しません。SparseをFullと呼び替えたり、辺だけのSGDで代用したりはしていません。
 
 ## 規模とメモリ
 
 グラフ読み込み後、距離行列の必要量とGPU上限を比較し、Fullが使えなければFullの選択肢を無効化してSparseへ切り替えます。必要メモリと上限も表示し、小さなグラフに切り替えるとFullを再び選択できます。Sparseのpivot上限も表示します。
 
-4,096頂点の固定制限は撤去しました。実行前にアダプターの制限を確認し、単一GPUバッファは最大1 GiB（アダプター上限が小さい場合はその値）まで要求します。
+4,096頂点の固定制限は撤去しました。実行前にアダプターの制限を確認し、4バンク分割バインドによりブラウザの標準WebGPU上限（1バンク128 MiB × 4 = 512 MiB、アダプター上限が大きい場合は最大4 GiB）まで対応します。
 
-- Fullの距離行列は `4 × n²` bytes。USpowerGridは約93.1 MiB。LuxembourgのFullは約48.9 GiB必要なので、割り当て前にSparseの利用を案内します。
-- Sparseの片側表は `8 × n × pivots` bytes。Luxembourg・200 pivotsは約174.9 MiB。前処理中はさらにpivot距離 `4 × n × pivots` bytes、隣接表等を保持します。
+- Fullの距離行列は `2 × n²` bytes（`u16` パック）。USpowerGridは約46.5 MiB。1バンク128 MiBの標準WebGPU環境でも4バンク合計512 MiB（最大 $N=16,384$ 頂点）までFullを実行可能です。LuxembourgのFullは約24.5 GiB必要なので、割り当て前にSparseの利用を案内します。
+- Sparseの片側表は `8 × n × pivots` bytes（4バンク分割バインド対応）。Luxembourg・200 pivotsは約174.9 MiBで、1バンク128 MiB上限の環境でも4バンク合計512 MiB内に収まります。前処理中はさらにpivot距離 `4 × n × pivots` bytes、隣接表等を保持します。
 - 大きなグラフの読み込み時は、既存のpivot数がGPU上限を超えていれば収まる値へ変更し、入力欄に実際の値を表示します。読み込み後に指定した範囲外の値はエラー表示します。
 - MTXの64 MiB・200万頂点・500万行の固定制限を撤去。File.stream()から行を逐次解析し、端点をUint32Arrayに格納、連結成分をUnion-Find、隣接をCSR、matchingを型付き配列で構築します。実行可能な規模はGPU・ブラウザ・メモリ容量に依存します。
 - 既定は全辺・全頂点をWebGPUで描画します。「辺：自動」を選ぶと50万辺以上を最大10万辺に規則的に間引き、表示数／全辺数を明記します。GPU描画では頂点を間引き・画素集約せず、全頂点を円形quadのインスタンスとして描画します。計算には常に全辺を使用します。

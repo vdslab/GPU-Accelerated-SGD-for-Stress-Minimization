@@ -1,4 +1,5 @@
-// Port of implementations/sparse/sparse-sgd-gpu/src/shader*.wgsl.
+// Port of implementations/sparse/sparse-sgd-gpu/src/shader*.wgsl
+// (Phase 1B: shared-memory pivot caching, 20-byte Pair, 4-bank one_sided storage).
 struct Uniforms {
     n: u32,
     start: u32,
@@ -21,14 +22,36 @@ struct Pair {
     dij: f32,
     weight_u: f32,
     weight_v: f32,
-    pad: u32,
 }
+
+const WORKGROUP_SIZE: u32 = 128u;
+const BANK_SHIFT: u32 = 24u;
+const BANK_MASK: u32 = 0x00ffffffu;
 
 @group(0) @binding(0) var<uniform> uniforms: Uniforms;
 @group(0) @binding(1) var<storage, read_write> positions: array<vec2<f32>>;
-@group(0) @binding(2) var<storage, read> one_sided: array<OneSidedEntry>;
+@group(0) @binding(2) var<storage, read> one_sided_bank0: array<OneSidedEntry>;
 @group(0) @binding(3) var<storage, read> pivot_permutation: array<u32>;
 @group(0) @binding(4) var<storage, read> pairs: array<Pair>;
+@group(0) @binding(5) var<storage, read> one_sided_bank1: array<OneSidedEntry>;
+@group(0) @binding(6) var<storage, read> one_sided_bank2: array<OneSidedEntry>;
+@group(0) @binding(7) var<storage, read> one_sided_bank3: array<OneSidedEntry>;
+
+// Workgroup shared memory caching for pivot data (4.0 KiB total <= 16.0 KiB limit)
+var<workgroup> wg_pivot_perm: array<u32, 256>;
+var<workgroup> wg_pivot_id: array<u32, 256>;
+var<workgroup> wg_pivot_pos: array<vec2<f32>, 256>;
+
+fn get_one_sided_entry(entry_idx: u32) -> OneSidedEntry {
+    let bank_idx = entry_idx >> BANK_SHIFT;
+    let local_idx = entry_idx & BANK_MASK;
+    switch bank_idx {
+        case 0u: { return one_sided_bank0[local_idx]; }
+        case 1u: { return one_sided_bank1[local_idx]; }
+        case 2u: { return one_sided_bank2[local_idx]; }
+        default: { return one_sided_bank3[local_idx]; }
+    }
+}
 
 fn hash32(value: u32) -> u32 {
     var x = value;
@@ -52,10 +75,19 @@ fn displacement(pos_u: vec2<f32>, pos_v: vec2<f32>, dij: f32, salt: u32) -> vec2
     return ((norm - dij) / (2.0 * norm)) * difference;
 }
 
-// One invocation owns one non-pivot vertex. It is the only writer of that vertex;
-// pivots are read-only throughout this dispatch.
-@compute @workgroup_size(256)
-fn one_sided_phase(@builtin(global_invocation_id) gid: vec3<u32>) {
+@compute @workgroup_size(128)
+fn one_sided_phase(
+    @builtin(global_invocation_id) gid: vec3<u32>,
+    @builtin(local_invocation_id) lid: vec3<u32>,
+) {
+    for (var i = lid.x; i < uniforms.pivot_count; i += WORKGROUP_SIZE) {
+        wg_pivot_perm[i] = pivot_permutation[i];
+        let pid = pivot_permutation[uniforms.pivot_count + i];
+        wg_pivot_id[i] = pid;
+        wg_pivot_pos[i] = positions[pid];
+    }
+    workgroupBarrier();
+
     let vertex = gid.x;
     if vertex >= uniforms.n {
         return;
@@ -63,11 +95,11 @@ fn one_sided_phase(@builtin(global_invocation_id) gid: vec3<u32>) {
     var local_position = positions[vertex];
     var changed = false;
     for (var k = uniforms.start; k < uniforms.start + uniforms.count; k++) {
-        let pivot_index = pivot_permutation[shuffle_pivot(k, vertex ^ uniforms.seed ^ (uniforms.iteration * 0x9e3779b9u), uniforms.pivot_count)];
-        let entry = one_sided[vertex * uniforms.pivot_count + pivot_index];
+        let pivot_index = wg_pivot_perm[shuffle_pivot(k, vertex ^ uniforms.seed ^ (uniforms.iteration * 0x9e3779b9u), uniforms.pivot_count)];
+        let entry = get_one_sided_entry(vertex * uniforms.pivot_count + pivot_index);
         if entry.weight > 0.0 {
-            let pivot = pivot_permutation[uniforms.pivot_count + pivot_index];
-            let pivot_position = positions[pivot];
+            let pivot = wg_pivot_id[pivot_index];
+            let pivot_position = wg_pivot_pos[pivot_index];
             changed = true;
             let delta = displacement(
                 local_position,
@@ -79,15 +111,12 @@ fn one_sided_phase(@builtin(global_invocation_id) gid: vec3<u32>) {
             local_position += mu * delta;
         }
     }
-    // Pivot rows have no positive one-sided entries: never write their coordinates.
     if changed {
         positions[vertex] = local_position;
     }
 }
 
-// The host guarantees that each dispatched slice is a matching, so both endpoint
-// writes are race-free without atomics or locks.
-@compute @workgroup_size(256)
+@compute @workgroup_size(128)
 fn two_sided_round(@builtin(global_invocation_id) gid: vec3<u32>) {
     if gid.x >= uniforms.count {
         return;
@@ -108,9 +137,6 @@ fn two_sided_round(@builtin(global_invocation_id) gid: vec3<u32>) {
     positions[pair.v] = pos_v - mu_v * delta;
 }
 
-
-// Four-round balanced Feistel permutation on the smallest power-of-four domain.
-// Cycle walking restricts that bijection to [0, count), with no omissions/repeats.
 fn shuffle_pivot(index: u32, key: u32, count: u32) -> u32 {
     if count <= 1u { return 0u; }
     var remaining = count - 1u;

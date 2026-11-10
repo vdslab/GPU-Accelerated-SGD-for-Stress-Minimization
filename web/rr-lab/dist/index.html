@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; worker-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'"
+      content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data: blob:; worker-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'"
     />
     <title>RR-SGD</title>
     <meta
@@ -323,10 +323,10 @@
       <details class="method-settings">
         <summary>実装・入力条件</summary>
         <p><button id="reset" type="button" disabled>初期配置に戻す</button></p>
-        <p>Full: 全点対距離を使用。tile 128 / workgroup 64 / shared。</p>
+        <p>Full: 全点対距離を使用。tile 128 / workgroup 64 / shared / u16 4-bank。</p>
         <p>
-          Sparse: pivot距離と方向別重みを使用。片側更新＋両側matching / workgroup
-          256。頂点ごとにFeistel置換でpivot順序をシャッフル。
+          Sparse: pivot距離と方向別重みを使用。片側更新＋両側matching / workgroup 128 / shared pivot
+          cache。頂点ごとにFeistel置換でpivot順序をシャッフル。
         </p>
         <p>
           最大連結成分を使用し、無向・非重み付きとして読み込みます。自己ループ・重複辺を除去。行列値は使用しません。

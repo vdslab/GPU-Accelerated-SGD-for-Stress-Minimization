@@ -1,0 +1,15 @@
+{
+  "name": "rr-lab-wasm",
+  "type": "module",
+  "version": "0.1.0",
+  "files": [
+    "rr_lab_wasm_bg.wasm",
+    "rr_lab_wasm.js",
+    "rr_lab_wasm.d.ts"
+  ],
+  "main": "rr_lab_wasm.js",
+  "types": "rr_lab_wasm.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

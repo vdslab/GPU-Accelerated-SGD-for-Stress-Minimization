@@ -1,9 +1,6 @@
-import { rng } from './random.js';
+import { wasm_initial_positions } from '../wasm/index.js';
 
-/** Same seeded initial positions for both solvers and Before rendering. */
+/** Same seeded initial positions (via Rust experiment_common::seed::seeded_positions) for both solvers and Before rendering. */
 export function initialPositions(n, seed) {
-  const random = rng(seed),
-    p = new Float32Array(n * 2);
-  for (let i = 0; i < p.length; i++) p[i] = random() - 0.5;
-  return p;
+  return wasm_initial_positions(n, seed >>> 0);
 }

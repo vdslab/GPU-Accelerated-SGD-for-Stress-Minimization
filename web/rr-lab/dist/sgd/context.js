@@ -1,6 +1,6 @@
 const BUFFER_BUDGET = 1024 * 2 ** 20;
 
-/** Native browser WebGPU API: navigator.gpu → adapter → device, without a server solver. */
+/** Native browser WebGPU API initialization. */
 export async function createGpuContext() {
   if (!navigator.gpu) throw new Error('WebGPUを利用できません。対応ブラウザで開いてください。');
   const adapter = await navigator.gpu.requestAdapter({ powerPreference: 'high-performance' });

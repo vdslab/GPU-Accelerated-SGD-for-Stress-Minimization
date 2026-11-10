@@ -3,6 +3,50 @@ import { createGpuContext, GpuBuffers, shaderModule } from '../sgd/context.js';
 const EDGE_BATCH = 131072;
 const NODE_BATCH = 262144;
 
+let swapchainSupported;
+async function probeSwapchain() {
+  if (swapchainSupported !== undefined) return swapchainSupported;
+  try {
+    const context = await createGpuContext();
+    try {
+      const canvas = new OffscreenCanvas(4, 4);
+      const ctx = canvas.getContext('webgpu');
+      if (!ctx) return (swapchainSupported = false);
+      ctx.configure({
+        device: context.device,
+        format: navigator.gpu.getPreferredCanvasFormat(),
+        alphaMode: 'opaque',
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC,
+      });
+      const encoder = context.device.createCommandEncoder();
+      const pass = encoder.beginRenderPass({
+        colorAttachments: [
+          {
+            view: ctx.getCurrentTexture().createView(),
+            loadOp: 'clear',
+            storeOp: 'store',
+            clearValue: { r: 1, g: 1, b: 1, a: 1 },
+          },
+        ],
+      });
+      pass.end();
+      context.device.queue.submit([encoder.finish()]);
+      await context.device.queue.onSubmittedWorkDone();
+      const bmp = canvas.transferToImageBitmap();
+      const check = new OffscreenCanvas(4, 4);
+      const ctx2d = check.getContext('2d');
+      ctx2d.drawImage(bmp, 0, 0);
+      bmp.close();
+      const data = ctx2d.getImageData(0, 0, 1, 1).data;
+      return (swapchainSupported = data[0] === 255 && data[3] === 255);
+    } finally {
+      context.device.destroy();
+    }
+  } catch {
+    return (swapchainSupported = false);
+  }
+}
+
 /** Graph geometry stays on the GPU. Camera changes upload only a 48-byte uniform. */
 export class GpuGraphRenderer extends GpuBuffers {
   static async create(graph, distances) {
@@ -55,10 +99,15 @@ export class GpuGraphRenderer extends GpuBuffers {
       );
       this.edgeChunks.push({ start, count: end - start, buffer });
     }
-    this.canvas = new OffscreenCanvas(4096, 4096);
-    this.context = this.canvas.getContext('webgpu');
-    if (!this.context) throw Error('OffscreenCanvasのWebGPU描画を利用できません。');
-    this.format = navigator.gpu.getPreferredCanvasFormat();
+    this.useSwapchain = await probeSwapchain();
+    if (this.useSwapchain) {
+      this.canvas = new OffscreenCanvas(4096, 4096);
+      this.context = this.canvas.getContext('webgpu');
+      if (!this.context) throw Error('OffscreenCanvasのWebGPU描画を利用できません。');
+      this.format = navigator.gpu.getPreferredCanvasFormat();
+    } else {
+      this.format = 'rgba8unorm';
+    }
     const module = await shaderModule(this.device, new URL('./graph.wgsl', import.meta.url));
     this.bindLayout = this.device.createBindGroupLayout({
       entries: [
@@ -154,16 +203,32 @@ export class GpuGraphRenderer extends GpuBuffers {
         slot = this.slot(job);
       const uploadMs = performance.now() - uploadStarted;
       if (this.resolution !== job.resolution) {
-        this.canvas.width = this.canvas.height = job.resolution;
-        this.context.configure({
-          device: this.device,
-          format: this.format,
-          alphaMode: 'opaque',
-          usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC,
-        });
+        if (this.useSwapchain) {
+          this.canvas.width = this.canvas.height = job.resolution;
+          this.context.configure({
+            device: this.device,
+            format: this.format,
+            alphaMode: 'opaque',
+            usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC,
+          });
+        } else {
+          this.renderTexture?.destroy();
+          this.renderReadback?.destroy();
+          this.renderTexture = this.device.createTexture({
+            size: [job.resolution, job.resolution],
+            format: this.format,
+            usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC,
+          });
+          this.renderReadback = this.device.createBuffer({
+            size: job.resolution * job.resolution * 4,
+            usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
+          });
+        }
         this.resolution = job.resolution;
       }
-      const texture = this.context.getCurrentTexture().createView();
+      const texture = (
+        this.useSwapchain ? this.context.getCurrentTexture() : this.renderTexture
+      ).createView();
       const stride =
         job.edgeLimit && this.m > 500000 ? Math.max(1, Math.ceil(this.m / job.edgeLimit)) : 1;
       let first = true,
@@ -207,7 +272,29 @@ export class GpuGraphRenderer extends GpuBuffers {
       const bind = this.bind(slot.buffer, this.edgeChunks[0].buffer);
       for (let start = 0; start < this.n; start += NODE_BATCH)
         await submit(this.nodePipeline, bind, Math.min(NODE_BATCH, this.n - start), start);
-      bitmap = this.canvas.transferToImageBitmap();
+      if (this.useSwapchain) {
+        bitmap = this.canvas.transferToImageBitmap();
+      } else {
+        const encoder = this.device.createCommandEncoder();
+        encoder.copyTextureToBuffer(
+          { texture: this.renderTexture },
+          { buffer: this.renderReadback, bytesPerRow: job.resolution * 4 },
+          [job.resolution, job.resolution],
+        );
+        this.device.queue.submit([encoder.finish()]);
+        await this.renderReadback.mapAsync(GPUMapMode.READ);
+        try {
+          bitmap = await createImageBitmap(
+            new ImageData(
+              new Uint8ClampedArray(this.renderReadback.getMappedRange()),
+              job.resolution,
+              job.resolution,
+            ),
+          );
+        } finally {
+          this.renderReadback.unmap();
+        }
+      }
       return {
         bitmap,
         backend: 'webgpu',
@@ -228,5 +315,10 @@ export class GpuGraphRenderer extends GpuBuffers {
         throw Error(error.message);
       }
     }
+  }
+  dispose() {
+    super.dispose();
+    this.renderTexture?.destroy();
+    this.renderReadback?.destroy();
   }
 }

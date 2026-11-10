@@ -1,6 +1,7 @@
 use anyhow::{ensure, Result};
 use serde::{Deserialize, Serialize};
 use std::collections::VecDeque;
+#[cfg(not(target_arch = "wasm32"))]
 use std::time::Instant;
 
 pub const AUTO_EXACT_MAX_N: usize = 8_000;
@@ -140,6 +141,7 @@ fn configured_mode() -> StressMode {
 }
 
 pub fn measure_auto_f64(positions: &[[f64; 2]], edges: &[(usize, usize)]) -> StressMeasurement {
+    #[cfg(not(target_arch = "wasm32"))]
     let started = Instant::now();
     let result = evaluate_f64(
         configured_mode(),
@@ -148,10 +150,15 @@ pub fn measure_auto_f64(positions: &[[f64; 2]], edges: &[(usize, usize)]) -> Str
         configured_samples(),
         DEFAULT_SEED,
     );
-    StressMeasurement::from_result(result, started.elapsed().as_secs_f64() * 1_000.0)
+    #[cfg(not(target_arch = "wasm32"))]
+    let elapsed_ms = started.elapsed().as_secs_f64() * 1_000.0;
+    #[cfg(target_arch = "wasm32")]
+    let elapsed_ms = 0.0;
+    StressMeasurement::from_result(result, elapsed_ms)
 }
 
 pub fn measure_auto_f32(positions: &[[f32; 2]], edges: &[(usize, usize)]) -> StressMeasurement {
+    #[cfg(not(target_arch = "wasm32"))]
     let started = Instant::now();
     let result = evaluate_f32(
         configured_mode(),
@@ -160,7 +167,11 @@ pub fn measure_auto_f32(positions: &[[f32; 2]], edges: &[(usize, usize)]) -> Str
         configured_samples(),
         DEFAULT_SEED,
     );
-    StressMeasurement::from_result(result, started.elapsed().as_secs_f64() * 1_000.0)
+    #[cfg(not(target_arch = "wasm32"))]
+    let elapsed_ms = started.elapsed().as_secs_f64() * 1_000.0;
+    #[cfg(target_arch = "wasm32")]
+    let elapsed_ms = 0.0;
+    StressMeasurement::from_result(result, elapsed_ms)
 }
 
 pub fn evaluate_f64(

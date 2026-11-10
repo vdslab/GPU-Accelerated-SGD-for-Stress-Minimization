@@ -1,7 +1,12 @@
-use anyhow::{Context, Result};
+#[cfg(not(target_arch = "wasm32"))]
+use anyhow::Context;
+use anyhow::Result;
 use std::collections::VecDeque;
+#[cfg(not(target_arch = "wasm32"))]
 use std::time::Instant;
+#[cfg(not(target_arch = "wasm32"))]
 use webgpu_bfs_core::CsrGraph;
+#[cfg(not(target_arch = "wasm32"))]
 use webgpu_bfs_gpu::engine::{GpuBfsEngine, GpuBfsMethod};
 
 /// Maximum vertex count supported by Full SGD's 4-bank 512 MiB distance storage (N <= 16,384).
@@ -83,13 +88,15 @@ pub fn compute_apsp(
         BfsBackend::Cpu => false,
     };
 
+    #[cfg(not(target_arch = "wasm32"))]
     if use_gpu {
-        compute_apsp_gpu(graph)
-    } else {
-        compute_apsp_cpu(graph)
+        return compute_apsp_gpu(graph);
     }
+    let _ = use_gpu;
+    compute_apsp_cpu(graph)
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 pub fn compute_apsp_gpu(graph: &super::Graph) -> Result<FullBfsOutcome> {
     let n = graph.node_size;
 
@@ -161,6 +168,7 @@ pub fn compute_apsp_gpu(graph: &super::Graph) -> Result<FullBfsOutcome> {
 }
 
 pub fn compute_apsp_cpu(graph: &super::Graph) -> Result<FullBfsOutcome> {
+    #[cfg(not(target_arch = "wasm32"))]
     let kernel_start = Instant::now();
     let n = graph.node_size;
     let total_distances = n * n;
@@ -204,7 +212,10 @@ pub fn compute_apsp_cpu(graph: &super::Graph) -> Result<FullBfsOutcome> {
             }
         }
     }
+    #[cfg(not(target_arch = "wasm32"))]
     let bfs_kernel_time_ms = kernel_start.elapsed().as_secs_f64() * 1000.0;
+    #[cfg(target_arch = "wasm32")]
+    let bfs_kernel_time_ms = 0.0;
 
     Ok(FullBfsOutcome {
         dist_u16,

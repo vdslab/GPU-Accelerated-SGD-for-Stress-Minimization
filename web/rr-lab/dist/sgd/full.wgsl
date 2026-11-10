@@ -1,31 +1,60 @@
-// Two-level Round-robin Full SGD.
+// Two-level Round-robin Full SGD (Phase 1A: lossless u16 4-bank distance storage).
 // A workgroup owns one tile (two blocks of at most 128 vertices).
 // Inner matchings are disjoint, and a barrier separates successive matchings.
-const TILE_SIZE: u32 = 128u;
+const BLOCK_T: u32 = 128u;
 const WORKGROUP_SIZE: u32 = 64u;
-const FULL_SELF_OFFSET: u32 = 128u;
+const BANK_SHIFT: u32 = 25u;
+const BANK_MASK: u32 = 0x01ffffffu;
 
-struct Parameters {
-    vertex_count: u32,
+struct Uniforms {
+    n: u32,
     eta: f32,
-    partial_self_offset: u32,
-    padding: u32,
+    full_self_perm_offset: u32,
+    partial_self_perm_offset: u32,
+    chunk: u32,
+    chunks: u32,
+    tiles_offset: u32,
+    perm_offset: u32,
+    subround_start: u32,
+    subround_end: u32,
+    pad0: u32,
+    pad1: u32,
 }
 
-@group(0) @binding(0) var<uniform> parameters: Parameters;
+@group(0) @binding(0) var<uniform> uniforms: Uniforms;
 @group(0) @binding(1) var<storage, read_write> positions: array<vec2<f32>>;
-@group(0) @binding(2) var<storage, read> distances: array<f32>;
-@group(0) @binding(3) var<storage, read> tiles: array<vec2<u32>>;
-@group(0) @binding(4) var<storage, read> permutation: array<u32>;
+@group(0) @binding(2) var<storage, read> dist_bank0: array<u32>;
+@group(0) @binding(3) var<storage, read> block_lens: array<u32>;
+@group(0) @binding(4) var<storage, read> tiles: array<vec2<u32>>;
+@group(0) @binding(5) var<storage, read> inner_perm: array<u32>;
+@group(0) @binding(6) var<storage, read> dist_bank1: array<u32>;
+@group(0) @binding(7) var<storage, read> dist_bank2: array<u32>;
+@group(0) @binding(8) var<storage, read> dist_bank3: array<u32>;
 
-var<workgroup> left_positions: array<vec2<f32>, 128>;
-var<workgroup> right_positions: array<vec2<f32>, 128>;
-var<workgroup> tile_index: vec2<u32>;
+var<workgroup> wg_pos_i: array<vec2<f32>, 128>;
+var<workgroup> wg_pos_j: array<vec2<f32>, 128>;
+var<workgroup> wg_tile: vec2<u32>;
+
+fn get_dist(u: u32, v: u32) -> f32 {
+    let flat_idx = u * uniforms.n + v;
+    let word_idx = flat_idx >> 1u;
+    let bank_idx = word_idx >> BANK_SHIFT;
+    let local_idx = word_idx & BANK_MASK;
+    var word = 0u;
+    switch bank_idx {
+        case 0u: { word = dist_bank0[local_idx]; }
+        case 1u: { word = dist_bank1[local_idx]; }
+        case 2u: { word = dist_bank2[local_idx]; }
+        default: { word = dist_bank3[local_idx]; }
+    }
+    let shift = (flat_idx & 1u) * 16u;
+    return f32((word >> shift) & 0xffffu);
+}
 
 fn displacement(left: vec2<f32>, right: vec2<f32>, desired_distance: f32) -> vec2<f32> {
     let difference = right - left;
     let current = max(length(difference), 1e-12);
-    let step = min(parameters.eta / (desired_distance * desired_distance), 1.0);
+    let step = min(uniforms.eta / (desired_distance * desired_distance), 1.0);
     return step * ((current - desired_distance) * 0.5) * (difference / current);
 }
 
@@ -35,49 +64,48 @@ fn main(
     @builtin(local_invocation_index) lane: u32,
 ) {
     if lane == 0u {
-        tile_index = tiles[workgroup.x];
+        wg_tile = tiles[uniforms.tiles_offset + workgroup.x];
     }
-    // Broadcast a uniform tile identity so all lanes reach the same barriers.
-    let tile = workgroupUniformLoad(&tile_index);
-    let left_block = tile.x;
-    let right_block = tile.y;
-    let left_length = min(TILE_SIZE, parameters.vertex_count - left_block * TILE_SIZE);
-    let right_length = min(TILE_SIZE, parameters.vertex_count - right_block * TILE_SIZE);
+    let tile = workgroupUniformLoad(&wg_tile);
+    let i = tile.x;
+    let j = tile.y;
+    let li = block_lens[i];
+    let lj = block_lens[j];
 
-    for (var local = lane; local < TILE_SIZE; local += WORKGROUP_SIZE) {
-        if local < left_length {
-            left_positions[local] = positions[left_block * TILE_SIZE + local];
+    for (var local = lane; local < BLOCK_T; local += WORKGROUP_SIZE) {
+        if local < li {
+            wg_pos_i[local] = positions[i * BLOCK_T + local];
         }
-        if local < right_length {
-            right_positions[local] = positions[right_block * TILE_SIZE + local];
+        if local < lj {
+            wg_pos_j[local] = positions[j * BLOCK_T + local];
         }
     }
     workgroupBarrier();
 
-    if left_block != right_block {
-        // Cyclic offsets cover every cross-block pair once, skipping padded vertices.
-        for (var round = 0u; round < TILE_SIZE; round++) {
-            let offset = permutation[round];
-            for (var left = lane; left < left_length; left += WORKGROUP_SIZE) {
-                let right = (left + offset) % TILE_SIZE;
-                if right < right_length {
-                    let u = left_block * TILE_SIZE + left;
-                    let v = right_block * TILE_SIZE + right;
-                    let desired_distance = distances[u * parameters.vertex_count + v];
-                    let delta = displacement(left_positions[left], right_positions[right], desired_distance);
-                    left_positions[left] += delta;
-                    right_positions[right] -= delta;
+    if i != j {
+        for (var round = uniforms.subround_start; round < uniforms.subround_end; round++) {
+            let offset = inner_perm[uniforms.perm_offset + round];
+            for (var left = lane; left < li; left += WORKGROUP_SIZE) {
+                let right = (left + offset) % BLOCK_T;
+                if right < lj {
+                    let u = i * BLOCK_T + left;
+                    let v = j * BLOCK_T + right;
+                    let d = get_dist(u, v);
+                    if d >= 0.5 {
+                        let delta = displacement(wg_pos_i[left], wg_pos_j[right], d);
+                        wg_pos_i[left] += delta;
+                        wg_pos_j[right] -= delta;
+                    }
                 }
             }
             workgroupBarrier();
         }
     } else {
-        // Circle method for the actual block length, with one dummy when it is odd.
-        let effective_length = left_length + left_length % 2u;
+        let effective_length = li + li % 2u;
         let round_count = effective_length - 1u;
-        let offset = select(FULL_SELF_OFFSET, parameters.partial_self_offset, left_length < TILE_SIZE);
-        for (var step = 0u; step < round_count; step++) {
-            let round = permutation[offset + step];
+        let offset = uniforms.perm_offset + select(uniforms.full_self_perm_offset, uniforms.partial_self_perm_offset, li < BLOCK_T);
+        for (var step = uniforms.chunk * round_count / uniforms.chunks; step < (uniforms.chunk + 1u) * round_count / uniforms.chunks; step++) {
+            let round = inner_perm[offset + step];
             for (var slot = lane; slot < effective_length / 2u; slot += WORKGROUP_SIZE) {
                 var left = effective_length - 1u;
                 var right = round;
@@ -85,25 +113,27 @@ fn main(
                     left = (round + slot) % round_count;
                     right = (round + round_count - slot) % round_count;
                 }
-                if left < left_length && right < left_length {
-                    let u = left_block * TILE_SIZE + left;
-                    let v = left_block * TILE_SIZE + right;
-                    let desired_distance = distances[u * parameters.vertex_count + v];
-                    let delta = displacement(left_positions[left], left_positions[right], desired_distance);
-                    left_positions[left] += delta;
-                    left_positions[right] -= delta;
+                if left < li && right < li {
+                    let u = i * BLOCK_T + left;
+                    let v = i * BLOCK_T + right;
+                    let d = get_dist(u, v);
+                    if d >= 0.5 {
+                        let delta = displacement(wg_pos_i[left], wg_pos_i[right], d);
+                        wg_pos_i[left] += delta;
+                        wg_pos_i[right] -= delta;
+                    }
                 }
             }
             workgroupBarrier();
         }
     }
 
-    for (var local = lane; local < left_length; local += WORKGROUP_SIZE) {
-        positions[left_block * TILE_SIZE + local] = left_positions[local];
+    for (var local = lane; local < li; local += WORKGROUP_SIZE) {
+        positions[i * BLOCK_T + local] = wg_pos_i[local];
     }
-    if left_block != right_block {
-        for (var local = lane; local < right_length; local += WORKGROUP_SIZE) {
-            positions[right_block * TILE_SIZE + local] = right_positions[local];
+    if i != j {
+        for (var local = lane; local < lj; local += WORKGROUP_SIZE) {
+            positions[j * BLOCK_T + local] = wg_pos_j[local];
         }
     }
 }

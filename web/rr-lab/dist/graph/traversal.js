@@ -1,4 +1,5 @@
 import { forEachEdge } from './edges.js';
+import { wasm_prepare_full } from '../wasm/index.js';
 
 /** Compact adjacency avoids allocating a JavaScript array for every BFS vertex. */
 export function adjacency(graph) {
@@ -42,15 +43,14 @@ export function bfs(csr, source, queue = new Uint32Array(csr.n)) {
 }
 
 export function distances(graph, onProgress = () => {}) {
-  const csr = adjacency(graph),
-    queue = new Uint32Array(graph.n);
-  const dist = new Float32Array(graph.n * graph.n);
-  let diameter = 0;
-  for (let source = 0; source < graph.n; source++) {
-    const row = bfs(csr, source, queue);
-    dist.set(row, source * graph.n);
-    for (const value of row) diameter = Math.max(diameter, value);
-    if (source % 32 === 0) onProgress(source / graph.n);
-  }
-  return { dist, diameter };
+  const endpoints = graph.edgeData ?? Uint32Array.from(graph.edges.flat());
+  onProgress(0);
+  const outcome = wasm_prepare_full(graph.n, endpoints);
+  const dist = outcome.take_dist_u16();
+  const diameter = outcome.dmax();
+  const dmin = outcome.dmin();
+  const constraintCount = outcome.constraint_count();
+  outcome.free();
+  onProgress(1);
+  return { dist, diameter, dmin, constraintCount };
 }

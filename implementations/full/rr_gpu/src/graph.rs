@@ -1,7 +1,10 @@
 use anyhow::Result;
+#[cfg(not(target_arch = "wasm32"))]
 use sprs::io::read_matrix_market;
+#[cfg(not(target_arch = "wasm32"))]
 use sprs::num_kinds::Pattern;
 use std::collections::VecDeque;
+#[cfg(not(target_arch = "wasm32"))]
 use std::path::Path;
 
 #[derive(Debug)]
@@ -36,6 +39,18 @@ pub struct EdgeInfo {
 }
 
 impl Graph {
+    #[allow(dead_code)]
+    pub fn from_edges(node_size: usize, edge_src: Vec<usize>, edge_dst: Vec<usize>) -> Self {
+        let edge_size = edge_src.len();
+        Graph {
+            node_size,
+            edge_size,
+            edge_src,
+            edge_dst,
+        }
+    }
+
+    #[cfg(not(target_arch = "wasm32"))]
     pub fn from_mtx(path: &Path) -> Result<Self> {
         let matrix: sprs::TriMat<Pattern> = read_matrix_market(path)?;
 
