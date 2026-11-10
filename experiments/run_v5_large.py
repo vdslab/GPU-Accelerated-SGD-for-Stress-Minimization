@@ -23,6 +23,7 @@ from run_v5 import LARGE, ROOT, VAULT, memory, now, save
 BASE = ROOT / 'experiment_results/v5/large'
 GIB = 1024**3
 BINARY = ROOT / METHODS['rr_sparse_sgd'].binary
+EXTRA_ARGS = ()
 
 
 def preflight(g, p, limits):
@@ -150,7 +151,8 @@ def execute(j,g,warmup=False):
     cmd=[str(BINARY),'--input',g['path'],'--run-id',j['run_id'],'--run-mode','benchmark',
          '--iterations','15','--epsilon','0.1','--seed',str(j['seed']),'--pivots',str(j['pivots']),
          '--output-format','json','--output-dir',str(folder)]
-    env=dict(os.environ,SGD_STRESS_SAMPLES='64',SGD_GPU_TIMESTAMPS='0')
+    cmd += list(EXTRA_ARGS)
+    env=dict(os.environ,SGD_STRESS_SAMPLES='64',SGD_GPU_TIMESTAMPS='0',SGD_STRESS_MODE='auto')
     env.pop('SGD_TRACE_DIR',None);env.pop('SGD_TRACE_CHECKPOINTS',None)
     save(folder/'command.json',dict(argv=cmd,started_at=now(),memory_before=memory(),warmup=warmup,
           environment={'SGD_STRESS_SAMPLES':'64','SGD_GPU_TIMESTAMPS':'0'}))

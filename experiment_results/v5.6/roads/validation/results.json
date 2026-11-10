@@ -1,0 +1,21 @@
+{
+  "version": "v5.6",
+  "formal_runs": 10,
+  "warmups": 2,
+  "graphs": [
+    "italy_osm",
+    "germany_osm"
+  ],
+  "pivots": 50,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "all_success": true,
+  "all_cpu_preprocessing": true,
+  "all_stress_samples64_seed0": true,
+  "all_lossless_archive_verified": true
+}

@@ -1,0 +1,42 @@
+{
+  "version": "v5.6",
+  "created": "2026-11-10T18:33:02.594488+09:00",
+  "graphs": 2,
+  "planned_runs": 10,
+  "pivots": [
+    50
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "repetitions": 1,
+  "iterations": 15,
+  "epsilon": 0.1,
+  "phase_chunks": 1,
+  "bfs_engine": "cpu",
+  "workgroup_size": 128,
+  "gpu_timestamps": false,
+  "stress_samples": 64,
+  "stress_seed": 0,
+  "timeout_seconds": null,
+  "max_rss_bytes": 19327352832,
+  "min_available_bytes": 536870912,
+  "emergency_disk_bytes": 1073741824,
+  "pre_run_disk_reserve_bytes": 4294967296,
+  "pre_run_disk_formula": "4 GiB + 160n + 48m bytes",
+  "warmup": "seed999 per graph/p/session; excluded; failed warmup does not substitute formal seeds",
+  "execution_order": "finish germany p50; auto p200; italy p50; remaining auto; remaining italy; germany p100",
+  "exact_resource_precheck": "12*n*p bytes for coexisting distance/one-sided arrays; skip if these alone exceed RSS policy",
+  "reference": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/large",
+  "report_interval_seconds": 120,
+  "graph_names": [
+    "italy_osm",
+    "germany_osm"
+  ],
+  "scope_change_reason": "user narrowed scope to germany, italy, auto",
+  "publication_scope": "completed p50 runs only; auto excluded; higher pivot conditions not measured in this snapshot"
+}

@@ -1,0 +1,38 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.6/large/bin/rr-sparse",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/sparse_only/germany_osm.mtx",
+    "--run-id",
+    "v56-large-germany_osm-p50-s0-r0-warmup-1794303185669997000",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "999",
+    "--pivots",
+    "50",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.6/large/warmups/v56-large-germany_osm-p50-s0-r0-warmup-1794303185669997000",
+    "--bfs-engine",
+    "cpu"
+  ],
+  "started_at": "2026-11-10T18:33:05+09:00",
+  "memory_before": {
+    "available_bytes": 11514937344,
+    "used_bytes": 11583094784,
+    "swap_used_bytes": 3913154560,
+    "swap_in_bytes": 911474032640,
+    "swap_out_bytes": 10593533952
+  },
+  "warmup": true,
+  "environment": {
+    "SGD_STRESS_SAMPLES": "64",
+    "SGD_GPU_TIMESTAMPS": "0"
+  }
+}
