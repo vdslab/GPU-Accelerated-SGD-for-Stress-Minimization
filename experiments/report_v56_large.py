@@ -83,7 +83,8 @@ def main():
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     for metric,label in [('total_compute_time_ms','Total compute (s)'),('sgd_time_ms','SGD elapsed (s)'),('stress_value','Sampled full stress')]:
-        fig,axes=plt.subplots(1,3,figsize=(12,3.8),layout='constrained')
+        fig,axes=plt.subplots(1,len(SCOPE),figsize=(4*len(SCOPE),3.8),layout='constrained',squeeze=False)
+        axes=axes[0]
         for ax,graph in zip(axes,SCOPE):
             current=[d for d in summary if d['graph']==graph and d['success']]
             ax.plot([d['pivots'] for d in current],[d[metric+'_median']/(1 if metric=='stress_value' else 1000) for d in current],'-o',label='v5.6')
