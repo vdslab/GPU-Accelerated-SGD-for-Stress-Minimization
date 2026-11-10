@@ -25,7 +25,7 @@ def main():
         'ps.fonttype':42,'svg.fonttype':'none','axes.spines.top':False,'axes.spines.right':False})
     styles=[('v5','Atomic Full v5','^','#bb520e'),('v55','Atomic Full v5.5','o','#126c92')]
     point_rows=[]
-    specs=[('sgd_plus_readback_ms',1/15,'Mean time per iteration (ms)\n(SGD + final readback)',(.002,3500),'(a) Atomic Full: iteration + readback'),
+    specs=[('sgd_time_ms',1,'Iteration total time (ms)',(1,10000),'(a) Atomic Full: iteration total (15 iterations)'),
            ('total_compute_time_ms',1,'Total compute time (ms)',(10,20000),'(b) Atomic Full: total compute')]
     def panel(ax,metric,scale,ylabel,limits,title):
         x=np.arange(len(names))
@@ -72,7 +72,7 @@ def main():
         x_axis='Increasing undirected edge count, then graph name; identical to paper Full panel',
         style='7.1-inch width; marker-only; open triangles/orange and circles/blue; log y axis; 90-degree graph labels; seed min/max whiskers',
         aggregation='median of 3 repetitions within each seed, then median and range of 5 seed medians',
-        iteration_metric='(sgd_time_ms + readback_time_ms)/15; includes final completion wait, not native submission-only SGD time or pure GPU time',
+        iteration_metric='sgd_time_ms; total of the 15-iteration host interval; no readback added and no division by 15. New main excludes GPU completion wait from this field; not pure GPU time.',
         total_metric='total_compute_time_ms; includes CPU pair hashing/shuffling and GPU completion; excludes Stress evaluation, saving, drawing',
         stress_metric='Exact at <=8000 vertices; otherwise sampled256/evaluation seed0, identical to v5',
         input_sha256=protected)
@@ -85,7 +85,7 @@ def main():
 
 ![速度比較](../figures/paper-style-v5-v55-speed.png)
 
-上段は `(sgd_time_ms + readback_time_ms) / 15`。新mainはGPU完了待ちがreadback側にあるので、待機を含めて15反復へ均等配分した比較値であり、純GPU時間やnativeのsgd_time_ms単独とは区別する。下段は主指標のtotal_compute_time_msで、CPUの全pairハッシュ・shuffleを含む入力から最終CPU座標までの時間。Stress評価・保存・描画は除外。
+上段は `sgd_time_ms`、15反復のiteration合計時間。読み戻しを足さず、15でも割らない。新mainは非同期submit後のGPU完了待ちがreadback側にあるため、上段の値はその待機を含まず、GPUの全計算時間や両版の同一範囲の実時間とは解釈しない。下段のtotal_compute_time_msは、CPUの全pairハッシュ・shuffleとGPU完了待ちを含む入力からCPU上の座標が揃うまでの時間。Stress評価・座標保存・描画は除外されるので、描画の直前までの全処理時間ではない。
 
 [速度PDF](../figures/paper-style-v5-v55-speed.pdf) / [速度SVG](../figures/paper-style-v5-v55-speed.svg) / [総計算のみPDF](../figures/paper-style-v5-v55-total.pdf)
 

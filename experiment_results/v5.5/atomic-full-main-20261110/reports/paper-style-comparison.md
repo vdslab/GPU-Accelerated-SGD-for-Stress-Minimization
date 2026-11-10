@@ -6,7 +6,7 @@
 
 ![速度比較](../figures/paper-style-v5-v55-speed.png)
 
-上段は `(sgd_time_ms + readback_time_ms) / 15`。新mainはGPU完了待ちがreadback側にあるので、待機を含めて15反復へ均等配分した比較値であり、純GPU時間やnativeのsgd_time_ms単独とは区別する。下段は主指標のtotal_compute_time_msで、CPUの全pairハッシュ・shuffleを含む入力から最終CPU座標までの時間。Stress評価・保存・描画は除外。
+上段は `sgd_time_ms`、15反復のiteration合計時間。読み戻しを足さず、15でも割らない。新mainは非同期submit後のGPU完了待ちがreadback側にあるため、上段の値はその待機を含まず、GPUの全計算時間や両版の同一範囲の実時間とは解釈しない。下段のtotal_compute_time_msは、CPUの全pairハッシュ・shuffleとGPU完了待ちを含む入力からCPU上の座標が揃うまでの時間。Stress評価・座標保存・描画は除外されるので、描画の直前までの全処理時間ではない。
 
 [速度PDF](../figures/paper-style-v5-v55-speed.pdf) / [速度SVG](../figures/paper-style-v5-v55-speed.svg) / [総計算のみPDF](../figures/paper-style-v5-v55-total.pdf)
 

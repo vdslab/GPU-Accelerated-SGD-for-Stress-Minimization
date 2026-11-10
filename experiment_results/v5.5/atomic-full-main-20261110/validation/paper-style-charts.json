@@ -7,7 +7,7 @@
   "x_axis": "Increasing undirected edge count, then graph name; identical to paper Full panel",
   "style": "7.1-inch width; marker-only; open triangles/orange and circles/blue; log y axis; 90-degree graph labels; seed min/max whiskers",
   "aggregation": "median of 3 repetitions within each seed, then median and range of 5 seed medians",
-  "iteration_metric": "(sgd_time_ms + readback_time_ms)/15; includes final completion wait, not native submission-only SGD time or pure GPU time",
+  "iteration_metric": "sgd_time_ms; total of the 15-iteration host interval; no readback added and no division by 15. New main excludes GPU completion wait from this field; not pure GPU time.",
   "total_metric": "total_compute_time_ms; includes CPU pair hashing/shuffling and GPU completion; excludes Stress evaluation, saving, drawing",
   "stress_metric": "Exact at <=8000 vertices; otherwise sampled256/evaluation seed0, identical to v5",
   "input_sha256": {
