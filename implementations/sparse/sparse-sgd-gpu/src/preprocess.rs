@@ -60,6 +60,7 @@ pub struct Distances {
     pub slot: Vec<usize>,
     pub flat_distances: Vec<u32>,
     pub prefix: Vec<Vec<usize>>,
+    pub weight_table: Vec<Vec<f64>>,
 }
 
 impl Distances {
@@ -81,25 +82,30 @@ impl Distances {
         );
         let h = h.min(n);
 
-        // Topology-aware method selection
+        // Sequential single-source pivot BFS (S=1 per pivot) is always faster on CPU
+        // than 200 sequential single-source GPU dispatches + second wgpu device init.
         #[cfg(not(target_arch = "wasm32"))]
-        let use_gpu = {
-            let max_degree = (0..n).map(|u| graph.neighbors(u).len()).max().unwrap_or(0);
-            let is_road_or_narrow = max_degree <= 8 && graph.edge_size <= 4 * n;
-            match backend {
-                BfsBackend::Auto => is_road_or_narrow && n >= 20_000 && n <= 114_688,
-                BfsBackend::Gpu => true,
-                BfsBackend::Cpu => false,
-            }
-        };
+        let use_gpu = matches!(backend, BfsBackend::Gpu);
         #[cfg(target_arch = "wasm32")]
         let _ = backend;
 
         let mut flat_distances = vec![u32::MAX; h * n];
-        let mut queue = Vec::with_capacity(n);
+        let mut queue = Vec::<u32>::with_capacity(n);
         let mut nearest = vec![u32::MAX; n];
-        let mut regions = vec![0; n];
+        let mut regions = vec![0usize; n];
         let mut pivots = Vec::with_capacity(h);
+        let mut max_d_per_pivot = vec![0u32; h];
+
+        let (csr_offsets, csr_neighbors) = {
+            let mut offsets = Vec::with_capacity(n + 1);
+            let mut neighbors = Vec::with_capacity(graph.edge_size * 2);
+            offsets.push(0u32);
+            for u in 0..n {
+                neighbors.extend(graph.neighbors(u).iter().map(|&v| v as u32));
+                offsets.push(neighbors.len() as u32);
+            }
+            (offsets, neighbors)
+        };
 
         #[cfg(not(target_arch = "wasm32"))]
         let (csr, gpu_engine, mut gpu_row) = if use_gpu {
@@ -114,48 +120,55 @@ impl Distances {
             (None, None, Vec::new())
         };
 
-        let mut run_bfs = |source: usize, row_dest: &mut [u32]| -> Result<()> {
+        let mut run_bfs = |source: usize, row_dest: &mut [u32]| -> Result<u32> {
             #[cfg(not(target_arch = "wasm32"))]
             if use_gpu {
                 let engine = gpu_engine.as_ref().unwrap();
                 let sources = [source as u32];
                 engine.run_ms_bfs_into(csr.as_ref().unwrap(), &sources, &mut gpu_row)?;
                 row_dest.copy_from_slice(&gpu_row[..n]);
-                return Ok(());
+                ensure!(
+                    row_dest.iter().all(|&d| d != u32::MAX),
+                    "connected graph required"
+                );
+                return Ok(*row_dest.iter().max().unwrap_or(&0));
             }
             {
-                row_dest.fill(u32::MAX);
                 queue.clear();
-                queue.push(source);
+                queue.push(source as u32);
                 row_dest[source] = 0;
                 let mut head = 0;
                 while head < queue.len() {
-                    let u = queue[head];
+                    let u = queue[head] as usize;
                     head += 1;
                     let next_d = row_dest[u] + 1;
-                    for &v in graph.neighbors(u) {
+                    let start_edge = csr_offsets[u] as usize;
+                    let end_edge = csr_offsets[u + 1] as usize;
+                    for &v_u32 in &csr_neighbors[start_edge..end_edge] {
+                        let v = v_u32 as usize;
                         if row_dest[v] == u32::MAX {
                             row_dest[v] = next_d;
-                            queue.push(v);
+                            queue.push(v_u32);
                         }
                     }
                 }
                 ensure!(queue.len() == n, "connected graph required");
-                Ok(())
+                let max_d = row_dest[*queue.last().unwrap() as usize];
+                Ok(max_d)
             }
         };
 
         // Pivot 0: uniform random selection
         let first = rng.random_range(0..n);
         pivots.push(first);
-        run_bfs(first, &mut flat_distances[0..n])?;
+        max_d_per_pivot[0] = run_bfs(first, &mut flat_distances[0..n])?;
         nearest.copy_from_slice(&flat_distances[0..n]);
+        let mut total = nearest.iter().try_fold(0_u64, |sum, &d| {
+            sum.checked_add(d as u64).context("distance sum overflow")
+        })?;
 
         // Pivots 1 .. h-1: distance-proportional sampling with exact tie breaking
         while pivots.len() < h {
-            let total = nearest.iter().try_fold(0_u64, |sum, &d| {
-                sum.checked_add(d as u64).context("distance sum overflow")
-            })?;
             ensure!(total > 0, "empty pivot sampling distribution");
             let mut ticket = rng.random_range(0..total);
             let next = nearest
@@ -172,26 +185,27 @@ impl Distances {
 
             let k = pivots.len();
             let row_offset = k * n;
-            run_bfs(next, &mut flat_distances[row_offset..row_offset + n])?;
+            max_d_per_pivot[k] = run_bfs(next, &mut flat_distances[row_offset..row_offset + n])?;
 
             let row = &flat_distances[row_offset..row_offset + n];
+            let mut next_total = 0_u64;
             for v in 0..n {
+                let d = row[v];
+                let near = nearest[v];
                 // Strict comparison preserves the reference's lowest pivot ID tie rule
-                if row[v] < nearest[v] {
-                    nearest[v] = row[v];
+                if d < near {
+                    nearest[v] = d;
                     regions[v] = k;
+                    next_total += d as u64;
+                } else {
+                    next_total += near as u64;
                 }
             }
+            total = next_total;
             pivots.push(next);
         }
 
         // Inverted O(N) Prefix Counts
-        let mut max_d_per_pivot = vec![0u32; h];
-        for p in 0..h {
-            let row = &flat_distances[p * n..(p + 1) * n];
-            max_d_per_pivot[p] = *row.iter().max().unwrap_or(&0);
-        }
-
         let mut prefix: Vec<Vec<usize>> = max_d_per_pivot
             .iter()
             .map(|&max_d| vec![0usize; max_d as usize + 1])
@@ -203,10 +217,18 @@ impl Distances {
             prefix[reg][d] += 1;
         }
 
-        for p in 0..h {
-            for i in 1..prefix[p].len() {
-                prefix[p][i] += prefix[p][i - 1];
+        let mut weight_table = Vec::with_capacity(h);
+        for pref in &mut prefix {
+            for i in 1..pref.len() {
+                pref[i] += pref[i - 1];
             }
+            let max_d = pref.len().saturating_sub(1);
+            let mut table = vec![0.0_f64; max_d + 1];
+            for (d, slot) in table.iter_mut().enumerate().skip(1) {
+                let dij = d as f64;
+                *slot = pref[d / 2] as f64 / (dij * dij);
+            }
+            weight_table.push(table);
         }
 
         let mut slot = vec![usize::MAX; n];
@@ -219,77 +241,168 @@ impl Distances {
             slot,
             flat_distances,
             prefix,
+            weight_table,
         })
     }
 
     /// Merge sorted adjacency and pivot endpoints per row. This is exactly the
     /// BTreeMap reference's lexicographic order, without materializing that map.
+    #[allow(dead_code)]
     fn visit(&self, graph: &Graph, mut emit: impl FnMut(EdgeInfo)) {
+        self.visit_with_slots(graph, |pair, _, _| emit(pair));
+    }
+
+    fn visit_with_slots(&self, graph: &Graph, mut emit: impl FnMut(EdgeInfo, usize, usize)) {
         let n = graph.node_size;
-        let mut sorted_pivots = self.pivots.clone();
-        sorted_pivots.sort_unstable();
-        for u in 0..n {
-            let pu = self.slot[u];
-            let neighbors = graph.neighbors(u);
-            let mut edge_index = neighbors.partition_point(|&v| v <= u);
-            let mut pivot_index = sorted_pivots.partition_point(|&v| v <= u);
-            let mut next_vertex = u + 1;
-            loop {
-                let candidate = if pu != usize::MAX {
-                    if next_vertex < n {
-                        next_vertex
-                    } else {
-                        usize::MAX
+        let h = self.pivots.len();
+        let mut sorted_pivots: Vec<(usize, usize)> = self
+            .pivots
+            .iter()
+            .enumerate()
+            .map(|(slot_idx, &v)| (v, slot_idx))
+            .collect();
+        sorted_pivots.sort_unstable_by_key(|&(v, _)| v);
+
+        const STRIP: usize = 64;
+        let mut tile_dist = vec![0u32; STRIP * h];
+        let mut first_p = 0usize;
+
+        for u_start in (0..n).step_by(STRIP) {
+            let u_end = (u_start + STRIP).min(n);
+            let strip_len = u_end - u_start;
+            while first_p < h && sorted_pivots[first_p].0 <= u_start {
+                first_p += 1;
+            }
+            for (p_idx, &(_, pv_slot)) in sorted_pivots.iter().enumerate().skip(first_p) {
+                let src = &self.flat_distances[pv_slot * n + u_start..pv_slot * n + u_end];
+                for i in 0..strip_len {
+                    tile_dist[i * h + p_idx] = src[i];
+                }
+            }
+
+            let mut u_first_p = first_p;
+            for u in u_start..u_end {
+                while u_first_p < h && sorted_pivots[u_first_p].0 <= u {
+                    u_first_p += 1;
+                }
+                let pu = self.slot[u];
+                let neighbors = graph.neighbors(u);
+                let edge_start = neighbors.partition_point(|&v| v <= u);
+                let rem_edges = &neighbors[edge_start..];
+                if pu == usize::MAX {
+                    let mut pivot_index = u_first_p;
+                    let tile_row = &tile_dist[(u - u_start) * h..(u - u_start + 1) * h];
+                    for &edge_v in rem_edges {
+                        while pivot_index < h && sorted_pivots[pivot_index].0 < edge_v {
+                            let (v, pv) = sorted_pivots[pivot_index];
+                            let distance = tile_row[pivot_index] as usize;
+                            pivot_index += 1;
+                            emit(
+                                EdgeInfo {
+                                    u,
+                                    v,
+                                    dij: distance as f64,
+                                    weight_u: self.weight_table[pv][distance],
+                                    weight_v: 0.0,
+                                },
+                                usize::MAX,
+                                pv,
+                            );
+                        }
+                        let pv = if pivot_index < h && sorted_pivots[pivot_index].0 == edge_v {
+                            let pv = sorted_pivots[pivot_index].1;
+                            pivot_index += 1;
+                            pv
+                        } else {
+                            usize::MAX
+                        };
+                        emit(
+                            EdgeInfo {
+                                u,
+                                v: edge_v,
+                                dij: 1.0,
+                                weight_u: 1.0,
+                                weight_v: 1.0,
+                            },
+                            usize::MAX,
+                            pv,
+                        );
+                    }
+                    for &(v, pv) in &sorted_pivots[pivot_index..h] {
+                        let distance = tile_row[pivot_index] as usize;
+                        pivot_index += 1;
+                        emit(
+                            EdgeInfo {
+                                u,
+                                v,
+                                dij: distance as f64,
+                                weight_u: self.weight_table[pv][distance],
+                                weight_v: 0.0,
+                            },
+                            usize::MAX,
+                            pv,
+                        );
                     }
                 } else {
-                    sorted_pivots
-                        .get(pivot_index)
-                        .copied()
-                        .unwrap_or(usize::MAX)
-                };
-                let edge = neighbors.get(edge_index).copied().unwrap_or(usize::MAX);
-                let v = candidate.min(edge);
-                if v == usize::MAX {
-                    break;
-                }
-                if candidate == v {
-                    next_vertex += 1;
-                    pivot_index += 1;
-                }
-                if edge == v {
-                    edge_index += 1;
-                    emit(EdgeInfo {
-                        u,
-                        v,
-                        dij: 1.0,
-                        weight_u: 1.0,
-                        weight_v: 1.0,
-                    });
-                } else {
-                    let pv = self.slot[v];
-                    let distance = if pu != usize::MAX {
-                        self.flat_distances[pu * n + v]
-                    } else {
-                        self.flat_distances[pv * n + u]
-                    } as usize;
-                    let dij = distance as f64;
-                    let weight_u = if pv != usize::MAX {
-                        self.prefix[pv][distance / 2] as f64 / (dij * dij)
-                    } else {
-                        0.0
-                    };
-                    let weight_v = if pu != usize::MAX {
-                        self.prefix[pu][distance / 2] as f64 / (dij * dij)
-                    } else {
-                        0.0
-                    };
-                    emit(EdgeInfo {
-                        u,
-                        v,
-                        dij,
-                        weight_u,
-                        weight_v,
-                    });
+                    let dist_row = &self.flat_distances[pu * n..(pu + 1) * n];
+                    let pu_weights = &self.weight_table[pu];
+                    let mut cur_v = u + 1;
+                    for &edge_v in rem_edges {
+                        for (v, (&dist_u32, &pv)) in (cur_v..edge_v)
+                            .zip(dist_row[cur_v..edge_v].iter().zip(&self.slot[cur_v..edge_v]))
+                        {
+                            let distance = dist_u32 as usize;
+                            let weight_u = if pv != usize::MAX {
+                                self.weight_table[pv][distance]
+                            } else {
+                                0.0
+                            };
+                            emit(
+                                EdgeInfo {
+                                    u,
+                                    v,
+                                    dij: distance as f64,
+                                    weight_u,
+                                    weight_v: pu_weights[distance],
+                                },
+                                pu,
+                                pv,
+                            );
+                        }
+                        emit(
+                            EdgeInfo {
+                                u,
+                                v: edge_v,
+                                dij: 1.0,
+                                weight_u: 1.0,
+                                weight_v: 1.0,
+                            },
+                            pu,
+                            self.slot[edge_v],
+                        );
+                        cur_v = edge_v + 1;
+                    }
+                    for (v, (&dist_u32, &pv)) in
+                        (cur_v..n).zip(dist_row[cur_v..n].iter().zip(&self.slot[cur_v..n]))
+                    {
+                        let distance = dist_u32 as usize;
+                        let weight_u = if pv != usize::MAX {
+                            self.weight_table[pv][distance]
+                        } else {
+                            0.0
+                        };
+                        emit(
+                            EdgeInfo {
+                                u,
+                                v,
+                                dij: distance as f64,
+                                weight_u,
+                                weight_v: pu_weights[distance],
+                            },
+                            pu,
+                            pv,
+                        );
+                    }
                 }
             }
         }
@@ -318,18 +431,11 @@ pub fn prepare_with_backend<R: Rng + ?Sized>(
 ) -> Result<PreparedRun> {
     let distances = Distances::new_with_backend(graph, h, rng, backend)?;
     // Unweighted graph edges have distance one and override both weights with 1.
-    // Traverse each BFS row contiguously; avoid a second canonical pair traversal.
+    // Every integer distance 2..=max_d_per_pivot[p] occurs in connected unweighted BFS.
     let mut wmin: f64 = 1.0;
     let mut wmax: f64 = 1.0;
-    let n = graph.node_size;
-    for p in 0..distances.pivots.len() {
-        let row = &distances.flat_distances[p * n..(p + 1) * n];
-        for &d in row {
-            if d <= 1 {
-                continue;
-            }
-            let dij = d as f64;
-            let w = distances.prefix[p][d as usize / 2] as f64 / (dij * dij);
+    for table in &distances.weight_table {
+        for &w in table.iter().skip(2) {
             if w > 0.0 {
                 wmin = wmin.min(w);
                 wmax = wmax.max(w);
@@ -369,23 +475,19 @@ pub fn prepare_with_backend<R: Rng + ?Sized>(
         .context("dense table overflow")?;
     let mut one_sided = vec![OneSidedEntry::default(); dense_len];
     let mut one_sided_count = 0;
-    let mut pairs = Vec::new();
-    distances.visit(graph, |pair| {
-        fingerprint
-            .usize(pair.u)
-            .usize(pair.v)
-            .f64(pair.dij)
-            .f64(pair.weight_u)
-            .f64(pair.weight_v);
-        let (vertex, pivot, weight) = if pair.weight_v == 0.0 {
-            (pair.u, pair.v, pair.weight_u)
+    let two_sided_capacity = graph.edge_size + h * h.saturating_sub(1) / 2;
+    let mut pairs = Vec::with_capacity(two_sided_capacity);
+    distances.visit_with_slots(graph, |pair, pu, pv| {
+        fingerprint.edge_info(pair.u, pair.v, pair.dij, pair.weight_u, pair.weight_v);
+        let (vertex, pivot_slot, weight) = if pair.weight_v == 0.0 {
+            (pair.u, pv, pair.weight_u)
         } else if pair.weight_u == 0.0 {
-            (pair.v, pair.u, pair.weight_v)
+            (pair.v, pu, pair.weight_v)
         } else {
             pairs.push(pair);
             return;
-        };
-        one_sided[vertex * h + distances.slot[pivot]] = OneSidedEntry {
+         };
+        one_sided[vertex * h + pivot_slot] = OneSidedEntry {
             dij: pair.dij as f32,
             weight: weight as f32,
         };

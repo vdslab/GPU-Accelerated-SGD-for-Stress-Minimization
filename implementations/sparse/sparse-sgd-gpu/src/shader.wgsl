@@ -29,16 +29,11 @@ const BANK_MASK: u32 = 0x01ffffffu;
 @group(0) @binding(0) var<uniform> uniforms: Uniforms;
 @group(0) @binding(1) var<storage, read_write> positions: array<vec2<f32>>;
 @group(0) @binding(2) var<storage, read> one_sided_bank0: array<OneSidedEntry>;
-@group(0) @binding(3) var<storage, read> pivot_permutation: array<u32>;
+@group(0) @binding(3) var<storage, read> pivot_permutation: array<vec2<u32>>;
 @group(0) @binding(4) var<storage, read> pairs: array<Pair>;
 @group(0) @binding(5) var<storage, read> one_sided_bank1: array<OneSidedEntry>;
 @group(0) @binding(6) var<storage, read> one_sided_bank2: array<OneSidedEntry>;
 @group(0) @binding(7) var<storage, read> one_sided_bank3: array<OneSidedEntry>;
-
-// Workgroup shared memory caching for pivot data (4.0 KiB total <= 16.0 KiB limit)
-var<workgroup> wg_pivot_perm: array<u32, 256>;
-var<workgroup> wg_pivot_id: array<u32, 256>;
-var<workgroup> wg_pivot_pos: array<vec2<f32>, 256>;
 
 fn get_one_sided_entry(entry_idx: u32) -> OneSidedEntry {
     let bank_idx = entry_idx >> BANK_SHIFT;
@@ -76,21 +71,7 @@ fn displacement(pos_u: vec2<f32>, pos_v: vec2<f32>, dij: f32, salt: u32) -> vec2
 // One invocation owns one non-pivot vertex. It is the only writer of that vertex;
 // pivots are read-only throughout this dispatch.
 @compute @workgroup_size(128)
-fn one_sided_phase(
-    @builtin(global_invocation_id) gid: vec3<u32>,
-    @builtin(local_invocation_id) lid: vec3<u32>,
-) {
-    // Cooperative workgroup loading of pivot metadata and positions.
-    // Strided loop accommodates workgroup size W=128 up to 256 pivots.
-    // Crucial: Must execute before bounds check to ensure uniform workgroupBarrier.
-    for (var i = lid.x; i < uniforms.pivot_count; i += WORKGROUP_SIZE) {
-        wg_pivot_perm[i] = pivot_permutation[i];
-        let pid = pivot_permutation[uniforms.pivot_count + i];
-        wg_pivot_id[i] = pid;
-        wg_pivot_pos[i] = positions[pid];
-    }
-    workgroupBarrier();
-
+fn one_sided_phase(@builtin(global_invocation_id) gid: vec3<u32>) {
     let vertex = gid.x;
     if vertex >= uniforms.n {
         return;
@@ -99,7 +80,7 @@ fn one_sided_phase(
     var changed = false;
     let rotation = hash32(vertex ^ uniforms.seed ^ uniforms.iteration) % uniforms.pivot_count;
     var stride = 1u;
-    if uniforms.pad != 0u && uniforms.pivot_count > 1u {
+    if (uniforms.pad & 1u) != 0u && uniforms.pivot_count > 1u {
         stride = 1u + hash32(vertex ^ uniforms.seed ^ (uniforms.iteration * 0x9e3779b9u)) % (uniforms.pivot_count - 1u);
         loop {
             var a = stride;
@@ -114,18 +95,76 @@ fn one_sided_phase(
             stride = stride % (uniforms.pivot_count - 1u) + 1u;
         }
     }
-    for (var k = uniforms.start; k < uniforms.start + uniforms.count; k++) {
-        let pivot_index = wg_pivot_perm[(k * stride + rotation) % uniforms.pivot_count];
-        let entry = get_one_sided_entry(vertex * uniforms.pivot_count + pivot_index);
+    let perm_base = (uniforms.pad >> 1u) * uniforms.pivot_count;
+    let row_base = vertex * uniforms.pivot_count;
+    let salt_base = vertex ^ uniforms.seed ^ uniforms.iteration;
+    let end_k = uniforms.start + uniforms.count;
+    for (var k = uniforms.start; k < end_k; k++) {
+        let step = (k * stride + rotation) % uniforms.pivot_count;
+        let p_info = pivot_permutation[perm_base + step];
+        let entry = get_one_sided_entry(row_base + p_info.x);
         if entry.weight > 0.0 {
-            let pivot = wg_pivot_id[pivot_index];
-            let pivot_position = wg_pivot_pos[pivot_index];
+            let pivot = p_info.y;
+            let pivot_position = positions[pivot];
             changed = true;
             let delta = displacement(
                 local_position,
                 pivot_position,
                 entry.dij,
-                vertex ^ pivot ^ uniforms.seed ^ uniforms.iteration,
+                salt_base ^ pivot,
+            );
+            let mu = min(entry.weight * uniforms.eta, 1.0);
+            local_position += mu * delta;
+        }
+    }
+    // Pivot rows have no positive one-sided entries: never write their coordinates.
+    if changed {
+        positions[vertex] = local_position;
+    }
+}
+
+@compute @workgroup_size(128)
+fn one_sided_phase_single(@builtin(global_invocation_id) gid: vec3<u32>) {
+    let vertex = gid.x;
+    if vertex >= uniforms.n {
+        return;
+    }
+    var local_position = positions[vertex];
+    var changed = false;
+    let rotation = hash32(vertex ^ uniforms.seed ^ uniforms.iteration) % uniforms.pivot_count;
+    var stride = 1u;
+    if (uniforms.pad & 1u) != 0u && uniforms.pivot_count > 1u {
+        stride = 1u + hash32(vertex ^ uniforms.seed ^ (uniforms.iteration * 0x9e3779b9u)) % (uniforms.pivot_count - 1u);
+        loop {
+            var a = stride;
+            var b = uniforms.pivot_count;
+            loop {
+                if b == 0u { break; }
+                let t = a % b;
+                a = b;
+                b = t;
+            }
+            if a == 1u { break; }
+            stride = stride % (uniforms.pivot_count - 1u) + 1u;
+        }
+    }
+    let perm_base = (uniforms.pad >> 1u) * uniforms.pivot_count;
+    let row_base = vertex * uniforms.pivot_count;
+    let salt_base = vertex ^ uniforms.seed ^ uniforms.iteration;
+    let end_k = uniforms.start + uniforms.count;
+    for (var k = uniforms.start; k < end_k; k++) {
+        let step = (k * stride + rotation) % uniforms.pivot_count;
+        let p_info = pivot_permutation[perm_base + step];
+        let entry = one_sided_bank0[row_base + p_info.x];
+        if entry.weight > 0.0 {
+            let pivot = p_info.y;
+            let pivot_position = positions[pivot];
+            changed = true;
+            let delta = displacement(
+                local_position,
+                pivot_position,
+                entry.dij,
+                salt_base ^ pivot,
             );
             let mu = min(entry.weight * uniforms.eta, 1.0);
             local_position += mu * delta;

@@ -49,11 +49,23 @@ pub fn configure_wsl2_environment_hints() {
     }
 }
 
-/// Creates a `wgpu::Instance` configured for all backends and non-compliant adapters.
+/// Returns the preferred wgpu backends for the current host OS.
+///
+/// On macOS, restricting to `Backends::METAL` avoids initializing CGL/NSOpenGL
+/// (`Backends::GL`) during adapter enumeration.
+fn preferred_backends() -> Backends {
+    if cfg!(target_os = "macos") {
+        Backends::METAL
+    } else {
+        Backends::all()
+    }
+}
+
+/// Creates a `wgpu::Instance` configured for platform backends and non-compliant adapters.
 pub fn create_gpu_instance() -> Instance {
     configure_wsl2_environment_hints();
     let descriptor = InstanceDescriptor {
-        backends: Backends::all(),
+        backends: preferred_backends(),
         flags: InstanceFlags::ALLOW_UNDERLYING_NONCOMPLIANT_ADAPTER,
         ..Default::default()
     };
@@ -149,7 +161,7 @@ pub fn score_adapter(info: &AdapterInfo) -> i32 {
 /// Under WSL2 (`/dev/dxg` present or WSL detected), strictly validates that the selected adapter is native D3D12/RTX 3050
 /// with `Backend::Gl` (Quality Gate 1).
 pub fn select_native_adapter(instance: &Instance) -> Result<Adapter> {
-    let mut adapters = instance.enumerate_adapters(Backends::all());
+    let mut adapters = instance.enumerate_adapters(preferred_backends());
     if adapters.is_empty() {
         bail!("No WebGPU adapters found on system");
     }
@@ -269,4 +281,19 @@ pub fn run_warmup_dispatch_simple(
     bind_group: &wgpu::BindGroup,
 ) -> Result<()> {
     run_warmup_dispatch(device, queue, pipeline, bind_group, &[])
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn preferred_backends_matches_target_os() {
+        let backends = preferred_backends();
+        if cfg!(target_os = "macos") {
+            assert_eq!(backends, Backends::METAL);
+        } else {
+            assert_eq!(backends, Backends::all());
+        }
+    }
 }

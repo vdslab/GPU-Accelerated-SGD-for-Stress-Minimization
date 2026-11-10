@@ -21,8 +21,47 @@ use wgpu::util::DeviceExt;
 
 const WORKGROUP_SIZE: u32 = 128;
 const BANK_ENTRIES: usize = 33_554_432; // 256 MiB / 8 bytes; matches shader BANK_SHIFT/MASK
+const BANK_ENTRIES_128MIB: usize = 16_777_216; // 128 MiB / 8 bytes for 128 MiB storage adapters
 const MAX_DISPATCHES_PER_SUBMISSION: usize = 256;
 const CANARY: [f32; 2] = [123_456.0, -654_321.0];
+
+fn bank_entries_for_limits(limits: &wgpu::Limits) -> usize {
+    let max_binding_bytes = u64::from(limits.max_storage_buffer_binding_size)
+        .min(limits.max_buffer_size) as usize;
+    if max_binding_bytes >= 256 * 1024 * 1024 {
+        BANK_ENTRIES
+    } else {
+        BANK_ENTRIES_128MIB
+    }
+}
+
+fn adapt_shader_bank_constants(source: &str, limits: &wgpu::Limits) -> String {
+    if bank_entries_for_limits(limits) == BANK_ENTRIES {
+        source.to_string()
+    } else {
+        source.replace(
+            "const BANK_SHIFT: u32 = 25u;\nconst BANK_MASK: u32 = 0x01ffffffu;",
+            "const BANK_SHIFT: u32 = 24u;\nconst BANK_MASK: u32 = 0x00ffffffu;",
+        )
+    }
+}
+
+fn apply_pivot_shuffle_shader(source: &str) -> String {
+    let replaced = source
+        .replace(
+            "    let rotation = hash32(vertex ^ uniforms.seed ^ uniforms.iteration) % uniforms.pivot_count;\n    var stride = 1u;\n    if (uniforms.pad & 1u) != 0u && uniforms.pivot_count > 1u {\n        stride = 1u + hash32(vertex ^ uniforms.seed ^ (uniforms.iteration * 0x9e3779b9u)) % (uniforms.pivot_count - 1u);\n        loop {\n            var a = stride;\n            var b = uniforms.pivot_count;\n            loop {\n                if b == 0u { break; }\n                let t = a % b;\n                a = b;\n                b = t;\n            }\n            if a == 1u { break; }\n            stride = stride % (uniforms.pivot_count - 1u) + 1u;\n        }\n    }",
+            "    let bits = select((33u - countLeadingZeros(uniforms.pivot_count - 1u)) >> 1u, 0u, uniforms.pivot_count <= 1u);\n    let mask = (1u << bits) - 1u;\n    let feistel_key = vertex ^ uniforms.seed ^ (uniforms.iteration * 0x9e3779b9u);\n    let rk0 = feistel_key ^ 0x85ebca6bu;\n    let rk1 = feistel_key ^ 0x0bd794d6u;\n    let rk2 = feistel_key ^ 0x91c35f41u;\n    let rk3 = feistel_key ^ 0x17af29acu;",
+        )
+        .replace(
+            "(k * stride + rotation) % uniforms.pivot_count",
+            "shuffle_pivot_precomputed(k, uniforms.pivot_count, bits, mask, rk0, rk1, rk2, rk3)",
+        );
+    debug_assert!(
+        replaced.contains("shuffle_pivot_precomputed"),
+        "pivot shuffle shader replacement failed"
+    );
+    format!("{replaced}\n{}", include_str!("shader_permutation.wgsl"))
+}
 
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Pod, Zeroable)]
@@ -71,26 +110,32 @@ pub struct GpuRunResult {
 impl GpuContext {
     /// Independent per-vertex pivot permutations used by the production CLI.
     pub fn new_with_pivot_shuffle() -> Result<Self> {
-        let mut context = Self::new()?;
-        let source = include_str!("shader.wgsl").replace(
-            "(k * stride + rotation) % uniforms.pivot_count",
-            "shuffle_pivot(k, vertex ^ uniforms.seed ^ (uniforms.iteration * 0x9e3779b9u), uniforms.pivot_count)",
-        );
-        let source = format!("{source}\n{}", include_str!("shader_permutation.wgsl"));
-        context.shader = context
-            .device
-            .create_shader_module(wgpu::ShaderModuleDescriptor {
-                label: Some("independent pivot permutation"),
-                source: wgpu::ShaderSource::Wgsl(source.into()),
-            });
-        Ok(context)
+        Self::init(true)
     }
 
     pub fn new() -> Result<Self> {
+        Self::init(false)
+    }
+
+    fn init(pivot_shuffle: bool) -> Result<Self> {
         let (_instance, adapter, device, queue) =
             experiment_common::gpu::init_gpu_context(wgpu::PowerPreference::HighPerformance)?;
         let info = adapter.get_info();
-        let shader = device.create_shader_module(wgpu::include_wgsl!("shader.wgsl"));
+        let limits = device.limits();
+        let base_source = adapt_shader_bank_constants(include_str!("shader.wgsl"), &limits);
+        let source = if pivot_shuffle {
+            apply_pivot_shuffle_shader(&base_source)
+        } else {
+            base_source
+        };
+        let shader = device.create_shader_module(wgpu::ShaderModuleDescriptor {
+            label: Some(if pivot_shuffle {
+                "independent pivot permutation"
+            } else {
+                "sparse sgd shader"
+            }),
+            source: wgpu::ShaderSource::Wgsl(source.into()),
+        });
         Ok(Self {
             device,
             queue,
@@ -177,10 +222,6 @@ impl GpuContext {
             "グラフが大きすぎます"
         );
         ensure!(
-            h <= 256,
-            "pivot count ({h}) exceeds workgroup shared memory capacity (256)"
-        );
-        ensure!(
             schedule.one_sided.len() == n * h,
             "one-sided配列の長さが不正です"
         );
@@ -188,15 +229,25 @@ impl GpuContext {
         // Constraints are already encoded in schedule; release before GPU allocation.
         drop(params.pairs);
         let limits = self.device.limits();
+        let bank_entries = bank_entries_for_limits(&limits);
+        let max_binding_bytes = u64::from(limits.max_storage_buffer_binding_size)
+            .min(limits.max_buffer_size) as usize;
+        let one_sided_total_bytes = std::mem::size_of_val(schedule.one_sided.as_slice());
+        let single_bank = one_sided_total_bytes <= max_binding_bytes;
         ensure!(
-            schedule.one_sided.len() <= 4 * BANK_ENTRIES,
-            "one-sided entries exceeds 4-bank 1 GiB limit"
+            single_bank || schedule.one_sided.len() <= 4 * bank_entries,
+            "one-sided entries exceeds 4-bank adapter limit"
         );
         for (name, bytes) in [
             (
                 "one-sided bank",
-                (schedule.one_sided.len().min(BANK_ENTRIES).max(1)
-                    * std::mem::size_of::<crate::schedule::OneSidedEntry>()) as u64,
+                if single_bank {
+                    one_sided_total_bytes.max(8) as u64
+                } else {
+                    (schedule.one_sided.len().min(bank_entries).max(1)
+                        * std::mem::size_of::<crate::schedule::OneSidedEntry>())
+                        as u64
+                },
             ),
             (
                 "two-sided",
@@ -229,6 +280,8 @@ impl GpuContext {
         position_data.push(CANARY);
         position_data.push(CANARY);
 
+        let mut trace = experiment_common::trace::IterationTrace::from_env();
+
         let data_setup_time = execution_started.elapsed();
         let preparation_started = Instant::now();
         let positions_buffer = timing::buffer(
@@ -237,15 +290,21 @@ impl GpuContext {
             (bytemuck::cast_slice::<_, u8>(&position_data)).len(),
             wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_SRC,
         );
-        let get_bank_slice = |bank_idx: usize| -> &[crate::schedule::OneSidedEntry] {
-            let start = (bank_idx * BANK_ENTRIES).min(schedule.one_sided.len());
-            let end = ((bank_idx + 1) * BANK_ENTRIES).min(schedule.one_sided.len());
-            &schedule.one_sided[start..end]
+        let (bank0, bank1, bank2, bank3) = if single_bank {
+            (&schedule.one_sided[..], &[][..], &[][..], &[][..])
+        } else {
+            let get_bank_slice = |bank_idx: usize| -> &[crate::schedule::OneSidedEntry] {
+                let start = (bank_idx * bank_entries).min(schedule.one_sided.len());
+                let end = ((bank_idx + 1) * bank_entries).min(schedule.one_sided.len());
+                &schedule.one_sided[start..end]
+            };
+            (
+                get_bank_slice(0),
+                get_bank_slice(1),
+                get_bank_slice(2),
+                get_bank_slice(3),
+            )
         };
-        let bank0 = get_bank_slice(0);
-        let bank1 = get_bank_slice(1);
-        let bank2 = get_bank_slice(2);
-        let bank3 = get_bank_slice(3);
 
         let bank0_buffer = timing::buffer(
             &self.device,
@@ -253,24 +312,36 @@ impl GpuContext {
             (bytemuck::cast_slice::<_, u8>(bank0)).len().max(8),
             wgpu::BufferUsages::STORAGE,
         );
-        let bank1_buffer = timing::buffer(
-            &self.device,
-            Some("one-sided bank 1"),
-            (bytemuck::cast_slice::<_, u8>(bank1)).len().max(8),
-            wgpu::BufferUsages::STORAGE,
-        );
-        let bank2_buffer = timing::buffer(
-            &self.device,
-            Some("one-sided bank 2"),
-            (bytemuck::cast_slice::<_, u8>(bank2)).len().max(8),
-            wgpu::BufferUsages::STORAGE,
-        );
-        let bank3_buffer = timing::buffer(
-            &self.device,
-            Some("one-sided bank 3"),
-            (bytemuck::cast_slice::<_, u8>(bank3)).len().max(8),
-            wgpu::BufferUsages::STORAGE,
-        );
+        let bank1_buffer = if single_bank {
+            None
+        } else {
+            Some(timing::buffer(
+                &self.device,
+                Some("one-sided bank 1"),
+                (bytemuck::cast_slice::<_, u8>(bank1)).len().max(8),
+                wgpu::BufferUsages::STORAGE,
+            ))
+        };
+        let bank2_buffer = if single_bank {
+            None
+        } else {
+            Some(timing::buffer(
+                &self.device,
+                Some("one-sided bank 2"),
+                (bytemuck::cast_slice::<_, u8>(bank2)).len().max(8),
+                wgpu::BufferUsages::STORAGE,
+            ))
+        };
+        let bank3_buffer = if single_bank {
+            None
+        } else {
+            Some(timing::buffer(
+                &self.device,
+                Some("one-sided bank 3"),
+                (bytemuck::cast_slice::<_, u8>(bank3)).len().max(8),
+                wgpu::BufferUsages::STORAGE,
+            ))
+        };
         let dummy_pair = [crate::schedule::GpuPair::default()];
         let pair_data = if schedule.two_sided.is_empty() {
             &dummy_pair[..]
@@ -283,24 +354,33 @@ impl GpuContext {
             (bytemuck::cast_slice::<_, u8>(pair_data)).len(),
             wgpu::BufferUsages::STORAGE,
         );
+        let num_epochs = params.etas.len().max(1);
         let permutation_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
             label: Some("pivot permutation"),
-            size: (2 * h.max(1) * std::mem::size_of::<u32>()) as u64,
+            size: (num_epochs * h.max(1) * std::mem::size_of::<[u32; 2]>()) as u64,
             usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
             mapped_at_creation: false,
         });
 
         let pivot_ids: Vec<u32> = params.pivots.iter().map(|&p| p as u32).collect();
 
-        let alignment = self.device.limits().min_uniform_buffer_offset_alignment as usize;
+        let alignment = limits.min_uniform_buffer_offset_alignment as usize;
         let slot_size = std::mem::size_of::<Uniforms>().div_ceil(alignment) * alignment;
         ensure!(phase_chunks > 0, "phase chunks must be positive");
         let phase_chunks = phase_chunks.min(h);
         let invocation_count = schedule.round_count() + phase_chunks;
         let submission_ranges = submission_ranges(invocation_count);
+        let epoch_slots = invocation_count.max(1);
+        let buffered_epochs = buffered_epochs_for_invocations(
+            limits.max_buffer_size,
+            slot_size,
+            invocation_count,
+            num_epochs,
+            trace.is_some(),
+        );
         let uniform_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
             label: Some("dynamic iteration uniforms"),
-            size: (slot_size * invocation_count.max(1)) as u64,
+            size: (slot_size * epoch_slots * buffered_epochs) as u64,
             usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
             mapped_at_creation: false,
         });
@@ -311,97 +391,109 @@ impl GpuContext {
             mapped_at_creation: false,
         });
 
+        let layout_entries = [
+            buffer_layout(0, wgpu::BufferBindingType::Uniform, true, 32),
+            buffer_layout(
+                1,
+                wgpu::BufferBindingType::Storage { read_only: false },
+                false,
+                8,
+            ),
+            buffer_layout(
+                2,
+                wgpu::BufferBindingType::Storage { read_only: true },
+                false,
+                8,
+            ),
+            buffer_layout(
+                3,
+                wgpu::BufferBindingType::Storage { read_only: true },
+                false,
+                8,
+            ),
+            buffer_layout(
+                4,
+                wgpu::BufferBindingType::Storage { read_only: true },
+                false,
+                20,
+            ),
+            buffer_layout(
+                5,
+                wgpu::BufferBindingType::Storage { read_only: true },
+                false,
+                8,
+            ),
+            buffer_layout(
+                6,
+                wgpu::BufferBindingType::Storage { read_only: true },
+                false,
+                8,
+            ),
+            buffer_layout(
+                7,
+                wgpu::BufferBindingType::Storage { read_only: true },
+                false,
+                8,
+            ),
+        ];
+        let active_bindings = if single_bank { 5 } else { 8 };
         let layout = self
             .device
             .create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
                 label: Some("Sparse SGD layout"),
-                entries: &[
-                    buffer_layout(0, wgpu::BufferBindingType::Uniform, true, 32),
-                    buffer_layout(
-                        1,
-                        wgpu::BufferBindingType::Storage { read_only: false },
-                        false,
-                        8,
-                    ),
-                    buffer_layout(
-                        2,
-                        wgpu::BufferBindingType::Storage { read_only: true },
-                        false,
-                        8,
-                    ),
-                    buffer_layout(
-                        3,
-                        wgpu::BufferBindingType::Storage { read_only: true },
-                        false,
-                        4,
-                    ),
-                    buffer_layout(
-                        4,
-                        wgpu::BufferBindingType::Storage { read_only: true },
-                        false,
-                        20,
-                    ),
-                    buffer_layout(
-                        5,
-                        wgpu::BufferBindingType::Storage { read_only: true },
-                        false,
-                        8,
-                    ),
-                    buffer_layout(
-                        6,
-                        wgpu::BufferBindingType::Storage { read_only: true },
-                        false,
-                        8,
-                    ),
-                    buffer_layout(
-                        7,
-                        wgpu::BufferBindingType::Storage { read_only: true },
-                        false,
-                        8,
-                    ),
-                ],
+                entries: &layout_entries[..active_bindings],
             });
+        let bg_entries = [
+            wgpu::BindGroupEntry {
+                binding: 0,
+                resource: wgpu::BindingResource::Buffer(wgpu::BufferBinding {
+                    buffer: &uniform_buffer,
+                    offset: 0,
+                    size: NonZeroU64::new(std::mem::size_of::<Uniforms>() as u64),
+                }),
+            },
+            wgpu::BindGroupEntry {
+                binding: 1,
+                resource: positions_buffer.as_entire_binding(),
+            },
+            wgpu::BindGroupEntry {
+                binding: 2,
+                resource: bank0_buffer.as_entire_binding(),
+            },
+            wgpu::BindGroupEntry {
+                binding: 3,
+                resource: permutation_buffer.as_entire_binding(),
+            },
+            wgpu::BindGroupEntry {
+                binding: 4,
+                resource: pair_buffer.as_entire_binding(),
+            },
+            wgpu::BindGroupEntry {
+                binding: 5,
+                resource: bank1_buffer
+                    .as_ref()
+                    .unwrap_or(&bank0_buffer)
+                    .as_entire_binding(),
+            },
+            wgpu::BindGroupEntry {
+                binding: 6,
+                resource: bank2_buffer
+                    .as_ref()
+                    .unwrap_or(&bank0_buffer)
+                    .as_entire_binding(),
+            },
+            wgpu::BindGroupEntry {
+                binding: 7,
+                resource: bank3_buffer
+                    .as_ref()
+                    .unwrap_or(&bank0_buffer)
+                    .as_entire_binding(),
+            },
+        ];
         let bind_group = self.device.create_bind_group(&wgpu::BindGroupDescriptor {
             label: Some("Sparse SGD bind group"),
             layout: &layout,
-            entries: &[
-                wgpu::BindGroupEntry {
-                    binding: 0,
-                    resource: wgpu::BindingResource::Buffer(wgpu::BufferBinding {
-                        buffer: &uniform_buffer,
-                        offset: 0,
-                        size: NonZeroU64::new(std::mem::size_of::<Uniforms>() as u64),
-                    }),
-                },
-                wgpu::BindGroupEntry {
-                    binding: 1,
-                    resource: positions_buffer.as_entire_binding(),
-                },
-                wgpu::BindGroupEntry {
-                    binding: 2,
-                    resource: bank0_buffer.as_entire_binding(),
-                },
-                wgpu::BindGroupEntry {
-                    binding: 3,
-                    resource: permutation_buffer.as_entire_binding(),
-                },
-                wgpu::BindGroupEntry {
-                    binding: 4,
-                    resource: pair_buffer.as_entire_binding(),
-                },
-                wgpu::BindGroupEntry {
-                    binding: 5,
-                    resource: bank1_buffer.as_entire_binding(),
-                },
-                wgpu::BindGroupEntry {
-                    binding: 6,
-                    resource: bank2_buffer.as_entire_binding(),
-                },
-                wgpu::BindGroupEntry {
-                    binding: 7,
-                    resource: bank3_buffer.as_entire_binding(),
-                },
-            ],
+            entries: &bg_entries[..active_bindings],
         });
         let pipeline_layout = self
             .device
@@ -410,60 +502,124 @@ impl GpuContext {
                 bind_group_layouts: &[&layout],
                 push_constant_ranges: &[],
             });
-        let one_pipeline = self.create_pipeline(&pipeline_layout, "one_sided_phase");
+        let one_pipeline = self.create_pipeline(
+            &pipeline_layout,
+            if single_bank {
+                "one_sided_phase_single"
+            } else {
+                "one_sided_phase"
+            },
+        );
         let two_pipeline = self.create_pipeline(&pipeline_layout, "two_sided_round");
-
-        // Warm up Mesa NIR->DXIL compilation for both pipelines before timed iteration loops
-        experiment_common::gpu::run_warmup_dispatch(
-            &self.device,
-            &self.queue,
-            &one_pipeline,
-            &bind_group,
-            &[0],
-        )?;
-        experiment_common::gpu::run_warmup_dispatch(
-            &self.device,
-            &self.queue,
-            &two_pipeline,
-            &bind_group,
-            &[0],
-        )?;
-        self.queue
-            .write_buffer(&positions_buffer, 0, bytemuck::cast_slice(&position_data));
-        self.queue.submit([]);
-        self.device.poll(wgpu::PollType::wait_indefinitely())?;
+        if experiment_common::gpu::is_wsl2_environment() {
+            let warmup_ro_buf = self.device.create_buffer(&wgpu::BufferDescriptor {
+                label: Some("WSL2 warmup read-only buffer"),
+                size: 32,
+                usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::STORAGE,
+                mapped_at_creation: true,
+            });
+            warmup_ro_buf.slice(..).get_mapped_range_mut().fill(0);
+            warmup_ro_buf.unmap();
+            let warmup_rw_buf = self.device.create_buffer(&wgpu::BufferDescriptor {
+                label: Some("WSL2 warmup read-write buffer"),
+                size: 16,
+                usage: wgpu::BufferUsages::STORAGE,
+                mapped_at_creation: true,
+            });
+            warmup_rw_buf.slice(..).get_mapped_range_mut().fill(0);
+            warmup_rw_buf.unmap();
+            let warmup_entries = [
+                wgpu::BindGroupEntry {
+                    binding: 0,
+                    resource: wgpu::BindingResource::Buffer(wgpu::BufferBinding {
+                        buffer: &warmup_ro_buf,
+                        offset: 0,
+                        size: NonZeroU64::new(32),
+                    }),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 1,
+                    resource: warmup_rw_buf.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 2,
+                    resource: warmup_ro_buf.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 3,
+                    resource: warmup_ro_buf.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 4,
+                    resource: warmup_ro_buf.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 5,
+                    resource: warmup_ro_buf.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 6,
+                    resource: warmup_ro_buf.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 7,
+                    resource: warmup_ro_buf.as_entire_binding(),
+                },
+            ];
+            let warmup_bg = self.device.create_bind_group(&wgpu::BindGroupDescriptor {
+                label: Some("WSL2 warmup bind group"),
+                layout: &layout,
+                entries: &warmup_entries[..active_bindings],
+            });
+            experiment_common::gpu::run_warmup_dispatch(
+                &self.device,
+                &self.queue,
+                &one_pipeline,
+                &warmup_bg,
+                &[0],
+            )?;
+            experiment_common::gpu::run_warmup_dispatch(
+                &self.device,
+                &self.queue,
+                &two_pipeline,
+                &warmup_bg,
+                &[0],
+            )?;
+            self.device.poll(wgpu::PollType::wait_indefinitely())?;
+        }
         let mut timer =
             timing::PassTimer::new(&self.device, params.etas.len() * submission_ranges.len());
         let preparation_time = preparation_started.elapsed();
+
         let upload_started = Instant::now();
         self.queue
             .write_buffer(&positions_buffer, 0, bytemuck::cast_slice(&position_data));
         self.queue
             .write_buffer(&bank0_buffer, 0, bytemuck::cast_slice(bank0));
-        if !bank1.is_empty() {
-            self.queue
-                .write_buffer(&bank1_buffer, 0, bytemuck::cast_slice(bank1));
+        if let Some(buf) = &bank1_buffer {
+            if !bank1.is_empty() {
+                self.queue
+                    .write_buffer(buf, 0, bytemuck::cast_slice(bank1));
+            }
         }
-        if !bank2.is_empty() {
-            self.queue
-                .write_buffer(&bank2_buffer, 0, bytemuck::cast_slice(bank2));
+        if let Some(buf) = &bank2_buffer {
+            if !bank2.is_empty() {
+                self.queue
+                    .write_buffer(buf, 0, bytemuck::cast_slice(bank2));
+            }
         }
-        if !bank3.is_empty() {
-            self.queue
-                .write_buffer(&bank3_buffer, 0, bytemuck::cast_slice(bank3));
+        if let Some(buf) = &bank3_buffer {
+            if !bank3.is_empty() {
+                self.queue
+                    .write_buffer(buf, 0, bytemuck::cast_slice(bank3));
+            }
         }
         self.queue
             .write_buffer(&pair_buffer, 0, bytemuck::cast_slice(pair_data));
-        self.queue.write_buffer(
-            &permutation_buffer,
-            (h * 4) as u64,
-            bytemuck::cast_slice(&pivot_ids),
-        );
         self.queue.submit([]);
         self.device.poll(wgpu::PollType::wait_indefinitely())?;
         let upload_time = upload_started.elapsed();
 
-        let mut trace = experiment_common::trace::IterationTrace::from_env();
         if let Some(trace) = &mut trace {
             trace.record(0, Duration::ZERO, || {
                 position_data[..n]
@@ -477,8 +633,13 @@ impl GpuContext {
         let mut rng = StdRng::seed_from_u64(seed ^ 0x4750_555f_5350_4152);
         let mut pivot_permutation: Vec<u32> = (0..h as u32).collect();
         let mut round_order: Vec<usize> = (0..schedule.round_count()).collect();
-        let mut invocations = Vec::with_capacity(invocation_count);
-        let mut uniform_bytes = vec![0u8; slot_size * invocation_count];
+        let mut invocations: Vec<(Option<usize>, usize, usize)> =
+            Vec::with_capacity(invocation_count);
+        let mut perm_staging = vec![[0_u32; 2]; h.max(1)];
+        let mut uniform_bytes = vec![0u8; slot_size * epoch_slots];
+        let mut encoders = Vec::with_capacity(submission_ranges.len());
+        let mut slot_submissions: Vec<Option<wgpu::SubmissionIndex>> = vec![None; buffered_epochs];
+
         for (iteration, &eta) in params.etas.iter().enumerate() {
             let trace_started = trace.as_ref().map(|_| Instant::now());
             if verbose {
@@ -490,11 +651,9 @@ impl GpuContext {
             }
             pivot_permutation.shuffle(&mut rng);
             round_order.shuffle(&mut rng);
-            self.queue.write_buffer(
-                &permutation_buffer,
-                0,
-                bytemuck::cast_slice(&pivot_permutation),
-            );
+            for (step, &p_idx) in pivot_permutation.iter().enumerate() {
+                perm_staging[step] = [p_idx, pivot_ids[p_idx as usize]];
+            }
 
             let one_first = rng.random_bool(0.5);
             invocations.clear();
@@ -523,6 +682,9 @@ impl GpuContext {
                 }
             }
 
+            let ring_slot = iteration % buffered_epochs;
+            let epoch_slot_base = ring_slot * epoch_slots;
+            let pad_val = u32::from(vertex_stride) | ((iteration as u32) << 1);
             for (slot, (round, pivot_start, pivot_len)) in invocations.iter().enumerate() {
                 let (start, count) = round
                     .map(|ri| {
@@ -538,14 +700,38 @@ impl GpuContext {
                     eta: eta as f32,
                     seed: seed as u32,
                     pivot_count: h as u32,
-                    _pad: u32::from(vertex_stride),
+                    _pad: pad_val,
                 };
-                uniform_bytes[slot * slot_size..slot * slot_size + 32]
+                let byte_offset = slot * slot_size;
+                uniform_bytes[byte_offset..byte_offset + 32]
                     .copy_from_slice(bytemuck::bytes_of(&uniforms));
             }
-            self.queue.write_buffer(&uniform_buffer, 0, &uniform_bytes);
 
-            for batch_range in &submission_ranges {
+            if let Some(prev_sub) = slot_submissions[ring_slot].take() {
+                self.device
+                    .poll(wgpu::PollType::Wait {
+                        submission_index: Some(prev_sub),
+                        timeout: None,
+                    })
+                    .context("GPU iteration failed")?;
+            }
+
+            self.queue.write_buffer(
+                &permutation_buffer,
+                (iteration * h * std::mem::size_of::<[u32; 2]>()) as u64,
+                bytemuck::cast_slice(&perm_staging[..h]),
+            );
+            if !invocations.is_empty() {
+                self.queue.write_buffer(
+                    &uniform_buffer,
+                    (epoch_slot_base * slot_size) as u64,
+                    &uniform_bytes[..invocations.len() * slot_size],
+                );
+            }
+
+            encoders.clear();
+            let mut last_sub = None;
+            for (batch_idx, batch_range) in submission_ranges.iter().enumerate() {
                 if batch_range.start >= invocations.len() {
                     break;
                 }
@@ -562,6 +748,7 @@ impl GpuContext {
                         label: Some("Sparse SGD ordered dispatches"),
                         timestamp_writes: timer.next(),
                     });
+                    let mut last_is_two: Option<bool> = None;
                     for (slot, invocation) in invocations
                         .iter()
                         .enumerate()
@@ -573,24 +760,44 @@ impl GpuContext {
                         if count == 0 {
                             continue;
                         }
-                        pass.set_pipeline(if round.is_some() {
-                            &two_pipeline
-                        } else {
-                            &one_pipeline
-                        });
-                        pass.set_bind_group(0, &bind_group, &[(slot * slot_size) as u32]);
-                        pass.dispatch_workgroups((count as u32).div_ceil(WORKGROUP_SIZE), 1, 1);
+                        let is_two = round.is_some();
+                        if last_is_two != Some(is_two) {
+                            pass.set_pipeline(if is_two {
+                                &two_pipeline
+                            } else {
+                                &one_pipeline
+                            });
+                            last_is_two = Some(is_two);
+                        }
+                        pass.set_bind_group(
+                            0,
+                            &bind_group,
+                            &[((epoch_slot_base + slot) * slot_size) as u32],
+                        );
+                        pass.dispatch_workgroups(
+                            (count as u32).div_ceil(WORKGROUP_SIZE),
+                            1,
+                            1,
+                        );
                     }
                 }
-                self.queue.submit([encoder.finish()]);
+                if iteration == 0 && batch_idx == 0 && submission_ranges.len() > 1 {
+                    last_sub = Some(self.queue.submit([encoder.finish()]));
+                } else {
+                    encoders.push(encoder.finish());
+                }
             }
-            // Queue submissions are ordered; retain the bounded command buffers,
-            // but wait once per epoch before reusing its uniforms/permutation.
-            self.device
-                .poll(wgpu::PollType::wait_indefinitely())
-                .context("GPU iteration failed")?;
             timer.end_iteration();
+            if !encoders.is_empty() {
+                last_sub = Some(self.queue.submit(encoders.drain(..)));
+            }
+            slot_submissions[ring_slot] = last_sub;
+
             if let (Some(trace), Some(started)) = (&mut trace, trace_started) {
+                self.device
+                    .poll(wgpu::PollType::wait_indefinitely())
+                    .context("GPU iteration failed")?;
+                slot_submissions[ring_slot] = None;
                 trace.record(iteration + 1, started.elapsed(), || {
                     trace_positions(
                         &self.device,
@@ -601,6 +808,11 @@ impl GpuContext {
                     )
                 });
             }
+        }
+        if slot_submissions.iter().any(Option::is_some) {
+            self.device
+                .poll(wgpu::PollType::wait_indefinitely())
+                .context("GPU iteration failed")?;
         }
         let compute_time = compute_start.elapsed().saturating_sub(
             trace
@@ -691,6 +903,27 @@ impl GpuContext {
     }
 }
 
+#[cfg(not(target_arch = "wasm32"))]
+fn buffered_epochs_for_invocations(
+    max_buffer_size: u64,
+    slot_size: usize,
+    invocation_count: usize,
+    num_epochs: usize,
+    trace_enabled: bool,
+) -> usize {
+    if trace_enabled {
+        return 1;
+    }
+    let epoch_slots = invocation_count.max(1);
+    let max_buffer_slots = (max_buffer_size as usize / slot_size)
+        .min(u32::MAX as usize / slot_size)
+        .max(epoch_slots);
+    let target_uniform_slots = (2 * 1024 * 1024 / slot_size)
+        .max(epoch_slots.saturating_mul(2))
+        .min(max_buffer_slots);
+    (target_uniform_slots / epoch_slots).clamp(1, num_epochs.max(1))
+}
+
 fn submission_ranges(invocation_count: usize) -> Vec<Range<usize>> {
     let mut ranges = Vec::with_capacity(invocation_count.div_ceil(MAX_DISPATCHES_PER_SUBMISSION));
     let mut start = 0;
@@ -724,6 +957,584 @@ fn buffer_layout(
             min_binding_size: NonZeroU64::new(min_size),
         },
         count: None,
+    }
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn trace_positions(
+    device: &wgpu::Device,
+    queue: &wgpu::Queue,
+    positions: &wgpu::Buffer,
+    download: &wgpu::Buffer,
+    node_count: usize,
+) -> Vec<[f64; 2]> {
+    let mut encoder = device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
+        label: Some("convergence checkpoint readback"),
+    });
+    encoder.copy_buffer_to_buffer(positions, 0, download, 0, positions.size());
+    queue.submit([encoder.finish()]);
+    let slice = download.slice(..);
+    slice.map_async(wgpu::MapMode::Read, |_| {});
+    device
+        .poll(wgpu::PollType::wait_indefinitely())
+        .expect("convergence readback poll");
+    let mapped = slice.get_mapped_range();
+    let values: &[[f32; 2]] = bytemuck::cast_slice(&mapped);
+    let result = values[..node_count]
+        .iter()
+        .map(|p| [p[0] as f64, p[1] as f64])
+        .collect();
+    drop(mapped);
+    download.unmap();
+    result
+}
+
+type StepperInvocation = (Option<(usize, u32, u32)>, usize, usize);
+
+/// Interactive / step-by-epoch RoundRobin Sparse SGD GPU engine (shared by native and WebAssembly).
+#[allow(dead_code)]
+pub struct SparseStepper {
+    one_pipeline: wgpu::ComputePipeline,
+    two_pipeline: wgpu::ComputePipeline,
+    bind_groups: Vec<wgpu::BindGroup>,
+    positions_buffer: wgpu::Buffer,
+    download_buffer: wgpu::Buffer,
+    permutation_buffer: wgpu::Buffer,
+    uniform_buffer: wgpu::Buffer,
+    n: usize,
+    h: usize,
+    seed: u64,
+    phase_chunks: usize,
+    slot_size: usize,
+    pair_chunk_capacity: usize,
+    round_offsets: Vec<u32>,
+    pivots: Vec<u32>,
+    rng: StdRng,
+    pivot_permutation: Vec<u32>,
+    perm_staging: Vec<[u32; 2]>,
+    round_order: Vec<usize>,
+    invocations: Vec<StepperInvocation>,
+    uniform_bytes: Vec<u8>,
+    initial_position_data: Vec<[f32; 2]>,
+    iteration: u32,
+}
+
+#[allow(dead_code)]
+impl SparseStepper {
+    #[allow(clippy::too_many_arguments)]
+    pub fn new(
+        device: &wgpu::Device,
+        queue: &wgpu::Queue,
+        n: usize,
+        pivots: &[u32],
+        one_sided: &[crate::schedule::OneSidedEntry],
+        two_sided: &[crate::schedule::GpuPair],
+        round_offsets: &[u32],
+        initial_positions_flat: &[f32],
+        seed: u64,
+        phase_chunks: usize,
+    ) -> Result<Self> {
+        let h = pivots.len();
+        ensure!(
+            n > 0 && h > 0 && n <= u32::MAX as usize && h <= 1024,
+            "Invalid vertex count ({n}) or pivot count ({h}); pivot count must be 1..=1024"
+        );
+        ensure!(
+            one_sided.len() == n * h,
+            "one-sided array length mismatch: got {}, expected {}",
+            one_sided.len(),
+            n * h
+        );
+        let limits = device.limits();
+        let bank_entries = bank_entries_for_limits(&limits);
+        let max_binding_bytes = u64::from(limits.max_storage_buffer_binding_size)
+            .min(limits.max_buffer_size) as usize;
+        let one_sided_total_bytes = std::mem::size_of_val(one_sided);
+        let single_bank = one_sided_total_bytes <= max_binding_bytes;
+        ensure!(
+            single_bank || one_sided.len() <= 4 * bank_entries,
+            "one-sided entries exceed 4-bank adapter limit"
+        );
+        ensure!(phase_chunks > 0, "phase_chunks must be positive");
+        let phase_chunks = phase_chunks.min(h);
+        ensure!(
+            single_bank
+                || one_sided.len().min(bank_entries).max(1)
+                    * std::mem::size_of::<crate::schedule::OneSidedEntry>()
+                    <= max_binding_bytes,
+            "one-sided bank exceeds adapter storage buffer limit"
+        );
+        ensure!(
+            (n + 2) * 8 <= max_binding_bytes,
+            "positions buffer exceeds adapter storage buffer limit"
+        );
+
+        let base_source = adapt_shader_bank_constants(include_str!("shader.wgsl"), &limits)
+            .replace(
+                "let vertex = gid.x;",
+                "let vertex = gid.x + gid.y * 65535u * WORKGROUP_SIZE;",
+            )
+            .replace(
+                "if gid.x >= uniforms.count {\n        return;\n    }\n    let pair_index = uniforms.start + gid.x;",
+                "let flat_id = gid.x + gid.y * 65535u * WORKGROUP_SIZE;\n    if flat_id >= uniforms.count {\n        return;\n    }\n    let pair_index = uniforms.start + flat_id;",
+            );
+        let source = apply_pivot_shuffle_shader(&base_source);
+        let shader = device.create_shader_module(wgpu::ShaderModuleDescriptor {
+            label: Some("SparseStepper shader"),
+            source: wgpu::ShaderSource::Wgsl(source.into()),
+        });
+
+        let mut initial_position_data: Vec<[f32; 2]> = initial_positions_flat
+            .chunks_exact(2)
+            .map(|c| [c[0], c[1]])
+            .collect();
+        initial_position_data.push(CANARY);
+        initial_position_data.push(CANARY);
+
+        let make_buf = |label: Option<&str>, byte_len: usize, usage: wgpu::BufferUsages| {
+            device.create_buffer(&wgpu::BufferDescriptor {
+                label,
+                size: byte_len.max(16) as u64,
+                usage: usage | wgpu::BufferUsages::COPY_DST,
+                mapped_at_creation: false,
+            })
+        };
+
+        let positions_buffer = make_buf(
+            Some("positions with canaries"),
+            initial_position_data.len() * 8,
+            wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_SRC,
+        );
+        let (bank0, bank1, bank2, bank3) = if single_bank {
+            (one_sided, &[][..], &[][..], &[][..])
+        } else {
+            let get_bank_slice = |bank_idx: usize| -> &[crate::schedule::OneSidedEntry] {
+                let start = (bank_idx * bank_entries).min(one_sided.len());
+                let end = ((bank_idx + 1) * bank_entries).min(one_sided.len());
+                &one_sided[start..end]
+            };
+            (
+                get_bank_slice(0),
+                get_bank_slice(1),
+                get_bank_slice(2),
+                get_bank_slice(3),
+            )
+        };
+
+        let bank0_buffer = make_buf(
+            Some("one-sided bank 0"),
+            std::mem::size_of_val(bank0).max(8),
+            wgpu::BufferUsages::STORAGE,
+        );
+        let bank1_buffer = if single_bank {
+            None
+        } else {
+            Some(make_buf(
+                Some("one-sided bank 1"),
+                std::mem::size_of_val(bank1).max(8),
+                wgpu::BufferUsages::STORAGE,
+            ))
+        };
+        let bank2_buffer = if single_bank {
+            None
+        } else {
+            Some(make_buf(
+                Some("one-sided bank 2"),
+                std::mem::size_of_val(bank2).max(8),
+                wgpu::BufferUsages::STORAGE,
+            ))
+        };
+        let bank3_buffer = if single_bank {
+            None
+        } else {
+            Some(make_buf(
+                Some("one-sided bank 3"),
+                std::mem::size_of_val(bank3).max(8),
+                wgpu::BufferUsages::STORAGE,
+            ))
+        };
+
+        let pair_size = std::mem::size_of::<crate::schedule::GpuPair>();
+        let pair_chunk_capacity = (max_binding_bytes / pair_size).max(1);
+        let dummy_pair = [crate::schedule::GpuPair::default()];
+        let pair_slices: Vec<&[crate::schedule::GpuPair]> = if two_sided.is_empty() {
+            vec![&dummy_pair[..]]
+        } else {
+            two_sided.chunks(pair_chunk_capacity).collect()
+        };
+        let mut pair_buffers = Vec::with_capacity(pair_slices.len());
+        for slice in &pair_slices {
+            let buf = make_buf(
+                Some("two-sided pairs"),
+                std::mem::size_of_val(*slice).max(pair_size),
+                wgpu::BufferUsages::STORAGE,
+            );
+            queue.write_buffer(&buf, 0, bytemuck::cast_slice(slice));
+            pair_buffers.push(buf);
+        }
+
+        let permutation_buffer = device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("pivot permutation"),
+            size: (h.max(1) * std::mem::size_of::<[u32; 2]>()) as u64,
+            usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
+            mapped_at_creation: false,
+        });
+
+        let round_count = round_offsets.len().saturating_sub(1);
+        let max_invocations = round_count + pair_buffers.len() + phase_chunks + 4;
+        let alignment = limits.min_uniform_buffer_offset_alignment as usize;
+        let slot_size = std::mem::size_of::<Uniforms>().div_ceil(alignment) * alignment;
+
+        let uniform_buffer = device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("dynamic iteration uniforms"),
+            size: (slot_size * max_invocations.max(1)) as u64,
+            usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
+            mapped_at_creation: false,
+        });
+        let download_buffer = device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("positions readback"),
+            size: (n * 8) as u64,
+            usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
+            mapped_at_creation: false,
+        });
+
+        let layout_entries = [
+            buffer_layout(0, wgpu::BufferBindingType::Uniform, true, 32),
+            buffer_layout(
+                1,
+                wgpu::BufferBindingType::Storage { read_only: false },
+                false,
+                8,
+            ),
+            buffer_layout(
+                2,
+                wgpu::BufferBindingType::Storage { read_only: true },
+                false,
+                8,
+            ),
+            buffer_layout(
+                3,
+                wgpu::BufferBindingType::Storage { read_only: true },
+                false,
+                8,
+            ),
+            buffer_layout(
+                4,
+                wgpu::BufferBindingType::Storage { read_only: true },
+                false,
+                20,
+            ),
+            buffer_layout(
+                5,
+                wgpu::BufferBindingType::Storage { read_only: true },
+                false,
+                8,
+            ),
+            buffer_layout(
+                6,
+                wgpu::BufferBindingType::Storage { read_only: true },
+                false,
+                8,
+            ),
+            buffer_layout(
+                7,
+                wgpu::BufferBindingType::Storage { read_only: true },
+                false,
+                8,
+            ),
+        ];
+        let active_bindings = if single_bank { 5 } else { 8 };
+        let layout = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
+            label: Some("Sparse SGD layout"),
+            entries: &layout_entries[..active_bindings],
+        });
+
+        let bind_groups: Vec<wgpu::BindGroup> = pair_buffers
+            .iter()
+            .map(|pair_buffer| {
+                let entries = [
+                    wgpu::BindGroupEntry {
+                        binding: 0,
+                        resource: wgpu::BindingResource::Buffer(wgpu::BufferBinding {
+                            buffer: &uniform_buffer,
+                            offset: 0,
+                            size: NonZeroU64::new(std::mem::size_of::<Uniforms>() as u64),
+                        }),
+                    },
+                    wgpu::BindGroupEntry {
+                        binding: 1,
+                        resource: positions_buffer.as_entire_binding(),
+                    },
+                    wgpu::BindGroupEntry {
+                        binding: 2,
+                        resource: bank0_buffer.as_entire_binding(),
+                    },
+                    wgpu::BindGroupEntry {
+                        binding: 3,
+                        resource: permutation_buffer.as_entire_binding(),
+                    },
+                    wgpu::BindGroupEntry {
+                        binding: 4,
+                        resource: pair_buffer.as_entire_binding(),
+                    },
+                    wgpu::BindGroupEntry {
+                        binding: 5,
+                        resource: bank1_buffer
+                            .as_ref()
+                            .unwrap_or(&bank0_buffer)
+                            .as_entire_binding(),
+                    },
+                    wgpu::BindGroupEntry {
+                        binding: 6,
+                        resource: bank2_buffer
+                            .as_ref()
+                            .unwrap_or(&bank0_buffer)
+                            .as_entire_binding(),
+                    },
+                    wgpu::BindGroupEntry {
+                        binding: 7,
+                        resource: bank3_buffer
+                            .as_ref()
+                            .unwrap_or(&bank0_buffer)
+                            .as_entire_binding(),
+                    },
+                ];
+                device.create_bind_group(&wgpu::BindGroupDescriptor {
+                    label: Some("Sparse SGD bind group"),
+                    layout: &layout,
+                    entries: &entries[..active_bindings],
+                })
+            })
+            .collect();
+
+        let pipeline_layout = device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
+            label: Some("Sparse SGD pipeline layout"),
+            bind_group_layouts: &[&layout],
+            push_constant_ranges: &[],
+        });
+
+        let one_entry_point = if single_bank {
+            "one_sided_phase_single"
+        } else {
+            "one_sided_phase"
+        };
+        let one_pipeline = device.create_compute_pipeline(&wgpu::ComputePipelineDescriptor {
+            label: Some(one_entry_point),
+            layout: Some(&pipeline_layout),
+            module: &shader,
+            entry_point: Some(one_entry_point),
+            compilation_options: wgpu::PipelineCompilationOptions::default(),
+            cache: None,
+        });
+        let two_pipeline = device.create_compute_pipeline(&wgpu::ComputePipelineDescriptor {
+            label: Some("two_sided_round"),
+            layout: Some(&pipeline_layout),
+            module: &shader,
+            entry_point: Some("two_sided_round"),
+            compilation_options: wgpu::PipelineCompilationOptions::default(),
+            cache: None,
+        });
+
+        queue.write_buffer(
+            &positions_buffer,
+            0,
+            bytemuck::cast_slice(&initial_position_data),
+        );
+        if !bank0.is_empty() {
+            queue.write_buffer(&bank0_buffer, 0, bytemuck::cast_slice(bank0));
+        }
+        if let Some(buf) = &bank1_buffer {
+            if !bank1.is_empty() {
+                queue.write_buffer(buf, 0, bytemuck::cast_slice(bank1));
+            }
+        }
+        if let Some(buf) = &bank2_buffer {
+            if !bank2.is_empty() {
+                queue.write_buffer(buf, 0, bytemuck::cast_slice(bank2));
+            }
+        }
+        if let Some(buf) = &bank3_buffer {
+            if !bank3.is_empty() {
+                queue.write_buffer(buf, 0, bytemuck::cast_slice(bank3));
+            }
+        }
+        queue.submit([]);
+
+        let rng = StdRng::seed_from_u64(seed ^ 0x4750_555f_5350_4152);
+        let pivot_permutation = (0..h as u32).collect();
+        let round_order = (0..round_count).collect();
+
+        Ok(Self {
+            one_pipeline,
+            two_pipeline,
+            bind_groups,
+            positions_buffer,
+            download_buffer,
+            permutation_buffer,
+            uniform_buffer,
+            n,
+            h,
+            seed,
+            phase_chunks,
+            slot_size,
+            pair_chunk_capacity,
+            round_offsets: round_offsets.to_vec(),
+            pivots: pivots.to_vec(),
+            rng,
+            pivot_permutation,
+            perm_staging: vec![[0_u32; 2]; h.max(1)],
+            round_order,
+            invocations: Vec::with_capacity(max_invocations),
+            uniform_bytes: vec![0u8; slot_size * max_invocations.max(1)],
+            initial_position_data,
+            iteration: 0,
+        })
+    }
+
+    pub fn reset(&mut self, queue: &wgpu::Queue) {
+        queue.write_buffer(
+            &self.positions_buffer,
+            0,
+            bytemuck::cast_slice(&self.initial_position_data),
+        );
+        queue.submit([]);
+        self.rng = StdRng::seed_from_u64(self.seed ^ 0x4750_555f_5350_4152);
+        self.pivot_permutation.clear();
+        self.pivot_permutation.extend(0..self.h as u32);
+        let round_count = self.round_offsets.len().saturating_sub(1);
+        self.round_order.clear();
+        self.round_order.extend(0..round_count);
+        self.iteration = 0;
+    }
+
+    pub fn step_epoch(&mut self, device: &wgpu::Device, queue: &wgpu::Queue, eta: f32) {
+        let iteration = self.iteration;
+        self.iteration += 1;
+
+        self.pivot_permutation.shuffle(&mut self.rng);
+        self.round_order.shuffle(&mut self.rng);
+        for (step, &p_idx) in self.pivot_permutation.iter().enumerate() {
+            self.perm_staging[step] = [p_idx, self.pivots[p_idx as usize]];
+        }
+        queue.write_buffer(
+            &self.permutation_buffer,
+            0,
+            bytemuck::cast_slice(&self.perm_staging[..self.h]),
+        );
+
+        let one_first = self.rng.random_bool(0.5);
+        self.invocations.clear();
+        let phase_chunks = self.phase_chunks;
+        for chunk in 0..phase_chunks {
+            let start = chunk * self.h / phase_chunks;
+            let end = (chunk + 1) * self.h / phase_chunks;
+            let one = (None, start, end - start);
+            if one_first {
+                self.invocations.push(one);
+            }
+            let begin_round = chunk * self.round_order.len() / phase_chunks;
+            let end_round = (chunk + 1) * self.round_order.len() / phase_chunks;
+            for &ri in &self.round_order[begin_round..end_round] {
+                let mut r_start = self.round_offsets[ri] as usize;
+                let r_end = self.round_offsets[ri + 1] as usize;
+                while r_start < r_end {
+                    let pair_chunk = r_start / self.pair_chunk_capacity;
+                    let chunk_end = ((pair_chunk + 1) * self.pair_chunk_capacity).min(r_end);
+                    let local_start = (r_start - pair_chunk * self.pair_chunk_capacity) as u32;
+                    let count = (chunk_end - r_start) as u32;
+                    self.invocations
+                        .push((Some((pair_chunk, local_start, count)), 0, 0));
+                    r_start = chunk_end;
+                }
+            }
+            if !one_first {
+                self.invocations.push(one);
+            }
+        }
+
+        let needed_bytes = self.invocations.len() * self.slot_size;
+        if self.uniform_bytes.len() < needed_bytes {
+            self.uniform_bytes.resize(needed_bytes, 0);
+        }
+
+        for (slot, (round_slice, pivot_start, pivot_len)) in self.invocations.iter().enumerate() {
+            let (start, count) = round_slice
+                .map(|(_, local_start, count)| (local_start, count))
+                .unwrap_or((*pivot_start as u32, *pivot_len as u32));
+            let uniforms = Uniforms {
+                n: self.n as u32,
+                start,
+                count,
+                iteration,
+                eta,
+                seed: self.seed as u32,
+                pivot_count: self.h as u32,
+                _pad: 0,
+            };
+            self.uniform_bytes[slot * self.slot_size..slot * self.slot_size + 32]
+                .copy_from_slice(bytemuck::bytes_of(&uniforms));
+        }
+        if !self.invocations.is_empty() {
+            queue.write_buffer(&self.uniform_buffer, 0, &self.uniform_bytes[..needed_bytes]);
+        }
+
+        let batch_ranges = submission_ranges(self.invocations.len());
+        let num_batches = batch_ranges.len();
+        for (batch_idx, batch_range) in batch_ranges.iter().enumerate() {
+            let mut encoder = device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
+                label: Some("Sparse SGD invocation batch"),
+            });
+            {
+                let mut pass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
+                    label: Some("Sparse SGD ordered dispatches"),
+                    timestamp_writes: None,
+                });
+                let mut last_is_two: Option<bool> = None;
+                for slot in batch_range.clone() {
+                    let invocation = self.invocations[slot];
+                    let (is_two, bind_idx, count) = match invocation.0 {
+                        Some((pair_chunk, _, count)) => (true, pair_chunk, count as usize),
+                        None => (false, 0, self.n),
+                    };
+                    if count == 0 {
+                        continue;
+                    }
+                    if last_is_two != Some(is_two) {
+                        pass.set_pipeline(if is_two {
+                            &self.two_pipeline
+                        } else {
+                            &self.one_pipeline
+                        });
+                        last_is_two = Some(is_two);
+                    }
+                    pass.set_bind_group(
+                        0,
+                        &self.bind_groups[bind_idx],
+                        &[(slot * self.slot_size) as u32],
+                    );
+                    let total_wgs = (count as u32).div_ceil(WORKGROUP_SIZE);
+                    if total_wgs <= 65_535 {
+                        pass.dispatch_workgroups(total_wgs, 1, 1);
+                    } else {
+                        pass.dispatch_workgroups(65_535, total_wgs.div_ceil(65_535), 1);
+                    }
+                }
+            }
+            if batch_idx + 1 == num_batches {
+                encoder.copy_buffer_to_buffer(
+                    &self.positions_buffer,
+                    0,
+                    &self.download_buffer,
+                    0,
+                    (self.n * 8) as u64,
+                );
+            }
+            queue.submit([encoder.finish()]);
+        }
+    }
+
+    pub fn download_buffer(&self) -> &wgpu::Buffer {
+        &self.download_buffer
     }
 }
 
@@ -761,6 +1572,32 @@ mod tests {
             }
         }
         assert!(submission_ranges(0).is_empty());
+    }
+
+    #[test]
+    fn buffered_epochs_allows_overlap_on_high_round_graphs() {
+        let max_buf = 256 * 1024 * 1024_u64;
+        let slot_size = 256;
+        // luxembourg_osm: 201 invocations -> all 15 epochs buffered
+        assert_eq!(
+            buffered_epochs_for_invocations(max_buf, slot_size, 201, 15, false),
+            15
+        );
+        // web-NotreDame: 10,722 invocations (> 8,192) -> 2 epochs buffered for CPU-GPU overlap
+        assert_eq!(
+            buffered_epochs_for_invocations(max_buf, slot_size, 10_722, 15, false),
+            2
+        );
+        // web-Stanford: 38,626 invocations (> 8,192) -> 2 epochs buffered for CPU-GPU overlap
+        assert_eq!(
+            buffered_epochs_for_invocations(max_buf, slot_size, 38_626, 15, false),
+            2
+        );
+        // Trace mode forces 1 epoch per batch
+        assert_eq!(
+            buffered_epochs_for_invocations(max_buf, slot_size, 38_626, 15, true),
+            1
+        );
     }
 
     #[test]
@@ -1048,544 +1885,5 @@ fn diagnostic_probe(@builtin(global_invocation_id) gid: vec3<u32>) {
                 assert_eq!(permutation, (0..count).collect::<Vec<_>>());
             }
         }
-    }
-}
-
-#[cfg(not(target_arch = "wasm32"))]
-fn trace_positions(
-    device: &wgpu::Device,
-    queue: &wgpu::Queue,
-    positions: &wgpu::Buffer,
-    download: &wgpu::Buffer,
-    node_count: usize,
-) -> Vec<[f64; 2]> {
-    let mut encoder = device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
-        label: Some("convergence checkpoint readback"),
-    });
-    encoder.copy_buffer_to_buffer(positions, 0, download, 0, positions.size());
-    queue.submit([encoder.finish()]);
-    let slice = download.slice(..);
-    slice.map_async(wgpu::MapMode::Read, |_| {});
-    device
-        .poll(wgpu::PollType::wait_indefinitely())
-        .expect("convergence readback poll");
-    let mapped = slice.get_mapped_range();
-    let values: &[[f32; 2]] = bytemuck::cast_slice(&mapped);
-    let result = values[..node_count]
-        .iter()
-        .map(|p| [p[0] as f64, p[1] as f64])
-        .collect();
-    drop(mapped);
-    download.unmap();
-    result
-}
-
-/// Interactive / step-by-epoch RoundRobin Sparse SGD GPU engine (shared by native and WebAssembly).
-#[allow(dead_code)]
-pub struct SparseStepper {
-    one_pipeline: wgpu::ComputePipeline,
-    two_pipeline: wgpu::ComputePipeline,
-    bind_groups: Vec<wgpu::BindGroup>,
-    positions_buffer: wgpu::Buffer,
-    download_buffer: wgpu::Buffer,
-    permutation_buffer: wgpu::Buffer,
-    uniform_buffer: wgpu::Buffer,
-    n: usize,
-    h: usize,
-    seed: u64,
-    phase_chunks: usize,
-    slot_size: usize,
-    pair_chunk_capacity: usize,
-    round_offsets: Vec<u32>,
-    rng: StdRng,
-    pivot_permutation: Vec<u32>,
-    round_order: Vec<usize>,
-    invocations: Vec<(Option<(usize, u32, u32)>, usize, usize)>,
-    uniform_bytes: Vec<u8>,
-    initial_position_data: Vec<[f32; 2]>,
-    iteration: u32,
-}
-
-#[allow(dead_code)]
-impl SparseStepper {
-    #[allow(clippy::too_many_arguments)]
-    pub fn new(
-        device: &wgpu::Device,
-        queue: &wgpu::Queue,
-        n: usize,
-        pivots: &[u32],
-        one_sided: &[crate::schedule::OneSidedEntry],
-        two_sided: &[crate::schedule::GpuPair],
-        round_offsets: &[u32],
-        initial_positions_flat: &[f32],
-        seed: u64,
-        phase_chunks: usize,
-    ) -> Result<Self> {
-        let h = pivots.len();
-        ensure!(
-            n > 0 && h > 0 && n <= u32::MAX as usize && h <= 1024,
-            "Invalid vertex count ({n}) or pivot count ({h}); pivot count must be 1..=1024"
-        );
-        ensure!(
-            one_sided.len() == n * h,
-            "one-sided array length mismatch: got {}, expected {}",
-            one_sided.len(),
-            n * h
-        );
-        ensure!(
-            one_sided.len() <= 4 * BANK_ENTRIES,
-            "one-sided entries exceed 4-bank 1 GiB limit"
-        );
-        ensure!(phase_chunks > 0, "phase_chunks must be positive");
-        let phase_chunks = phase_chunks.min(h);
-
-        let limits = device.limits();
-        let max_binding_bytes = u64::from(limits.max_storage_buffer_binding_size)
-            .min(limits.max_buffer_size) as usize;
-        ensure!(
-            one_sided.len().min(BANK_ENTRIES).max(1)
-                * std::mem::size_of::<crate::schedule::OneSidedEntry>()
-                <= max_binding_bytes,
-            "one-sided bank exceeds adapter storage buffer limit"
-        );
-        ensure!(
-            (n + 2) * 8 <= max_binding_bytes,
-            "positions buffer exceeds adapter storage buffer limit"
-        );
-
-        // Build shader source with independent Feistel pivot shuffle, dynamic shared memory capacity
-        // (256 for h <= 256, 1024 for 256 < h <= 1024), and 2D workgroup dispatch support.
-        let wg_pivot_cap = if h <= 256 { 256 } else { 1024 };
-        let source = include_str!("shader.wgsl")
-            .replace(
-                "var<workgroup> wg_pivot_perm: array<u32, 256>;\nvar<workgroup> wg_pivot_id: array<u32, 256>;\nvar<workgroup> wg_pivot_pos: array<vec2<f32>, 256>;",
-                &format!(
-                    "var<workgroup> wg_pivot_perm: array<u32, {wg_pivot_cap}>;\nvar<workgroup> wg_pivot_id: array<u32, {wg_pivot_cap}>;\nvar<workgroup> wg_pivot_pos: array<vec2<f32>, {wg_pivot_cap}>;"
-                ),
-            )
-            .replace(
-                "let vertex = gid.x;",
-                "let vertex = gid.x + gid.y * 65535u * WORKGROUP_SIZE;",
-            )
-            .replace(
-                "if gid.x >= uniforms.count {\n        return;\n    }\n    let pair_index = uniforms.start + gid.x;",
-                "let flat_id = gid.x + gid.y * 65535u * WORKGROUP_SIZE;\n    if flat_id >= uniforms.count {\n        return;\n    }\n    let pair_index = uniforms.start + flat_id;",
-            )
-            .replace(
-                "(k * stride + rotation) % uniforms.pivot_count",
-                "shuffle_pivot(k, vertex ^ uniforms.seed ^ (uniforms.iteration * 0x9e3779b9u), uniforms.pivot_count)",
-            );
-        let source = format!("{source}\n{}", include_str!("shader_permutation.wgsl"));
-        let shader = device.create_shader_module(wgpu::ShaderModuleDescriptor {
-            label: Some("SparseStepper shader"),
-            source: wgpu::ShaderSource::Wgsl(source.into()),
-        });
-
-        let mut initial_position_data: Vec<[f32; 2]> = initial_positions_flat
-            .chunks_exact(2)
-            .map(|c| [c[0], c[1]])
-            .collect();
-        initial_position_data.push(CANARY);
-        initial_position_data.push(CANARY);
-
-        let make_buf = |label: Option<&str>, byte_len: usize, usage: wgpu::BufferUsages| {
-            device.create_buffer(&wgpu::BufferDescriptor {
-                label,
-                size: byte_len.max(16) as u64,
-                usage: usage | wgpu::BufferUsages::COPY_DST,
-                mapped_at_creation: false,
-            })
-        };
-
-        let positions_buffer = make_buf(
-            Some("positions with canaries"),
-            initial_position_data.len() * 8,
-            wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_SRC,
-        );
-        let get_bank_slice = |bank_idx: usize| -> &[crate::schedule::OneSidedEntry] {
-            let start = (bank_idx * BANK_ENTRIES).min(one_sided.len());
-            let end = ((bank_idx + 1) * BANK_ENTRIES).min(one_sided.len());
-            &one_sided[start..end]
-        };
-        let bank0 = get_bank_slice(0);
-        let bank1 = get_bank_slice(1);
-        let bank2 = get_bank_slice(2);
-        let bank3 = get_bank_slice(3);
-
-        let bank0_buffer = make_buf(
-            Some("one-sided bank 0"),
-            std::mem::size_of_val(bank0).max(8),
-            wgpu::BufferUsages::STORAGE,
-        );
-        let bank1_buffer = make_buf(
-            Some("one-sided bank 1"),
-            std::mem::size_of_val(bank1).max(8),
-            wgpu::BufferUsages::STORAGE,
-        );
-        let bank2_buffer = make_buf(
-            Some("one-sided bank 2"),
-            std::mem::size_of_val(bank2).max(8),
-            wgpu::BufferUsages::STORAGE,
-        );
-        let bank3_buffer = make_buf(
-            Some("one-sided bank 3"),
-            std::mem::size_of_val(bank3).max(8),
-            wgpu::BufferUsages::STORAGE,
-        );
-
-        let pair_size = std::mem::size_of::<crate::schedule::GpuPair>();
-        let pair_chunk_capacity = (max_binding_bytes / pair_size).max(1);
-        let dummy_pair = [crate::schedule::GpuPair::default()];
-        let pair_slices: Vec<&[crate::schedule::GpuPair]> = if two_sided.is_empty() {
-            vec![&dummy_pair[..]]
-        } else {
-            two_sided.chunks(pair_chunk_capacity).collect()
-        };
-        let mut pair_buffers = Vec::with_capacity(pair_slices.len());
-        for slice in &pair_slices {
-            let buf = make_buf(
-                Some("two-sided pairs"),
-                std::mem::size_of_val(*slice).max(pair_size),
-                wgpu::BufferUsages::STORAGE,
-            );
-            queue.write_buffer(&buf, 0, bytemuck::cast_slice(slice));
-            pair_buffers.push(buf);
-        }
-
-        let permutation_buffer = device.create_buffer(&wgpu::BufferDescriptor {
-            label: Some("pivot permutation"),
-            size: (2 * h.max(1) * std::mem::size_of::<u32>()) as u64,
-            usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
-            mapped_at_creation: false,
-        });
-
-        let round_count = round_offsets.len().saturating_sub(1);
-        let max_invocations = round_count + pair_buffers.len() + phase_chunks + 4;
-        let alignment = limits.min_uniform_buffer_offset_alignment as usize;
-        let slot_size = std::mem::size_of::<Uniforms>().div_ceil(alignment) * alignment;
-
-        let uniform_buffer = device.create_buffer(&wgpu::BufferDescriptor {
-            label: Some("dynamic iteration uniforms"),
-            size: (slot_size * max_invocations.max(1)) as u64,
-            usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
-            mapped_at_creation: false,
-        });
-        let download_buffer = device.create_buffer(&wgpu::BufferDescriptor {
-            label: Some("positions readback"),
-            size: (n * 8) as u64,
-            usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
-            mapped_at_creation: false,
-        });
-
-        let layout = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
-            label: Some("Sparse SGD layout"),
-            entries: &[
-                buffer_layout(0, wgpu::BufferBindingType::Uniform, true, 32),
-                buffer_layout(
-                    1,
-                    wgpu::BufferBindingType::Storage { read_only: false },
-                    false,
-                    8,
-                ),
-                buffer_layout(
-                    2,
-                    wgpu::BufferBindingType::Storage { read_only: true },
-                    false,
-                    8,
-                ),
-                buffer_layout(
-                    3,
-                    wgpu::BufferBindingType::Storage { read_only: true },
-                    false,
-                    4,
-                ),
-                buffer_layout(
-                    4,
-                    wgpu::BufferBindingType::Storage { read_only: true },
-                    false,
-                    20,
-                ),
-                buffer_layout(
-                    5,
-                    wgpu::BufferBindingType::Storage { read_only: true },
-                    false,
-                    8,
-                ),
-                buffer_layout(
-                    6,
-                    wgpu::BufferBindingType::Storage { read_only: true },
-                    false,
-                    8,
-                ),
-                buffer_layout(
-                    7,
-                    wgpu::BufferBindingType::Storage { read_only: true },
-                    false,
-                    8,
-                ),
-            ],
-        });
-
-        let bind_groups: Vec<wgpu::BindGroup> = pair_buffers
-            .iter()
-            .map(|pair_buffer| {
-                device.create_bind_group(&wgpu::BindGroupDescriptor {
-                    label: Some("Sparse SGD bind group"),
-                    layout: &layout,
-                    entries: &[
-                        wgpu::BindGroupEntry {
-                            binding: 0,
-                            resource: wgpu::BindingResource::Buffer(wgpu::BufferBinding {
-                                buffer: &uniform_buffer,
-                                offset: 0,
-                                size: NonZeroU64::new(std::mem::size_of::<Uniforms>() as u64),
-                            }),
-                        },
-                        wgpu::BindGroupEntry {
-                            binding: 1,
-                            resource: positions_buffer.as_entire_binding(),
-                        },
-                        wgpu::BindGroupEntry {
-                            binding: 2,
-                            resource: bank0_buffer.as_entire_binding(),
-                        },
-                        wgpu::BindGroupEntry {
-                            binding: 3,
-                            resource: permutation_buffer.as_entire_binding(),
-                        },
-                        wgpu::BindGroupEntry {
-                            binding: 4,
-                            resource: pair_buffer.as_entire_binding(),
-                        },
-                        wgpu::BindGroupEntry {
-                            binding: 5,
-                            resource: bank1_buffer.as_entire_binding(),
-                        },
-                        wgpu::BindGroupEntry {
-                            binding: 6,
-                            resource: bank2_buffer.as_entire_binding(),
-                        },
-                        wgpu::BindGroupEntry {
-                            binding: 7,
-                            resource: bank3_buffer.as_entire_binding(),
-                        },
-                    ],
-                })
-            })
-            .collect();
-
-        let pipeline_layout = device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
-            label: Some("Sparse SGD pipeline layout"),
-            bind_group_layouts: &[&layout],
-            push_constant_ranges: &[],
-        });
-
-        let one_pipeline = device.create_compute_pipeline(&wgpu::ComputePipelineDescriptor {
-            label: Some("one_sided_phase"),
-            layout: Some(&pipeline_layout),
-            module: &shader,
-            entry_point: Some("one_sided_phase"),
-            compilation_options: wgpu::PipelineCompilationOptions::default(),
-            cache: None,
-        });
-        let two_pipeline = device.create_compute_pipeline(&wgpu::ComputePipelineDescriptor {
-            label: Some("two_sided_round"),
-            layout: Some(&pipeline_layout),
-            module: &shader,
-            entry_point: Some("two_sided_round"),
-            compilation_options: wgpu::PipelineCompilationOptions::default(),
-            cache: None,
-        });
-
-        queue.write_buffer(
-            &positions_buffer,
-            0,
-            bytemuck::cast_slice(&initial_position_data),
-        );
-        if !bank0.is_empty() {
-            queue.write_buffer(&bank0_buffer, 0, bytemuck::cast_slice(bank0));
-        }
-        if !bank1.is_empty() {
-            queue.write_buffer(&bank1_buffer, 0, bytemuck::cast_slice(bank1));
-        }
-        if !bank2.is_empty() {
-            queue.write_buffer(&bank2_buffer, 0, bytemuck::cast_slice(bank2));
-        }
-        if !bank3.is_empty() {
-            queue.write_buffer(&bank3_buffer, 0, bytemuck::cast_slice(bank3));
-        }
-        queue.write_buffer(
-            &permutation_buffer,
-            (h * 4) as u64,
-            bytemuck::cast_slice(pivots),
-        );
-        queue.submit([]);
-
-        let rng = StdRng::seed_from_u64(seed ^ 0x4750_555f_5350_4152);
-        let pivot_permutation = (0..h as u32).collect();
-        let round_order = (0..round_count).collect();
-
-        Ok(Self {
-            one_pipeline,
-            two_pipeline,
-            bind_groups,
-            positions_buffer,
-            download_buffer,
-            permutation_buffer,
-            uniform_buffer,
-            n,
-            h,
-            seed,
-            phase_chunks,
-            slot_size,
-            pair_chunk_capacity,
-            round_offsets: round_offsets.to_vec(),
-            rng,
-            pivot_permutation,
-            round_order,
-            invocations: Vec::with_capacity(max_invocations),
-            uniform_bytes: vec![0u8; slot_size * max_invocations.max(1)],
-            initial_position_data,
-            iteration: 0,
-        })
-    }
-
-    pub fn reset(&mut self, queue: &wgpu::Queue) {
-        queue.write_buffer(
-            &self.positions_buffer,
-            0,
-            bytemuck::cast_slice(&self.initial_position_data),
-        );
-        queue.submit([]);
-        self.rng = StdRng::seed_from_u64(self.seed ^ 0x4750_555f_5350_4152);
-        self.pivot_permutation.clear();
-        self.pivot_permutation.extend(0..self.h as u32);
-        let round_count = self.round_offsets.len().saturating_sub(1);
-        self.round_order.clear();
-        self.round_order.extend(0..round_count);
-        self.iteration = 0;
-    }
-
-    pub fn step_epoch(&mut self, device: &wgpu::Device, queue: &wgpu::Queue, eta: f32) {
-        let iteration = self.iteration;
-        self.iteration += 1;
-
-        self.pivot_permutation.shuffle(&mut self.rng);
-        self.round_order.shuffle(&mut self.rng);
-        queue.write_buffer(
-            &self.permutation_buffer,
-            0,
-            bytemuck::cast_slice(&self.pivot_permutation),
-        );
-
-        let one_first = self.rng.random_bool(0.5);
-        self.invocations.clear();
-        let phase_chunks = self.phase_chunks;
-        for chunk in 0..phase_chunks {
-            let start = chunk * self.h / phase_chunks;
-            let end = (chunk + 1) * self.h / phase_chunks;
-            let one = (None, start, end - start);
-            if one_first {
-                self.invocations.push(one);
-            }
-            let begin_round = chunk * self.round_order.len() / phase_chunks;
-            let end_round = (chunk + 1) * self.round_order.len() / phase_chunks;
-            for &ri in &self.round_order[begin_round..end_round] {
-                let mut r_start = self.round_offsets[ri] as usize;
-                let r_end = self.round_offsets[ri + 1] as usize;
-                while r_start < r_end {
-                    let pair_chunk = r_start / self.pair_chunk_capacity;
-                    let chunk_end = ((pair_chunk + 1) * self.pair_chunk_capacity).min(r_end);
-                    let local_start = (r_start - pair_chunk * self.pair_chunk_capacity) as u32;
-                    let count = (chunk_end - r_start) as u32;
-                    self.invocations
-                        .push((Some((pair_chunk, local_start, count)), 0, 0));
-                    r_start = chunk_end;
-                }
-            }
-            if !one_first {
-                self.invocations.push(one);
-            }
-        }
-
-        let needed_bytes = self.invocations.len() * self.slot_size;
-        if self.uniform_bytes.len() < needed_bytes {
-            self.uniform_bytes.resize(needed_bytes, 0);
-        }
-
-        for (slot, (round_slice, pivot_start, pivot_len)) in self.invocations.iter().enumerate() {
-            let (start, count) = round_slice
-                .map(|(_, local_start, count)| (local_start, count))
-                .unwrap_or((*pivot_start as u32, *pivot_len as u32));
-            let uniforms = Uniforms {
-                n: self.n as u32,
-                start,
-                count,
-                iteration,
-                eta,
-                seed: self.seed as u32,
-                pivot_count: self.h as u32,
-                _pad: 0,
-            };
-            self.uniform_bytes[slot * self.slot_size..slot * self.slot_size + 32]
-                .copy_from_slice(bytemuck::bytes_of(&uniforms));
-        }
-        if !self.invocations.is_empty() {
-            queue.write_buffer(&self.uniform_buffer, 0, &self.uniform_bytes[..needed_bytes]);
-        }
-
-        let batch_ranges = submission_ranges(self.invocations.len());
-        let num_batches = batch_ranges.len();
-        for (batch_idx, batch_range) in batch_ranges.iter().enumerate() {
-            let mut encoder = device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
-                label: Some("Sparse SGD invocation batch"),
-            });
-            {
-                let mut pass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
-                    label: Some("Sparse SGD ordered dispatches"),
-                    timestamp_writes: None,
-                });
-                for slot in batch_range.clone() {
-                    let invocation = self.invocations[slot];
-                    let (is_two, bind_idx, count) = match invocation.0 {
-                        Some((pair_chunk, _, count)) => (true, pair_chunk, count as usize),
-                        None => (false, 0, self.n),
-                    };
-                    if count == 0 {
-                        continue;
-                    }
-                    pass.set_pipeline(if is_two {
-                        &self.two_pipeline
-                    } else {
-                        &self.one_pipeline
-                    });
-                    pass.set_bind_group(
-                        0,
-                        &self.bind_groups[bind_idx],
-                        &[(slot * self.slot_size) as u32],
-                    );
-                    let total_wgs = (count as u32).div_ceil(WORKGROUP_SIZE);
-                    if total_wgs <= 65_535 {
-                        pass.dispatch_workgroups(total_wgs, 1, 1);
-                    } else {
-                        pass.dispatch_workgroups(65_535, total_wgs.div_ceil(65_535), 1);
-                    }
-                }
-            }
-            if batch_idx + 1 == num_batches {
-                encoder.copy_buffer_to_buffer(
-                    &self.positions_buffer,
-                    0,
-                    &self.download_buffer,
-                    0,
-                    (self.n * 8) as u64,
-                );
-            }
-            queue.submit([encoder.finish()]);
-        }
-    }
-
-    pub fn download_buffer(&self) -> &wgpu::Buffer {
-        &self.download_buffer
     }
 }

@@ -2,7 +2,6 @@ use crate::graph::{EdgeInfo, Graph, SgdParams};
 use anyhow::{bail, ensure, Context, Result};
 use bytemuck::{Pod, Zeroable};
 use rand::{rngs::StdRng, seq::SliceRandom, SeedableRng};
-use std::collections::{HashMap, HashSet};
 
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Pod, Zeroable)]
@@ -61,6 +60,14 @@ struct AssignedPair {
     round: u32,
 }
 
+#[derive(Clone, Copy, Debug)]
+struct GraphPair {
+    u: u32,
+    v: u32,
+    pair_index: u32,
+}
+
+#[cfg(test)]
 fn key(u: usize, v: usize) -> (usize, usize) {
     if u < v {
         (u, v)
@@ -100,13 +107,15 @@ fn build_schedule_compact(
         "graph has more vertices than the GPU schedule can represent"
     );
 
-    let pivot_set: HashSet<usize> = prepared.pivots.iter().copied().collect();
-    let pivot_index: HashMap<usize, usize> = prepared
-        .pivots
-        .iter()
-        .enumerate()
-        .map(|(index, &pivot)| (pivot, index))
-        .collect();
+    let mut pivot_slot = vec![u32::MAX; n];
+    for (index, &pivot) in prepared.pivots.iter().enumerate() {
+        ensure!(pivot < n, "pivot {pivot} exceeds graph size {n}");
+        ensure!(
+            pivot_slot[pivot] == u32::MAX,
+            "duplicate pivot vertex {pivot}"
+        );
+        pivot_slot[pivot] = index as u32;
+    }
 
     // Absent constraints have zero weight. The dense n*h layout is unchanged so the
     // GPU can consume one common seeded pivot permutation for every vertex.
@@ -120,8 +129,17 @@ fn build_schedule_compact(
         "invalid dense one-sided length"
     );
     let mut one_sided_count = initial_count;
-    let mut pivot_pair_indices = HashMap::<(usize, usize), usize>::new();
-    let mut graph_pair_indices = Vec::<usize>::new();
+    let expected_pivot_pairs = h.saturating_mul(h.saturating_sub(1)) / 2;
+    let pivot_matrix_len = h.checked_mul(h).context("pivot matrix size overflow")?;
+    let mut pivot_pair_indices = vec![usize::MAX; pivot_matrix_len];
+    let mut found_pivot_pairs = 0_usize;
+    ensure!(
+        prepared.pairs.len() <= u32::MAX as usize,
+        "two-sided pair count exceeds u32"
+    );
+    let mut graph_pair_indices =
+        Vec::<GraphPair>::with_capacity(prepared.pairs.len().saturating_sub(expected_pivot_pairs));
+    let mut remaining_deg = vec![0_u32; n];
     for (pair_index_in_prepared, edge) in prepared.pairs.iter().enumerate() {
         ensure!(
             edge.u < n && edge.v < n,
@@ -131,10 +149,11 @@ fn build_schedule_compact(
         );
         let u_positive = edge.weight_u > 0.0;
         let v_positive = edge.weight_v > 0.0;
+        let u_slot = pivot_slot[edge.u];
+        let v_slot = pivot_slot[edge.v];
         match (u_positive, v_positive) {
-            (true, false) if pivot_set.contains(&edge.v) => {
-                let pivot_slot = pivot_index[&edge.v];
-                one_sided[edge.u * h + pivot_slot] = OneSidedEntry {
+            (true, false) if v_slot != u32::MAX => {
+                one_sided[edge.u * h + v_slot as usize] = OneSidedEntry {
                     dij: edge.dij as f32,
                     weight: edge.weight_u as f32,
                 };
@@ -142,9 +161,8 @@ fn build_schedule_compact(
                     .checked_add(1)
                     .context("one-sided constraint count overflow")?;
             }
-            (false, true) if pivot_set.contains(&edge.u) => {
-                let pivot_slot = pivot_index[&edge.u];
-                one_sided[edge.v * h + pivot_slot] = OneSidedEntry {
+            (false, true) if u_slot != u32::MAX => {
+                one_sided[edge.v * h + u_slot as usize] = OneSidedEntry {
                     dij: edge.dij as f32,
                     weight: edge.weight_v as f32,
                 };
@@ -153,17 +171,26 @@ fn build_schedule_compact(
                     .context("one-sided constraint count overflow")?;
             }
             (true, true) => {
-                if pivot_set.contains(&edge.u) && pivot_set.contains(&edge.v) {
+                if u_slot != u32::MAX && v_slot != u32::MAX {
+                    let us = u_slot as usize;
+                    let vs = v_slot as usize;
                     ensure!(
-                        pivot_pair_indices
-                            .insert(key(edge.u, edge.v), pair_index_in_prepared)
-                            .is_none(),
+                        us != vs && pivot_pair_indices[us * h + vs] == usize::MAX,
                         "duplicate pivot pair ({}, {})",
                         edge.u,
                         edge.v
                     );
+                    pivot_pair_indices[us * h + vs] = pair_index_in_prepared;
+                    pivot_pair_indices[vs * h + us] = pair_index_in_prepared;
+                    found_pivot_pairs += 1;
                 } else {
-                    graph_pair_indices.push(pair_index_in_prepared);
+                    remaining_deg[edge.u] += 1;
+                    remaining_deg[edge.v] += 1;
+                    graph_pair_indices.push(GraphPair {
+                        u: edge.u as u32,
+                        v: edge.v as u32,
+                        pair_index: pair_index_in_prepared as u32,
+                    });
                 }
             }
             _ => bail!("unclassifiable constraint ({}, {})", edge.u, edge.v),
@@ -171,49 +198,63 @@ fn build_schedule_compact(
     }
 
     let (mut assignments, base_rounds) =
-        circle_pivot_assignments(&prepared.pivots, &pivot_pair_indices)?;
+        circle_pivot_assignments(h, &pivot_pair_indices, found_pivot_pairs)?;
     assignments
         .try_reserve(graph_pair_indices.len())
         .context("two-sided assignment allocation failed")?;
 
-    // Maintain a bitmask of used round slots for each vertex (used[v][w]).
-    // Word w covers rounds 64 * w .. 64 * w + 63.
-    let mut used = vec![Vec::<u64>::new(); n];
+    // Maintain a bitmask of used round slots for each vertex.
+    // Word 0 (rounds 0..63) is stored inline in `used_word0[v]` to avoid per-vertex
+    // heap allocations on low-degree vertices; words >= 1 are stored in `used_overflow[v][w - 1]`.
+    let mut used_word0 = vec![0_u64; n];
+    let mut used_overflow = vec![Vec::<u64>::new(); n];
+    let mut first_free_word = vec![0_u32; n];
     let base_words = base_rounds.div_ceil(64);
-    for &pivot in &prepared.pivots {
-        if pivot < n {
-            used[pivot].resize(base_words, 0);
+    if base_words > 1 {
+        for &pivot in &prepared.pivots {
+            if pivot < n && remaining_deg[pivot] > 0 {
+                used_overflow[pivot].resize(base_words - 1, 0);
+            }
         }
     }
+    let mut round_membership_count = 0_usize;
     for assignment in &assignments {
         let edge = &prepared.pairs[assignment.pair_index];
+        ensure!(edge.u != edge.v, "self-loop constraint ({}, {})", edge.u, edge.v);
         let round = usize::try_from(assignment.round).context("round ID exceeds usize")?;
         let word = round / 64;
         let mask = 1_u64 << (round % 64);
-        if word >= used[edge.u].len() {
-            used[edge.u].resize(word + 1, 0);
+        for &endpoint in &[edge.u, edge.v] {
+            if remaining_deg[endpoint] > 0 {
+                mark_used_bit(
+                    &mut used_word0,
+                    &mut used_overflow,
+                    &mut first_free_word,
+                    endpoint,
+                    word,
+                    mask,
+                );
+            }
         }
-        used[edge.u][word] |= mask;
-        if word >= used[edge.v].len() {
-            used[edge.v].resize(word + 1, 0);
-        }
-        used[edge.v][word] |= mask;
+        round_membership_count = round_membership_count
+            .checked_add(2)
+            .context("round membership count overflow")?;
     }
 
     let mut rng = StdRng::seed_from_u64(seed ^ 0x5350_4152_5345_5347);
     graph_pair_indices.shuffle(&mut rng);
     let mut round_count = base_rounds;
-    for &pair_index_in_prepared in &graph_pair_indices {
-        let edge = &prepared.pairs[pair_index_in_prepared];
-        let u = edge.u;
-        let v = edge.v;
+    for &pair in &graph_pair_indices {
+        let u = pair.u as usize;
+        let v = pair.v as usize;
+        ensure!(u != v, "self-loop constraint ({u}, {v})");
 
         // Find the lowest unused round index using 64-bit word bitwise operations.
         // A round is free for edge (u, v) iff neither u nor v has its bit set.
-        let mut w = 0_usize;
+        let mut w = (first_free_word[u].max(first_free_word[v])) as usize;
         let (round, word, mask) = loop {
-            let u_mask = used[u].get(w).copied().unwrap_or(0);
-            let v_mask = used[v].get(w).copied().unwrap_or(0);
+            let u_mask = get_used_word(&used_word0, &used_overflow, u, w);
+            let v_mask = get_used_word(&used_word0, &used_overflow, v, w);
             let free = !(u_mask | v_mask);
             if free != 0 {
                 let bit = free.trailing_zeros();
@@ -233,31 +274,40 @@ fn build_schedule_compact(
         );
         let round_u32 = round as u32;
 
-        if word >= used[u].len() {
-            used[u].resize(word + 1, 0);
+        remaining_deg[u] -= 1;
+        if remaining_deg[u] > 0 {
+            mark_used_bit(
+                &mut used_word0,
+                &mut used_overflow,
+                &mut first_free_word,
+                u,
+                word,
+                mask,
+            );
         }
-        used[u][word] |= mask;
 
-        if word >= used[v].len() {
-            used[v].resize(word + 1, 0);
+        remaining_deg[v] -= 1;
+        if remaining_deg[v] > 0 {
+            mark_used_bit(
+                &mut used_word0,
+                &mut used_overflow,
+                &mut first_free_word,
+                v,
+                word,
+                mask,
+            );
         }
-        used[v][word] |= mask;
 
+        round_membership_count = round_membership_count
+            .checked_add(2)
+            .context("round membership count overflow")?;
         round_count = round_count.max(round + 1);
         assignments.push(AssignedPair {
-            pair_index: pair_index_in_prepared,
+            pair_index: pair.pair_index as usize,
             round: round_u32,
         });
     }
 
-    let round_membership_count = used.iter().try_fold(0_usize, |sum, rounds| {
-        let vertex_memberships = rounds
-            .iter()
-            .map(|&w| w.count_ones() as usize)
-            .sum::<usize>();
-        sum.checked_add(vertex_memberships)
-            .context("round membership count overflow")
-    })?;
     let expected_memberships = assignments
         .len()
         .checked_mul(2)
@@ -266,7 +316,10 @@ fn build_schedule_compact(
         round_membership_count == expected_memberships,
         "each two-sided assignment must have two vertex memberships"
     );
-    drop(used);
+    drop(used_overflow);
+    drop(used_word0);
+    drop(first_free_word);
+    drop(remaining_deg);
     drop(graph_pair_indices);
 
     let classified_count = one_sided_count
@@ -280,6 +333,7 @@ fn build_schedule_compact(
     let (two_sided, round_offsets) =
         flatten_assignments(&prepared.pairs, &assignments, round_count)?;
     drop(assignments);
+    #[cfg(test)]
     validate_flat_rounds(&two_sided, &round_offsets, n)?;
 
     let max_graph_degree = (0..graph.node_size)
@@ -305,6 +359,47 @@ fn build_schedule_compact(
     ))
 }
 
+#[inline(always)]
+fn get_used_word(used_word0: &[u64], used_overflow: &[Vec<u64>], v: usize, word: usize) -> u64 {
+    if word == 0 {
+        used_word0[v]
+    } else {
+        used_overflow[v].get(word - 1).copied().unwrap_or(0)
+    }
+}
+
+#[inline(always)]
+fn mark_used_bit(
+    used_word0: &mut [u64],
+    used_overflow: &mut [Vec<u64>],
+    first_free_word: &mut [u32],
+    v: usize,
+    word: usize,
+    mask: u64,
+) {
+    let updated = if word == 0 {
+        let val = used_word0[v] | mask;
+        used_word0[v] = val;
+        val
+    } else {
+        let overflow = &mut used_overflow[v];
+        let idx = word - 1;
+        if idx >= overflow.len() {
+            overflow.resize(idx + 1, 0);
+        }
+        let val = overflow[idx] | mask;
+        overflow[idx] = val;
+        val
+    };
+    if word == first_free_word[v] as usize && updated == u64::MAX {
+        let mut fw = word + 1;
+        while get_used_word(used_word0, used_overflow, v, fw) == u64::MAX {
+            fw += 1;
+        }
+        first_free_word[v] = fw as u32;
+    }
+}
+
 fn next_epoch(marks: &mut [u32], current: u32) -> u32 {
     if current == u32::MAX {
         marks.fill(0);
@@ -315,21 +410,21 @@ fn next_epoch(marks: &mut [u32], current: u32) -> u32 {
 }
 
 fn circle_pivot_assignments(
-    pivots: &[usize],
-    pair_indices: &HashMap<(usize, usize), usize>,
+    h: usize,
+    pair_indices: &[usize],
+    found_pairs: usize,
 ) -> Result<(Vec<AssignedPair>, usize)> {
-    let expected_pairs = pivots
-        .len()
-        .checked_mul(pivots.len().saturating_sub(1))
+    let expected_pairs = h
+        .checked_mul(h.saturating_sub(1))
         .context("pivot-pair count overflow")?
         / 2;
     ensure!(
-        pair_indices.len() == expected_pairs,
+        found_pairs == expected_pairs,
         "pivot-pair set is incomplete"
     );
 
     let dummy = usize::MAX;
-    let mut players = pivots.to_vec();
+    let mut players: Vec<usize> = (0..h).collect();
     if players.len() % 2 == 1 {
         players.push(dummy);
     }
@@ -346,9 +441,11 @@ fn circle_pivot_assignments(
             let u = players[index];
             let v = players[player_count - 1 - index];
             if u != dummy && v != dummy {
-                let &pair_index = pair_indices
-                    .get(&key(u, v))
-                    .ok_or_else(|| anyhow::anyhow!("missing pivot pair ({u}, {v})"))?;
+                let pair_index = pair_indices[u * h + v];
+                ensure!(
+                    pair_index != usize::MAX,
+                    "missing pivot pair ({u}, {v})"
+                );
                 assignments.push(AssignedPair { pair_index, round });
             }
         }
@@ -454,6 +551,7 @@ pub fn validate_flat_rounds(
 mod tests {
     use super::*;
     use rand::{rngs::StdRng, SeedableRng};
+    use std::collections::{HashMap, HashSet};
 
     fn edge(u: usize, v: usize) -> EdgeInfo {
         EdgeInfo {
@@ -553,16 +651,16 @@ mod tests {
     #[test]
     fn circle_method_even_and_odd_are_complete_matchings() {
         for h in [3usize, 4, 5, 6] {
-            let pivots: Vec<_> = (0..h).collect();
             let edges: Vec<_> = (0..h)
                 .flat_map(|u| (u + 1..h).map(move |v| edge(u, v)))
                 .collect();
-            let indices: HashMap<_, _> = edges
-                .iter()
-                .enumerate()
-                .map(|(index, constraint)| (key(constraint.u, constraint.v), index))
-                .collect();
-            let (assignments, round_count) = circle_pivot_assignments(&pivots, &indices).unwrap();
+            let mut indices = vec![usize::MAX; h * h];
+            for (index, constraint) in edges.iter().enumerate() {
+                indices[constraint.u * h + constraint.v] = index;
+                indices[constraint.v * h + constraint.u] = index;
+            }
+            let (assignments, round_count) =
+                circle_pivot_assignments(h, &indices, edges.len()).unwrap();
             let (pairs, offsets) = flatten_assignments(&edges, &assignments, round_count).unwrap();
             validate_flat_rounds(&pairs, &offsets, h).unwrap();
             assert_eq!(round_count, if h % 2 == 0 { h - 1 } else { h });
@@ -651,6 +749,27 @@ mod tests {
             graph.node_size,
         )
         .unwrap();
+    }
+
+    #[test]
+    fn compact_schedule_matches_reference_when_pivots_exceed_64_rounds() {
+        let n = 80;
+        let mut edges: Vec<(usize, usize)> = (0..n).map(|u| (u, (u + 1) % n)).collect();
+        for leaf in 1..n {
+            edges.push((0, leaf));
+        }
+        let graph = Graph::try_from_edges(n, &edges).unwrap();
+        for h in [65_usize, 66] {
+            let mut rng = StdRng::seed_from_u64(11);
+            let params = graph.prepare_sgd_params(2, 0.1, h, true, &mut rng).unwrap();
+            let (schedule, _) = build_schedule_compact(&graph, &params, 11, None).unwrap();
+            let (pairs, offsets, base_rounds) = reference_two_sided(&params, 11);
+            assert!(base_rounds >= 65);
+            assert_eq!(schedule.two_sided, pairs);
+            assert_eq!(schedule.round_offsets, offsets);
+            assert_eq!(schedule.base_rounds, base_rounds);
+            validate_flat_rounds(&schedule.two_sided, &schedule.round_offsets, n).unwrap();
+        }
     }
 
     #[test]

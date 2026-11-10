@@ -170,20 +170,19 @@ impl Distances {
             prefix[reg][d] += 1;
         }
 
-        for p in 0..h {
-            for i in 1..prefix[p].len() {
-                prefix[p][i] += prefix[p][i - 1];
+        for pref in &mut prefix {
+            for i in 1..pref.len() {
+                pref[i] += pref[i - 1];
             }
         }
 
         let mut weight_table = Vec::with_capacity(h);
-        for p in 0..h {
-            let max_d = max_d_per_pivot[p] as usize;
+        for (&max_d_u32, pref) in max_d_per_pivot.iter().zip(&prefix) {
+            let max_d = max_d_u32 as usize;
             let mut table = vec![0.0_f64; max_d + 1];
-            let pref = &prefix[p];
-            for d in 1..=max_d {
+            for (d, slot) in table.iter_mut().enumerate().skip(1) {
                 let dij = d as f64;
-                table[d] = pref[d / 2] as f64 / (dij * dij);
+                *slot = pref[d / 2] as f64 / (dij * dij);
             }
             weight_table.push(table);
         }
@@ -277,9 +276,9 @@ impl Distances {
                             weight_v: 1.0,
                         });
                     }
-                    for p_idx in pivot_index..h {
-                        let (v, pv) = sorted_pivots[p_idx];
-                        let distance = tile_row[p_idx] as usize;
+                    for &(v, pv) in &sorted_pivots[pivot_index..h] {
+                        let distance = tile_row[pivot_index] as usize;
+                        pivot_index += 1;
                         let dij = distance as f64;
                         let weight_u = self.weight_table[pv][distance];
                         fingerprint.edge_info(u, v, dij, weight_u, 0.0);
@@ -296,10 +295,11 @@ impl Distances {
                     let pu_weights = &self.weight_table[pu];
                     let mut cur_v = u + 1;
                     for &edge_v in rem_edges {
-                        for v in cur_v..edge_v {
-                            let distance = dist_row[v] as usize;
+                        for (v, (&dist_u32, &pv)) in (cur_v..edge_v)
+                            .zip(dist_row[cur_v..edge_v].iter().zip(&self.slot[cur_v..edge_v]))
+                        {
+                            let distance = dist_u32 as usize;
                             let dij = distance as f64;
-                            let pv = self.slot[v];
                             let weight_u = if pv != usize::MAX {
                                 self.weight_table[pv][distance]
                             } else {
@@ -325,10 +325,11 @@ impl Distances {
                         });
                         cur_v = edge_v + 1;
                     }
-                    for v in cur_v..n {
-                        let distance = dist_row[v] as usize;
+                    for (v, (&dist_u32, &pv)) in
+                        (cur_v..n).zip(dist_row[cur_v..n].iter().zip(&self.slot[cur_v..n]))
+                    {
+                        let distance = dist_u32 as usize;
                         let dij = distance as f64;
-                        let pv = self.slot[v];
                         let weight_u = if pv != usize::MAX {
                             self.weight_table[pv][distance]
                         } else {

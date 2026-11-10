@@ -260,6 +260,7 @@ impl GpuContext {
         )
     }
 
+    #[allow(clippy::too_many_arguments)]
     pub fn execute_sgd_prepared<R: Rng + ?Sized>(
         &self,
         mut pairs: Vec<GpuPair>,
@@ -403,9 +404,8 @@ impl GpuContext {
         uniform_bytes[..mem::size_of::<Uniforms>()]
             .copy_from_slice(bytemuck::bytes_of(&warmup_uniforms));
 
-        for iteration in 0..num_iterations {
+        for (iteration, &eta) in etas.iter().enumerate() {
             let epoch = (iteration + 1) as u32;
-            let eta = etas[iteration];
             for bank in 0..num_banks {
                 let start = bank * MAX_PAIRS_PER_BANK;
                 let end = (start + MAX_PAIRS_PER_BANK).min(total_pairs);
@@ -525,7 +525,7 @@ impl GpuContext {
                         label: Some(&format!("Sparse Atomic iteration {} encoder", iteration + 1)),
                     });
 
-            for bank in 0..num_banks {
+            for (bank, bind_group) in bind_groups.iter().enumerate() {
                 let bank_start = bank * MAX_PAIRS_PER_BANK;
                 let bank_end = (bank_start + MAX_PAIRS_PER_BANK).min(total_pairs);
                 let bank_pairs = (bank_end - bank_start) as u32;
@@ -540,7 +540,7 @@ impl GpuContext {
                         timestamp_writes: pass_timer.next(),
                     });
                     cpass.set_pipeline(&self.pipeline);
-                    cpass.set_bind_group(0, &bind_groups[bank], &[dynamic_offset]);
+                    cpass.set_bind_group(0, bind_group, &[dynamic_offset]);
                     let height = bank_pairs.div_ceil(65_535);
                     let width = bank_pairs.div_ceil(height);
                     cpass.dispatch_workgroups(width, height, 1);
@@ -554,7 +554,7 @@ impl GpuContext {
                         timestamp_writes: None,
                     });
                     vpass.set_pipeline(&self.verify_pipeline);
-                    vpass.set_bind_group(0, &bind_groups[bank], &[dynamic_offset]);
+                    vpass.set_bind_group(0, bind_group, &[dynamic_offset]);
                     let verify_workgroups = bank_pairs.div_ceil(256);
                     vpass.dispatch_workgroups(verify_workgroups, 1, 1);
                 }
@@ -829,9 +829,8 @@ impl AtomicSparseStepper {
         );
 
         let max_binding_bytes = device.limits().max_storage_buffer_binding_size as usize;
-        let max_pairs_per_bank = (max_binding_bytes / mem::size_of::<GpuPair>())
-            .min(MAX_PAIRS_PER_BANK)
-            .max(1);
+        let max_pairs_per_bank =
+            (max_binding_bytes / mem::size_of::<GpuPair>()).clamp(1, MAX_PAIRS_PER_BANK);
         let total_pairs = pairs.len();
         let num_banks = total_pairs.div_ceil(max_pairs_per_bank);
 
@@ -930,7 +929,7 @@ impl AtomicSparseStepper {
 
         let download_buffer = device.create_buffer(&wgpu::BufferDescriptor {
             label: Some("Sparse Atomic Stepper Download buffer"),
-            size: (initial_positions_flat.len() * mem::size_of::<f32>()) as u64,
+            size: std::mem::size_of_val(initial_positions_flat) as u64,
             usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
             mapped_at_creation: false,
         });
