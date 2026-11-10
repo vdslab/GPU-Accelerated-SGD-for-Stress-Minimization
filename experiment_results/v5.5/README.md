@@ -1,4 +1,4 @@
-# v5.5：RR・Atomic Full実験結果
+# v5.5：RR・Atomic Full・Atomic Sparse実験結果
 
 **EX2完了：RR Full570件＋RR Sparse840件＝1,410件成功、失敗0件。** 当初の1,395件に、容量拡張後のcoPapersCiteseer / p=200の15件を追加した。CPU・Atomicは取り直さず、過去2,820件を参照する。
 
@@ -22,3 +22,9 @@ EX1は742件での停止後、同じ新Fullの凍結バイナリで残り908件�
 [Atomic Full 全38グラフ・速度とStress](atomic-full-main-20261110/reports/results.md)。38グラフ×5 seed×3回の570/570件成功。v5比のグラフ等重み幾何平均で総計算2.811倍、Stress比0.8502。総計算35/38グラフで高速化、Stress32/38グラフで低下。1万頂点帯の3グラフでは総計算が遅い。GPU完了待ちを含む総計算を主指標とし、段階計時の範囲差も記載。4グラフの予備結果は流用せず全件新規測定。
 
 [論文形式のv5対v5.5チャート](atomic-full-main-20261110/reports/paper-style-comparison.md)：Atomic Full 38グラフ、辺数順・対数軸・マーカーと5seed範囲。速度・総計算・StressをPNG/PDF/SVGで保存。
+
+## 最新main Atomic Sparse：web-Stanfordまで
+
+[Atomic Sparse：速度・Stressデータ](atomic-sparse-main-20261110/README.md)。最新main `8393460` をrelease/lockedビルドし、52グラフ×5seed×3回=780/780件成功、失敗0。ユーザー指定でweb-Stanfordまでで終了し、後続4グラフ60件は未実行・対象外。15反復、epsilon0.1、p=min(200,n)、GPU既定permutation、GPU timestamps無効。図表は生成していない。
+
+対応する過去CPUに対するグラフ等重み幾何平均はSGD＋readback速度比0.603726、総計算速度比0.787151、Stress比1.005524。対象は52グラフであり全56件ではない。生JSON・CSV・ログ・実行時ソース・独立検証結果と、v/e・v5・RR Sparseを併記した[グラフ別所要時間](atomic-sparse-main-20261110/GRAPH_TIMES.md)を保存。圧縮座標・実行バイナリは既存方針どおりローカル保持。

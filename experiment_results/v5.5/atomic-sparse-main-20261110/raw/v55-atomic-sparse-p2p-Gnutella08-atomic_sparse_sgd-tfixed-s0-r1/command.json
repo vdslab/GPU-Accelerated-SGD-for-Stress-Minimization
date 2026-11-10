@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/atomic-sparse-main-20261110/bin/atomic-sparse",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/common/p2p-Gnutella08.mtx",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "0",
+    "--run-id",
+    "v55-atomic-sparse-p2p-Gnutella08-atomic_sparse_sgd-tfixed-s0-r1",
+    "--run-mode",
+    "benchmark",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/atomic-sparse-main-20261110/raw/v55-atomic-sparse-p2p-Gnutella08-atomic_sparse_sgd-tfixed-s0-r1",
+    "--pivots",
+    "200"
+  ],
+  "at": "2026-11-10T19:30:55+09:00",
+  "environment": {
+    "SGD_STRESS_MODE": "auto",
+    "SGD_STRESS_SAMPLES": "256",
+    "SGD_GPU_TIMESTAMPS": "0"
+  },
+  "memory_before": {
+    "available_bytes": 9003909120,
+    "used_bytes": 11888721920,
+    "swap_used_bytes": 4248436736,
+    "swap_in_bytes": 933665505280,
+    "swap_out_bytes": 10704699392
+  }
+}

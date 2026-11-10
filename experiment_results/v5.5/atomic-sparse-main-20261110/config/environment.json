@@ -1,0 +1,40 @@
+{
+  "at": "2026-11-10T19:22:57+09:00",
+  "source_root": "/Users/kose/master/sgd-v55-main",
+  "merged_main_commit": "839346091717f3928be83bbcdba8cf8783a48e4e",
+  "binary_sha256": "05dc7ba87e3446c41ae506a66abea22f96dabf44d7fb5d84239e3d519714c650",
+  "source_sha256": {
+    "implementations/sparse/vram-lock-sparse/.gitignore": "44c92e3a70ad3307b7056871c2bdb096d8bfa9373f5bf06a79bb6324a20ff2fb",
+    "implementations/sparse/vram-lock-sparse/Cargo.lock": "26b20303c24975a39784861a1c4902e1f151652411266edbbdc08f44f58fba0a",
+    "implementations/sparse/vram-lock-sparse/Cargo.toml": "3f3ad7b61a5cf2cfd638489e936a64ab1c8528bc820a016480ce889c62c49b4b",
+    "implementations/sparse/vram-lock-sparse/README.md": "51802525715dcf7d4e1265e1bef215a806d60118c125ad05565a5bc210a6ea16",
+    "implementations/sparse/vram-lock-sparse/src/gpu.rs": "01838f1a15b5d9477415ad67c6e3746dea87f3fe5a67a3f0d271d8d3f7e99d2b",
+    "implementations/sparse/vram-lock-sparse/src/lib.rs": "472e63d19c1eb3e46af3a2772108e112adef57aa5dd94f9d4cecfd787a736ef0",
+    "implementations/sparse/vram-lock-sparse/src/main.rs": "3802e56c96e8a59151f75c68888ac4d3f397cc85a4ffa082053d82944f84c216",
+    "implementations/sparse/vram-lock-sparse/src/preprocess.rs": "4c8e71ba0e700d5860d4f1262ae25952a81a6beea98c5407fd5ca1ca808d909c",
+    "implementations/sparse/vram-lock-sparse/src/shader.wgsl": "f29deee82ef66a7a53b3d3c644b9c293068225e433d0ade1712d4d996f08dec8",
+    "implementations/sparse/vram-lock-sparse/tests/json_output.rs": "3aac09960b8c4978683670a9ed6f13803995305c8e63b147d074c4ec028c1d01",
+    "shared/experiment-common/.gitignore": "937456f730114c410243b25f3587e29a6c608b3a79356adafeefb6b960e004b2",
+    "shared/experiment-common/Cargo.lock": "6b06ca0445ecc7d91e38f8f051d2c5545964ef53cf2a5e9a44a573f0367cd372",
+    "shared/experiment-common/Cargo.toml": "7277635bd2f0bef80910b90dac13355295ee8a194a6e2d69e02012923437a219",
+    "shared/experiment-common/src/cli.rs": "233571eb0530444f993082aa35c18a024fd8558476ebe75aa84c7e18b47d8e6d",
+    "shared/experiment-common/src/gpu.rs": "3aee9fe5121d236ad8d662ac5b0dd10d19ba7945cbe1e12673153ebb9f6a4654",
+    "shared/experiment-common/src/lib.rs": "e7988a881f5a84f90917135cb40639950eee2387082db380fd7709ede7a633e4",
+    "shared/experiment-common/src/metadata.rs": "3bc125b0ffda86146f6b7df0bd9f54168976e0bfca3620a73fcc5ca4a492beae",
+    "shared/experiment-common/src/paths.rs": "0c0e3efcec52b513f1bd4714330afb6206ab2253bbb5a1e195d8572ebc6ca46c",
+    "shared/experiment-common/src/record.rs": "0502995b3417a7e2d6b763ff2ce148866560d5940533c8fb46046964cb708964",
+    "shared/experiment-common/src/seed.rs": "445bc2c585e323754e3733d8bb577b58eae2dd1e80d9beedfaa22ac39fce381a",
+    "shared/experiment-common/src/stress.rs": "82c1cecf34492e7d68baeb00522e4a873b607a4a5a8f32de1a7de4af354d67b2",
+    "shared/experiment-common/src/trace.rs": "45d33fa8b24e058694dec2e0b94c3ae3223d40f8c6f795f9063116516fc11f0d",
+    "shared/gpu-timing/metal.rs": "1f4d010e8087f9a282780d9583c04398ef1ff613fd2930e409806392cc3ad63e",
+    "shared/gpu-timing/wgpu.rs": "f6ff28eabaf45aed046afa26dd3891465890a779f77760fed0e2755ef8c676bf"
+  },
+  "memory": {
+    "available_bytes": 8450588672,
+    "used_bytes": 12287606784,
+    "swap_used_bytes": 4323934208,
+    "swap_in_bytes": 932141580288,
+    "swap_out_bytes": 10704601088
+  },
+  "machine": "Hardware:\n\n    Hardware Overview:\n\n      Model Name: MacBook Pro\n      Model Identifier: Mac16,7\n      Model Number: MX2T3J/A\n      Chip: Apple M4 Pro\n      Total Number of Cores: 14 (10 performance and 4 efficiency)\n      Memory: 24 GB\n      System Firmware Version: 13822.41.1\n      OS Loader Version: 11881.140.96\n      Serial Number (system): DKV93PW7T2\n      Hardware UUID: AD0A60A0-DE60-586F-8891-1E220F15D31B\n      Provisioning UDID: 00006040-001A099A01F8801C\n      Activation Lock Status: Enabled\n\nGraphics/Displays:\n\n    Apple M4 Pro:\n\n      Chipset Model: Apple M4 Pro\n      Type: GPU\n      Bus: Built-In\n      Total Number of Cores: 20\n      Vendor: Apple (0x106b)\n      Metal Support: Metal 3\n      Displays:\n        Color LCD:\n          Display Type: Built-in Liquid Retina XDR Display\n          Resolution: 3456 x 2234 Retina\n          Main Display: Yes\n          Mirror: Off\n          Online: Yes\n          Automatically Adjust Brightness: Yes\n          Connection Type: Internal\n        LG Ultra HD:\n          Resolution: 3840 x 2160 (2160p/4K UHD 1 - Ultra High Definition)\n          UI Looks like: 1920 x 1080 @ 60.00Hz\n          Mirror: Off\n          Online: Yes\n          Rotation: Supported\n\n"
+}

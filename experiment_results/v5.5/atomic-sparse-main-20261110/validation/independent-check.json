@@ -1,0 +1,20 @@
+{
+  "success": true,
+  "formal_runs": 780,
+  "graphs": 52,
+  "seeds": 5,
+  "repetitions": 3,
+  "failed": 0,
+  "excluded_after_user_scope_change": 60,
+  "main_commit": "839346091717f3928be83bbcdba8cf8783a48e4e",
+  "binary_sha256": "05dc7ba87e3446c41ae506a66abea22f96dabf44d7fb5d84239e3d519714c650",
+  "input_initial_preprocess_and_stress_protocol_matched": true,
+  "all_updates_completed": true,
+  "independent_paired_hierarchy_matches_report": true,
+  "source_records_unchanged": true,
+  "geometric_means": {
+    "sgd_speedup": 0.603725780761071,
+    "total_speedup": 0.7871511762758185,
+    "stress_ratio": 1.005523738166253
+  }
+}

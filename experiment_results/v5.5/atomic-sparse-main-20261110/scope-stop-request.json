@@ -1,0 +1,13 @@
+{
+  "stop_after_graph": "web-Stanford",
+  "planned_measured_graphs": 52,
+  "planned_measured_runs": 780,
+  "excluded_graphs": [
+    "com-DBLP",
+    "web-NotreDame",
+    "com-Amazon",
+    "coPapersCiteseer"
+  ],
+  "reason": "User requested stop after web-Stanford",
+  "runner_pid": 36625
+}

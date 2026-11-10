@@ -1,0 +1,21 @@
+[package]
+name = "vram-lock-sparse"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1"
+bytemuck = { version = "1", features = ["derive"] }
+experiment-common = { path = "../../../shared/experiment-common", features = ["gpu"] }
+rand = { version = "0.9", default-features = false, features = ["std", "std_rng"] }
+serde_json = "1"
+wgpu = "27"
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+chrono = "0.4"
+env_logger = "0.11"
+pollster = "0.4"
+rand = "0.9"
+
+[dev-dependencies]
+tempfile = "3"

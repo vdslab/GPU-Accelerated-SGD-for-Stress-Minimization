@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "cargo",
+    "build",
+    "--release",
+    "--locked",
+    "--manifest-path",
+    "/Users/kose/master/sgd-v55-main/implementations/sparse/vram-lock-sparse/Cargo.toml",
+    "--target-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/vram-lock-sparse/target"
+  ],
+  "source_commit": "839346091717f3928be83bbcdba8cf8783a48e4e",
+  "at": "2026-11-10T19:22:43+09:00"
+}

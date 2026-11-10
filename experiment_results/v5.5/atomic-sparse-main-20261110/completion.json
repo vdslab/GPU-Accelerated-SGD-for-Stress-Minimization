@@ -1,0 +1,21 @@
+{
+  "completed": "2026-11-10T20:24:25+09:00",
+  "version": "v5.5",
+  "success": 780,
+  "failed": 0,
+  "graphs": 52,
+  "warmups": 52,
+  "stop_after_graph": "web-Stanford",
+  "excluded_graphs": [
+    "com-DBLP",
+    "web-NotreDame",
+    "com-Amazon",
+    "coPapersCiteseer"
+  ],
+  "excluded_runs": 60,
+  "excluded_not_started": true,
+  "reports_complete": true,
+  "figures_generated": false,
+  "source_commit": "839346091717f3928be83bbcdba8cf8783a48e4e",
+  "independent_validation": true
+}

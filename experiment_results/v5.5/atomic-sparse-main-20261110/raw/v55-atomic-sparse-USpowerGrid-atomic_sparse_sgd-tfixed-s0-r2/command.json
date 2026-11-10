@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/atomic-sparse-main-20261110/bin/atomic-sparse",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/common/USpowerGrid.mtx",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "0",
+    "--run-id",
+    "v55-atomic-sparse-USpowerGrid-atomic_sparse_sgd-tfixed-s0-r2",
+    "--run-mode",
+    "benchmark",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/atomic-sparse-main-20261110/raw/v55-atomic-sparse-USpowerGrid-atomic_sparse_sgd-tfixed-s0-r2",
+    "--pivots",
+    "200"
+  ],
+  "at": "2026-11-10T19:30:14+09:00",
+  "environment": {
+    "SGD_STRESS_MODE": "auto",
+    "SGD_STRESS_SAMPLES": "256",
+    "SGD_GPU_TIMESTAMPS": "0"
+  },
+  "memory_before": {
+    "available_bytes": 8828600320,
+    "used_bytes": 12057493504,
+    "swap_used_bytes": 4248436736,
+    "swap_in_bytes": 933575753728,
+    "swap_out_bytes": 10704699392
+  }
+}
