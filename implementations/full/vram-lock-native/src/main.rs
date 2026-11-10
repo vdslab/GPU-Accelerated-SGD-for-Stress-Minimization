@@ -368,10 +368,10 @@ fn full_preprocess_sha256(pairs: &[graph::EdgeInfo]) -> String {
     fingerprint.usize(pairs.len());
     for pair in pairs {
         fingerprint
-            .usize(pair.u)
-            .usize(pair.v)
-            .f64(pair.dij)
-            .f64(pair.wij);
+            .usize(pair.u as usize)
+            .usize(pair.v as usize)
+            .f64(pair.dij as f64)
+            .f64(pair.wij as f64);
     }
     fingerprint.finish()
 }
