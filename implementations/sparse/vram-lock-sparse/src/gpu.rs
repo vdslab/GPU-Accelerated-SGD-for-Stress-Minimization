@@ -1,0 +1,788 @@
+#[allow(dead_code)]
+#[path = "../../../../shared/gpu-timing/wgpu.rs"]
+mod timing;
+
+use crate::graph::{center_inplace, SgdParams};
+use anyhow::{ensure, Result};
+use bytemuck::{Pod, Zeroable};
+use experiment_common::OutputFormat;
+use rand::{seq::SliceRandom, Rng};
+use std::mem;
+use std::time::{Duration, Instant};
+use wgpu::util::DeviceExt;
+
+const CHUNK_SIZE: usize = 65536;
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Pod, Zeroable)]
+pub struct GpuPair {
+    pub u: u32,
+    pub v: u32,
+    pub dij: f32,
+    pub weight_u: f32,
+    pub weight_v: f32,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default, Pod, Zeroable)]
+struct Uniforms {
+    chunk_start: u32,
+    chunk_count: u32,
+    epoch: u32,
+    eta: f32,
+}
+
+#[allow(dead_code)]
+pub struct GpuContext {
+    pub device: wgpu::Device,
+    pub queue: wgpu::Queue,
+    pub pipeline: wgpu::ComputePipeline,
+    pub bind_group_layout: wgpu::BindGroupLayout,
+    pub device_name: String,
+    pub backend: String,
+}
+
+pub struct GpuRunResult {
+    pub initial_positions: Vec<[f64; 2]>,
+    pub positions: Vec<[f64; 2]>,
+    pub method_setup_time: Duration,
+    pub upload_time: Duration,
+    pub preparation_time: Duration,
+    pub time_to_result: Duration,
+    pub result_ready_monotonic_ms: f64,
+    pub iteration_times: Option<Vec<Duration>>,
+    pub iteration_time: Duration,
+    pub readback_time: Duration,
+    pub postprocess_time: Duration,
+    pub attempted_updates: u64,
+    pub completed_updates: u64,
+    pub dispatches: u64,
+}
+
+impl GpuContext {
+    pub fn new() -> Result<Self> {
+        Self::with_shader(include_str!("shader.wgsl"))
+    }
+
+    pub fn with_shader(shader_source: &str) -> Result<Self> {
+        let (_instance, adapter, device, queue) =
+            experiment_common::gpu::init_gpu_context(wgpu::PowerPreference::HighPerformance)?;
+        let info = adapter.get_info();
+
+        let shader = device.create_shader_module(wgpu::ShaderModuleDescriptor {
+            label: Some("Sparse Atomic SGD Shader"),
+            source: wgpu::ShaderSource::Wgsl(shader_source.into()),
+        });
+
+        let bind_group_layout = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
+            label: Some("Sparse Atomic bind group layout"),
+            entries: &[
+                // binding 0: positions
+                wgpu::BindGroupLayoutEntry {
+                    binding: 0,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: false },
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                },
+                // binding 1: pairs
+                wgpu::BindGroupLayoutEntry {
+                    binding: 1,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: true },
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                },
+                // binding 2: locks
+                wgpu::BindGroupLayoutEntry {
+                    binding: 2,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: false },
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                },
+                // binding 3: pending
+                wgpu::BindGroupLayoutEntry {
+                    binding: 3,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: true },
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                },
+                // binding 4: completed
+                wgpu::BindGroupLayoutEntry {
+                    binding: 4,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: false },
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                },
+                // binding 5: uniforms
+                wgpu::BindGroupLayoutEntry {
+                    binding: 5,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Uniform,
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                },
+            ],
+        });
+
+        let pipeline_layout = device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
+            label: Some("Sparse Atomic pipeline layout"),
+            bind_group_layouts: &[&bind_group_layout],
+            push_constant_ranges: &[],
+        });
+
+        let pipeline = device.create_compute_pipeline(&wgpu::ComputePipelineDescriptor {
+            label: Some("Sparse Atomic compute pipeline"),
+            layout: Some(&pipeline_layout),
+            module: &shader,
+            entry_point: Some("sparse_sgd"),
+            compilation_options: Default::default(),
+            cache: None,
+        });
+
+        Ok(Self {
+            device,
+            queue,
+            pipeline,
+            bind_group_layout,
+            device_name: info.name,
+            backend: format!("{:?}", info.backend),
+        })
+    }
+
+    pub fn execute_sgd<R: Rng + ?Sized>(
+        &self,
+        params: SgdParams,
+        rng: &mut R,
+        verbose: bool,
+        format: OutputFormat,
+    ) -> Result<GpuRunResult> {
+        self.execute_sgd_with_cpu_shuffle(params, rng, verbose, format, false)
+    }
+
+    pub fn execute_sgd_with_cpu_shuffle<R: Rng + ?Sized>(
+        &self,
+        params: SgdParams,
+        rng: &mut R,
+        verbose: bool,
+        format: OutputFormat,
+        cpu_shuffle: bool,
+    ) -> Result<GpuRunResult> {
+        let execution_started = Instant::now();
+        let setup = Instant::now();
+        ensure!(
+            !params.pairs.is_empty() && !params.etas.is_empty(),
+            "Empty Sparse workload"
+        );
+        ensure!(
+            params.positions.len() <= (u32::MAX as usize / 2),
+            "Too many vertices"
+        );
+        ensure!(
+            params.pairs.len() <= u32::MAX as usize,
+            "Too many constraints"
+        );
+
+        let initial_positions = params.positions;
+        ensure!(
+            initial_positions
+                .iter()
+                .flatten()
+                .all(|x| (*x as f32).is_finite()),
+            "Invalid initial coordinates"
+        );
+        let mut pairs: Vec<GpuPair> = params
+            .pairs
+            .iter()
+            .map(|p| {
+                ensure!(
+                    p.u < p.v && p.v < initial_positions.len(),
+                    "Invalid Sparse endpoints"
+                );
+                ensure!(
+                    (p.dij as f32).is_finite() && p.dij as f32 > 0.0,
+                    "Invalid target distance"
+                );
+                Ok(GpuPair {
+                    u: p.u as u32,
+                    v: p.v as u32,
+                    dij: p.dij as f32,
+                    weight_u: p.weight_u as f32,
+                    weight_v: p.weight_v as f32,
+                })
+            })
+            .collect::<Result<Vec<_>>>()?;
+
+        if !cpu_shuffle {
+            pairs.shuffle(rng);
+        }
+
+        let etas: Vec<f32> = params.etas.iter().map(|&e| e as f32).collect();
+        let initial_coords: Vec<[f32; 2]> = initial_positions
+            .iter()
+            .map(|&[x, y]| [x as f32, y as f32])
+            .collect();
+        let mut all_pending: Vec<u32> = (0..pairs.len() as u32).collect();
+        let method_setup_time = setup.elapsed();
+
+        let preparation_started = Instant::now();
+        let position_buffer = self
+            .device
+            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("Positions buffer"),
+                contents: bytemuck::cast_slice(&initial_coords),
+                usage: wgpu::BufferUsages::STORAGE
+                    | wgpu::BufferUsages::COPY_SRC
+                    | wgpu::BufferUsages::COPY_DST,
+            });
+
+        let pair_buffer = self
+            .device
+            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("Pairs buffer"),
+                contents: bytemuck::cast_slice(&pairs),
+                usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
+            });
+
+        let locks = vec![0u32; initial_positions.len()];
+        let lock_buffer = self
+            .device
+            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("Locks buffer"),
+                contents: bytemuck::cast_slice(&locks),
+                usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
+            });
+
+        let pending_buffer = self
+            .device
+            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("Pending buffer"),
+                contents: bytemuck::cast_slice(&all_pending),
+                usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
+            });
+
+        let completed = vec![0u32; pairs.len()];
+        let completed_buffer = self
+            .device
+            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("Completed buffer"),
+                contents: bytemuck::cast_slice(&completed),
+                usage: wgpu::BufferUsages::STORAGE
+                    | wgpu::BufferUsages::COPY_SRC
+                    | wgpu::BufferUsages::COPY_DST,
+            });
+
+        let initial_uniforms = Uniforms {
+            chunk_start: 0,
+            chunk_count: 0,
+            epoch: 0,
+            eta: 0.0,
+        };
+        let uniform_buffer = self
+            .device
+            .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("Uniform buffer"),
+                contents: bytemuck::bytes_of(&initial_uniforms),
+                usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
+            });
+
+        let bind_group = self.device.create_bind_group(&wgpu::BindGroupDescriptor {
+            label: Some("Sparse Atomic bind group"),
+            layout: &self.bind_group_layout,
+            entries: &[
+                wgpu::BindGroupEntry {
+                    binding: 0,
+                    resource: position_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 1,
+                    resource: pair_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 2,
+                    resource: lock_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 3,
+                    resource: pending_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 4,
+                    resource: completed_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 5,
+                    resource: uniform_buffer.as_entire_binding(),
+                },
+            ],
+        });
+
+        // Warm up Mesa NIR->DXIL compilation
+        experiment_common::gpu::run_warmup_dispatch_simple(
+            &self.device,
+            &self.queue,
+            &self.pipeline,
+            &bind_group,
+        )?;
+
+        let preparation_time = preparation_started.elapsed();
+        let upload_time = Duration::ZERO; // Staging included in init
+
+        let completed_staging = self.device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("Completed staging buffer"),
+            size: (pairs.len() * mem::size_of::<u32>()) as u64,
+            usage: wgpu::BufferUsages::MAP_READ | wgpu::BufferUsages::COPY_DST,
+            mapped_at_creation: false,
+        });
+
+        let total_pairs = pairs.len();
+        let num_chunks = total_pairs.div_ceil(CHUNK_SIZE);
+        let total_passes = etas.len() * num_chunks;
+        let mut pass_timer = timing::PassTimer::new(&self.device, total_passes);
+
+        let mut completed_updates = 0u64;
+        let mut dispatches = 0u64;
+        let start = Instant::now();
+
+        for (iteration, &eta) in etas.iter().enumerate() {
+            let epoch = (iteration + 1) as u32;
+            if cpu_shuffle {
+                all_pending.shuffle(rng);
+                self.queue
+                    .write_buffer(&pending_buffer, 0, bytemuck::cast_slice(&all_pending));
+            }
+
+            for chunk_idx in 0..num_chunks {
+                let chunk_start = (chunk_idx * CHUNK_SIZE) as u32;
+                let chunk_count = (total_pairs - chunk_start as usize).min(CHUNK_SIZE) as u32;
+
+                let uniforms = Uniforms {
+                    chunk_start,
+                    chunk_count,
+                    epoch,
+                    eta,
+                };
+                self.queue
+                    .write_buffer(&uniform_buffer, 0, bytemuck::bytes_of(&uniforms));
+
+                let mut encoder =
+                    self.device
+                        .create_command_encoder(&wgpu::CommandEncoderDescriptor {
+                            label: Some("Sparse Atomic command encoder"),
+                        });
+                {
+                    let mut cpass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
+                        label: Some("Sparse Atomic compute pass"),
+                        timestamp_writes: pass_timer.next(),
+                    });
+                    cpass.set_pipeline(&self.pipeline);
+                    cpass.set_bind_group(0, &bind_group, &[]);
+                    let width = chunk_count.min(65535);
+                    let height = chunk_count.div_ceil(65535);
+                    cpass.dispatch_workgroups(width, height, 1);
+                }
+
+                if chunk_idx == num_chunks - 1 {
+                    encoder.copy_buffer_to_buffer(
+                        &completed_buffer,
+                        0,
+                        &completed_staging,
+                        0,
+                        (total_pairs * mem::size_of::<u32>()) as u64,
+                    );
+                }
+
+                self.queue.submit(Some(encoder.finish()));
+                self.device.poll(wgpu::PollType::wait_indefinitely())?;
+                dispatches += 1;
+            }
+
+            // Verify 100% completion invariant for current epoch
+            let slice = completed_staging.slice(..);
+            slice.map_async(wgpu::MapMode::Read, |_| ());
+            self.device.poll(wgpu::PollType::wait_indefinitely())?;
+            {
+                let data = slice.get_mapped_range();
+                let flags: &[u32] = bytemuck::cast_slice(&data);
+                ensure!(
+                    flags.iter().all(|&done| done == epoch),
+                    "Incomplete Sparse iteration {} (Quality Gate 4 violation: update dropped)",
+                    iteration + 1
+                );
+            }
+            completed_staging.unmap();
+            completed_updates += total_pairs as u64;
+
+            pass_timer.end_iteration();
+
+            if verbose {
+                let message = format!(
+                    "Iteration {} - Updated {} pairs, dispatches={}",
+                    iteration + 1,
+                    total_pairs,
+                    num_chunks
+                );
+                match format {
+                    OutputFormat::Json => eprintln!("{message}"),
+                    OutputFormat::Human => println!("{message}"),
+                }
+            }
+        }
+
+        let iteration_time = start.elapsed();
+
+        // Read back final positions
+        let readback = Instant::now();
+        let position_staging = self.device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("Position staging buffer"),
+            size: (initial_positions.len() * 2 * mem::size_of::<f32>()) as u64,
+            usage: wgpu::BufferUsages::MAP_READ | wgpu::BufferUsages::COPY_DST,
+            mapped_at_creation: false,
+        });
+
+        let mut encoder = self
+            .device
+            .create_command_encoder(&wgpu::CommandEncoderDescriptor {
+                label: Some("Readback encoder"),
+            });
+        encoder.copy_buffer_to_buffer(
+            &position_buffer,
+            0,
+            &position_staging,
+            0,
+            (initial_positions.len() * 2 * mem::size_of::<f32>()) as u64,
+        );
+        self.queue.submit(Some(encoder.finish()));
+
+        let slice = position_staging.slice(..);
+        slice.map_async(wgpu::MapMode::Read, |_| ());
+        self.device.poll(wgpu::PollType::wait_indefinitely())?;
+        let mut final_positions: Vec<[f64; 2]> = {
+            let data = slice.get_mapped_range();
+            let coords: &[[f32; 2]] = bytemuck::cast_slice(&data);
+            coords.iter().map(|&[x, y]| [x as f64, y as f64]).collect()
+        };
+        position_staging.unmap();
+        let readback_time = readback.elapsed();
+
+        let iteration_times = pass_timer.finish(&self.device, &self.queue)?;
+        let time_to_result = execution_started.elapsed();
+        let result_ready_monotonic_ms = experiment_common::monotonic_time_ms();
+
+        let postprocess = Instant::now();
+        if params.center {
+            center_inplace(&mut final_positions);
+        }
+        let postprocess_time = postprocess.elapsed();
+
+        Ok(GpuRunResult {
+            initial_positions,
+            positions: final_positions,
+            method_setup_time,
+            upload_time,
+            preparation_time,
+            time_to_result,
+            result_ready_monotonic_ms,
+            iteration_times,
+            iteration_time,
+            readback_time,
+            postprocess_time,
+            attempted_updates: total_pairs as u64 * etas.len() as u64,
+            completed_updates,
+            dispatches,
+        })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::{cpu_reference::apply_constraint, graph::EdgeInfo};
+    use rand::{rngs::StdRng, SeedableRng};
+
+    #[test]
+    fn stale_completion_from_previous_iteration_is_rejected() {
+        let source = include_str!("shader.wgsl").replace(
+            "completed[slot] = uniforms.epoch;",
+            "if (uniforms.epoch == 1u) { completed[slot] = uniforms.epoch; }",
+        );
+        assert_ne!(source, include_str!("shader.wgsl"));
+        let context = GpuContext::with_shader(&source).unwrap();
+        let result = context.execute_sgd(
+            SgdParams {
+                positions: vec![[0.0, 0.0], [4.0, 0.0]],
+                pairs: vec![EdgeInfo {
+                    u: 0,
+                    v: 1,
+                    dij: 2.0,
+                    weight_u: 0.25,
+                    weight_v: 0.25,
+                }],
+                etas: vec![4.0, 2.0],
+                pivots: vec![0],
+                center: false,
+            },
+            &mut StdRng::seed_from_u64(0),
+            false,
+            OutputFormat::Json,
+        );
+        assert!(result
+            .err()
+            .unwrap()
+            .to_string()
+            .contains("Incomplete Sparse iteration 2"));
+    }
+
+    #[test]
+    fn moving_shared_endpoint_tracks_serial_recurrence() {
+        let context = GpuContext::new().unwrap();
+        let count = 4096;
+        let eta = 0.0001;
+        let mut expected = 0.0f32;
+        for _ in 0..count {
+            let diff = 3.0 - expected;
+            let r = ((diff - 1.0) / (2.0 * diff)) * diff;
+            expected += eta as f32 * r;
+        }
+
+        for seed in [0, 1, 42] {
+            let mut positions = vec![[0.0, 0.0]];
+            positions.extend((0..count).map(|_| [3.0, 0.0]));
+            let pairs: Vec<_> = (1..=count)
+                .map(|v| EdgeInfo {
+                    u: 0,
+                    v,
+                    dij: 1.0,
+                    weight_u: 1.0,
+                    weight_v: 0.0,
+                })
+                .collect();
+            let r = context
+                .execute_sgd_with_cpu_shuffle(
+                    SgdParams {
+                        positions,
+                        pairs,
+                        etas: vec![eta],
+                        pivots: vec![0],
+                        center: false,
+                    },
+                    &mut StdRng::seed_from_u64(seed),
+                    false,
+                    OutputFormat::Json,
+                    false,
+                )
+                .unwrap();
+            assert_eq!(r.completed_updates, count as u64);
+            assert!(
+                (r.positions[0][0] - expected as f64).abs() < 0.0001,
+                "{} != {}",
+                r.positions[0][0],
+                expected
+            );
+            assert_eq!(r.positions[0][1], 0.0);
+            assert!(r.positions[1..].iter().all(|&p| p == [3.0, 0.0]));
+        }
+    }
+
+    #[test]
+    fn gpu_directional_updates_match_cpu_reference() {
+        let context = GpuContext::new().unwrap();
+        for (wu, wv, eta) in [
+            (1.0, 1.0, 0.25),
+            (0.2, 0.8, 0.5),
+            (0.0, 1.0, 0.5),
+            (1.0, 0.0, 0.5),
+            (10.0, 0.2, 0.5),
+        ] {
+            let pair = EdgeInfo {
+                u: 0,
+                v: 1,
+                dij: 2.0,
+                weight_u: wu,
+                weight_v: wv,
+            };
+            let initial = vec![[0.0, 0.0], [4.0, 1.0]];
+            let mut expected = initial.clone();
+            apply_constraint(
+                &mut expected,
+                pair,
+                eta,
+                &mut StdRng::seed_from_u64(0),
+            );
+            let run = context
+                .execute_sgd(
+                    SgdParams {
+                        positions: initial,
+                        pairs: vec![pair],
+                        etas: vec![eta],
+                        pivots: vec![0],
+                        center: false,
+                    },
+                    &mut StdRng::seed_from_u64(0),
+                    false,
+                    OutputFormat::Json,
+                )
+                .unwrap();
+            for (&actual, &expected) in run
+                .positions
+                .iter()
+                .flatten()
+                .zip(expected.iter().flatten())
+            {
+                assert!((actual - expected).abs() < 1e-5, "{actual} != {expected}");
+            }
+            assert_eq!(run.completed_updates, 1);
+        }
+    }
+
+    #[test]
+    fn contention_completes_each_pair_once_and_preserves_fixed_endpoint() {
+        let context = GpuContext::new().unwrap();
+        let n = 4097;
+        let run = context
+            .execute_sgd(
+                SgdParams {
+                    positions: (0..n).map(|i| [i as f64 + 1.0, 0.0]).collect(),
+                    pairs: (1..n)
+                        .map(|v| EdgeInfo {
+                            u: 0,
+                            v,
+                            dij: 1.0,
+                            weight_u: 0.0,
+                            weight_v: 1.0,
+                        })
+                        .collect(),
+                    etas: vec![0.5, 0.5, 0.5],
+                    pivots: vec![0],
+                    center: false,
+                },
+                &mut StdRng::seed_from_u64(1234),
+                false,
+                OutputFormat::Json,
+            )
+            .unwrap();
+        assert_eq!(run.completed_updates, (n - 1) as u64 * 3);
+        assert_eq!(run.positions[0], [1.0, 0.0]);
+        for (v, p) in run.positions.iter().enumerate().skip(1) {
+            let expected = 2.0 + (v as f64 - 1.0) * 0.75f64.powi(3);
+            assert!(
+                (p[0] - expected).abs() < 0.001,
+                "pair {v}: {} != {expected}",
+                p[0]
+            );
+        }
+    }
+
+    #[test]
+    fn two_dimensional_dispatch_updates_every_pair_including_last() {
+        let context = GpuContext::new().unwrap();
+        let count = 65536;
+        let run = context
+            .execute_sgd(
+                SgdParams {
+                    positions: (0..count).flat_map(|_| [[0.0, 0.0], [4.0, 0.0]]).collect(),
+                    pairs: (0..count)
+                        .map(|i| EdgeInfo {
+                            u: 2 * i,
+                            v: 2 * i + 1,
+                            dij: 2.0,
+                            weight_u: 0.25,
+                            weight_v: 0.25,
+                        })
+                        .collect(),
+                    etas: vec![4.0, 4.0, 4.0],
+                    pivots: vec![0],
+                    center: false,
+                },
+                &mut StdRng::seed_from_u64(0),
+                false,
+                OutputFormat::Json,
+            )
+            .unwrap();
+        assert_eq!(run.completed_updates, count as u64 * 3);
+        assert_eq!(run.dispatches, 3);
+        for pair in run.positions.chunks_exact(2) {
+            assert_eq!(pair, &[[1.0, 0.0], [3.0, 0.0]]);
+        }
+    }
+
+    #[test]
+    fn invalid_endpoints_and_non_finite_input_are_rejected_before_dispatch() {
+        let context = GpuContext::new().unwrap();
+        for (positions, v) in [
+            (vec![[0.0, 0.0], [1.0, 0.0]], 0),
+            (vec![[f64::NAN, 0.0], [1.0, 0.0]], 1),
+        ] {
+            let result = context.execute_sgd(
+                SgdParams {
+                    positions,
+                    pairs: vec![EdgeInfo {
+                        u: 0,
+                        v,
+                        dij: 1.0,
+                        weight_u: 1.0,
+                        weight_v: 1.0,
+                    }],
+                    etas: vec![1.0],
+                    pivots: vec![0],
+                    center: false,
+                },
+                &mut StdRng::seed_from_u64(0),
+                false,
+                OutputFormat::Json,
+            );
+            assert!(result.is_err());
+        }
+    }
+
+    #[test]
+    fn gpu_handles_coincident_positions_and_centers_output() {
+        let context = GpuContext::new().unwrap();
+        let run = context
+            .execute_sgd(
+                SgdParams {
+                    positions: vec![[2.0, 3.0]; 2],
+                    pairs: vec![EdgeInfo {
+                        u: 0,
+                        v: 1,
+                        dij: 1.0,
+                        weight_u: 1.0,
+                        weight_v: 1.0,
+                    }],
+                    etas: vec![0.5],
+                    pivots: vec![0],
+                    center: true,
+                },
+                &mut StdRng::seed_from_u64(0),
+                false,
+                OutputFormat::Json,
+            )
+            .unwrap();
+        assert_eq!(run.completed_updates, 1);
+        let center_x = (run.positions[0][0] + run.positions[1][0]) / 2.0;
+        let center_y = (run.positions[0][1] + run.positions[1][1]) / 2.0;
+        assert!(center_x.abs() < 1e-5, "{center_x}");
+        assert!(center_y.abs() < 1e-5, "{center_y}");
+    }
+}

@@ -24,12 +24,7 @@ use serde_json::json;
 use std::path::Path;
 
 fn copy_params(p: &graph::SgdParams) -> graph::SgdParams {
-    graph::SgdParams {
-        etas: p.etas.clone(),
-        positions: p.positions.clone(),
-        pairs: p.pairs.clone(),
-        center: p.center,
-    }
+    p.clone()
 }
 
 fn main() -> Result<()> {
@@ -241,6 +236,10 @@ fn micro() -> Result<()> {
                 partial_self_perm_offset: tile * 2 - 1,
                 chunk: 0,
                 chunks: 1,
+                tiles_offset: 0,
+                perm_offset: 0,
+                subround_start: 0,
+                subround_end: 1,
                 padding: [1.0f32.to_bits(), 0],
             };
             let positions_data = initial.repeat(replicas as usize);

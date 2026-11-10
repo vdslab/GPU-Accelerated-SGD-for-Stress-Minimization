@@ -1,5 +1,6 @@
 mod gpu;
 mod graph;
+use graph::bfs;
 
 use anyhow::{bail, Context, Result};
 use chrono::Local;
@@ -23,6 +24,7 @@ struct Config {
     seed: u64,
     center: bool,
     kernel: gpu::KernelConfig,
+    bfs_engine: bfs::BfsBackend,
 }
 
 impl Default for Config {
@@ -35,6 +37,7 @@ impl Default for Config {
             seed: 0,
             center: true,
             kernel: gpu::KernelConfig::default(),
+            bfs_engine: bfs::BfsBackend::Auto,
         }
     }
 }
@@ -87,6 +90,9 @@ impl Config {
                 }
                 "--no-outer-shuffle" => config.kernel.outer_shuffle = false,
                 "--no-inner-shuffle" => config.kernel.inner_shuffle = false,
+                "--bfs-engine" => {
+                    config.bfs_engine = next(&mut args, "--bfs-engine")?.parse()?;
+                }
                 value if !value.starts_with('-') && !positional => {
                     config.input = value.into();
                     positional = true;
@@ -127,7 +133,8 @@ fn print_help() {
          [--epsilon F] [--seed N] [--output-format human|json] [--output-dir PATH] \
          [--run-mode benchmark|diagnostic] [--verbose] [--no-center] \
          [--phase-chunks N] [--tile-size 1..1024] [--workgroup-size 1..1024] \
-         [--coordinate-memory shared|global] [--no-outer-shuffle] [--no-inner-shuffle]"
+         [--coordinate-memory shared|global] [--no-outer-shuffle] [--no-inner-shuffle] \
+         [--bfs-engine auto|gpu|cpu]"
     );
 }
 
@@ -145,14 +152,22 @@ fn main() -> Result<()> {
     ));
 
     let preprocess_started = Instant::now();
-    let params = graph.prepare_sgd_params(
+    let (params, bfs_timing) = graph.prepare_sgd_params_with_backend(
         config.iterations,
         config.epsilon,
         config.center,
         config.seed,
-    );
-    let constraint_count = params.pairs.len();
+        config.bfs_engine,
+    )?;
+    let constraint_count = params.constraint_count;
     let common_preprocess_time = preprocess_started.elapsed();
+    config.log(format!(
+        "BFS: engine={:?} (init={:.2} ms, kernel={:.2} ms, compaction={:.2} ms)",
+        config.bfs_engine,
+        bfs_timing.engine_init_time_ms,
+        bfs_timing.bfs_kernel_time_ms,
+        bfs_timing.compaction_time_ms,
+    ));
 
     let setup_started = Instant::now();
     let block_count = (graph.node_size as u32).div_ceil(config.kernel.tile_size);
@@ -294,9 +309,20 @@ fn main() -> Result<()> {
             .into();
             value["rr_outer_shuffle"] = config.kernel.outer_shuffle.into();
             value["rr_inner_shuffle"] = config.kernel.inner_shuffle.into();
+            value["bfs_engine"] = format!("{:?}", config.bfs_engine).to_lowercase().into();
+            value["bfs_init_time_ms"] = bfs_timing.engine_init_time_ms.into();
+            value["bfs_kernel_time_ms"] = bfs_timing.bfs_kernel_time_ms.into();
+            value["bfs_compaction_time_ms"] = bfs_timing.compaction_time_ms.into();
             println!("{}", serde_json::to_string(&value)?);
         }
         OutputFormat::Human => {
+            println!(
+                "BFS engine={:?}: init={:.3} ms, kernel={:.3} ms, compaction={:.3} ms",
+                config.bfs_engine,
+                bfs_timing.engine_init_time_ms,
+                bfs_timing.bfs_kernel_time_ms,
+                bfs_timing.compaction_time_ms,
+            );
             println!(
                 "Rounds={}, dispatches={}, Iteration={:.3} ms, Algorithm={:.3} ms, CLI total={:.3} ms",
                 schedule.len(),
@@ -467,5 +493,19 @@ mod tests {
         assert_eq!(config.input, PathBuf::from("graph.mtx"));
         assert_eq!(config.common.output_format, OutputFormat::Json);
         assert_eq!(config.common.run_mode, RunMode::Diagnostic);
+    }
+
+    #[test]
+    fn bfs_engine_argument_is_parsed() {
+        let default_config = Config::from_iter(["--input", "g.mtx"].into_iter().map(str::to_owned)).unwrap();
+        assert_eq!(default_config.bfs_engine, bfs::BfsBackend::Auto);
+
+        let gpu_config = Config::from_iter(["--bfs-engine", "gpu"].into_iter().map(str::to_owned)).unwrap();
+        assert_eq!(gpu_config.bfs_engine, bfs::BfsBackend::Gpu);
+
+        let cpu_config = Config::from_iter(["--bfs-engine", "cpu"].into_iter().map(str::to_owned)).unwrap();
+        assert_eq!(cpu_config.bfs_engine, bfs::BfsBackend::Cpu);
+
+        assert!(Config::from_iter(["--bfs-engine", "invalid"].into_iter().map(str::to_owned)).is_err());
     }
 }

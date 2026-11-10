@@ -12,12 +12,7 @@ use serde_json::json;
 use std::path::Path;
 
 fn copy_params(params: &graph::SgdParams) -> graph::SgdParams {
-    graph::SgdParams {
-        etas: params.etas.clone(),
-        positions: params.positions.clone(),
-        pairs: params.pairs.clone(),
-        center: params.center,
-    }
+    params.clone()
 }
 
 fn exact_stress(positions: &[[f32; 2]], pairs: &[graph::EdgeInfo]) -> f64 {

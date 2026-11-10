@@ -1,0 +1,512 @@
+{
+  "milestone": "Milestone 5: Phase 4 4-Tier Verification & Benchmark Suite",
+  "timestamp": "2026-11-09T19:04:44.870439+00:00",
+  "duration_seconds": 161.390315,
+  "overall_status": "PASS",
+  "environment_metadata": {
+    "os_system": "Linux",
+    "os_release": "6.18.54.1-microsoft-standard-WSL2",
+    "os_version": "#1 SMP PREEMPT_DYNAMIC Tue Oct  6 19:13:07 UTC 2026",
+    "cpu_model": "AMD Ryzen 5 5600X 6-Core Processor",
+    "python_version": "3.14.4",
+    "gpu_device": "D3D12 (NVIDIA GeForce RTX 3050)",
+    "gpu_backend": "Gl",
+    "wsl2": true
+  },
+  "quality_gates": {
+    "gate1": {
+      "gate_id": "Gate 1",
+      "name": "Native GPU Enforcement & Software Fallback Rejection",
+      "status": "PASS",
+      "positive_tests": [
+        {
+          "binary_name": "rr_gpu",
+          "binary_path": "/home/likr/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/rr_gpu/target/release/rr-gpu",
+          "returncode": 0,
+          "gpu_name": "D3D12 (NVIDIA GeForce RTX 3050)",
+          "gpu_backend": "Gl",
+          "status": "success",
+          "passed": true
+        },
+        {
+          "binary_name": "sparse_gpu",
+          "binary_path": "/home/likr/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/sparse-sgd-gpu",
+          "returncode": 0,
+          "gpu_name": "D3D12 (NVIDIA GeForce RTX 3050)",
+          "gpu_backend": "Gl",
+          "status": "success",
+          "passed": true
+        },
+        {
+          "binary_name": "vram_lock_native",
+          "binary_path": "/home/likr/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/vram-lock-native/target/release/vram-lock-native",
+          "returncode": 0,
+          "gpu_name": "D3D12 (NVIDIA GeForce RTX 3050)",
+          "gpu_backend": "Gl",
+          "status": "success",
+          "passed": true
+        },
+        {
+          "binary_name": "vram_lock_sparse",
+          "binary_path": "/home/likr/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/vram-lock-sparse/target/release/vram-lock-sparse",
+          "returncode": 0,
+          "gpu_name": "D3D12 (NVIDIA GeForce RTX 3050)",
+          "gpu_backend": "Gl",
+          "status": "success",
+          "passed": true
+        }
+      ],
+      "negative_tests": [
+        {
+          "binary_name": "rr_gpu",
+          "binary_path": "/home/likr/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/rr_gpu/target/release/rr-gpu",
+          "returncode": 1,
+          "rejected": true,
+          "rejection_message_detected": true,
+          "stderr_snippet": "Error: All available WebGPU adapters were rejected as CPU/software emulators (llvmpipe/lavapipe). Ensure Mesa Gallium D3D12 is enabled with GALLIUM_DRIVER=d3d12.",
+          "passed": true
+        },
+        {
+          "binary_name": "sparse_gpu",
+          "binary_path": "/home/likr/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/sparse-sgd-gpu",
+          "returncode": 1,
+          "rejected": true,
+          "rejection_message_detected": true,
+          "stderr_snippet": "Error: All available WebGPU adapters were rejected as CPU/software emulators (llvmpipe/lavapipe). Ensure Mesa Gallium D3D12 is enabled with GALLIUM_DRIVER=d3d12.",
+          "passed": true
+        },
+        {
+          "binary_name": "vram_lock_native",
+          "binary_path": "/home/likr/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/vram-lock-native/target/release/vram-lock-native",
+          "returncode": 1,
+          "rejected": true,
+          "rejection_message_detected": true,
+          "stderr_snippet": "Error: All available WebGPU adapters were rejected as CPU/software emulators (llvmpipe/lavapipe). Ensure Mesa Gallium D3D12 is enabled with GALLIUM_DRIVER=d3d12.",
+          "passed": true
+        },
+        {
+          "binary_name": "vram_lock_sparse",
+          "binary_path": "/home/likr/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/vram-lock-sparse/target/release/vram-lock-sparse",
+          "returncode": 1,
+          "rejected": true,
+          "rejection_message_detected": true,
+          "stderr_snippet": "Error: All available WebGPU adapters were rejected as CPU/software emulators (llvmpipe/lavapipe). Ensure Mesa Gallium D3D12 is enabled with GALLIUM_DRIVER=d3d12.",
+          "passed": true
+        }
+      ],
+      "verdict": "PASS",
+      "errors": []
+    },
+    "gate2": {
+      "gate_id": "Gate 2",
+      "name": "Bit-Exact Preprocessing Parity",
+      "status": "PASS",
+      "full_sgd_tests": [
+        {
+          "dataset": "cycle6",
+          "path": "/home/likr/GPU-Accelerated-SGD-for-Stress-Minimization/data/cycle6.mtx",
+          "cpu_initial_positions_sha256": "e4a874edf323e536a8fe0faeb5ea2808a24ff6207437e66b9d146fbfe67ab807",
+          "rr_auto_initial_positions_sha256": "e4a874edf323e536a8fe0faeb5ea2808a24ff6207437e66b9d146fbfe67ab807",
+          "rr_cpu_initial_positions_sha256": "e4a874edf323e536a8fe0faeb5ea2808a24ff6207437e66b9d146fbfe67ab807",
+          "rr_gpu_initial_positions_sha256": "e4a874edf323e536a8fe0faeb5ea2808a24ff6207437e66b9d146fbfe67ab807",
+          "atomic_initial_positions_sha256": "e4a874edf323e536a8fe0faeb5ea2808a24ff6207437e66b9d146fbfe67ab807",
+          "passed": true
+        },
+        {
+          "dataset": "grid2d_10x10",
+          "path": "/home/likr/GPU-Accelerated-SGD-for-Stress-Minimization/data/grid2d_10x10.mtx",
+          "cpu_initial_positions_sha256": "d768ac08697a4e6d01fa3ff00769685c055d3a877391ea7dbf7b84effd72f020",
+          "rr_auto_initial_positions_sha256": "d768ac08697a4e6d01fa3ff00769685c055d3a877391ea7dbf7b84effd72f020",
+          "rr_cpu_initial_positions_sha256": "d768ac08697a4e6d01fa3ff00769685c055d3a877391ea7dbf7b84effd72f020",
+          "rr_gpu_initial_positions_sha256": "d768ac08697a4e6d01fa3ff00769685c055d3a877391ea7dbf7b84effd72f020",
+          "atomic_initial_positions_sha256": "d768ac08697a4e6d01fa3ff00769685c055d3a877391ea7dbf7b84effd72f020",
+          "passed": true
+        },
+        {
+          "dataset": "BA-2000-g0",
+          "path": "/home/likr/GPU-Accelerated-SGD-for-Stress-Minimization/data/BA-2000-g0.mtx",
+          "cpu_initial_positions_sha256": "dfd409d2f8fbab2f813c6818985a69282526b94e87a61e4739c0fd56b574e250",
+          "rr_auto_initial_positions_sha256": "dfd409d2f8fbab2f813c6818985a69282526b94e87a61e4739c0fd56b574e250",
+          "rr_cpu_initial_positions_sha256": "dfd409d2f8fbab2f813c6818985a69282526b94e87a61e4739c0fd56b574e250",
+          "rr_gpu_initial_positions_sha256": "dfd409d2f8fbab2f813c6818985a69282526b94e87a61e4739c0fd56b574e250",
+          "atomic_initial_positions_sha256": "dfd409d2f8fbab2f813c6818985a69282526b94e87a61e4739c0fd56b574e250",
+          "passed": true
+        }
+      ],
+      "sparse_sgd_tests": [
+        {
+          "dataset": "cycle6",
+          "pivots": 3,
+          "path": "/home/likr/GPU-Accelerated-SGD-for-Stress-Minimization/data/cycle6.mtx",
+          "cpu_preprocess_sha256": "ed74308092e3a714e7f7a1999295c087fb72cf906686c57c0075646480a08ab1",
+          "gpu_preprocess_sha256": "ed74308092e3a714e7f7a1999295c087fb72cf906686c57c0075646480a08ab1",
+          "atomic_preprocess_sha256": "ed74308092e3a714e7f7a1999295c087fb72cf906686c57c0075646480a08ab1",
+          "cpu_initial_positions_sha256": "1924f007578a09db3053e432eca11698b341c125b0eb9558960c9f04a6829939",
+          "gpu_initial_positions_sha256": "1924f007578a09db3053e432eca11698b341c125b0eb9558960c9f04a6829939",
+          "atomic_initial_positions_sha256": "1924f007578a09db3053e432eca11698b341c125b0eb9558960c9f04a6829939",
+          "preprocess_match": true,
+          "initial_positions_match": true,
+          "passed": true
+        },
+        {
+          "dataset": "grid2d_10x10",
+          "pivots": 50,
+          "path": "/home/likr/GPU-Accelerated-SGD-for-Stress-Minimization/data/grid2d_10x10.mtx",
+          "cpu_preprocess_sha256": "67915160703b087fca1a654257821240c1c9787194ed8ab2e06d9a15da126598",
+          "gpu_preprocess_sha256": "67915160703b087fca1a654257821240c1c9787194ed8ab2e06d9a15da126598",
+          "atomic_preprocess_sha256": "67915160703b087fca1a654257821240c1c9787194ed8ab2e06d9a15da126598",
+          "cpu_initial_positions_sha256": "059c9578e25d4d1b8ecf9fb6c232a947f71a7efaae5fb36c217f9ba367df5e58",
+          "gpu_initial_positions_sha256": "059c9578e25d4d1b8ecf9fb6c232a947f71a7efaae5fb36c217f9ba367df5e58",
+          "atomic_initial_positions_sha256": "059c9578e25d4d1b8ecf9fb6c232a947f71a7efaae5fb36c217f9ba367df5e58",
+          "preprocess_match": true,
+          "initial_positions_match": true,
+          "passed": true
+        },
+        {
+          "dataset": "USpowerGrid",
+          "pivots": 50,
+          "path": "/home/likr/GPU-Accelerated-SGD-for-Stress-Minimization/data/USpowerGrid.mtx",
+          "cpu_preprocess_sha256": "15b8c2a29d1939d24b39a6065cef5e0422bed16e0dc789c479795dac125750f4",
+          "gpu_preprocess_sha256": "15b8c2a29d1939d24b39a6065cef5e0422bed16e0dc789c479795dac125750f4",
+          "atomic_preprocess_sha256": "15b8c2a29d1939d24b39a6065cef5e0422bed16e0dc789c479795dac125750f4",
+          "cpu_initial_positions_sha256": "d95ed9e357e93c966fdf36da08adfe95abce4a6254567d49e5983b46e6923c6d",
+          "gpu_initial_positions_sha256": "d95ed9e357e93c966fdf36da08adfe95abce4a6254567d49e5983b46e6923c6d",
+          "atomic_initial_positions_sha256": "d95ed9e357e93c966fdf36da08adfe95abce4a6254567d49e5983b46e6923c6d",
+          "preprocess_match": true,
+          "initial_positions_match": true,
+          "passed": true
+        }
+      ],
+      "verdict": "PASS",
+      "errors": []
+    },
+    "gate3": {
+      "gate_id": "Gate 3",
+      "name": "Bit-Exact Repeatability & Zero Stress Degradation",
+      "status": "PASS",
+      "repeatability_tests": [
+        {
+          "binary": "rr_gpu",
+          "dataset": "grid2d_10x10",
+          "args": [
+            "--iterations",
+            "5",
+            "--seed",
+            "123"
+          ],
+          "run1_stress": 83.44483661420942,
+          "run2_stress": 83.44483661420942,
+          "stress_diff": 0.0,
+          "variance_pct": 0.0,
+          "run1_positions_sha256": "ca5072f2fe4e6c54c022041b4a7d46f2877e25a00185010b8ece03594e448c47",
+          "run2_positions_sha256": "ca5072f2fe4e6c54c022041b4a7d46f2877e25a00185010b8ece03594e448c47",
+          "run1_positions_f64_sha256": "3633e86a09434ee1ada1395d1f52e1e70dd396374b013c121151dc8ac9d75fb5",
+          "run2_positions_f64_sha256": "3633e86a09434ee1ada1395d1f52e1e70dd396374b013c121151dc8ac9d75fb5",
+          "coordinates_bit_exact": true,
+          "passed": true
+        },
+        {
+          "binary": "rr_gpu",
+          "dataset": "BA-2000-g0",
+          "args": [
+            "--iterations",
+            "5",
+            "--seed",
+            "123"
+          ],
+          "run1_stress": 564775.7138804005,
+          "run2_stress": 564775.7138804005,
+          "stress_diff": 0.0,
+          "variance_pct": 0.0,
+          "run1_positions_sha256": "92aafe95ded52c8b048364a9b813866be04f54dcafdfe5700da9f2203e2b5a66",
+          "run2_positions_sha256": "92aafe95ded52c8b048364a9b813866be04f54dcafdfe5700da9f2203e2b5a66",
+          "run1_positions_f64_sha256": "9ce914b04a12dbdb5051442145ada02ae1142ce82aef7727eb10fa53921e5b29",
+          "run2_positions_f64_sha256": "9ce914b04a12dbdb5051442145ada02ae1142ce82aef7727eb10fa53921e5b29",
+          "coordinates_bit_exact": true,
+          "passed": true
+        },
+        {
+          "binary": "sparse_gpu",
+          "dataset": "grid2d_10x10",
+          "args": [
+            "--pivots",
+            "100",
+            "--iterations",
+            "5",
+            "--seed",
+            "123"
+          ],
+          "run1_stress": 83.37630056352307,
+          "run2_stress": 83.37630056352307,
+          "stress_diff": 0.0,
+          "variance_pct": 0.0,
+          "run1_positions_sha256": "331af0dda6e4ebef5d995df1666f9b31d41ea31fb3d798e266a8d47998bd2214",
+          "run2_positions_sha256": "331af0dda6e4ebef5d995df1666f9b31d41ea31fb3d798e266a8d47998bd2214",
+          "run1_positions_f64_sha256": "d8e7d29bab577f1de60f15197e97932c0d2f16fd604bde548feb37be300da711",
+          "run2_positions_f64_sha256": "d8e7d29bab577f1de60f15197e97932c0d2f16fd604bde548feb37be300da711",
+          "coordinates_bit_exact": true,
+          "passed": true
+        },
+        {
+          "binary": "sparse_gpu",
+          "dataset": "BA-2000-g0",
+          "args": [
+            "--pivots",
+            "50",
+            "--iterations",
+            "5",
+            "--seed",
+            "123"
+          ],
+          "run1_stress": 390013.6226488574,
+          "run2_stress": 390013.6226488574,
+          "stress_diff": 0.0,
+          "variance_pct": 0.0,
+          "run1_positions_sha256": "a3ac6894118bdfaff898c2d962cf53245428687b14f54e3681203fcba1a6fde8",
+          "run2_positions_sha256": "a3ac6894118bdfaff898c2d962cf53245428687b14f54e3681203fcba1a6fde8",
+          "run1_positions_f64_sha256": "efe60ecc8343d51a63e4ae28dd5f0757e137e5d3d22d137b9779bc437c6584bd",
+          "run2_positions_f64_sha256": "efe60ecc8343d51a63e4ae28dd5f0757e137e5d3d22d137b9779bc437c6584bd",
+          "coordinates_bit_exact": true,
+          "passed": true
+        }
+      ],
+      "convergence_quality_tests": [
+        {
+          "kind": "full",
+          "dataset": "grid2d_10x10",
+          "cpu_stress": 81.36236787812625,
+          "gpu_stress": 81.36871590828996,
+          "stress_ratio": 1.0000780216988425,
+          "max_ratio_allowed": 1.286,
+          "passed": true
+        },
+        {
+          "kind": "full",
+          "dataset": "BA-2000-g0",
+          "cpu_stress": 346276.51881374023,
+          "gpu_stress": 393305.97619201493,
+          "stress_ratio": 1.1358147457973364,
+          "max_ratio_allowed": 1.286,
+          "passed": true
+        },
+        {
+          "kind": "sparse",
+          "dataset": "grid2d_10x10",
+          "cpu_stress": 81.35440431456169,
+          "gpu_stress": 81.36095949896492,
+          "stress_ratio": 1.0000805756548579,
+          "max_ratio_allowed": 1.155,
+          "passed": true
+        },
+        {
+          "kind": "sparse",
+          "dataset": "BA-2000-g0",
+          "cpu_stress": 388373.7914551159,
+          "gpu_stress": 405203.5377379561,
+          "stress_ratio": 1.043333887747122,
+          "max_ratio_allowed": 1.155,
+          "passed": true
+        }
+      ],
+      "verdict": "PASS",
+      "errors": []
+    },
+    "gate4": {
+      "gate_id": "Gate 4",
+      "name": "Atomic SGD 100% Completion & Convergence Verification",
+      "status": "PASS",
+      "tests": [
+        {
+          "binary": "vram_lock_native",
+          "kind": "Full",
+          "dataset": "cycle6",
+          "attempted_updates": 225,
+          "completed_updates": 225,
+          "completion_rate": 1.0,
+          "retry_failures": 0,
+          "stress_iter1": 12.667411189678758,
+          "stress_iter15": 0.28671716041174083,
+          "stress_decreased": true,
+          "coordinates_finite": true,
+          "coordinate_count": 6,
+          "passed": true
+        },
+        {
+          "binary": "vram_lock_native",
+          "kind": "Full",
+          "dataset": "grid2d_10x10",
+          "attempted_updates": 74250,
+          "completed_updates": 74250,
+          "completion_rate": 1.0,
+          "retry_failures": 0,
+          "stress_iter1": 307.58575374509786,
+          "stress_iter15": 81.86072858271692,
+          "stress_decreased": true,
+          "coordinates_finite": true,
+          "coordinate_count": 100,
+          "passed": true
+        },
+        {
+          "binary": "vram_lock_sparse",
+          "kind": "Sparse",
+          "dataset": "cycle6",
+          "attempted_updates": 195,
+          "completed_updates": 195,
+          "completion_rate": 1.0,
+          "retry_failures": 0,
+          "stress_iter1": 4.915453365296399,
+          "stress_iter15": 0.39973055088573317,
+          "stress_decreased": true,
+          "coordinates_finite": true,
+          "coordinate_count": 6,
+          "passed": true
+        },
+        {
+          "binary": "vram_lock_sparse",
+          "kind": "Sparse",
+          "dataset": "grid2d_10x10",
+          "attempted_updates": 74250,
+          "completed_updates": 74250,
+          "completion_rate": 1.0,
+          "retry_failures": 0,
+          "stress_iter1": 355.05832232065734,
+          "stress_iter15": 81.68416254969249,
+          "stress_decreased": true,
+          "coordinates_finite": true,
+          "coordinate_count": 100,
+          "passed": true
+        },
+        {
+          "binary": "vram_lock_sparse",
+          "kind": "Sparse",
+          "dataset": "USpowerGrid",
+          "attempted_updates": 3783900,
+          "completed_updates": 3783900,
+          "completion_rate": 1.0,
+          "retry_failures": 0,
+          "stress_iter1": 3898499.0513585457,
+          "stress_iter15": 781913.4074647215,
+          "stress_decreased": true,
+          "coordinates_finite": true,
+          "coordinate_count": 4941,
+          "passed": true
+        }
+      ],
+      "verdict": "PASS",
+      "errors": []
+    }
+  },
+  "performance_benchmarks": {
+    "full_sgd_benchmarks": {
+      "BA-2000-g0": {
+        "nodes": 2000,
+        "cpu_iteration_time_ms": 390.993871,
+        "gpu_wall_iteration_time_ms": 27.014985,
+        "gpu_device_iteration_time_ms": 1.7702912000000002,
+        "wall_speedup": 14.473221843358418,
+        "device_speedup": 220.864155569434,
+        "target_wall_speedup": 15.0,
+        "target_device_speedup": 50.0,
+        "passed_target_wall": false,
+        "passed_target_device": true
+      },
+      "grid2d_64x64": {
+        "nodes": 4096,
+        "cpu_iteration_time_ms": 2027.1223859999998,
+        "gpu_wall_iteration_time_ms": 34.305460000000004,
+        "gpu_device_iteration_time_ms": 3.06112,
+        "wall_speedup": 59.090371795043694,
+        "device_speedup": 662.215916396613
+      },
+      "BA-8000-g0_scale_limit": {
+        "nodes": 8000,
+        "status": "success",
+        "buffer_size_mib": 122.1,
+        "banks_used": 1,
+        "gpu_device_time_ms": 53.679711999999995,
+        "wall_time_sec": 8.981720066163689,
+        "passed": true
+      },
+      "grid2d_128x128_scale_limit": {
+        "nodes": 16384,
+        "status": "success",
+        "buffer_size_mib": 512.0,
+        "banks_used": 4,
+        "gpu_device_time_ms": 35.545055999999995,
+        "wall_time_sec": 6.543111746897921,
+        "passed": true
+      }
+    },
+    "sparse_sgd_benchmarks": {
+      "USpowerGrid": {
+        "nodes": 4941,
+        "pivots": 50,
+        "cpu_iteration_time_ms": 21.888241999999998,
+        "gpu_wall_iteration_time_ms": 34.33198,
+        "gpu_device_iteration_time_ms": 0.23777280000000003,
+        "device_speedup": 92.05528134420756,
+        "wall_speedup": 0.637546742133719,
+        "target_device_speedup": 10.0,
+        "passed_target_device": true
+      },
+      "luxembourg_osm_scale_limit": {
+        "nodes": 114599,
+        "pivots": 200,
+        "status": "success",
+        "buffer_size_mib": 184.2,
+        "banks_used": 2,
+        "gpu_device_time_ms": 19.81552,
+        "wall_time_sec": 7.261521307053044,
+        "passed": true
+      },
+      "web-Stanford_scale_limit": {
+        "nodes": 281903,
+        "pivots": 200,
+        "status": "success",
+        "buffer_size_mib": 408.4,
+        "banks_used": 4,
+        "gpu_device_time_ms": 121.10079999999999,
+        "wall_time_sec": 20.00399216101505,
+        "passed": true
+      }
+    },
+    "atomic_throughput_benchmarks": {
+      "vram_lock_native": {
+        "dataset": "grid2d_10x10",
+        "iterations": 15,
+        "completed_updates": 74250,
+        "gpu_device_time_ms": 8.195072,
+        "throughput_m_updates_per_sec": 9.060323081969264
+      },
+      "vram_lock_sparse": {
+        "dataset": "grid2d_10x10",
+        "pivots": 100,
+        "iterations": 15,
+        "completed_updates": 74250,
+        "gpu_device_time_ms": 3.4897919999999996,
+        "throughput_m_updates_per_sec": 21.276339678697187
+      }
+    },
+    "bfs_preprocessing_benchmarks": {
+      "USpowerGrid": {
+        "nodes": 4941,
+        "pivots": 50,
+        "cpu_preprocess_time_ms": 68.869493,
+        "gpu_preprocess_time_ms": 20.595735,
+        "bfs_speedup": 3.343871583121457,
+        "target_bfs_speedup": 3.0,
+        "passed_target_speedup": true
+      },
+      "small_graph_regression_check": {
+        "cycle128": {
+          "preprocess_time_ms": 0.199686,
+          "passed": true
+        },
+        "grid2d_10x10": {
+          "preprocess_time_ms": 0.233887,
+          "passed": true
+        }
+      }
+    }
+  }
+}

@@ -171,7 +171,26 @@ pub struct Uniforms {
     pub partial_self_perm_offset: u32,
     pub chunk: u32,
     pub chunks: u32,
+    pub tiles_offset: u32,
+    pub perm_offset: u32,
+    pub subround_start: u32,
+    pub subround_end: u32,
     pub padding: [u32; 2],
+}
+
+const MAX_DISPATCHES_PER_SUBMISSION: usize = 256;
+
+fn submission_ranges(invocation_count: usize) -> Vec<std::ops::Range<usize>> {
+    let mut ranges = Vec::with_capacity(invocation_count.div_ceil(MAX_DISPATCHES_PER_SUBMISSION));
+    let mut start = 0;
+    while start < invocation_count {
+        let end = start
+            .saturating_add(MAX_DISPATCHES_PER_SUBMISSION)
+            .min(invocation_count);
+        ranges.push(start..end);
+        start = end;
+    }
+    ranges
 }
 
 pub struct GpuContext {
@@ -272,30 +291,11 @@ pub fn build_schedule(big_b: u32) -> Vec<Vec<(u32, u32)>> {
 impl GpuContext {
     pub fn new(kernel: KernelConfig) -> Result<Self> {
         kernel.validate()?;
-        let instance = wgpu::Instance::new(&wgpu::InstanceDescriptor::default());
-
-        let adapter =
-            pollster::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions::default()))
-                .map_err(|e| anyhow::anyhow!("GPU アダプタが見つかりません: {:?}", e))?;
+        let (_instance, adapter, device, queue) =
+            experiment_common::gpu::init_gpu_context(wgpu::PowerPreference::HighPerformance)?;
 
         let info = adapter.get_info();
-        let supported_features = adapter.features();
-        let timestamp_supported = supported_features.contains(wgpu::Features::TIMESTAMP_QUERY);
-        let required_features = if timestamp_supported {
-            wgpu::Features::TIMESTAMP_QUERY
-        } else {
-            wgpu::Features::empty()
-        };
-
-        let (device, queue) = pollster::block_on(adapter.request_device(&wgpu::DeviceDescriptor {
-            label: None,
-            required_features,
-            required_limits: adapter.limits(),
-            experimental_features: wgpu::ExperimentalFeatures::disabled(),
-            memory_hints: wgpu::MemoryHints::MemoryUsage,
-            trace: wgpu::Trace::Off,
-        }))
-        .map_err(|e| anyhow::anyhow!("デバイス作成失敗: {}", e))?;
+        let timestamp_supported = device.features().contains(wgpu::Features::TIMESTAMP_QUERY);
 
         anyhow::ensure!(
             kernel.workgroup_size <= device.limits().max_compute_invocations_per_workgroup,
@@ -351,13 +351,37 @@ impl GpuContext {
             .map(|p| [p[0] as f32, p[1] as f32])
             .collect();
 
-        // ── 距離行列 n×n (f32, 到達不能=0.0) ──────────────────────────────────
-        let mut dist_flat = vec![0.0f32; (n * n) as usize];
-        for e in &params.pairs {
-            let d = e.dij as f32;
-            dist_flat[e.u * n as usize + e.v] = d;
-            dist_flat[e.v * n as usize + e.u] = d;
-        }
+        anyhow::ensure!(
+            n <= 16384,
+            "Full SGD supports up to N=16384 for 4-bank binding (got N={n})"
+        );
+        const BANK_WORDS: usize = 33_554_432; // 128 MiB = 2^25 words
+
+        let dist_u16 = if !params.dist_u16.is_empty() {
+            params.dist_u16
+        } else {
+            let total_distances = (n * n) as usize;
+            let total_words = total_distances.div_ceil(2);
+            let mut dist_u16 = vec![0u16; total_words * 2];
+            for e in &params.pairs {
+                let d = e.dij as u16;
+                dist_u16[e.u * n as usize + e.v] = d;
+                dist_u16[e.v * n as usize + e.u] = d;
+            }
+            dist_u16
+        };
+        let dist_words: &[u32] = bytemuck::cast_slice(&dist_u16);
+
+        let get_bank_slice = |bank_idx: usize| -> &[u32] {
+            let start = (bank_idx * BANK_WORDS).min(dist_words.len());
+            let end = ((bank_idx + 1) * BANK_WORDS).min(dist_words.len());
+            &dist_words[start..end]
+        };
+
+        let bank0_words = get_bank_slice(0);
+        let bank1_words = get_bank_slice(1);
+        let bank2_words = get_bank_slice(2);
+        let bank3_words = get_bank_slice(3);
 
         // ── ブロック長配列 ─────────────────────────────────────────────────────
         let big_b = n.div_ceil(tile_size);
@@ -368,7 +392,25 @@ impl GpuContext {
         let full_self_perm_offset = tile_size;
         let partial_self_perm_offset = tile_size + self_round_count(tile_size);
 
-        let max_tiles_per_round = schedule.iter().map(|r| r.len()).max().unwrap_or(1);
+        // Prepack all tiles across all schedule rounds statically
+        let total_tiles: usize = schedule.iter().map(|r| r.len()).sum();
+        let mut all_tiles = Vec::with_capacity(total_tiles * 2);
+        let mut schedule_tile_offsets = Vec::with_capacity(schedule.len());
+        for round in schedule {
+            schedule_tile_offsets.push((all_tiles.len() / 2) as u32);
+            for &(ti, tj) in round {
+                all_tiles.push(ti);
+                all_tiles.push(tj);
+            }
+        }
+
+        let perm_len = tile_size + self_round_count(tile_size) + self_round_count(last_block_len);
+        let total_perm_elements = schedule.len() * perm_len as usize;
+
+        let alignment = self.device.limits().min_uniform_buffer_offset_alignment as usize;
+        let slot_size = std::mem::size_of::<Uniforms>().div_ceil(alignment) * alignment;
+        let invocation_count = (phase_chunks as usize) * schedule.len();
+        let submission_ranges = submission_ranges(invocation_count);
 
         // ── バッファ作成 ───────────────────────────────────────────────────────
         let positions_flat: Vec<f32> = positions_f32.iter().flat_map(|p| [p[0], p[1]]).collect();
@@ -384,10 +426,28 @@ impl GpuContext {
                 | wgpu::BufferUsages::COPY_DST,
         );
 
-        let dist_buffer = timing::buffer(
+        let dist_bank0_buffer = timing::buffer(
             &self.device,
-            Some("dist_flat"),
-            (bytemuck::cast_slice::<_, u8>(&dist_flat)).len(),
+            Some("dist_bank0"),
+            bank0_words.len() * 4,
+            wgpu::BufferUsages::STORAGE,
+        );
+        let dist_bank1_buffer = timing::buffer(
+            &self.device,
+            Some("dist_bank1"),
+            bank1_words.len() * 4,
+            wgpu::BufferUsages::STORAGE,
+        );
+        let dist_bank2_buffer = timing::buffer(
+            &self.device,
+            Some("dist_bank2"),
+            bank2_words.len() * 4,
+            wgpu::BufferUsages::STORAGE,
+        );
+        let dist_bank3_buffer = timing::buffer(
+            &self.device,
+            Some("dist_bank3"),
+            bank3_words.len() * 4,
             wgpu::BufferUsages::STORAGE,
         );
 
@@ -405,36 +465,31 @@ impl GpuContext {
             partial_self_perm_offset,
             chunk: 0,
             chunks: phase_chunks,
+            tiles_offset: 0,
+            perm_offset: 0,
+            subround_start: 0,
+            subround_end: tile_size / phase_chunks,
             padding: [0; 2],
         };
-        let uniforms_buffer = timing::buffer(
-            &self.device,
-            Some("uniforms"),
-            (bytemuck::bytes_of(&uniforms_init)).len(),
-            wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
-        );
-
-        // tiles バッファ: 各ラウンドのタイル割り当て [(i,j), ...]
-        // 最大 max_tiles_per_round タイル × 8 bytes（vec2<u32>）
-        let tiles_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
-            label: Some("tiles"),
-            size: (max_tiles_per_round * 8).max(8) as u64,
-            usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
+        let uniforms_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("uniforms"),
+            size: (slot_size * invocation_count.max(1)) as u64,
+            usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
             mapped_at_creation: false,
         });
 
-        // Packed independent permutations for cross/full-self/partial-self matching rounds.
-        let perm_init = build_inner_permutation(
-            tile_size,
-            last_block_len,
-            false,
-            &mut rng_for_stream(seed, FULL_UPDATE_STREAM),
+        let tiles_buffer = timing::buffer(
+            &self.device,
+            Some("tiles"),
+            all_tiles.len() * std::mem::size_of::<u32>(),
+            wgpu::BufferUsages::STORAGE,
         );
+
         let perm_buffer = timing::buffer(
             &self.device,
             Some("inner_perm"),
-            (bytemuck::cast_slice::<_, u8>(&perm_init)).len(),
-            wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
+            total_perm_elements * std::mem::size_of::<u32>(),
+            wgpu::BufferUsages::STORAGE,
         );
 
         let download_buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
@@ -456,7 +511,7 @@ impl GpuContext {
                         visibility: wgpu::ShaderStages::COMPUTE,
                         ty: wgpu::BindingType::Buffer {
                             ty: wgpu::BufferBindingType::Uniform,
-                            has_dynamic_offset: false,
+                            has_dynamic_offset: true,
                             min_binding_size: Some(
                                 NonZeroU64::new(std::mem::size_of::<Uniforms>() as u64).unwrap(),
                             ),
@@ -474,7 +529,7 @@ impl GpuContext {
                         },
                         count: None,
                     },
-                    // binding 2: dist_flat (read)
+                    // binding 2: dist_bank0 (read)
                     wgpu::BindGroupLayoutEntry {
                         binding: 2,
                         visibility: wgpu::ShaderStages::COMPUTE,
@@ -496,7 +551,7 @@ impl GpuContext {
                         },
                         count: None,
                     },
-                    // binding 4: tiles (read) — ラウンドごとのタイル割り当て
+                    // binding 4: tiles (read) — 全ラウンドのタイル割り当て
                     wgpu::BindGroupLayoutEntry {
                         binding: 4,
                         visibility: wgpu::ShaderStages::COMPUTE,
@@ -518,6 +573,39 @@ impl GpuContext {
                         },
                         count: None,
                     },
+                    // binding 6: dist_bank1 (read)
+                    wgpu::BindGroupLayoutEntry {
+                        binding: 6,
+                        visibility: wgpu::ShaderStages::COMPUTE,
+                        ty: wgpu::BindingType::Buffer {
+                            ty: wgpu::BufferBindingType::Storage { read_only: true },
+                            has_dynamic_offset: false,
+                            min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                        },
+                        count: None,
+                    },
+                    // binding 7: dist_bank2 (read)
+                    wgpu::BindGroupLayoutEntry {
+                        binding: 7,
+                        visibility: wgpu::ShaderStages::COMPUTE,
+                        ty: wgpu::BindingType::Buffer {
+                            ty: wgpu::BufferBindingType::Storage { read_only: true },
+                            has_dynamic_offset: false,
+                            min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                        },
+                        count: None,
+                    },
+                    // binding 8: dist_bank3 (read)
+                    wgpu::BindGroupLayoutEntry {
+                        binding: 8,
+                        visibility: wgpu::ShaderStages::COMPUTE,
+                        ty: wgpu::BindingType::Buffer {
+                            ty: wgpu::BufferBindingType::Storage { read_only: true },
+                            has_dynamic_offset: false,
+                            min_binding_size: Some(NonZeroU64::new(4).unwrap()),
+                        },
+                        count: None,
+                    },
                 ],
             });
 
@@ -527,7 +615,11 @@ impl GpuContext {
             entries: &[
                 wgpu::BindGroupEntry {
                     binding: 0,
-                    resource: uniforms_buffer.as_entire_binding(),
+                    resource: wgpu::BindingResource::Buffer(wgpu::BufferBinding {
+                        buffer: &uniforms_buffer,
+                        offset: 0,
+                        size: NonZeroU64::new(std::mem::size_of::<Uniforms>() as u64),
+                    }),
                 },
                 wgpu::BindGroupEntry {
                     binding: 1,
@@ -535,7 +627,7 @@ impl GpuContext {
                 },
                 wgpu::BindGroupEntry {
                     binding: 2,
-                    resource: dist_buffer.as_entire_binding(),
+                    resource: dist_bank0_buffer.as_entire_binding(),
                 },
                 wgpu::BindGroupEntry {
                     binding: 3,
@@ -548,6 +640,18 @@ impl GpuContext {
                 wgpu::BindGroupEntry {
                     binding: 5,
                     resource: perm_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 6,
+                    resource: dist_bank1_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 7,
+                    resource: dist_bank2_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 8,
+                    resource: dist_bank3_buffer.as_entire_binding(),
                 },
             ],
         });
@@ -571,24 +675,59 @@ impl GpuContext {
                 cache: None,
             });
 
+        // Warm up Mesa NIR->DXIL compilation before timed iteration loops
+        if !all_tiles.is_empty() {
+            self.queue
+                .write_buffer(&tiles_buffer, 0, bytemuck::cast_slice(&all_tiles));
+        }
+        let initial_perms = vec![0u32; total_perm_elements.max(1)];
+        self.queue
+            .write_buffer(&perm_buffer, 0, bytemuck::cast_slice(&initial_perms));
+        self.queue
+            .write_buffer(&uniforms_buffer, 0, bytemuck::bytes_of(&uniforms_init));
+
+        experiment_common::gpu::run_warmup_dispatch(
+            &self.device,
+            &self.queue,
+            &pipeline,
+            &bind_group,
+            &[0],
+        )?;
+        self.queue
+            .write_buffer(&positions_buffer, 0, bytemuck::cast_slice(&positions_flat));
+        self.queue.submit([]);
+        self.device.poll(wgpu::PollType::wait_indefinitely())?;
+
         // ── SGD 実行 ───────────────────────────────────────────────────────────
         let num_iterations = etas.len();
         let mut timer = timing::PassTimer::new(
             &self.device,
-            num_iterations * schedule.len() * phase_chunks as usize,
+            num_iterations * submission_ranges.len(),
         );
         let preparation_time = preparation_started.elapsed();
         let upload_started = Instant::now();
         self.queue
             .write_buffer(&positions_buffer, 0, bytemuck::cast_slice(&positions_flat));
         self.queue
-            .write_buffer(&dist_buffer, 0, bytemuck::cast_slice(&dist_flat));
+            .write_buffer(&dist_bank0_buffer, 0, bytemuck::cast_slice(bank0_words));
+        if !bank1_words.is_empty() {
+            self.queue
+                .write_buffer(&dist_bank1_buffer, 0, bytemuck::cast_slice(bank1_words));
+        }
+        if !bank2_words.is_empty() {
+            self.queue
+                .write_buffer(&dist_bank2_buffer, 0, bytemuck::cast_slice(bank2_words));
+        }
+        if !bank3_words.is_empty() {
+            self.queue
+                .write_buffer(&dist_bank3_buffer, 0, bytemuck::cast_slice(bank3_words));
+        }
         self.queue
             .write_buffer(&block_lens_buffer, 0, bytemuck::cast_slice(&block_lens));
-        self.queue
-            .write_buffer(&uniforms_buffer, 0, bytemuck::bytes_of(&uniforms_init));
-        self.queue
-            .write_buffer(&perm_buffer, 0, bytemuck::cast_slice(&perm_init));
+        if !all_tiles.is_empty() {
+            self.queue
+                .write_buffer(&tiles_buffer, 0, bytemuck::cast_slice(&all_tiles));
+        }
         self.queue.submit([]);
         self.device.poll(wgpu::PollType::wait_indefinitely())?;
         let upload_time = upload_started.elapsed();
@@ -608,20 +747,12 @@ impl GpuContext {
         // 外側シャッフル用にスケジュールのインデックス列を用意
         let mut round_order: Vec<usize> = (0..schedule.len()).collect();
 
+        let mut uniform_bytes = vec![0u8; slot_size * invocation_count];
+        let mut all_perms = Vec::with_capacity(total_perm_elements);
+
         for iter in 0..num_iterations {
             let trace_started = trace.as_ref().map(|_| Instant::now());
             let eta = etas[iter];
-            let uni = Uniforms {
-                n,
-                eta,
-                full_self_perm_offset,
-                partial_self_perm_offset,
-                chunk: 0,
-                chunks: phase_chunks,
-                padding: [0; 2],
-            };
-            self.queue
-                .write_buffer(&uniforms_buffer, 0, bytemuck::bytes_of(&uni));
 
             // 外側ランダム: ラウンドの処理順をイテレーションごとにシャッフル
             if self.kernel.outer_shuffle {
@@ -639,41 +770,71 @@ impl GpuContext {
                     )
                 })
                 .collect();
-            for chunk in 0..phase_chunks {
-                let chunk_uniforms = Uniforms { chunk, ..uni };
+
+            // 1. Pack and upload all inner permutations in ONE call
+            all_perms.clear();
+            for perm in &permutations {
+                all_perms.extend_from_slice(perm);
+            }
+            if !all_perms.is_empty() {
                 self.queue
-                    .write_buffer(&uniforms_buffer, 0, bytemuck::bytes_of(&chunk_uniforms));
+                    .write_buffer(&perm_buffer, 0, bytemuck::cast_slice(&all_perms));
+            }
+
+            // 2. Pre-populate all dispatch uniforms in host memory
+            let mut slot = 0;
+            for chunk in 0..phase_chunks {
+                let subround_start = chunk * tile_size / phase_chunks;
+                let subround_end = (chunk + 1) * tile_size / phase_chunks;
                 for (round_position, &ri) in round_order.iter().enumerate() {
-                    let round = &schedule[ri];
-
-                    // タイルバッファを今ラウンドの割り当てで更新
-                    let tiles_flat: Vec<u32> =
-                        round.iter().flat_map(|&(ti, tj)| [ti, tj]).collect();
-                    self.queue
-                        .write_buffer(&tiles_buffer, 0, bytemuck::cast_slice(&tiles_flat));
-
-                    // Shuffle exact matching-round domains independently; never reduce modulo.
-                    let inner_perm = &permutations[round_position];
-                    self.queue
-                        .write_buffer(&perm_buffer, 0, bytemuck::cast_slice(&inner_perm));
-
-                    let mut encoder = self
-                        .device
-                        .create_command_encoder(&wgpu::CommandEncoderDescriptor { label: None });
-                    {
-                        let timestamp_writes = timer.next();
-                        let mut pass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
-                            label: None,
-                            timestamp_writes,
-                        });
-                        pass.set_pipeline(&pipeline);
-                        pass.set_bind_group(0, &bind_group, &[]);
-                        // workgroup g → タイル tiles[g] = (i, j) を担当
-                        pass.dispatch_workgroups(round.len() as u32, 1, 1);
-                    }
-                    self.queue.submit([encoder.finish()]);
+                    let uni = Uniforms {
+                        n,
+                        eta,
+                        full_self_perm_offset,
+                        partial_self_perm_offset,
+                        chunk,
+                        chunks: phase_chunks,
+                        tiles_offset: schedule_tile_offsets[ri],
+                        perm_offset: (round_position as u32) * perm_len,
+                        subround_start,
+                        subround_end,
+                        padding: [0; 2],
+                    };
+                    let offset = slot * slot_size;
+                    uniform_bytes[offset..offset + std::mem::size_of::<Uniforms>()]
+                        .copy_from_slice(bytemuck::bytes_of(&uni));
+                    slot += 1;
                 }
             }
+            if !uniform_bytes.is_empty() {
+                self.queue.write_buffer(&uniforms_buffer, 0, &uniform_bytes);
+            }
+
+            // 3. Command recording: Bounded ComputePass submissions
+            for batch_range in &submission_ranges {
+                let mut encoder = self
+                    .device
+                    .create_command_encoder(&wgpu::CommandEncoderDescriptor { label: None });
+                {
+                    let timestamp_writes = timer.next();
+                    let mut pass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
+                        label: None,
+                        timestamp_writes,
+                    });
+                    pass.set_pipeline(&pipeline);
+
+                    for slot in batch_range.clone() {
+                        let round_position = slot % schedule.len();
+                        let ri = round_order[round_position];
+                        let round = &schedule[ri];
+
+                        pass.set_bind_group(0, &bind_group, &[(slot * slot_size) as u32]);
+                        pass.dispatch_workgroups(round.len() as u32, 1, 1);
+                    }
+                }
+                self.queue.submit([encoder.finish()]);
+            }
+
             // Queue writes and submissions retain round order. Synchronize once
             // per epoch so iteration timing includes completed GPU work.
             self.device
@@ -894,24 +1055,28 @@ mod tests {
     }
 
     fn fixture(n: u32) -> graph::SgdParams {
+        let pairs: Vec<_> = (0..n)
+            .flat_map(|u| {
+                ((u + 1)..n).map(move |v| {
+                    let d = (1 + (u + v) % 5) as f64;
+                    graph::EdgeInfo {
+                        u: u as usize,
+                        v: v as usize,
+                        dij: d,
+                        wij: 1.0 / (d * d),
+                    }
+                })
+            })
+            .collect();
+        let constraint_count = pairs.len();
         graph::SgdParams {
             etas: vec![0.2, 0.05],
             positions: (0..n)
                 .map(|u| [u as f64 * 0.3, ((u * u + 1) % 11) as f64 * 0.4])
                 .collect(),
-            pairs: (0..n)
-                .flat_map(|u| {
-                    ((u + 1)..n).map(move |v| {
-                        let d = (1 + (u + v) % 5) as f64;
-                        graph::EdgeInfo {
-                            u: u as usize,
-                            v: v as usize,
-                            dij: d,
-                            wij: 1.0 / (d * d),
-                        }
-                    })
-                })
-                .collect(),
+            dist_u16: Vec::new(),
+            constraint_count,
+            pairs,
             center: false,
         }
     }
@@ -930,9 +1095,17 @@ mod tests {
             .map(|p| [p[0] as f32, p[1] as f32])
             .collect();
         let mut distances = vec![0.0_f32; n as usize * n as usize];
-        for pair in &params.pairs {
-            distances[pair.u * n as usize + pair.v] = pair.dij as f32;
-            distances[pair.v * n as usize + pair.u] = pair.dij as f32;
+        if !params.dist_u16.is_empty() {
+            for u in 0..n as usize {
+                for v in 0..n as usize {
+                    distances[u * n as usize + v] = params.dist_u16[u * n as usize + v] as f32;
+                }
+            }
+        } else {
+            for pair in &params.pairs {
+                distances[pair.u * n as usize + pair.v] = pair.dij as f32;
+                distances[pair.v * n as usize + pair.u] = pair.dij as f32;
+            }
         }
         for &eta in &params.etas {
             if config.outer_shuffle {

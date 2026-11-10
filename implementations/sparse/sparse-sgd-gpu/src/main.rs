@@ -29,6 +29,7 @@ struct Config {
     epsilon: f64,
     seed: u64,
     center: bool,
+    bfs_engine: preprocess::BfsBackend,
 }
 
 impl Default for Config {
@@ -41,6 +42,7 @@ impl Default for Config {
             epsilon: 0.1,
             seed: 0,
             center: true,
+            bfs_engine: preprocess::BfsBackend::Auto,
         }
     }
 }
@@ -81,6 +83,9 @@ impl Config {
                 "--verbose" => config.common.verbose = true,
                 "--no-center" => config.center = false,
                 "--largest-component" => {}
+                "--bfs-engine" => {
+                    config.bfs_engine = next(&mut args, "--bfs-engine")?.parse()?;
+                }
                 value if !value.starts_with('-') && !positional => {
                     config.input = value.into();
                     positional = true;
@@ -119,7 +124,7 @@ fn print_help() {
         "Usage: sparse-sgd-gpu [INPUT] [--run-id ID] [--input PATH] [--output-dir PATH] \
          [--pivots N] [--iterations N] [--epsilon F] [--seed N] \
          [--output-format human|json] [--run-mode benchmark|diagnostic] \
-         [--verbose] [--no-center]"
+         [--verbose] [--no-center] [--bfs-engine auto|gpu|cpu]"
     );
 }
 
@@ -139,13 +144,14 @@ fn main() -> Result<()> {
 
     let preprocess_started = Instant::now();
     let mut rng = StdRng::seed_from_u64(config.seed);
-    let prepared = preprocess::prepare(
+    let prepared = preprocess::prepare_with_backend(
         &graph,
         config.iterations,
         config.epsilon,
         config.pivot_count,
         config.center,
         &mut rng,
+        config.bfs_engine,
     )?;
     let common_preprocess_time = preprocess_started.elapsed();
     let params = prepared.params;
@@ -300,6 +306,7 @@ fn main() -> Result<()> {
             value["rr_phase_chunks"] = RR_PHASE_CHUNKS.min(pivots.len()).into();
             value["rr_step_cap"] = 1.0.into();
             value["rr_arithmetic"] = "f32".into();
+            value["bfs_engine"] = format!("{:?}", config.bfs_engine).to_lowercase().into();
             println!("{}", serde_json::to_string(&value)?);
         }
         OutputFormat::Human => {
@@ -444,5 +451,19 @@ mod tests {
     #[test]
     fn historical_largest_component_flag_is_a_compatible_no_op() {
         assert!(Config::from_iter(["--largest-component"].into_iter().map(str::to_owned)).is_ok());
+    }
+
+    #[test]
+    fn bfs_engine_parameter_is_parsed() {
+        let default_config = Config::from_iter(["graph.mtx"].into_iter().map(str::to_owned)).unwrap();
+        assert_eq!(default_config.bfs_engine, preprocess::BfsBackend::Auto);
+
+        let gpu_config = Config::from_iter(["graph.mtx", "--bfs-engine", "gpu"].into_iter().map(str::to_owned)).unwrap();
+        assert_eq!(gpu_config.bfs_engine, preprocess::BfsBackend::Gpu);
+
+        let cpu_config = Config::from_iter(["graph.mtx", "--bfs-engine", "cpu"].into_iter().map(str::to_owned)).unwrap();
+        assert_eq!(cpu_config.bfs_engine, preprocess::BfsBackend::Cpu);
+
+        assert!(Config::from_iter(["graph.mtx", "--bfs-engine", "invalid"].into_iter().map(str::to_owned)).is_err());
     }
 }

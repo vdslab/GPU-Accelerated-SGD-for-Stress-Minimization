@@ -8,7 +8,7 @@ use serde_json::json;
 use std::{path::Path, time::Instant};
 
 fn copy_params(p: &graph::SgdParams) -> graph::SgdParams {
-    graph::SgdParams { etas:p.etas.clone(), positions:p.positions.clone(), pairs:p.pairs.clone(), center:p.center }
+    p.clone()
 }
 fn ms(t:std::time::Duration)->f64 {t.as_secs_f64()*1000.0}
 fn main()->Result<()> {

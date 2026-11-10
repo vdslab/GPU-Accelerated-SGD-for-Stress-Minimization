@@ -12,7 +12,8 @@ use std::time::{Duration, Instant};
 #[cfg(test)]
 use wgpu::util::DeviceExt;
 
-const WORKGROUP_SIZE: u32 = 256;
+const WORKGROUP_SIZE: u32 = 128;
+const BANK_ENTRIES: usize = 16_777_216; // 128 MiB / 8 bytes
 const MAX_DISPATCHES_PER_SUBMISSION: usize = 256;
 const CANARY: [f32; 2] = [123_456.0, -654_321.0];
 
@@ -76,20 +77,9 @@ impl GpuContext {
     }
 
     pub fn new() -> Result<Self> {
-        let instance = wgpu::Instance::new(&wgpu::InstanceDescriptor::default());
-        let adapter =
-            pollster::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions::default()))
-                .map_err(|e| anyhow::anyhow!("GPUアダプタが見つかりません: {e:?}"))?;
+        let (_instance, adapter, device, queue) =
+            experiment_common::gpu::init_gpu_context(wgpu::PowerPreference::HighPerformance)?;
         let info = adapter.get_info();
-        let (device, queue) = pollster::block_on(adapter.request_device(&wgpu::DeviceDescriptor {
-            label: Some("Sparse SGD GPU device"),
-            required_features: adapter.features() & wgpu::Features::TIMESTAMP_QUERY,
-            required_limits: adapter.limits(),
-            experimental_features: wgpu::ExperimentalFeatures::disabled(),
-            memory_hints: wgpu::MemoryHints::MemoryUsage,
-            trace: wgpu::Trace::Off,
-        }))
-        .context("GPUデバイスを作成できません")?;
         let shader = device.create_shader_module(wgpu::include_wgsl!("shader.wgsl"));
         Ok(Self {
             device,
@@ -177,6 +167,10 @@ impl GpuContext {
             "グラフが大きすぎます"
         );
         ensure!(
+            h <= 256,
+            "pivot count ({h}) exceeds workgroup shared memory capacity (256)"
+        );
+        ensure!(
             schedule.one_sided.len() == n * h,
             "one-sided配列の長さが不正です"
         );
@@ -184,11 +178,11 @@ impl GpuContext {
         // Constraints are already encoded in schedule; release before GPU allocation.
         drop(params.pairs);
         let limits = self.device.limits();
+        ensure!(
+            schedule.one_sided.len() <= 4 * BANK_ENTRIES,
+            "one-sided entries exceeds 4-bank 512 MiB limit"
+        );
         for (name, bytes) in [
-            (
-                "one-sided",
-                std::mem::size_of_val(schedule.one_sided.as_slice()) as u64,
-            ),
             (
                 "two-sided",
                 std::mem::size_of_val(schedule.two_sided.as_slice())
@@ -228,10 +222,38 @@ impl GpuContext {
             (bytemuck::cast_slice::<_, u8>(&position_data)).len(),
             wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_SRC,
         );
-        let one_buffer = timing::buffer(
+        let get_bank_slice = |bank_idx: usize| -> &[crate::schedule::OneSidedEntry] {
+            let start = (bank_idx * BANK_ENTRIES).min(schedule.one_sided.len());
+            let end = ((bank_idx + 1) * BANK_ENTRIES).min(schedule.one_sided.len());
+            &schedule.one_sided[start..end]
+        };
+        let bank0 = get_bank_slice(0);
+        let bank1 = get_bank_slice(1);
+        let bank2 = get_bank_slice(2);
+        let bank3 = get_bank_slice(3);
+
+        let bank0_buffer = timing::buffer(
             &self.device,
-            Some("one-sided dense CSR"),
-            (bytemuck::cast_slice::<_, u8>(&schedule.one_sided)).len(),
+            Some("one-sided bank 0"),
+            (bytemuck::cast_slice::<_, u8>(bank0)).len().max(8),
+            wgpu::BufferUsages::STORAGE,
+        );
+        let bank1_buffer = timing::buffer(
+            &self.device,
+            Some("one-sided bank 1"),
+            (bytemuck::cast_slice::<_, u8>(bank1)).len().max(8),
+            wgpu::BufferUsages::STORAGE,
+        );
+        let bank2_buffer = timing::buffer(
+            &self.device,
+            Some("one-sided bank 2"),
+            (bytemuck::cast_slice::<_, u8>(bank2)).len().max(8),
+            wgpu::BufferUsages::STORAGE,
+        );
+        let bank3_buffer = timing::buffer(
+            &self.device,
+            Some("one-sided bank 3"),
+            (bytemuck::cast_slice::<_, u8>(bank3)).len().max(8),
             wgpu::BufferUsages::STORAGE,
         );
         let dummy_pair = [crate::schedule::GpuPair::default()];
@@ -302,7 +324,25 @@ impl GpuContext {
                         4,
                         wgpu::BufferBindingType::Storage { read_only: true },
                         false,
-                        24,
+                        20,
+                    ),
+                    buffer_layout(
+                        5,
+                        wgpu::BufferBindingType::Storage { read_only: true },
+                        false,
+                        8,
+                    ),
+                    buffer_layout(
+                        6,
+                        wgpu::BufferBindingType::Storage { read_only: true },
+                        false,
+                        8,
+                    ),
+                    buffer_layout(
+                        7,
+                        wgpu::BufferBindingType::Storage { read_only: true },
+                        false,
+                        8,
                     ),
                 ],
             });
@@ -324,7 +364,7 @@ impl GpuContext {
                 },
                 wgpu::BindGroupEntry {
                     binding: 2,
-                    resource: one_buffer.as_entire_binding(),
+                    resource: bank0_buffer.as_entire_binding(),
                 },
                 wgpu::BindGroupEntry {
                     binding: 3,
@@ -333,6 +373,18 @@ impl GpuContext {
                 wgpu::BindGroupEntry {
                     binding: 4,
                     resource: pair_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 5,
+                    resource: bank1_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 6,
+                    resource: bank2_buffer.as_entire_binding(),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 7,
+                    resource: bank3_buffer.as_entire_binding(),
                 },
             ],
         });
@@ -345,6 +397,26 @@ impl GpuContext {
             });
         let one_pipeline = self.create_pipeline(&pipeline_layout, "one_sided_phase");
         let two_pipeline = self.create_pipeline(&pipeline_layout, "two_sided_round");
+
+        // Warm up Mesa NIR->DXIL compilation for both pipelines before timed iteration loops
+        experiment_common::gpu::run_warmup_dispatch(
+            &self.device,
+            &self.queue,
+            &one_pipeline,
+            &bind_group,
+            &[0],
+        )?;
+        experiment_common::gpu::run_warmup_dispatch(
+            &self.device,
+            &self.queue,
+            &two_pipeline,
+            &bind_group,
+            &[0],
+        )?;
+        self.queue
+            .write_buffer(&positions_buffer, 0, bytemuck::cast_slice(&position_data));
+        self.queue.submit([]);
+        self.device.poll(wgpu::PollType::wait_indefinitely())?;
         let mut timer =
             timing::PassTimer::new(&self.device, params.etas.len() * submission_ranges.len());
         let preparation_time = preparation_started.elapsed();
@@ -352,7 +424,19 @@ impl GpuContext {
         self.queue
             .write_buffer(&positions_buffer, 0, bytemuck::cast_slice(&position_data));
         self.queue
-            .write_buffer(&one_buffer, 0, bytemuck::cast_slice(&schedule.one_sided));
+            .write_buffer(&bank0_buffer, 0, bytemuck::cast_slice(bank0));
+        if !bank1.is_empty() {
+            self.queue
+                .write_buffer(&bank1_buffer, 0, bytemuck::cast_slice(bank1));
+        }
+        if !bank2.is_empty() {
+            self.queue
+                .write_buffer(&bank2_buffer, 0, bytemuck::cast_slice(bank2));
+        }
+        if !bank3.is_empty() {
+            self.queue
+                .write_buffer(&bank3_buffer, 0, bytemuck::cast_slice(bank3));
+        }
         self.queue
             .write_buffer(&pair_buffer, 0, bytemuck::cast_slice(pair_data));
         self.queue.write_buffer(

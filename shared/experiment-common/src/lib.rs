@@ -5,6 +5,9 @@ pub mod record;
 pub mod seed;
 pub mod stress;
 
+#[cfg(feature = "gpu")]
+pub mod gpu;
+
 pub use cli::{CommonExperimentArgs, OutputFormat};
 pub use metadata::{
     current_binary, dataset_name, environment_metadata, git_metadata, positions_sha256_f32,

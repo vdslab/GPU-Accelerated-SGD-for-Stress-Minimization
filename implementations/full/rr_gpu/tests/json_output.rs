@@ -41,6 +41,12 @@ fn json_mode_writes_one_record_and_no_progress_to_stdout() {
     assert_eq!(record["schema_version"], 1);
     assert_eq!(record["method"], "rr_sgd");
     assert_eq!(record["run_id"], "contract-rr");
+    let gpu_name = record["gpu_name"].as_str().expect("gpu_name must be present and a string");
+    assert!(
+        gpu_name.contains("D3D12") || gpu_name.contains("RTX 3050"),
+        "expected gpu_name to contain 'D3D12' or 'RTX 3050', got: {gpu_name}"
+    );
+    assert_eq!(record["gpu_backend"], "Gl");
     assert!(record["rounds"].as_u64().unwrap() > 0);
     assert!(record["dispatches"].as_u64().unwrap() > 0);
     assert_eq!(record["rr_tile_size"], 1024);

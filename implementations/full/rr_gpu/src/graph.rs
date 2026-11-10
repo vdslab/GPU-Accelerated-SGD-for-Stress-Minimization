@@ -12,11 +12,17 @@ pub struct Graph {
     pub edge_dst: Vec<usize>,
 }
 
-#[derive(Debug)]
+#[path = "bfs.rs"]
+pub mod bfs;
+
+#[derive(Debug, Clone)]
 pub struct SgdParams {
     pub etas: Vec<f64>,
     pub positions: Vec<[f64; 2]>,
+    pub dist_u16: Vec<u16>,
+    pub constraint_count: usize,
     pub pairs: Vec<EdgeInfo>,
+    #[allow(dead_code)]
     pub center: bool,
 }
 
@@ -25,6 +31,7 @@ pub struct EdgeInfo {
     pub u: usize,
     pub v: usize,
     pub dij: f64,
+    #[allow(dead_code)]
     pub wij: f64,
 }
 
@@ -55,7 +62,7 @@ impl Graph {
         })
     }
 
-    fn calc_adj_matrix(&self) -> Vec<Vec<usize>> {
+    pub fn calc_adj_matrix(&self) -> Vec<Vec<usize>> {
         let mut adj = vec![Vec::new(); self.node_size];
         for i in 0..self.edge_size {
             adj[self.edge_src[i]].push(self.edge_dst[i]);
@@ -64,6 +71,7 @@ impl Graph {
         adj
     }
 
+    #[allow(dead_code)]
     pub fn calc_dist_matrix(&self) -> Vec<Vec<usize>> {
         let adj = Self::calc_adj_matrix(self);
         let n = adj.len();
@@ -92,6 +100,7 @@ impl Graph {
             .collect()
     }
 
+    #[allow(dead_code)]
     pub fn calc_edge_info(&self, dist: &[Vec<usize>]) -> (Vec<EdgeInfo>, f64, f64) {
         let n = dist.len();
 
@@ -135,6 +144,7 @@ impl Graph {
     }
 
     /// Precompute SGD parameters
+    #[allow(dead_code)]
     pub fn prepare_sgd_params(
         &self,
         iterations: usize,
@@ -142,19 +152,46 @@ impl Graph {
         center: bool,
         seed: u64,
     ) -> SgdParams {
-        let dist = self.calc_dist_matrix();
-        let (pairs, wmin, wmax) = self.calc_edge_info(&dist);
+        let (params, _timing) = self
+            .prepare_sgd_params_with_backend(
+                iterations,
+                epsilon,
+                center,
+                seed,
+                self::bfs::BfsBackend::Auto,
+            )
+            .expect("APSP calculation failed");
+        params
+    }
 
+    pub fn prepare_sgd_params_with_backend(
+        &self,
+        iterations: usize,
+        epsilon: f64,
+        center: bool,
+        seed: u64,
+        backend: self::bfs::BfsBackend,
+    ) -> Result<(SgdParams, self::bfs::BfsTiming)> {
+        let outcome = self::bfs::compute_apsp(self, backend)?;
+        let (wmin, wmax) = if outcome.dmin.is_finite() && outcome.dmax > 0.0 {
+            (
+                1.0 / (outcome.dmax * outcome.dmax),
+                1.0 / (outcome.dmin * outcome.dmin),
+            )
+        } else {
+            (1.0, 1.0)
+        };
         let etas = calc_learning_rate(iterations, wmin, wmax, epsilon);
-
         let positions = experiment_common::seed::seeded_positions(self.node_size, seed, center);
-
-        SgdParams {
+        let params = SgdParams {
             etas,
             positions,
-            pairs,
+            dist_u16: outcome.dist_u16,
+            constraint_count: outcome.constraint_count,
+            pairs: Vec::new(),
             center,
-        }
+        };
+        Ok((params, outcome.timing))
     }
 }
 
