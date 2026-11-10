@@ -20,7 +20,7 @@ use std::time::{Duration, Instant};
 use wgpu::util::DeviceExt;
 
 const WORKGROUP_SIZE: u32 = 128;
-const BANK_ENTRIES: usize = 16_777_216; // 128 MiB / 8 bytes
+const BANK_ENTRIES: usize = 33_554_432; // 256 MiB / 8 bytes; matches shader BANK_SHIFT/MASK
 const MAX_DISPATCHES_PER_SUBMISSION: usize = 256;
 const CANARY: [f32; 2] = [123_456.0, -654_321.0];
 
@@ -190,9 +190,14 @@ impl GpuContext {
         let limits = self.device.limits();
         ensure!(
             schedule.one_sided.len() <= 4 * BANK_ENTRIES,
-            "one-sided entries exceeds 4-bank 512 MiB limit"
+            "one-sided entries exceeds 4-bank 1 GiB limit"
         );
         for (name, bytes) in [
+            (
+                "one-sided bank",
+                (schedule.one_sided.len().min(BANK_ENTRIES).max(1)
+                    * std::mem::size_of::<crate::schedule::OneSidedEntry>()) as u64,
+            ),
             (
                 "two-sided",
                 std::mem::size_of_val(schedule.two_sided.as_slice())
@@ -1129,7 +1134,7 @@ impl SparseStepper {
         );
         ensure!(
             one_sided.len() <= 4 * BANK_ENTRIES,
-            "one-sided entries exceed 4-bank 512 MiB limit"
+            "one-sided entries exceed 4-bank 1 GiB limit"
         );
         ensure!(phase_chunks > 0, "phase_chunks must be positive");
         let phase_chunks = phase_chunks.min(h);
@@ -1137,6 +1142,12 @@ impl SparseStepper {
         let limits = device.limits();
         let max_binding_bytes = u64::from(limits.max_storage_buffer_binding_size)
             .min(limits.max_buffer_size) as usize;
+        ensure!(
+            one_sided.len().min(BANK_ENTRIES).max(1)
+                * std::mem::size_of::<crate::schedule::OneSidedEntry>()
+                <= max_binding_bytes,
+            "one-sided bank exceeds adapter storage buffer limit"
+        );
         ensure!(
             (n + 2) * 8 <= max_binding_bytes,
             "positions buffer exceeds adapter storage buffer limit"

@@ -23,8 +23,8 @@ struct Pair {
 }
 
 const WORKGROUP_SIZE: u32 = 128u;
-const BANK_SHIFT: u32 = 24u;
-const BANK_MASK: u32 = 0x00ffffffu;
+const BANK_SHIFT: u32 = 25u;
+const BANK_MASK: u32 = 0x01ffffffu;
 
 @group(0) @binding(0) var<uniform> uniforms: Uniforms;
 @group(0) @binding(1) var<storage, read_write> positions: array<vec2<f32>>;

@@ -39,6 +39,9 @@ JSONには`rr_pivot_order`、`rr_phase_chunks`、`rr_step_cap`、`rr_arithmetic`
   巨大なBTreeMapと全EdgeInfo配列を作らず、片側制約をGPU用表へ格納します。
   pivot選択・領域の同距離tie・f64重み・学習率・乱数消費・前処理SHAは参照版と一致します。
 - 片側表は距離と重みの8 bytes/要素。pivot IDは共通配列から参照します。
+- 片側表は256 MiBずつ4バッファへ分割し、最大1 GiB（134,217,728要素）を格納します。
+  必要量は頂点数×pivot数×8 bytesです。実行GPUのバッファ上限も割当前に検査します。
+  `coPapersCiteseer`の434,102頂点・200 pivotsは約662.4 MiBで、この容量内です。
 - 片側相では正重みの更新がある頂点だけを書き戻します。pivotはこの相で書きません。
 - 両側制約の不要なcloneを削除し、GPU転送前に不要なCPU制約を解放します。
 - 各command bufferに最大256 dispatchを1つのcompute passとして記録します。
