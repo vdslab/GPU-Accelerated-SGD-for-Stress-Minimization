@@ -1,0 +1,18 @@
+{
+  "reference": "Paper Figure 6: fig06-iteration-comparison",
+  "scope": "Atomic Full v5 versus newly measured v5.5 only",
+  "graphs": 38,
+  "formal_runs_per_version": 570,
+  "new_solver_runs": 0,
+  "x_axis": "Increasing undirected edge count, then graph name; identical to paper Full panel",
+  "style": "7.1-inch width; marker-only; open triangles/orange and circles/blue; log y axis; 90-degree graph labels; seed min/max whiskers",
+  "aggregation": "median of 3 repetitions within each seed, then median and range of 5 seed medians",
+  "iteration_metric": "sgd_time_ms; total of the 15-iteration host interval; no readback added and no division by 15. New main excludes GPU completion wait from this field; not pure GPU time.",
+  "total_metric": "total_compute_time_ms; includes CPU pair hashing/shuffling and GPU completion; excludes Stress evaluation, saving, drawing",
+  "stress_metric": "Exact at <=8000 vertices; otherwise sampled256/evaluation seed0, identical to v5",
+  "input_sha256": {
+    "experiment_results/v5.5/atomic-full-main-20261110/tables/summary.json": "5666564cc31c464b224d25ec2fff83addbbaeec6d3b366bc2b1535e6aa9f4701",
+    "experiment_results/v5.5/atomic-full-main-20261110/config/datasets.json": "477c1a199f74653ba48ee3079f95f457bbb9276b1151ba8fa84e7cd4ef6c144e",
+    "experiment_results/v5.5/atomic-full-main-20261110/config/environment.json": "9d9e0cc10119afaba149e800199494e20b4fc9c98f729106e02ae9acd4733e71"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "version": "v5.5",
+  "graphs": 38,
+  "runs": 570,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "repetitions": 3,
+  "iterations": 15,
+  "epsilon": 0.1,
+  "stress": "auto exact <=8000; sampled256 otherwise; evaluation seed0",
+  "gpu_timestamps": false,
+  "warmup": "graph/session seed999 excluded",
+  "timeout_seconds": null,
+  "chunk_size": "merged main default 0 (whole bank)",
+  "fresh_measurements": true,
+  "pilot_records_reused": 0,
+  "ex5": "paused",
+  "resource_policy": "sequential; between-run >=2GiB available RAM and >=4GiB free disk; running RSS<=18GiB, available RAM>=512MiB (10s sustained), disk>=1GiB",
+  "primary_timing": "total_compute_time_ms; asynchronous GPU completion wait included",
+  "secondary_timing": "sgd_time_ms + readback_time_ms; raw sgd_time_ms measures submissions in new main"
+}

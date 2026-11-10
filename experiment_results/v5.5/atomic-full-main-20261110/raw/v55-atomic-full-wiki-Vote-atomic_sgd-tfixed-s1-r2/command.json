@@ -1,0 +1,34 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/atomic-full-main-20261110/bin/atomic-full",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/common/wiki-Vote.mtx",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "1",
+    "--run-id",
+    "v55-atomic-full-wiki-Vote-atomic_sgd-tfixed-s1-r2",
+    "--run-mode",
+    "benchmark",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/atomic-full-main-20261110/raw/v55-atomic-full-wiki-Vote-atomic_sgd-tfixed-s1-r2"
+  ],
+  "at": "2026-11-10T16:13:30+09:00",
+  "environment": {
+    "SGD_STRESS_MODE": "auto",
+    "SGD_STRESS_SAMPLES": "256",
+    "SGD_GPU_TIMESTAMPS": "0"
+  },
+  "memory_before": {
+    "available_bytes": 7606222848,
+    "used_bytes": 10246455296,
+    "swap_used_bytes": 13076791296,
+    "swap_in_bytes": 850898468864,
+    "swap_out_bytes": 10118283264
+  }
+}

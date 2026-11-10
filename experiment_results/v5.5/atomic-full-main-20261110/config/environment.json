@@ -1,0 +1,43 @@
+{
+  "at": "2026-11-10T16:01:15+09:00",
+  "source_root": "/Users/kose/master/sgd-v55-atomic-main",
+  "merged_main_commit": "745b38ff9ba2c0f470c02e7496567412ff32ea23",
+  "binary_sha256": "9eb80c2ca7c5f3d17f7fb8cc10fa229d2ce6fa1c48fb7ef99380f1170bc658a6",
+  "source_sha256": {
+    "implementations/full/vram-lock-native/.gitignore": "937456f730114c410243b25f3587e29a6c608b3a79356adafeefb6b960e004b2",
+    "implementations/full/vram-lock-native/Cargo.lock": "c946619e40fd60cb9af40fabcb03bdc87e137ee277063607e37e4cafaf1209c2",
+    "implementations/full/vram-lock-native/Cargo.toml": "976cf8db3cf3172de40a9c6323097dbb94fab4ccf1b3b6f06eabafeff043bbac",
+    "implementations/full/vram-lock-native/README.md": "7f5fdc60c812fb1f0a9f3415007a11bdfa6e2faa60d7e226f3c17775d91b2953",
+    "implementations/full/vram-lock-native/src/gpu.rs": "5bd7de3ee40de9505ac1e89552d62d405aad4d4dabbc6bb826727ed967b621b3",
+    "implementations/full/vram-lock-native/src/graph.rs": "8e61753fc356b5a31fc0178949b9f88eaf8362d9d2025c36d7ee1d303bc321ff",
+    "implementations/full/vram-lock-native/src/lib.rs": "db6c7af3af151d94428b89d19c0d00ee3d6d1f32cc6e0c14a22724bfecc3a6f2",
+    "implementations/full/vram-lock-native/src/main.rs": "102c39de20ed2edf662f08af5a1140e04ea4eb3a0b05432d4a8170309dfea7a0",
+    "implementations/full/vram-lock-native/src/shader.wgsl": "50df85683645890bcb1dc7b2f55005efba8a634bf0893fdc03f52ef619fce664",
+    "implementations/full/vram-lock-native/tests/json_output.rs": "321a20a2b603e505725a891c862865c2528e22a236653ed811f54e75650d3d83",
+    "shared/experiment-common/.gitignore": "937456f730114c410243b25f3587e29a6c608b3a79356adafeefb6b960e004b2",
+    "shared/experiment-common/Cargo.lock": "6b06ca0445ecc7d91e38f8f051d2c5545964ef53cf2a5e9a44a573f0367cd372",
+    "shared/experiment-common/Cargo.toml": "7277635bd2f0bef80910b90dac13355295ee8a194a6e2d69e02012923437a219",
+    "shared/experiment-common/src/cli.rs": "233571eb0530444f993082aa35c18a024fd8558476ebe75aa84c7e18b47d8e6d",
+    "shared/experiment-common/src/gpu.rs": "e20bf5fc90846efedcac31dbb4fcbfd6c641d4f5a9f587ea6483496060d54340",
+    "shared/experiment-common/src/lib.rs": "e7988a881f5a84f90917135cb40639950eee2387082db380fd7709ede7a633e4",
+    "shared/experiment-common/src/metadata.rs": "a62920493211d77de646d7a47a9f012f6d542e7e91f30a27151d8c3bb0cb796d",
+    "shared/experiment-common/src/paths.rs": "0c0e3efcec52b513f1bd4714330afb6206ab2253bbb5a1e195d8572ebc6ca46c",
+    "shared/experiment-common/src/record.rs": "0502995b3417a7e2d6b763ff2ce148866560d5940533c8fb46046964cb708964",
+    "shared/experiment-common/src/seed.rs": "445bc2c585e323754e3733d8bb577b58eae2dd1e80d9beedfaa22ac39fce381a",
+    "shared/experiment-common/src/stress.rs": "82c1cecf34492e7d68baeb00522e4a873b607a4a5a8f32de1a7de4af354d67b2",
+    "shared/experiment-common/src/trace.rs": "45d33fa8b24e058694dec2e0b94c3ae3223d40f8c6f795f9063116516fc11f0d",
+    "shared/gpu-timing/metal.rs": "1f4d010e8087f9a282780d9583c04398ef1ff613fd2930e409806392cc3ad63e",
+    "shared/gpu-timing/wgpu.rs": "f6ff28eabaf45aed046afa26dd3891465890a779f77760fed0e2755ef8c676bf"
+  },
+  "memory": {
+    "available_bytes": 7587463168,
+    "used_bytes": 11615862784,
+    "swap_used_bytes": 13177454592,
+    "swap_in_bytes": 849116233728,
+    "swap_out_bytes": 10032922624
+  },
+  "machine": "Hardware:\n\n    Hardware Overview:\n\n      Model Name: MacBook Pro\n      Model Identifier: Mac16,7\n      Model Number: MX2T3J/A\n      Chip: Apple M4 Pro\n      Total Number of Cores: 14 (10 performance and 4 efficiency)\n      Memory: 24 GB\n      System Firmware Version: 13822.41.1\n      OS Loader Version: 11881.140.96\n      Activation Lock Status: Enabled\n\nGraphics/Displays:\n\n    Apple M4 Pro:\n\n      Chipset Model: Apple M4 Pro\n      Type: GPU\n      Bus: Built-In\n      Total Number of Cores: 20\n      Vendor: Apple (0x106b)\n      Metal Support: Metal 3\n      Displays:\n        Color LCD:\n          Display Type: Built-in Liquid Retina XDR Display\n          Resolution: 3456 x 2234 Retina\n          Main Display: Yes\n          Mirror: Off\n          Online: Yes\n          Automatically Adjust Brightness: Yes\n          Connection Type: Internal\n",
+  "platform": "macOS-15.7.2-arm64-arm-64bit",
+  "os_version": "ProductName:\t\tmacOS\nProductVersion:\t\t15.7.2\nBuildVersion:\t\t24G325\n",
+  "rustc": "rustc 1.93.1 (01f6ddf75 2026-02-11)"
+}

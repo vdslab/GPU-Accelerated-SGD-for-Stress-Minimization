@@ -1,0 +1,34 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/atomic-full-main-20261110/bin/atomic-full",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/common/dwt_2680.mtx",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "4",
+    "--run-id",
+    "v55-atomic-full-dwt_2680-atomic_sgd-tfixed-s4-r1",
+    "--run-mode",
+    "benchmark",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/atomic-full-main-20261110/raw/v55-atomic-full-dwt_2680-atomic_sgd-tfixed-s4-r1"
+  ],
+  "at": "2026-11-10T16:05:31+09:00",
+  "environment": {
+    "SGD_STRESS_MODE": "auto",
+    "SGD_STRESS_SAMPLES": "256",
+    "SGD_GPU_TIMESTAMPS": "0"
+  },
+  "memory_before": {
+    "available_bytes": 7794720768,
+    "used_bytes": 11297505280,
+    "swap_used_bytes": 13118734336,
+    "swap_in_bytes": 849790468096,
+    "swap_out_bytes": 10070409216
+  }
+}
