@@ -1,0 +1,18 @@
+Reading: /Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/raw/v55-ex2-web-NotreDame-rr_sparse_sgd-tfixed-s3-r2/rr-sparse-sgd-web-NotreDame-v55-ex2-web-NotreDame-rr_sparse_sgd-tfixed-s3-r2.final.txt
+  nodes=325729, edges=1090108 (99.4ms)
+Stress: skipped (--stress off, 36.2ms)
+Edges: 1090108/1090108 (all)
+Initialising GPU renderer ...
+GPU: Apple M4 Pro (Metal)
+Rendering 2048×2048 px (node_r=1.00px) ...
+FRAME_READY_MONOTONIC_MS=259682544.188000
+Saved: /Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/raw/v55-ex2-web-NotreDame-rr_sparse_sgd-tfixed-s3-r2/after.png
+Timing:
+  read:                     99.4ms
+  stress:                   36.2ms
+  GPU init:                  12.0ms
+  GPU prepare/upload:         3.5ms
+  GPU render/readback:       46.3ms
+  PNG encode/save:           15.6ms
+Total: 214.9ms
+

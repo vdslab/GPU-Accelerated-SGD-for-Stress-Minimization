@@ -1,0 +1,14 @@
+{
+  "created": "2026-11-10T13:27:31+09:00",
+  "base_commit": "70e945730d6bce7922de3174b556e2e3d03f0375",
+  "binary_sha256": "da1a4ebedbbc84774255fd5cc550c3e37d09a312ee4c58bc0674afb806e1ac06",
+  "source_sha256": {
+    "implementations/sparse/sparse-sgd-gpu/src/gpu.rs": "cf80d0739e131c7818075400b2ba09622a010cbc921f907e1bfb5016f9145232",
+    "implementations/sparse/sparse-sgd-gpu/src/shader.wgsl": "238e5edeed84bf986812aa9c978bcb27461910c88da6db3759809a9155decfa0",
+    "experiments/run_v55_copapers.py": "6f5d68534e757e65d3f3355e5e769588a61902262db6c654d34e8f1833e6dc05"
+  },
+  "original_environment": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/config/environment.json",
+  "bank_bytes": 268435456,
+  "bank_count": 4,
+  "parameters_changed": false
+}

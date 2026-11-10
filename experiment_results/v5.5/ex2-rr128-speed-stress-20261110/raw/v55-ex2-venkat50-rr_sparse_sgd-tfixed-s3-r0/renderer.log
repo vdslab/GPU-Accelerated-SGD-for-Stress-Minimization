@@ -1,0 +1,18 @@
+Reading: /Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/raw/v55-ex2-venkat50-rr_sparse_sgd-tfixed-s3-r0/rr-sparse-sgd-venkat50-v55-ex2-venkat50-rr_sparse_sgd-tfixed-s3-r0.final.txt
+  nodes=62424, edges=827683 (50.9ms)
+Stress: skipped (--stress off, 15.7ms)
+Edges: 827683/827683 (all)
+Initialising GPU renderer ...
+GPU: Apple M4 Pro (Metal)
+Rendering 2048×2048 px (node_r=1.00px) ...
+FRAME_READY_MONOTONIC_MS=258476227.383000
+Saved: /Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/raw/v55-ex2-venkat50-rr_sparse_sgd-tfixed-s3-r0/after.png
+Timing:
+  read:                     50.9ms
+  stress:                   15.7ms
+  GPU init:                  11.4ms
+  GPU prepare/upload:         3.1ms
+  GPU render/readback:       20.5ms
+  PNG encode/save:           21.8ms
+Total: 125.1ms
+

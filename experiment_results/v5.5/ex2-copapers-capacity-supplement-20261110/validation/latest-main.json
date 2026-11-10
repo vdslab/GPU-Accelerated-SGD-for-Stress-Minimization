@@ -1,0 +1,26 @@
+{
+  "completed": "2026-11-10T13:40:37+09:00",
+  "base_commit": "cafb96704948d8c7c154294cc13f89a36b35d8a8",
+  "binary_sha256": "8bc990f874045ba9bf11949e5e398c64c17f8f78c5fc74a9f5c2d218c875deef",
+  "source_sha256": {
+    "implementations/sparse/sparse-sgd-gpu/src/gpu.rs": "6158044fe8b75b2ba31fbeed16d1d51c2c747e187dbf4b1b4a9ddf8c40443fdb",
+    "implementations/sparse/sparse-sgd-gpu/src/shader.wgsl": "238e5edeed84bf986812aa9c978bcb27461910c88da6db3759809a9155decfa0",
+    "implementations/sparse/sparse-sgd-gpu/Cargo.toml": "da7e4a2878fa441b60d0397a9c795a49abda7d9c2277a72bbd79bc404c9693d2",
+    "implementations/sparse/sparse-sgd-gpu/Cargo.lock": "091fb76ede1249ac86d6b780c35cd5310caa2122452b26190725084c56458f90"
+  },
+  "results": [
+    {
+      "graph": "dwt_1005",
+      "status": "success",
+      "coordinates_stress_and_fingerprints_equal": true,
+      "run_id": "main-capacity-verification-dwt_1005"
+    },
+    {
+      "graph": "coPapersCiteseer",
+      "status": "success",
+      "coordinates_stress_and_fingerprints_equal": true,
+      "run_id": "main-capacity-verification-coPapersCiteseer"
+    }
+  ],
+  "measurements_in_main_aggregation": false
+}

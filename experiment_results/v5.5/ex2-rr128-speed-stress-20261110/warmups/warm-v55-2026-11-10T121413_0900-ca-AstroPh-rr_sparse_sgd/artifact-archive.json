@@ -1,0 +1,46 @@
+{
+  "format": "shared-gzip",
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-ca-AstroPh-rr_sparse_sgd/rr-sparse-sgd-ca-AstroPh-warm-v55-2026-11-10T121413_0900-ca-AstroPh-rr_sparse_sgd.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-ca-AstroPh-rr_sparse_sgd/rr-sparse-sgd-ca-AstroPh-warm-v55-2026-11-10T121413_0900-ca-AstroPh-rr_sparse_sgd.initial.shared.txt.gz",
+      "original_sha256": "27766bde27b709b5f436b7c3d18993fc7aa47af84e10578ac8ab7bce9fa3c51f",
+      "decompressed_sha256": "27766bde27b709b5f436b7c3d18993fc7aa47af84e10578ac8ab7bce9fa3c51f",
+      "original_bytes": 2843854,
+      "compressed_sha256": "ede01007a87903b59f2d9900752bd970a70e3dac08131174ab21c32b5aac4231",
+      "compressed_bytes": 1202986,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/shared-edges/rr_sparse_sgd/2863ecb7181ba87fa8264ecc7ac36e18f965cd86f6c7a380fe0734e131f4870d.edges-template.gz",
+      "shared_edge_sha256": "825fb174a2b9e2498790cf8860cb89be779597f17fc6e2abfad0620a7b4359ff",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-ca-AstroPh-rr_sparse_sgd/rr-sparse-sgd-ca-AstroPh-warm-v55-2026-11-10T121413_0900-ca-AstroPh-rr_sparse_sgd.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-ca-AstroPh-rr_sparse_sgd/rr-sparse-sgd-ca-AstroPh-warm-v55-2026-11-10T121413_0900-ca-AstroPh-rr_sparse_sgd.final.shared.txt.gz",
+      "original_sha256": "8468323b7f6cca6ac5b2ac1e50e1a6e8799b27a6a56af7bc6ba401e266024746",
+      "decompressed_sha256": "8468323b7f6cca6ac5b2ac1e50e1a6e8799b27a6a56af7bc6ba401e266024746",
+      "original_bytes": 2812941,
+      "compressed_sha256": "e1f71e97bac6684af1ab4e855bf118bfbe1a58d6175883497ff98da2ff6494b0",
+      "compressed_bytes": 1199648,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/shared-edges/rr_sparse_sgd/2863ecb7181ba87fa8264ecc7ac36e18f965cd86f6c7a380fe0734e131f4870d.edges-template.gz",
+      "shared_edge_sha256": "825fb174a2b9e2498790cf8860cb89be779597f17fc6e2abfad0620a7b4359ff",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-ca-AstroPh-rr_sparse_sgd/rr-sparse-sgd-ca-AstroPh-warm-v55-2026-11-10T121413_0900-ca-AstroPh-rr_sparse_sgd.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-ca-AstroPh-rr_sparse_sgd/rr-sparse-sgd-ca-AstroPh-warm-v55-2026-11-10T121413_0900-ca-AstroPh-rr_sparse_sgd.vertex-map.txt.gz",
+      "original_sha256": "66b6abfb7f155aad06ae843d674c3da6f1dcefcdeab5feaf5c264c14003742c1",
+      "original_bytes": 192616,
+      "compressed_sha256": "ebe4a7dd5f3d559ada00fe97b42b0848839fe870a96f99e0b08cc231c3ffeec5",
+      "compressed_bytes": 65844,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

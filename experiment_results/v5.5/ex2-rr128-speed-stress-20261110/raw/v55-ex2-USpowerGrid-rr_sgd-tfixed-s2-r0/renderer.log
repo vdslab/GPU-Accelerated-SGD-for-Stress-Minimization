@@ -1,0 +1,18 @@
+Reading: /Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/raw/v55-ex2-USpowerGrid-rr_sgd-tfixed-s2-r0/rr-sgd-USpowerGrid-v55-ex2-USpowerGrid-rr_sgd-tfixed-s2-r0.final.txt
+  nodes=4941, edges=13188 (1.2ms)
+Stress: skipped (--stress off, 0.4ms)
+Edges: 13188/13188 (all)
+Initialising GPU renderer ...
+GPU: Apple M4 Pro (Metal)
+Rendering 2048×2048 px (node_r=1.00px) ...
+FRAME_READY_MONOTONIC_MS=257524301.292000
+Saved: /Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/raw/v55-ex2-USpowerGrid-rr_sgd-tfixed-s2-r0/after.png
+Timing:
+  read:                      1.2ms
+  stress:                    0.4ms
+  GPU init:                   9.7ms
+  GPU prepare/upload:         0.9ms
+  GPU render/readback:       14.8ms
+  PNG encode/save:           24.1ms
+Total: 52.0ms
+

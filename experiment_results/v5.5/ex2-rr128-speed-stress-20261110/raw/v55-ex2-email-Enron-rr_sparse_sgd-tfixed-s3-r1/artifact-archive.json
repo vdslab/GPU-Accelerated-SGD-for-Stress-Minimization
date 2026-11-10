@@ -1,0 +1,46 @@
+{
+  "format": "shared-gzip",
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/raw/v55-ex2-email-Enron-rr_sparse_sgd-tfixed-s3-r1/rr-sparse-sgd-email-Enron-v55-ex2-email-Enron-rr_sparse_sgd-tfixed-s3-r1.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/raw/v55-ex2-email-Enron-rr_sparse_sgd-tfixed-s3-r1/rr-sparse-sgd-email-Enron-v55-ex2-email-Enron-rr_sparse_sgd-tfixed-s3-r1.initial.shared.txt.gz",
+      "original_sha256": "88e0ac3c7dcfb770589f01884ef50f639a00350a46c7a102843f8a52917811bd",
+      "decompressed_sha256": "88e0ac3c7dcfb770589f01884ef50f639a00350a46c7a102843f8a52917811bd",
+      "original_bytes": 3163595,
+      "compressed_sha256": "42e10caaa5f58a601f47581fbcd15fd737cd0415736988d35602252e72dd3cf9",
+      "compressed_bytes": 1352348,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/shared-edges/rr_sparse_sgd/794e29cd660c3852f909a06b0759c1585889a515c07dcac09d44b69603d651db.edges-template.gz",
+      "shared_edge_sha256": "547d802fc43b59434d47aca5dbff651576d07a0866401ebe76cd8d4078ffaa8d",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/raw/v55-ex2-email-Enron-rr_sparse_sgd-tfixed-s3-r1/rr-sparse-sgd-email-Enron-v55-ex2-email-Enron-rr_sparse_sgd-tfixed-s3-r1.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/raw/v55-ex2-email-Enron-rr_sparse_sgd-tfixed-s3-r1/rr-sparse-sgd-email-Enron-v55-ex2-email-Enron-rr_sparse_sgd-tfixed-s3-r1.final.shared.txt.gz",
+      "original_sha256": "f9aeeaf5c2c32f313382f329d381114b2d77c80b9e1d33ea0acb841f7b58d395",
+      "decompressed_sha256": "f9aeeaf5c2c32f313382f329d381114b2d77c80b9e1d33ea0acb841f7b58d395",
+      "original_bytes": 3108157,
+      "compressed_sha256": "6f09c5ee7d99b2c0671416ed25b58050129d86d8d0c058b5b0fb00c87d31f9a2",
+      "compressed_bytes": 1341852,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/shared-edges/rr_sparse_sgd/794e29cd660c3852f909a06b0759c1585889a515c07dcac09d44b69603d651db.edges-template.gz",
+      "shared_edge_sha256": "547d802fc43b59434d47aca5dbff651576d07a0866401ebe76cd8d4078ffaa8d",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/raw/v55-ex2-email-Enron-rr_sparse_sgd-tfixed-s3-r1/rr-sparse-sgd-email-Enron-v55-ex2-email-Enron-rr_sparse_sgd-tfixed-s3-r1.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/raw/v55-ex2-email-Enron-rr_sparse_sgd-tfixed-s3-r1/rr-sparse-sgd-email-Enron-v55-ex2-email-Enron-rr_sparse_sgd-tfixed-s3-r1.vertex-map.txt.gz",
+      "original_sha256": "a169ca8bb633d2eb347472222eff7db04c247e8adf8c02d6c0771dbf37a3249a",
+      "original_bytes": 382132,
+      "compressed_sha256": "c6ed03201bab1e772b702b11cf774d40daf38aab3af497d9f881b0f66e5ba8af",
+      "compressed_bytes": 133137,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

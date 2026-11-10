@@ -1,0 +1,38 @@
+{
+  "argv": [
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-copapers-capacity-supplement-20261110/bin/rr-sparse-main",
+    "--input",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/data/v5/sparse_only/coPapersCiteseer.mtx",
+    "--run-id",
+    "main-capacity-verification-coPapersCiteseer",
+    "--run-mode",
+    "benchmark",
+    "--iterations",
+    "15",
+    "--epsilon",
+    "0.1",
+    "--seed",
+    "0",
+    "--output-format",
+    "json",
+    "--output-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-copapers-capacity-supplement-20261110/validation/main-capacity-verification-coPapersCiteseer",
+    "--pivots",
+    "200"
+  ],
+  "environment": {
+    "SGD_GPU_TIMESTAMPS": "1",
+    "SGD_STRESS_MODE": "auto",
+    "SGD_STRESS_SAMPLES": "256"
+  },
+  "binary_sha256": "8bc990f874045ba9bf11949e5e398c64c17f8f78c5fc74a9f5c2d218c875deef",
+  "started": "2026-11-10T13:39:58+09:00",
+  "memory_before": {
+    "available_bytes": 9050030080,
+    "used_bytes": 12945801216,
+    "swap_used_bytes": 18108645376,
+    "swap_in_bytes": 787439157248,
+    "swap_out_bytes": 9144451072
+  },
+  "kind": "validation"
+}

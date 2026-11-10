@@ -1,0 +1,18 @@
+Reading: /Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-copapers-capacity-supplement-20261110/validation/main-capacity-verification-dwt_1005/rr-sparse-sgd-dwt_1005-main-capacity-verification-dwt_1005.final.txt
+  nodes=1005, edges=3808 (0.5ms)
+Stress: skipped (--stress off, 0.3ms)
+Edges: 3808/3808 (all)
+Initialising GPU renderer ...
+GPU: Apple M4 Pro (Metal)
+Rendering 2048×2048 px (node_r=1.00px) ...
+FRAME_READY_MONOTONIC_MS=261830872.207000
+Saved: /Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-copapers-capacity-supplement-20261110/validation/main-capacity-verification-dwt_1005/after.png
+Timing:
+  read:                      0.5ms
+  stress:                    0.3ms
+  GPU init:                  15.5ms
+  GPU prepare/upload:         2.2ms
+  GPU render/readback:       12.1ms
+  PNG encode/save:           14.8ms
+Total: 47.0ms
+

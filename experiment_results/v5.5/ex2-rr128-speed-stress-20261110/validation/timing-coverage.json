@@ -1,0 +1,26 @@
+{
+  "rr_sgd": {
+    "preprocess_time_ms": 570,
+    "gpu_prepare_time_ms": 570,
+    "upload_time_ms": 570,
+    "iteration_times_ms": 570,
+    "sgd_time_ms": 570,
+    "readback_time_ms": 570,
+    "draw_time_ms": 570,
+    "total_with_draw_time_ms": 570,
+    "iteration_total_time_ms": 570,
+    "total_compute_time_ms": 570
+  },
+  "rr_sparse_sgd": {
+    "preprocess_time_ms": 825,
+    "gpu_prepare_time_ms": 825,
+    "upload_time_ms": 825,
+    "iteration_times_ms": 825,
+    "sgd_time_ms": 825,
+    "readback_time_ms": 825,
+    "draw_time_ms": 825,
+    "total_with_draw_time_ms": 825,
+    "iteration_total_time_ms": 825,
+    "total_compute_time_ms": 825
+  }
+}

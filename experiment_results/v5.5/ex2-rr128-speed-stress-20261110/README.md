@@ -1,0 +1,7 @@
+# v5.5 EX2 RR-only rerun
+
+User changed scope to EX2 only. EX1 stopped after742 successful runs and remains a separate incomplete dataset. EX2 requests1410 RR jobs, of which15 coPapersCiteseer Sparse p200 jobs exceed the current PR compiled 4-bank512MiB cap. Preserve parameters and mark not_run_capacity, never zero-fill. Run1395 supported RR Full/Sparse jobs sequentially. CPU/Atomic2820 historical records are references; no reruns. Previous v5 results are read-only and hashed.
+
+Same EX2 inputs/order,seeds0..4 x3 repetitions,15 iterations,epsilon0.1,Full T=W128/shared/both shuffles,Sparse W128/p=min200n,phase_chunks1,auto BFS,timestamps enabled. Full exact Stress; Sparse exact<=8000 otherwise256 fixed sources/eval seed0. Each graph/method warmup999 excluded. Representative small/large timestamp preflight. No time cutoff. Resource stop between runs below4GiB disk or2GiB available RAM. Actual After GPU render2048x2048 blue radius1. Per-run PNG hashed then omitted; coordinates stored losslessly with APFS-shared edge gzip members. Reports/PNG/PDF automatically generated after supported measurements finish.
+
+Run/resume: `python3 experiments/run_v55_ex2.py --run`. Progress in progress.json and new v5.5 Obsidian notes. Legacy CPU/Atomic exact Full Stress overlay reused only in a new report-side copy, never altering original records. Historical timing comparisons are not contemporaneous.

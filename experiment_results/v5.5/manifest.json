@@ -1,0 +1,63 @@
+{
+  "version": "v5.5",
+  "primary_experiment": "EX2",
+  "ex2": {
+    "completed": "2026-11-10T13:08:31+09:00",
+    "version": "v5.5",
+    "requested_rr_runs": 1410,
+    "success": 1395,
+    "not_run_capacity": 15,
+    "cpu_atomic_new_runs": 0,
+    "historical_cpu_atomic_records": 2820,
+    "previous_files_unchanged": true,
+    "reports_complete": true,
+    "ex1_state": "stopped_at_user_request",
+    "final_verified_at": "2026-11-10T13:13:08.913679+09:00",
+    "postprocessing_clarification_regenerated": true,
+    "all_successful_stress_values_equal_previous_rr": true,
+    "all_successful_saved_coordinate_digests_equal_previous_rr": true,
+    "png_figures": 14,
+    "pdf_figures": 14,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110",
+    "new_full_runs": 570,
+    "new_sparse_runs": 825,
+    "combined_available_records": 4215,
+    "report": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/reports/results.md"
+  },
+  "ex1": {
+    "state": "stopped_at_user_request",
+    "success": 742,
+    "planned": 1650,
+    "included_in_ex2": false,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex1-tile-w-equal-t-20261110"
+  },
+  "capacity_supplement": {
+    "completed": "2026-11-10T13:39:31+09:00",
+    "success": 15,
+    "failed": 0,
+    "original_files_unchanged": true,
+    "all_coordinates_and_stress_equal_previous_rr": true,
+    "small_regression_passed": true,
+    "combined_rr_success": 1410,
+    "latest_main_verified": true,
+    "latest_main_tests_passed": 40,
+    "full_rr_runs": 570,
+    "sparse_rr_runs": 840,
+    "reports_complete": true,
+    "combined_available_records": 4230,
+    "png_figures": 14,
+    "pdf_figures": 14,
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-copapers-capacity-supplement-20261110",
+    "report": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-copapers-capacity-supplement-20261110/reports/results.md"
+  },
+  "current_ex2": {
+    "rr_success": 1410,
+    "full_success": 570,
+    "sparse_success": 840,
+    "failed": 0,
+    "not_run": 0,
+    "historical_controls": 2820,
+    "combined_available_records": 4230,
+    "report": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-copapers-capacity-supplement-20261110/reports/results.md"
+  }
+}

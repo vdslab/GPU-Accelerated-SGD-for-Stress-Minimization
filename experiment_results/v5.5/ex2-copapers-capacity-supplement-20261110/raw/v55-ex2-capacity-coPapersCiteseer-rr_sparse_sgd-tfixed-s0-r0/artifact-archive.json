@@ -1,0 +1,46 @@
+{
+  "format": "shared-gzip",
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-copapers-capacity-supplement-20261110/raw/v55-ex2-capacity-coPapersCiteseer-rr_sparse_sgd-tfixed-s0-r0/rr-sparse-sgd-coPapersCiteseer-v55-ex2-capacity-coPapersCiteseer-rr_sparse_sgd-tfixed-s0-r0.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-copapers-capacity-supplement-20261110/raw/v55-ex2-capacity-coPapersCiteseer-rr_sparse_sgd-tfixed-s0-r0/rr-sparse-sgd-coPapersCiteseer-v55-ex2-capacity-coPapersCiteseer-rr_sparse_sgd-tfixed-s0-r0.initial.shared.txt.gz",
+      "original_sha256": "d7fe1cbaadb10678e3d08c76b02f55aca5f5f9890e6a4ad2058b5df9e2f7a39b",
+      "decompressed_sha256": "d7fe1cbaadb10678e3d08c76b02f55aca5f5f9890e6a4ad2058b5df9e2f7a39b",
+      "original_bytes": 224477189,
+      "compressed_sha256": "0e061e2ae611dae79bea3d21572e24a2b5f0d3db746d3dc4792114ad6d2da771",
+      "compressed_bytes": 54297215,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-copapers-capacity-supplement-20261110/shared-edges/rr_sparse_sgd/1d2f63ad71756124d9eab451ede52f36bcc6281d438836d5ba5ae69973e74603.edges-template.gz",
+      "shared_edge_sha256": "d6af24997318bee34ac8a6bf26feeea2e3ae7f2ba30d844592bf1d5c32dc8ed5",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-copapers-capacity-supplement-20261110/raw/v55-ex2-capacity-coPapersCiteseer-rr_sparse_sgd-tfixed-s0-r0/rr-sparse-sgd-coPapersCiteseer-v55-ex2-capacity-coPapersCiteseer-rr_sparse_sgd-tfixed-s0-r0.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-copapers-capacity-supplement-20261110/raw/v55-ex2-capacity-coPapersCiteseer-rr_sparse_sgd-tfixed-s0-r0/rr-sparse-sgd-coPapersCiteseer-v55-ex2-capacity-coPapersCiteseer-rr_sparse_sgd-tfixed-s0-r0.final.shared.txt.gz",
+      "original_sha256": "a90ccd5b7bf9fd132f253f4a5f5f3729bb5c82295f45767caccc1472a3aee59a",
+      "decompressed_sha256": "a90ccd5b7bf9fd132f253f4a5f5f3729bb5c82295f45767caccc1472a3aee59a",
+      "original_bytes": 223529109,
+      "compressed_sha256": "2d2ddf1fe540fc518e183b3ec900ef743b48c97279d80b487e460c34da0cb22d",
+      "compressed_bytes": 54151203,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-copapers-capacity-supplement-20261110/shared-edges/rr_sparse_sgd/1d2f63ad71756124d9eab451ede52f36bcc6281d438836d5ba5ae69973e74603.edges-template.gz",
+      "shared_edge_sha256": "d6af24997318bee34ac8a6bf26feeea2e3ae7f2ba30d844592bf1d5c32dc8ed5",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-copapers-capacity-supplement-20261110/raw/v55-ex2-capacity-coPapersCiteseer-rr_sparse_sgd-tfixed-s0-r0/rr-sparse-sgd-coPapersCiteseer-v55-ex2-capacity-coPapersCiteseer-rr_sparse_sgd-tfixed-s0-r0.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-copapers-capacity-supplement-20261110/raw/v55-ex2-capacity-coPapersCiteseer-rr_sparse_sgd-tfixed-s0-r0/rr-sparse-sgd-coPapersCiteseer-v55-ex2-capacity-coPapersCiteseer-rr_sparse_sgd-tfixed-s0-r0.vertex-map.txt.gz",
+      "original_sha256": "31f2a33986306445f641802e92932fe93b8e7e285297d9255f47fca78d5d4123",
+      "original_bytes": 5855208,
+      "compressed_sha256": "9e4f56b244aa8ee944e81785ef8b0a0bef8bfc561aa20cb8a6f614e475f633b5",
+      "compressed_bytes": 1924111,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,46 @@
+{
+  "format": "shared-gzip",
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-web-Stanford-rr_sparse_sgd/rr-sparse-sgd-web-Stanford-warm-v55-2026-11-10T121413_0900-web-Stanford-rr_sparse_sgd.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-web-Stanford-rr_sparse_sgd/rr-sparse-sgd-web-Stanford-warm-v55-2026-11-10T121413_0900-web-Stanford-rr_sparse_sgd.initial.shared.txt.gz",
+      "original_sha256": "28798d8961d22db50ec6d5a95980f55ac071eadeb3ed351f5b229369fcb9ec22",
+      "decompressed_sha256": "28798d8961d22db50ec6d5a95980f55ac071eadeb3ed351f5b229369fcb9ec22",
+      "original_bytes": 35822628,
+      "compressed_sha256": "a50d7ac4065ed47ec2de5bfdff2b9b1cd29b7b7bd7cf9fd2f12e60db871385b1",
+      "compressed_bytes": 14174897,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/shared-edges/rr_sparse_sgd/afa585aee053734cef871ca579d2367eccf39d0673fdecf2b2d3e243ca8a421e.edges-template.gz",
+      "shared_edge_sha256": "68d9bd860604f64ff55cc5105b099119cc93af1751e52f5380ae55d81c69c5f7",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-web-Stanford-rr_sparse_sgd/rr-sparse-sgd-web-Stanford-warm-v55-2026-11-10T121413_0900-web-Stanford-rr_sparse_sgd.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-web-Stanford-rr_sparse_sgd/rr-sparse-sgd-web-Stanford-warm-v55-2026-11-10T121413_0900-web-Stanford-rr_sparse_sgd.final.shared.txt.gz",
+      "original_sha256": "0c686ae67fba7e7facd4f9291f85b1bc1f52e56095554b995c36a390cf60daec",
+      "decompressed_sha256": "0c686ae67fba7e7facd4f9291f85b1bc1f52e56095554b995c36a390cf60daec",
+      "original_bytes": 35328504,
+      "compressed_sha256": "4a8bcf58eb69cb9e32fb0198374fd1661121ab976883b1b469c9c02b3116a351",
+      "compressed_bytes": 14133970,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/shared-edges/rr_sparse_sgd/afa585aee053734cef871ca579d2367eccf39d0673fdecf2b2d3e243ca8a421e.edges-template.gz",
+      "shared_edge_sha256": "68d9bd860604f64ff55cc5105b099119cc93af1751e52f5380ae55d81c69c5f7",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-web-Stanford-rr_sparse_sgd/rr-sparse-sgd-web-Stanford-warm-v55-2026-11-10T121413_0900-web-Stanford-rr_sparse_sgd.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-web-Stanford-rr_sparse_sgd/rr-sparse-sgd-web-Stanford-warm-v55-2026-11-10T121413_0900-web-Stanford-rr_sparse_sgd.vertex-map.txt.gz",
+      "original_sha256": "480e0a3e13bc0bbf08e9f384fc22d07a1dc7e11692b533172cd89b4759e3df5b",
+      "original_bytes": 3351490,
+      "compressed_sha256": "a0af213681edac43bdd0d437f5b587141df40486d1d6759f852e25bdfb996914",
+      "compressed_bytes": 1117802,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

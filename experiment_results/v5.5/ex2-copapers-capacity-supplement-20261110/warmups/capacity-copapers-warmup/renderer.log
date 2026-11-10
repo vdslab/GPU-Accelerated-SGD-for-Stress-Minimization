@@ -1,0 +1,18 @@
+Reading: /Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-copapers-capacity-supplement-20261110/warmups/capacity-copapers-warmup/rr-sparse-sgd-coPapersCiteseer-capacity-copapers-warmup.final.txt
+  nodes=434102, edges=16036720 (972.3ms)
+Stress: skipped (--stress off, 306.5ms)
+Edges: 16036720/16036720 (all)
+Initialising GPU renderer ...
+GPU: Apple M4 Pro (Metal)
+Rendering 2048×2048 px (node_r=1.00px) ...
+FRAME_READY_MONOTONIC_MS=261124944.022000
+Saved: /Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-copapers-capacity-supplement-20261110/warmups/capacity-copapers-warmup/after.png
+Timing:
+  read:                    972.3ms
+  stress:                  306.5ms
+  GPU init:                  18.3ms
+  GPU prepare/upload:        57.5ms
+  GPU render/readback:      339.8ms
+  PNG encode/save:           16.2ms
+Total: 1733.1ms
+

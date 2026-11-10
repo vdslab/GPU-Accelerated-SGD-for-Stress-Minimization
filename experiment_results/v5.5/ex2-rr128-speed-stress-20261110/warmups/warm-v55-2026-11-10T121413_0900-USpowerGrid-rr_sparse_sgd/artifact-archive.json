@@ -1,0 +1,46 @@
+{
+  "format": "shared-gzip",
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-USpowerGrid-rr_sparse_sgd/rr-sparse-sgd-USpowerGrid-warm-v55-2026-11-10T121413_0900-USpowerGrid-rr_sparse_sgd.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-USpowerGrid-rr_sparse_sgd/rr-sparse-sgd-USpowerGrid-warm-v55-2026-11-10T121413_0900-USpowerGrid-rr_sparse_sgd.initial.shared.txt.gz",
+      "original_sha256": "0c50c6a4974cde2e6c15e917075f5c674c5143ef111338148ce905c987043e88",
+      "decompressed_sha256": "0c50c6a4974cde2e6c15e917075f5c674c5143ef111338148ce905c987043e88",
+      "original_bytes": 263018,
+      "compressed_sha256": "5cfd98007344dcb1454d27d7e6229f1499b12952ad5687a21b04620c07513c69",
+      "compressed_bytes": 187543,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/shared-edges/rr_sparse_sgd/a880ab9625c78ef5ad3d1b63b2a23229e5b71f47b77d902288efaa8b353acfc6.edges-template.gz",
+      "shared_edge_sha256": "08076628c19795461f86c699b9b1a42ad70421efaac644dafb976e43b60ff776",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-USpowerGrid-rr_sparse_sgd/rr-sparse-sgd-USpowerGrid-warm-v55-2026-11-10T121413_0900-USpowerGrid-rr_sparse_sgd.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-USpowerGrid-rr_sparse_sgd/rr-sparse-sgd-USpowerGrid-warm-v55-2026-11-10T121413_0900-USpowerGrid-rr_sparse_sgd.final.shared.txt.gz",
+      "original_sha256": "45460364063a529bc5308bffb6c468bb3ab3a9e7c4962b0c3de53fbbec306ac3",
+      "decompressed_sha256": "45460364063a529bc5308bffb6c468bb3ab3a9e7c4962b0c3de53fbbec306ac3",
+      "original_bytes": 251182,
+      "compressed_sha256": "4a39822e892353f161624a453132c29f0283a25ebecb437366b9472cacd4fff0",
+      "compressed_bytes": 184706,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/shared-edges/rr_sparse_sgd/a880ab9625c78ef5ad3d1b63b2a23229e5b71f47b77d902288efaa8b353acfc6.edges-template.gz",
+      "shared_edge_sha256": "08076628c19795461f86c699b9b1a42ad70421efaac644dafb976e43b60ff776",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-USpowerGrid-rr_sparse_sgd/rr-sparse-sgd-USpowerGrid-warm-v55-2026-11-10T121413_0900-USpowerGrid-rr_sparse_sgd.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-USpowerGrid-rr_sparse_sgd/rr-sparse-sgd-USpowerGrid-warm-v55-2026-11-10T121413_0900-USpowerGrid-rr_sparse_sgd.vertex-map.txt.gz",
+      "original_sha256": "f9a598266f4f8a2161f146cbf6458dd8258421cc0776934433a38bf0a8178917",
+      "original_bytes": 47190,
+      "compressed_sha256": "e4c596785a393f407651db87ffea3e59c2298831ea89ac844d59033e960aeb6f",
+      "compressed_bytes": 16479,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,46 @@
+{
+  "format": "shared-gzip",
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-web-NotreDame-rr_sparse_sgd/rr-sparse-sgd-web-NotreDame-warm-v55-2026-11-10T121413_0900-web-NotreDame-rr_sparse_sgd.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-web-NotreDame-rr_sparse_sgd/rr-sparse-sgd-web-NotreDame-warm-v55-2026-11-10T121413_0900-web-NotreDame-rr_sparse_sgd.initial.shared.txt.gz",
+      "original_sha256": "6207210c0a5a35ce9f6ed4291276fec457b9f4df3077315b3b07ff2e12708099",
+      "decompressed_sha256": "6207210c0a5a35ce9f6ed4291276fec457b9f4df3077315b3b07ff2e12708099",
+      "original_bytes": 27589449,
+      "compressed_sha256": "fc03b73425a13e1fcb9d1d654dc4c3e604bfa07d10fcbc4a75f171f29a7acc72",
+      "compressed_bytes": 10003699,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/shared-edges/rr_sparse_sgd/e779c1ef4ec3fad9515cf23ee89e88f7cafc8b3d7824963ffbc3667c86a2553a.edges-template.gz",
+      "shared_edge_sha256": "d343a9dd12e091c596059236efabcbcb06452c53f7ac274f4b6f14656d78896a",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-web-NotreDame-rr_sparse_sgd/rr-sparse-sgd-web-NotreDame-warm-v55-2026-11-10T121413_0900-web-NotreDame-rr_sparse_sgd.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-web-NotreDame-rr_sparse_sgd/rr-sparse-sgd-web-NotreDame-warm-v55-2026-11-10T121413_0900-web-NotreDame-rr_sparse_sgd.final.shared.txt.gz",
+      "original_sha256": "b0fd9a62836175202935a02a3337af95cc33af8500866aabf7c787f52e2c5d48",
+      "decompressed_sha256": "b0fd9a62836175202935a02a3337af95cc33af8500866aabf7c787f52e2c5d48",
+      "original_bytes": 26958241,
+      "compressed_sha256": "0e42e2445222939bc7a6a07d2e576b0127ca48fd8336361a5f59783bf6a93da9",
+      "compressed_bytes": 9833389,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/shared-edges/rr_sparse_sgd/e779c1ef4ec3fad9515cf23ee89e88f7cafc8b3d7824963ffbc3667c86a2553a.edges-template.gz",
+      "shared_edge_sha256": "d343a9dd12e091c596059236efabcbcb06452c53f7ac274f4b6f14656d78896a",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-web-NotreDame-rr_sparse_sgd/rr-sparse-sgd-web-NotreDame-warm-v55-2026-11-10T121413_0900-web-NotreDame-rr_sparse_sgd.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-web-NotreDame-rr_sparse_sgd/rr-sparse-sgd-web-NotreDame-warm-v55-2026-11-10T121413_0900-web-NotreDame-rr_sparse_sgd.vertex-map.txt.gz",
+      "original_sha256": "1f7c402f8e8a606ad666662e9db3e19461ca90c1ad9924d28e6d6bab1791f6ca",
+      "original_bytes": 4337986,
+      "compressed_sha256": "a9d7addd618715431f655ecf3d44532352666c2d11b956fd2565d188a6d1bfec",
+      "compressed_bytes": 1435305,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

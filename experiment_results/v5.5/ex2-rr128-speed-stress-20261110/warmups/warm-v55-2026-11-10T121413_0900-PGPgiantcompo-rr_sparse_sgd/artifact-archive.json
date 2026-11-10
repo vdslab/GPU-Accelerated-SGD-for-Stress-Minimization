@@ -1,0 +1,46 @@
+{
+  "format": "shared-gzip",
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-PGPgiantcompo-rr_sparse_sgd/rr-sparse-sgd-PGPgiantcompo-warm-v55-2026-11-10T121413_0900-PGPgiantcompo-rr_sparse_sgd.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-PGPgiantcompo-rr_sparse_sgd/rr-sparse-sgd-PGPgiantcompo-warm-v55-2026-11-10T121413_0900-PGPgiantcompo-rr_sparse_sgd.initial.shared.txt.gz",
+      "original_sha256": "3790bae55ebdc78a34ea6b9347e5ae8f54156082c5a3f935201e7c8c52721b9c",
+      "decompressed_sha256": "3790bae55ebdc78a34ea6b9347e5ae8f54156082c5a3f935201e7c8c52721b9c",
+      "original_bytes": 670321,
+      "compressed_sha256": "2793adcde3981f8654713e8dcfeefa6d5a11d0935a13b482f41f9ee3d61a77b4",
+      "compressed_bytes": 372575,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/shared-edges/rr_sparse_sgd/6f08fc2d7dd7156f71227f0f30e828680c6c9ea38701ed11620251c074d5fd32.edges-template.gz",
+      "shared_edge_sha256": "2036d498531655e1470177e06ae06d111d2cf751c17fb5cb53ab59b44f33883e",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-PGPgiantcompo-rr_sparse_sgd/rr-sparse-sgd-PGPgiantcompo-warm-v55-2026-11-10T121413_0900-PGPgiantcompo-rr_sparse_sgd.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-PGPgiantcompo-rr_sparse_sgd/rr-sparse-sgd-PGPgiantcompo-warm-v55-2026-11-10T121413_0900-PGPgiantcompo-rr_sparse_sgd.final.shared.txt.gz",
+      "original_sha256": "e90ae7d08068f88154865535ccaa7d27afc57c3025f889fdc979bfe47ef898aa",
+      "decompressed_sha256": "e90ae7d08068f88154865535ccaa7d27afc57c3025f889fdc979bfe47ef898aa",
+      "original_bytes": 646256,
+      "compressed_sha256": "7cfeee20f99f519c2d7756ab896b0c3ee73a113089156d13078ddb2a268e3b35",
+      "compressed_bytes": 370059,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/shared-edges/rr_sparse_sgd/6f08fc2d7dd7156f71227f0f30e828680c6c9ea38701ed11620251c074d5fd32.edges-template.gz",
+      "shared_edge_sha256": "2036d498531655e1470177e06ae06d111d2cf751c17fb5cb53ab59b44f33883e",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-PGPgiantcompo-rr_sparse_sgd/rr-sparse-sgd-PGPgiantcompo-warm-v55-2026-11-10T121413_0900-PGPgiantcompo-rr_sparse_sgd.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-PGPgiantcompo-rr_sparse_sgd/rr-sparse-sgd-PGPgiantcompo-warm-v55-2026-11-10T121413_0900-PGPgiantcompo-rr_sparse_sgd.vertex-map.txt.gz",
+      "original_sha256": "bf4751ae62c1c53f9781b5dac3a86f1e4f39f2078e20c4b0b882b175a1fa48bc",
+      "original_bytes": 105940,
+      "compressed_sha256": "ac96d912b4b45280e4bbd61926ee8e80eddff926bb6101f261fd766f45131c06",
+      "compressed_bytes": 34775,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

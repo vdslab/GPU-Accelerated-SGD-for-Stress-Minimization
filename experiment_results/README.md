@@ -20,3 +20,5 @@
 ```
 
 2026-11-08の容量整理で座標・キャッシュ等は削除済み。数値結果・集計・図表は保持。[保存状態と削除証跡](storage-cleanup-20261108/README.md)。
+
+- [v5.5：RR Full/Sparse EX2再実験とcoPapersCiteseer容量拡張補測](v5.5/README.md)

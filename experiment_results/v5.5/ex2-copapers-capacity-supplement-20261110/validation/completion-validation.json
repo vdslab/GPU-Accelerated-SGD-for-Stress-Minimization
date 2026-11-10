@@ -1,0 +1,32 @@
+{
+  "requested": 1410,
+  "rr_success": 1410,
+  "capacity_not_run": 0,
+  "full_success": 570,
+  "sparse_success": 840,
+  "cpu_new": 0,
+  "atomic_new": 0,
+  "historical_controls": 2820,
+  "combined_available_records": 4230,
+  "timing_fields": 10,
+  "initial_fingerprints_match_previous": true,
+  "sparse_preprocess_matches_previous": true,
+  "complete_seeds_per_condition": 5,
+  "repetitions": 3,
+  "figure_names": [
+    "full-sgd-speedup",
+    "full-total-speedup",
+    "full-stress-ratio",
+    "full-stress-absolute",
+    "full-total-time",
+    "full-all-timings",
+    "full-previous-comparison",
+    "sparse-sgd-speedup",
+    "sparse-total-speedup",
+    "sparse-stress-ratio",
+    "sparse-stress-absolute",
+    "sparse-total-time",
+    "sparse-all-timings",
+    "sparse-previous-comparison"
+  ]
+}

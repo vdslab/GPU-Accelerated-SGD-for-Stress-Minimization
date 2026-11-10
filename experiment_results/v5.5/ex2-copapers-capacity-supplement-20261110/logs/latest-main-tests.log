@@ -1,0 +1,67 @@
+   Compiling experiment-common v0.1.0 (/Users/kose/master/sgd-v55-main/shared/experiment-common)
+   Compiling sparse-sgd-gpu v0.1.0 (/Users/kose/master/sgd-v55-main/implementations/sparse/sparse-sgd-gpu)
+    Finished `release` profile [optimized] target(s) in 3.10s
+     Running unittests src/lib.rs (/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/deps/sparse_sgd_gpu-be45e0915832ff32)
+
+running 36 tests
+test cpu_reference::tests::coincident_positions_remain_finite ... ok
+test cpu_reference::tests::each_directional_mu_is_clamped_to_one ... ok
+test cpu_reference::tests::directional_weights_move_endpoints_by_different_amounts ... ok
+test cpu_reference::tests::complete_run_centers_the_result ... ok
+test cpu_reference::tests::symmetric_update_moves_endpoints_equally_in_opposite_directions ... ok
+test cpu_reference::tests::zero_directional_weight_keeps_that_endpoint_fixed ... ok
+test cpu_reference::tests::complete_pipeline_is_reproducible_for_same_seed ... ok
+test gpu::tests::iteration_log_is_one_based ... ok
+test gpu::tests::shader_declares_both_entry_points_and_directional_weights ... ok
+test gpu::tests::submission_ranges_are_contiguous_and_bounded ... ok
+test gpu::tests::uniform_has_wgsl_compatible_size ... ok
+test graph::tests::bfs_marks_unreachable_vertices_and_connectivity_rejects_graph ... ok
+test graph::tests::connected_graph_largest_component_is_identity_map ... ok
+test graph::tests::equally_sized_components_choose_smallest_original_vertex ... ok
+test graph::tests::distance_weighted_pivots_are_unique_clamped_and_reproducible ... ok
+test graph::tests::largest_component_reindexes_vertices_and_records_statistics ... ok
+test graph::tests::largest_component_rejects_self_loop_only_input_with_statistics ... ok
+test graph::tests::learning_rate_has_expected_endpoints ... ok
+test graph::tests::prepared_parameters_are_reproducible_for_same_seed ... ok
+test graph::tests::random_positions_can_be_centered ... ok
+test graph::tests::regions_use_early_pivot_for_ties_and_prefix_counts_match_formula ... ok
+test graph::tests::sparse_constraints_have_region_corrected_directional_weights ... ok
+test schedule::tests::circle_method_even_and_odd_are_complete_matchings ... ok
+test graph::tests::matrix_market_loading_filters_loops_and_duplicate_directions ... ok
+test schedule::tests::flat_validator_rejects_endpoint_conflict ... ok
+test schedule::tests::compact_schedule_matches_reference_first_fit_exactly ... ok
+test schedule::tests::gpu_pair_has_20_bytes ... ok
+test graph::tests::matrix_market_loading_rejects_out_of_range_indices ... ok
+test schedule::tests::high_degree_star_uses_delta_rounds_and_two_memberships_per_pair ... ok
+test schedule::tests::prepared_constraints_are_classified_once_and_rounds_are_matchings ... ok
+test preprocess::tests::streaming_matches_independent_cpu_reference_and_schedule_exactly ... ok
+test gpu::tests::gpu_cycle_walk_visits_every_pivot_once ... ok
+test preprocess::tests::streaming_preserves_constraints_on_long_paths_and_stars ... ok
+test preprocess::tests::cpu_and_gpu_pivot_bfs_produce_bit_exact_fingerprints ... ok
+test gpu::tests::real_gpu_pipeline_matches_cpu_quality_and_preserves_guards ... ok
+test gpu::tests::delayed_interleaving_does_not_execute_unused_dispatch_slots ... ok
+
+test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running unittests src/main.rs (/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/deps/sparse_sgd_gpu-4011b17994cac741)
+
+running 3 tests
+test tests::bfs_engine_parameter_is_parsed ... ok
+test tests::command_line_parameters_are_parsed ... ok
+test tests::historical_largest_component_flag_is_a_compatible_no_op ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/json_output.rs (/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/sparse/sparse-sgd-gpu/target/release/deps/json_output-afb590fb4aec2305)
+
+running 1 test
+test json_mode_writes_one_record_and_no_progress_to_stdout ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.23s
+
+   Doc-tests sparse_sgd_gpu
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

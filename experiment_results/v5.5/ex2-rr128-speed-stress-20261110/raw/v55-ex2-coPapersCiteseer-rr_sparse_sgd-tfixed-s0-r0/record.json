@@ -1,0 +1,20 @@
+{
+  "stage": "ex2",
+  "graph": "coPapersCiteseer",
+  "method": "rr_sparse_sgd",
+  "tile_size": null,
+  "seed": 0,
+  "repetition": 0,
+  "run_id": "v55-ex2-coPapersCiteseer-rr_sparse_sgd-tfixed-s0-r0",
+  "workgroup_size": 128,
+  "version": "v5.5",
+  "experiment_id": "v5.5-ex2-rr128",
+  "previous_rr_run_id": "ex2-rr128-coPapersCiteseer-rr_sparse_sgd-tfixed-s0-r0",
+  "status": "not_run_capacity",
+  "layout_status": "not_started",
+  "stress_status": "not_evaluated",
+  "nodes": 434102,
+  "pivots": 200,
+  "reason": "Current PR requires dense n*p <=67108864 one-sided entries; 434102*200=86820400 exceeds compiled 4-bank512MiB guard. Mathematical precheck; no allocation/run attempted; pivots not reduced.",
+  "measurement_available": false
+}

@@ -1,0 +1,18 @@
+Reading: /Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/raw/v55-ex2-uk-rr_sparse_sgd-tfixed-s4-r0/rr-sparse-sgd-uk-v55-ex2-uk-rr_sparse_sgd-tfixed-s4-r0.final.txt
+  nodes=4824, edges=6837 (6.9ms)
+Stress: skipped (--stress off, 0.3ms)
+Edges: 6837/6837 (all)
+Initialising GPU renderer ...
+GPU: Apple M4 Pro (Metal)
+Rendering 2048×2048 px (node_r=1.00px) ...
+FRAME_READY_MONOTONIC_MS=257501501.589000
+Saved: /Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/raw/v55-ex2-uk-rr_sparse_sgd-tfixed-s4-r0/after.png
+Timing:
+  read:                      6.9ms
+  stress:                    0.3ms
+  GPU init:                  20.7ms
+  GPU prepare/upload:         0.9ms
+  GPU render/readback:       27.6ms
+  PNG encode/save:           13.9ms
+Total: 71.0ms
+

@@ -1,0 +1,20 @@
+[
+  {
+    "method": "rr_sgd",
+    "graphs": 38,
+    "aggregation": "equal-weight geometric mean of graph-level hierarchical medians of paired run ratios",
+    "sgd_speedup_geomean": 1.103403642897821,
+    "total_speedup_geomean": 1.1380653855816378,
+    "stress_ratio_min": 1.0,
+    "stress_ratio_max": 1.0
+  },
+  {
+    "method": "rr_sparse_sgd",
+    "graphs": 56,
+    "aggregation": "equal-weight geometric mean of graph-level hierarchical medians of paired run ratios",
+    "sgd_speedup_geomean": 0.9422788878115107,
+    "total_speedup_geomean": 0.9324694512824812,
+    "stress_ratio_min": 1.0,
+    "stress_ratio_max": 1.0
+  }
+]

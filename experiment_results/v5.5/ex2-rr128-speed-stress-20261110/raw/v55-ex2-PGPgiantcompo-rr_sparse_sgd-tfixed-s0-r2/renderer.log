@@ -1,0 +1,18 @@
+Reading: /Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/raw/v55-ex2-PGPgiantcompo-rr_sparse_sgd-tfixed-s0-r2/rr-sparse-sgd-PGPgiantcompo-v55-ex2-PGPgiantcompo-rr_sparse_sgd-tfixed-s0-r2.final.txt
+  nodes=10680, edges=24316 (2.6ms)
+Stress: skipped (--stress off, 1.9ms)
+Edges: 24316/24316 (all)
+Initialising GPU renderer ...
+GPU: Apple M4 Pro (Metal)
+Rendering 2048×2048 px (node_r=1.00px) ...
+FRAME_READY_MONOTONIC_MS=258143957.650000
+Saved: /Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/raw/v55-ex2-PGPgiantcompo-rr_sparse_sgd-tfixed-s0-r2/after.png
+Timing:
+  read:                      2.6ms
+  stress:                    1.9ms
+  GPU init:                  11.9ms
+  GPU prepare/upload:         1.5ms
+  GPU render/readback:       16.9ms
+  PNG encode/save:           23.6ms
+Total: 59.2ms
+

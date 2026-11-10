@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "cargo",
+    "build",
+    "--release",
+    "--locked",
+    "--manifest-path",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/rr_gpu/Cargo.toml",
+    "--target-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex1-tile-w-equal-t-20261110/build"
+  ],
+  "source_commit": "70e945730d6bce7922de3174b556e2e3d03f0375",
+  "started": "2026-11-10T11:37:51+09:00"
+}

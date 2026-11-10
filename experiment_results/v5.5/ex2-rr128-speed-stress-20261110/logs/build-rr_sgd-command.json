@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "cargo",
+    "build",
+    "--release",
+    "--locked",
+    "--manifest-path",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/implementations/full/rr_gpu/Cargo.toml",
+    "--target-dir",
+    "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/build"
+  ],
+  "commit": "70e945730d6bce7922de3174b556e2e3d03f0375",
+  "started": "2026-11-10T12:13:28+09:00"
+}

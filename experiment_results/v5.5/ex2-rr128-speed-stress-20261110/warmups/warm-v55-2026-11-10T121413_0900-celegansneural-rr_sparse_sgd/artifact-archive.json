@@ -1,0 +1,46 @@
+{
+  "format": "shared-gzip",
+  "measurement_excluded": true,
+  "files": [
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-celegansneural-rr_sparse_sgd/rr-sparse-sgd-celegansneural-warm-v55-2026-11-10T121413_0900-celegansneural-rr_sparse_sgd.initial.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-celegansneural-rr_sparse_sgd/rr-sparse-sgd-celegansneural-warm-v55-2026-11-10T121413_0900-celegansneural-rr_sparse_sgd.initial.shared.txt.gz",
+      "original_sha256": "487b90d35ecebf51fc35ee38db5bf83bafdd4abd07b287f3aeeb8b96cdb31de8",
+      "decompressed_sha256": "487b90d35ecebf51fc35ee38db5bf83bafdd4abd07b287f3aeeb8b96cdb31de8",
+      "original_bytes": 27950,
+      "compressed_sha256": "2daff89aaa11ec376827e04ca1654bb0d96484e48ff041d97c90c97db052c0ed",
+      "compressed_bytes": 77187,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/shared-edges/rr_sparse_sgd/f275e55deadf4dcc53b2849f50eb298a64d051296d2c6c0c84b2cdb3eb3b6fe3.edges-template.gz",
+      "shared_edge_sha256": "37bf85947e3964a1446203a43a3512e49f211d5704d2c070df6a1bd4db6a30fb",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-celegansneural-rr_sparse_sgd/rr-sparse-sgd-celegansneural-warm-v55-2026-11-10T121413_0900-celegansneural-rr_sparse_sgd.final.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-celegansneural-rr_sparse_sgd/rr-sparse-sgd-celegansneural-warm-v55-2026-11-10T121413_0900-celegansneural-rr_sparse_sgd.final.shared.txt.gz",
+      "original_sha256": "a301e4c4ebc6786d5ae00e6df46d6142cada4549ee1f819c8a154a9bf8189a3b",
+      "decompressed_sha256": "a301e4c4ebc6786d5ae00e6df46d6142cada4549ee1f819c8a154a9bf8189a3b",
+      "original_bytes": 27572,
+      "compressed_sha256": "932895c593725ddf7f7a32d573105ecc0964de0813dd0c16ae8f3f0f76e1427a",
+      "compressed_bytes": 77101,
+      "compression": "gzip",
+      "gzip_crc_validated": true,
+      "storage": "APFS clone; self-contained concatenated gzip members",
+      "shared_edge_template": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/shared-edges/rr_sparse_sgd/f275e55deadf4dcc53b2849f50eb298a64d051296d2c6c0c84b2cdb3eb3b6fe3.edges-template.gz",
+      "shared_edge_sha256": "37bf85947e3964a1446203a43a3512e49f211d5704d2c070df6a1bd4db6a30fb",
+      "prefix_member_bytes": 65536
+    },
+    {
+      "original_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-celegansneural-rr_sparse_sgd/rr-sparse-sgd-celegansneural-warm-v55-2026-11-10T121413_0900-celegansneural-rr_sparse_sgd.vertex-map.txt",
+      "compressed_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/warmups/warm-v55-2026-11-10T121413_0900-celegansneural-rr_sparse_sgd/rr-sparse-sgd-celegansneural-warm-v55-2026-11-10T121413_0900-celegansneural-rr_sparse_sgd.vertex-map.txt.gz",
+      "original_sha256": "3df5e3dc2a2a5f872bfa7e687f58a5fde5450831e7d848f3d87c3001550f2257",
+      "original_bytes": 2156,
+      "compressed_sha256": "d7741e616f9f73a94b5659f04f54d836d679c751f4378fc3f2f917dc3c7cecb8",
+      "compressed_bytes": 972,
+      "gzip_crc_validated": true
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,62 @@
+{
+  "created": "2026-11-10T11:38:16+09:00",
+  "experiment_id": "v5.5-ex1-w-equal-t",
+  "tile_graphs": [
+    "email",
+    "add20",
+    "CA-GrQc",
+    "p2p-Gnutella08",
+    "PGPgiantcompo",
+    "dwt_1005",
+    "dwt_2680",
+    "3elt",
+    "bcspwr10",
+    "fe_4elt2"
+  ],
+  "tiles": [
+    1,
+    2,
+    4,
+    8,
+    16,
+    32,
+    64,
+    128,
+    256,
+    512,
+    1024
+  ],
+  "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "repetitions": 3,
+  "iterations": 15,
+  "epsilon": 0.1,
+  "workgroup_policy": "W=T",
+  "coordinate_memory": "shared",
+  "outer_shuffle": true,
+  "inner_shuffle": true,
+  "phase_chunks": 1,
+  "stress_mode": "exact",
+  "stress_samples": null,
+  "stress_seed": null,
+  "gpu_timestamps": false,
+  "total_formal_runs": 1650,
+  "warmup_seed": 999,
+  "execution_order": "previous EX1 order filtered to RR Full; no CPU/Atomic rerun",
+  "timeout_seconds": null,
+  "previous_results": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5/ex1-tile-w-equal-t-20261107",
+  "state": "prepared",
+  "version": "v5.5",
+  "methods": [
+    "rr_sgd"
+  ],
+  "reused_cpu_reference_runs": 150,
+  "cpu_reference": "previous EX1 exact Full Stress; historical timing reference",
+  "bfs_engine": "auto",
+  "ex2_state": "not_started"
+}

@@ -1,0 +1,18 @@
+Reading: /Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-copapers-capacity-supplement-20261110/validation/main-capacity-verification-coPapersCiteseer/rr-sparse-sgd-coPapersCiteseer-main-capacity-verification-coPapersCiteseer.final.txt
+  nodes=434102, edges=16036720 (925.2ms)
+Stress: skipped (--stress off, 323.3ms)
+Edges: 16036720/16036720 (all)
+Initialising GPU renderer ...
+GPU: Apple M4 Pro (Metal)
+Rendering 2048×2048 px (node_r=1.00px) ...
+FRAME_READY_MONOTONIC_MS=261867780.234000
+Saved: /Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-copapers-capacity-supplement-20261110/validation/main-capacity-verification-coPapersCiteseer/after.png
+Timing:
+  read:                    925.2ms
+  stress:                  323.3ms
+  GPU init:                  20.0ms
+  GPU prepare/upload:        48.6ms
+  GPU render/readback:      291.5ms
+  PNG encode/save:           14.9ms
+Total: 1662.0ms
+

@@ -1,0 +1,35 @@
+{
+  "completed": "2026-11-10T12:14:12+09:00",
+  "checks": [
+    {
+      "method": "rr_sgd",
+      "graph": "dwt_1005",
+      "outputs_identical": true,
+      "complete_timing_fields": 10,
+      "timestamp_sgd_on_over_off": 0.9753848495815595
+    },
+    {
+      "method": "rr_sgd",
+      "graph": "fe_4elt2",
+      "outputs_identical": true,
+      "complete_timing_fields": 10,
+      "timestamp_sgd_on_over_off": 1.0028836183867365
+    },
+    {
+      "method": "rr_sparse_sgd",
+      "graph": "dwt_1005",
+      "outputs_identical": true,
+      "complete_timing_fields": 10,
+      "timestamp_sgd_on_over_off": 1.6435048484120258
+    },
+    {
+      "method": "rr_sparse_sgd",
+      "graph": "com-Amazon",
+      "outputs_identical": true,
+      "complete_timing_fields": 10,
+      "timestamp_sgd_on_over_off": 1.0075410351520109
+    }
+  ],
+  "coPapersCiteseer_capacity_precheck": true,
+  "formal_runs": 0
+}

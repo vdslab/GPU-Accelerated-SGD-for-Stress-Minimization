@@ -1,0 +1,80 @@
+diff --git a/implementations/sparse/sparse-sgd-gpu/README.md b/implementations/sparse/sparse-sgd-gpu/README.md
+index d4004b97e..7e6255b16 100644
+--- a/implementations/sparse/sparse-sgd-gpu/README.md
++++ b/implementations/sparse/sparse-sgd-gpu/README.md
+@@ -39,6 +39,9 @@ JSONには`rr_pivot_order`、`rr_phase_chunks`、`rr_step_cap`、`rr_arithmetic`
+   巨大なBTreeMapと全EdgeInfo配列を作らず、片側制約をGPU用表へ格納します。
+   pivot選択・領域の同距離tie・f64重み・学習率・乱数消費・前処理SHAは参照版と一致します。
+ - 片側表は距離と重みの8 bytes/要素。pivot IDは共通配列から参照します。
++- 片側表は256 MiBずつ4バッファへ分割し、最大1 GiB（134,217,728要素）を格納します。
++  必要量は頂点数×pivot数×8 bytesです。実行GPUのバッファ上限も割当前に検査します。
++  `coPapersCiteseer`の434,102頂点・200 pivotsは約662.4 MiBで、この容量内です。
+ - 片側相では正重みの更新がある頂点だけを書き戻します。pivotはこの相で書きません。
+ - 両側制約の不要なcloneを削除し、GPU転送前に不要なCPU制約を解放します。
+ - 各command bufferに最大256 dispatchを1つのcompute passとして記録します。
+diff --git a/implementations/sparse/sparse-sgd-gpu/src/gpu.rs b/implementations/sparse/sparse-sgd-gpu/src/gpu.rs
+index 696d6f11f..38a9e8815 100644
+--- a/implementations/sparse/sparse-sgd-gpu/src/gpu.rs
++++ b/implementations/sparse/sparse-sgd-gpu/src/gpu.rs
+@@ -20,7 +20,7 @@ use std::time::{Duration, Instant};
+ use wgpu::util::DeviceExt;
+ 
+ const WORKGROUP_SIZE: u32 = 128;
+-const BANK_ENTRIES: usize = 16_777_216; // 128 MiB / 8 bytes
++const BANK_ENTRIES: usize = 33_554_432; // 256 MiB / 8 bytes; matches shader BANK_SHIFT/MASK
+ const MAX_DISPATCHES_PER_SUBMISSION: usize = 256;
+ const CANARY: [f32; 2] = [123_456.0, -654_321.0];
+ 
+@@ -190,9 +190,14 @@ impl GpuContext {
+         let limits = self.device.limits();
+         ensure!(
+             schedule.one_sided.len() <= 4 * BANK_ENTRIES,
+-            "one-sided entries exceeds 4-bank 512 MiB limit"
++            "one-sided entries exceeds 4-bank 1 GiB limit"
+         );
+         for (name, bytes) in [
++            (
++                "one-sided bank",
++                (schedule.one_sided.len().min(BANK_ENTRIES).max(1)
++                    * std::mem::size_of::<crate::schedule::OneSidedEntry>()) as u64,
++            ),
+             (
+                 "two-sided",
+                 std::mem::size_of_val(schedule.two_sided.as_slice())
+@@ -1129,7 +1134,7 @@ impl SparseStepper {
+         );
+         ensure!(
+             one_sided.len() <= 4 * BANK_ENTRIES,
+-            "one-sided entries exceed 4-bank 512 MiB limit"
++            "one-sided entries exceed 4-bank 1 GiB limit"
+         );
+         ensure!(phase_chunks > 0, "phase_chunks must be positive");
+         let phase_chunks = phase_chunks.min(h);
+@@ -1137,6 +1142,12 @@ impl SparseStepper {
+         let limits = device.limits();
+         let max_binding_bytes = u64::from(limits.max_storage_buffer_binding_size)
+             .min(limits.max_buffer_size) as usize;
++        ensure!(
++            one_sided.len().min(BANK_ENTRIES).max(1)
++                * std::mem::size_of::<crate::schedule::OneSidedEntry>()
++                <= max_binding_bytes,
++            "one-sided bank exceeds adapter storage buffer limit"
++        );
+         ensure!(
+             (n + 2) * 8 <= max_binding_bytes,
+             "positions buffer exceeds adapter storage buffer limit"
+diff --git a/implementations/sparse/sparse-sgd-gpu/src/shader.wgsl b/implementations/sparse/sparse-sgd-gpu/src/shader.wgsl
+index 37c6afbc9..a71c99a2e 100644
+--- a/implementations/sparse/sparse-sgd-gpu/src/shader.wgsl
++++ b/implementations/sparse/sparse-sgd-gpu/src/shader.wgsl
+@@ -23,8 +23,8 @@ struct Pair {
+ }
+ 
+ const WORKGROUP_SIZE: u32 = 128u;
+-const BANK_SHIFT: u32 = 24u;
+-const BANK_MASK: u32 = 0x00ffffffu;
++const BANK_SHIFT: u32 = 25u;
++const BANK_MASK: u32 = 0x01ffffffu;
+ 
+ @group(0) @binding(0) var<uniform> uniforms: Uniforms;
+ @group(0) @binding(1) var<storage, read_write> positions: array<vec2<f32>>;

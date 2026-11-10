@@ -1,0 +1,23 @@
+{
+  "updated": "2026-11-10T13:08:31+09:00",
+  "version": "v5.5",
+  "state": "completed_with_capacity_exclusion",
+  "planned": 1410,
+  "runnable": 1395,
+  "finished": 1410,
+  "success": 1395,
+  "capacity_not_run": 15,
+  "failed": 0,
+  "remaining": 0,
+  "active": null,
+  "active_elapsed_seconds": 0,
+  "memory": {
+    "available_bytes": 6345965568,
+    "used_bytes": 10125836288,
+    "swap_used_bytes": 14509867008,
+    "swap_in_bytes": 717311639552,
+    "swap_out_bytes": 8770273280
+  },
+  "free_disk_bytes": 56021389312,
+  "ex1_state": "stopped_at_user_request"
+}
