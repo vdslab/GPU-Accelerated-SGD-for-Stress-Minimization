@@ -20,30 +20,53 @@ use std::time::{Duration, Instant};
 use wgpu::util::DeviceExt;
 
 const WORKGROUP_SIZE: u32 = 128;
-const BANK_ENTRIES: usize = 33_554_432; // 256 MiB / 8 bytes; matches shader BANK_SHIFT/MASK
-const BANK_ENTRIES_128MIB: usize = 16_777_216; // 128 MiB / 8 bytes for 128 MiB storage adapters
 const MAX_DISPATCHES_PER_SUBMISSION: usize = 256;
 const CANARY: [f32; 2] = [123_456.0, -654_321.0];
 
 fn bank_entries_for_limits(limits: &wgpu::Limits) -> usize {
-    let max_binding_bytes = u64::from(limits.max_storage_buffer_binding_size)
-        .min(limits.max_buffer_size) as usize;
-    if max_binding_bytes >= 256 * 1024 * 1024 {
-        BANK_ENTRIES
-    } else {
-        BANK_ENTRIES_128MIB
-    }
+    // Keep the existing four banks, but use the actual adapter binding capacity.
+    // Division/modulo address non-power-of-two limits (Metal: 4 GiB minus 1).
+    (u64::from(limits.max_storage_buffer_binding_size).min(limits.max_buffer_size)
+        / std::mem::size_of::<crate::schedule::OneSidedEntry>() as u64) as usize
 }
 
 fn adapt_shader_bank_constants(source: &str, limits: &wgpu::Limits) -> String {
-    if bank_entries_for_limits(limits) == BANK_ENTRIES {
-        source.to_string()
-    } else {
-        source.replace(
+    source
+        .replace(
             "const BANK_SHIFT: u32 = 25u;\nconst BANK_MASK: u32 = 0x01ffffffu;",
-            "const BANK_SHIFT: u32 = 24u;\nconst BANK_MASK: u32 = 0x00ffffffu;",
+            &format!(
+                "const BANK_ENTRIES: u32 = {}u;",
+                bank_entries_for_limits(limits)
+            ),
         )
+        .replace("entry_idx >> BANK_SHIFT", "entry_idx / BANK_ENTRIES")
+        .replace("entry_idx & BANK_MASK", "entry_idx % BANK_ENTRIES")
+}
+
+fn dispatch_shape(count: usize, limit: u32) -> (u32, u32) {
+    let groups = (count as u32).div_ceil(WORKGROUP_SIZE);
+    let x = groups.min(limit).max(1);
+    (x, groups.div_ceil(x))
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn upload_bounded(
+    device: &wgpu::Device,
+    queue: &wgpu::Queue,
+    buffer: &wgpu::Buffer,
+    data: &[u8],
+) -> Result<()> {
+    const STAGING_BYTES: usize = 64 * 1024 * 1024;
+    if data.len() <= STAGING_BYTES {
+        queue.write_buffer(buffer, 0, data);
+        return Ok(());
     }
+    for (chunk, bytes) in data.chunks(STAGING_BYTES).enumerate() {
+        queue.write_buffer(buffer, (chunk * STAGING_BYTES) as u64, bytes);
+        queue.submit([]);
+        device.poll(wgpu::PollType::wait_indefinitely())?;
+    }
+    Ok(())
 }
 
 fn apply_pivot_shuffle_shader(source: &str) -> String {
@@ -83,6 +106,8 @@ pub struct GpuContext {
     pub adapter_name: String,
     pub backend: String,
     shader: wgpu::ShaderModule,
+    #[cfg(test)]
+    test_limits: Option<wgpu::Limits>,
 }
 
 #[cfg(not(target_arch = "wasm32"))]
@@ -142,6 +167,8 @@ impl GpuContext {
             adapter_name: info.name,
             backend: format!("{:?}", info.backend),
             shader,
+            #[cfg(test)]
+            test_limits: None,
         })
     }
 
@@ -229,9 +256,11 @@ impl GpuContext {
         // Constraints are already encoded in schedule; release before GPU allocation.
         drop(params.pairs);
         let limits = self.device.limits();
+        #[cfg(test)]
+        let limits = self.test_limits.clone().unwrap_or(limits);
         let bank_entries = bank_entries_for_limits(&limits);
-        let max_binding_bytes = u64::from(limits.max_storage_buffer_binding_size)
-            .min(limits.max_buffer_size) as usize;
+        let max_binding_bytes =
+            u64::from(limits.max_storage_buffer_binding_size).min(limits.max_buffer_size) as usize;
         let one_sided_total_bytes = std::mem::size_of_val(schedule.one_sided.as_slice());
         let single_bank = one_sided_total_bytes <= max_binding_bytes;
         ensure!(
@@ -262,11 +291,6 @@ impl GpuContext {
                 "{name} requires {bytes} bytes, exceeding this adapter's storage buffer limit"
             );
         }
-        ensure!(
-            n.div_ceil(WORKGROUP_SIZE as usize)
-                <= limits.max_compute_workgroups_per_dimension as usize,
-            "vertex dispatch exceeds adapter workgroup limit"
-        );
         // The experimental affine permutation uses a u32 product.
         ensure!(
             !vertex_stride || h <= 65535,
@@ -594,28 +618,33 @@ impl GpuContext {
         let upload_started = Instant::now();
         self.queue
             .write_buffer(&positions_buffer, 0, bytemuck::cast_slice(&position_data));
-        self.queue
-            .write_buffer(&bank0_buffer, 0, bytemuck::cast_slice(bank0));
+        upload_bounded(
+            &self.device,
+            &self.queue,
+            &bank0_buffer,
+            bytemuck::cast_slice(bank0),
+        )?;
         if let Some(buf) = &bank1_buffer {
             if !bank1.is_empty() {
-                self.queue
-                    .write_buffer(buf, 0, bytemuck::cast_slice(bank1));
+                upload_bounded(&self.device, &self.queue, buf, bytemuck::cast_slice(bank1))?;
             }
         }
         if let Some(buf) = &bank2_buffer {
             if !bank2.is_empty() {
-                self.queue
-                    .write_buffer(buf, 0, bytemuck::cast_slice(bank2));
+                upload_bounded(&self.device, &self.queue, buf, bytemuck::cast_slice(bank2))?;
             }
         }
         if let Some(buf) = &bank3_buffer {
             if !bank3.is_empty() {
-                self.queue
-                    .write_buffer(buf, 0, bytemuck::cast_slice(bank3));
+                upload_bounded(&self.device, &self.queue, buf, bytemuck::cast_slice(bank3))?;
             }
         }
-        self.queue
-            .write_buffer(&pair_buffer, 0, bytemuck::cast_slice(pair_data));
+        upload_bounded(
+            &self.device,
+            &self.queue,
+            &pair_buffer,
+            bytemuck::cast_slice(pair_data),
+        )?;
         self.queue.submit([]);
         self.device.poll(wgpu::PollType::wait_indefinitely())?;
         let upload_time = upload_started.elapsed();
@@ -762,11 +791,7 @@ impl GpuContext {
                         }
                         let is_two = round.is_some();
                         if last_is_two != Some(is_two) {
-                            pass.set_pipeline(if is_two {
-                                &two_pipeline
-                            } else {
-                                &one_pipeline
-                            });
+                            pass.set_pipeline(if is_two { &two_pipeline } else { &one_pipeline });
                             last_is_two = Some(is_two);
                         }
                         pass.set_bind_group(
@@ -774,11 +799,13 @@ impl GpuContext {
                             &bind_group,
                             &[((epoch_slot_base + slot) * slot_size) as u32],
                         );
-                        pass.dispatch_workgroups(
-                            (count as u32).div_ceil(WORKGROUP_SIZE),
-                            1,
-                            1,
+                        let (x, y) =
+                            dispatch_shape(count, limits.max_compute_workgroups_per_dimension);
+                        ensure!(
+                            y <= limits.max_compute_workgroups_per_dimension,
+                            "dispatch exceeds adapter 2D workgroup limits"
                         );
+                        pass.dispatch_workgroups(x, y, 1);
                     }
                 }
                 if iteration == 0 && batch_idx == 0 && submission_ranges.len() > 1 {
@@ -1047,8 +1074,8 @@ impl SparseStepper {
         );
         let limits = device.limits();
         let bank_entries = bank_entries_for_limits(&limits);
-        let max_binding_bytes = u64::from(limits.max_storage_buffer_binding_size)
-            .min(limits.max_buffer_size) as usize;
+        let max_binding_bytes =
+            u64::from(limits.max_storage_buffer_binding_size).min(limits.max_buffer_size) as usize;
         let one_sided_total_bytes = std::mem::size_of_val(one_sided);
         let single_bank = one_sided_total_bytes <= max_binding_bytes;
         ensure!(
@@ -1544,6 +1571,79 @@ mod tests {
     use crate::graph::{Graph, SgdParams};
     use crate::schedule::build_schedule;
     use rand::{rngs::StdRng, SeedableRng};
+
+    #[test]
+    fn four_expanded_banks_and_2d_dispatch_preserve_results() {
+        let n = 521;
+        let mut edges: Vec<_> = (0..n).map(|u| (u, (u + 1) % n)).collect();
+        edges.extend((0..n / 2).map(|u| (u, u + n / 2)));
+        let graph = Graph::try_from_edges(n, &edges).unwrap();
+        let seed = 73;
+        let params = graph
+            .prepare_sgd_params(4, 0.1, 33, true, &mut StdRng::seed_from_u64(seed))
+            .unwrap();
+        let schedule = build_schedule(&graph, &params, seed).unwrap();
+        let copy = || SgdParams {
+            positions: params.positions.clone(),
+            etas: params.etas.clone(),
+            pairs: params.pairs.clone(),
+            pivots: params.pivots.clone(),
+            center: params.center,
+        };
+        let baseline = GpuContext::new_with_pivot_shuffle().unwrap();
+        let mut banked = GpuContext::new_with_pivot_shuffle().unwrap();
+        let mut limits = banked.device.limits();
+        // Non-power-of-two bank capacity and rows crossing all four banks.
+        limits.max_storage_buffer_binding_size = 36_000;
+        limits.max_buffer_size = 36_000;
+        limits.max_compute_workgroups_per_dimension = 3;
+        let source = apply_pivot_shuffle_shader(&adapt_shader_bank_constants(
+            include_str!("shader.wgsl"),
+            &limits,
+        ));
+        banked.shader = banked
+            .device
+            .create_shader_module(wgpu::ShaderModuleDescriptor {
+                label: Some("four-bank boundary fixture"),
+                source: wgpu::ShaderSource::Wgsl(source.into()),
+            });
+        banked.test_limits = Some(limits);
+        for phases in [1, 4] {
+            let expected = baseline
+                .execute_with_phase_chunks(
+                    copy(),
+                    &schedule,
+                    seed,
+                    false,
+                    OutputFormat::Json,
+                    phases,
+                )
+                .unwrap();
+            let actual = banked
+                .execute_with_phase_chunks(
+                    copy(),
+                    &schedule,
+                    seed,
+                    false,
+                    OutputFormat::Json,
+                    phases,
+                )
+                .unwrap();
+            assert_eq!(expected.initial_positions, actual.initial_positions);
+            assert_eq!(expected.positions, actual.positions, "phases={phases}");
+        }
+    }
+
+    #[test]
+    fn germany_p100_fits_adapter_sized_four_banks() {
+        let mut limits = wgpu::Limits::default();
+        limits.max_storage_buffer_binding_size = u32::MAX;
+        limits.max_buffer_size = 12 * 1024 * 1024 * 1024;
+        let entries = bank_entries_for_limits(&limits);
+        assert_eq!(entries, 536_870_911);
+        assert!(11_548_845 * 100 <= 4 * entries);
+        assert_eq!(dispatch_shape(11_548_845, 65_535), (65_535, 2));
+    }
 
     #[test]
     fn uniform_has_wgsl_compatible_size() {

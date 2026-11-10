@@ -71,8 +71,8 @@ fn displacement(pos_u: vec2<f32>, pos_v: vec2<f32>, dij: f32, salt: u32) -> vec2
 // One invocation owns one non-pivot vertex. It is the only writer of that vertex;
 // pivots are read-only throughout this dispatch.
 @compute @workgroup_size(128)
-fn one_sided_phase(@builtin(global_invocation_id) gid: vec3<u32>) {
-    let vertex = gid.x;
+fn one_sided_phase(@builtin(global_invocation_id) gid: vec3<u32>, @builtin(num_workgroups) grid: vec3<u32>) {
+    let vertex = gid.x + gid.y * grid.x * WORKGROUP_SIZE;
     if vertex >= uniforms.n {
         return;
     }
@@ -124,8 +124,8 @@ fn one_sided_phase(@builtin(global_invocation_id) gid: vec3<u32>) {
 }
 
 @compute @workgroup_size(128)
-fn one_sided_phase_single(@builtin(global_invocation_id) gid: vec3<u32>) {
-    let vertex = gid.x;
+fn one_sided_phase_single(@builtin(global_invocation_id) gid: vec3<u32>, @builtin(num_workgroups) grid: vec3<u32>) {
+    let vertex = gid.x + gid.y * grid.x * WORKGROUP_SIZE;
     if vertex >= uniforms.n {
         return;
     }
@@ -179,11 +179,12 @@ fn one_sided_phase_single(@builtin(global_invocation_id) gid: vec3<u32>) {
 // The host guarantees that each dispatched slice is a matching, so both endpoint
 // writes are race-free without atomics or locks.
 @compute @workgroup_size(128)
-fn two_sided_round(@builtin(global_invocation_id) gid: vec3<u32>) {
-    if gid.x >= uniforms.count {
+fn two_sided_round(@builtin(global_invocation_id) gid: vec3<u32>, @builtin(num_workgroups) grid: vec3<u32>) {
+    let flat_id = gid.x + gid.y * grid.x * WORKGROUP_SIZE;
+    if flat_id >= uniforms.count {
         return;
     }
-    let pair_index = uniforms.start + gid.x;
+    let pair_index = uniforms.start + flat_id;
     let pair = pairs[pair_index];
     let pos_u = positions[pair.u];
     let pos_v = positions[pair.v];

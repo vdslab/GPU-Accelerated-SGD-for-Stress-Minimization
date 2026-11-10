@@ -7,7 +7,7 @@ fn main() -> anyhow::Result<()> {
         "max_buffer_size": limits.max_buffer_size,
         "max_storage_buffer_binding_size": limits.max_storage_buffer_binding_size,
         "max_compute_workgroups_per_dimension": limits.max_compute_workgroups_per_dimension,
-        "workgroup_size": 256
+        "workgroup_size": 128
     }));
     Ok(())
 }
