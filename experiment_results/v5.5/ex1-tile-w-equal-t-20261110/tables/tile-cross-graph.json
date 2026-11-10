@@ -1,0 +1,79 @@
+[
+  {
+    "tile_size": 1,
+    "slowdown_vs_each_graph_best_gmean": 9.739735435325356,
+    "cpu_stress_ratio_gmean": 1.000041809418627,
+    "previous_rr_sgd_speedup_gmean": 3.474315957349975,
+    "previous_rr_total_speedup_gmean": 2.6577164571571728
+  },
+  {
+    "tile_size": 2,
+    "slowdown_vs_each_graph_best_gmean": 4.100038586248191,
+    "cpu_stress_ratio_gmean": 1.0013972893729268,
+    "previous_rr_sgd_speedup_gmean": 3.754471081100196,
+    "previous_rr_total_speedup_gmean": 2.46887561145304
+  },
+  {
+    "tile_size": 4,
+    "slowdown_vs_each_graph_best_gmean": 2.277012977399913,
+    "cpu_stress_ratio_gmean": 1.0031839169441674,
+    "previous_rr_sgd_speedup_gmean": 3.281331398792679,
+    "previous_rr_total_speedup_gmean": 2.028869940965019
+  },
+  {
+    "tile_size": 8,
+    "slowdown_vs_each_graph_best_gmean": 1.4759681758282248,
+    "cpu_stress_ratio_gmean": 1.0085384113144535,
+    "previous_rr_sgd_speedup_gmean": 2.8516966928630683,
+    "previous_rr_total_speedup_gmean": 1.7433031406422812
+  },
+  {
+    "tile_size": 16,
+    "slowdown_vs_each_graph_best_gmean": 1.2053783434771812,
+    "cpu_stress_ratio_gmean": 1.0362559581085877,
+    "previous_rr_sgd_speedup_gmean": 2.053390947064426,
+    "previous_rr_total_speedup_gmean": 1.4876137815186177
+  },
+  {
+    "tile_size": 32,
+    "slowdown_vs_each_graph_best_gmean": 1.0920876217908124,
+    "cpu_stress_ratio_gmean": 1.0319054919532338,
+    "previous_rr_sgd_speedup_gmean": 1.537687861453014,
+    "previous_rr_total_speedup_gmean": 1.3826515507895207
+  },
+  {
+    "tile_size": 64,
+    "slowdown_vs_each_graph_best_gmean": 1.0616211960824586,
+    "cpu_stress_ratio_gmean": 1.0463081806152308,
+    "previous_rr_sgd_speedup_gmean": 1.2701266576067871,
+    "previous_rr_total_speedup_gmean": 1.3225026980092482
+  },
+  {
+    "tile_size": 128,
+    "slowdown_vs_each_graph_best_gmean": 1.051238698987194,
+    "cpu_stress_ratio_gmean": 1.0590763184581982,
+    "previous_rr_sgd_speedup_gmean": 1.1115544488697016,
+    "previous_rr_total_speedup_gmean": 1.2734587554365377
+  },
+  {
+    "tile_size": 256,
+    "slowdown_vs_each_graph_best_gmean": 1.1427134306740183,
+    "cpu_stress_ratio_gmean": 1.0765186603550225,
+    "previous_rr_sgd_speedup_gmean": 1.1283159796797,
+    "previous_rr_total_speedup_gmean": 1.2639569112842157
+  },
+  {
+    "tile_size": 512,
+    "slowdown_vs_each_graph_best_gmean": 1.5341515066611875,
+    "cpu_stress_ratio_gmean": 1.0967104598516033,
+    "previous_rr_sgd_speedup_gmean": 1.1044893299343734,
+    "previous_rr_total_speedup_gmean": 1.2419902219481043
+  },
+  {
+    "tile_size": 1024,
+    "slowdown_vs_each_graph_best_gmean": 2.3040539751161386,
+    "cpu_stress_ratio_gmean": 1.0909430186050162,
+    "previous_rr_sgd_speedup_gmean": 1.076126748639359,
+    "previous_rr_total_speedup_gmean": 1.2068584837624428
+  }
+]

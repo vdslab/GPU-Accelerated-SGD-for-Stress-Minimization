@@ -25,11 +25,16 @@
     "report": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex2-rr128-speed-stress-20261110/reports/results.md"
   },
   "ex1": {
-    "state": "stopped_at_user_request",
-    "success": 742,
+    "state": "completed",
+    "success": 1650,
     "planned": 1650,
     "included_in_ex2": false,
-    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex1-tile-w-equal-t-20261110"
+    "path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex1-tile-w-equal-t-20261110",
+    "preserved_before_resume": 742,
+    "resume_manifest": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex1-tile-w-equal-t-20261110/resume-20261110/manifest.json",
+    "new_after_resume": 908,
+    "all_stress_equal_previous": true,
+    "report": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex1-tile-w-equal-t-20261110/reports/tile.md"
   },
   "capacity_supplement": {
     "completed": "2026-11-10T13:39:31+09:00",

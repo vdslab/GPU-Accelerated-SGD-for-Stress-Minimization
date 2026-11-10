@@ -1,0 +1,18 @@
+{
+  "started": "2026-11-10T14:10:44+09:00",
+  "preserved": 742,
+  "remaining": 908,
+  "interrupted_attempts": [
+    {
+      "original": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex1-tile-w-equal-t-20261110/raw/tile/v55-ex1-PGPgiantcompo-rr_sgd-t8-s12-r1",
+      "retained": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex1-tile-w-equal-t-20261110/resume-20261110/interrupted/v55-ex1-PGPgiantcompo-rr_sgd-t8-s12-r1"
+    }
+  ],
+  "binary_path": "/Users/kose/master/GPU-Accelerated-SGD-for-Stress-Minimization/experiment_results/v5.5/ex1-tile-w-equal-t-20261110/bin/rr-gpu",
+  "binary_sha256": "9e493b6069ab91caa68e7eaa9bd863cdd3f9a95d707bfae8613da800ca6e2698",
+  "source_commit": "70e945730d6bce7922de3174b556e2e3d03f0375",
+  "new_full_optimized_implementation": true,
+  "parameters_changed": false,
+  "ex2_already_completed": true,
+  "wrapper_sha256": "7b2424a5bea45b5564af56370a1e7f8fcce25b1096449e3001e979fb17b14888"
+}

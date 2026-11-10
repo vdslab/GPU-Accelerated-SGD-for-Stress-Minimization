@@ -1,0 +1,38 @@
+{
+  "updated": "2026-11-10T12:04:23+09:00",
+  "version": "v5.5",
+  "state": "stopped_at_user_request",
+  "planned": 1650,
+  "finished": 742,
+  "success": 742,
+  "failed": 0,
+  "remaining": 908,
+  "active": {
+    "stage": "tile",
+    "graph": "PGPgiantcompo",
+    "method": "rr_sgd",
+    "tile_size": 8,
+    "seed": 12,
+    "repetition": 1,
+    "run_id": "v55-ex1-PGPgiantcompo-rr_sgd-t8-s12-r1",
+    "workgroup_size": 8,
+    "experiment_version": "v5.5",
+    "experiment_id": "v5.5-ex1-w-equal-t",
+    "reference_rr_run_id": "ex1-wt-PGPgiantcompo-rr_sgd-t8-s12-r1",
+    "reference_cpu_run_id": "ex1-wt-PGPgiantcompo-sgd-tfixed-s12-r1"
+  },
+  "active_elapsed_seconds": 0,
+  "eta_known_conditions_seconds": 458.40651717629225,
+  "eta_unmeasured_runs": 825,
+  "memory": {
+    "available_bytes": 5750702080,
+    "used_bytes": 9355116544,
+    "swap_used_bytes": 12561481728,
+    "swap_in_bytes": 661783592960,
+    "swap_out_bytes": 8112357376
+  },
+  "free_disk_bytes": 62748598272,
+  "ex2_state": "not_started",
+  "stopped_at": "2026-11-10T12:04:27.082352+09:00",
+  "reason": "User changed priority to EX2 only; preserve completed and interrupted EX1 data; EX2 will be saved separately in v5.5"
+}
