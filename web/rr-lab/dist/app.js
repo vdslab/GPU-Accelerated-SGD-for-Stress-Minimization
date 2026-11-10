@@ -66,7 +66,7 @@ class GraphLayoutApp {
     $('pause').onclick = () => {
       this.pauseRequested = true;
       this.controls();
-      setStatus('現在の反復の完了を待っています…');
+      setStatus('Waiting for current iteration to finish…');
     };
     $('reset').onclick = () => this.reset();
     $('cancel').onclick = () => this.cancel();
@@ -114,7 +114,7 @@ class GraphLayoutApp {
   async initialize() {
     try {
       this.context = await createGpuContext();
-      $('gpu-state').textContent = 'WebGPU: 利用可能';
+      $('gpu-state').textContent = 'WebGPU: Available';
       $('gpu-state').title = [this.context.info?.vendor, this.context.info?.architecture]
         .filter(Boolean)
         .join(' / ');
@@ -128,12 +128,12 @@ class GraphLayoutApp {
         this.context = null;
         this.failed = true;
         this.pauseRequested = true;
-        $('gpu-state').textContent = 'WebGPU: 再読み込みが必要です';
-        setStatus(info.message || 'GPU接続が失われました。', true);
+        $('gpu-state').textContent = 'WebGPU: Reload required';
+        setStatus(info.message || 'GPU connection was lost.', true);
         this.controls();
       });
     } catch (error) {
-      $('gpu-state').textContent = 'WebGPU: 利用できません';
+      $('gpu-state').textContent = 'WebGPU: Unavailable';
       $('gpu-state').title = error.message;
     }
     if (!this.graph && this.phase === 'idle') await this.loadSample();
@@ -149,7 +149,7 @@ class GraphLayoutApp {
       {
         kind: 'sample',
         sampleId: sample.id,
-        name: sample.name.replace(/（.*）$/, ''),
+        name: sample.name.replace(/\s*[（(].*[）)]$/, ''),
         preferredMethod: sample.method,
       },
     );
@@ -157,7 +157,7 @@ class GraphLayoutApp {
   async loadFile(file) {
     if (!file || this.phase !== 'idle') return;
     if (!file.name.toLowerCase().endsWith('.mtx')) {
-      setStatus('.mtxファイルを選択してください。', true);
+      setStatus('Please select a .mtx file.', true);
       return;
     }
     this.sourceView.setPickerMode('upload');
@@ -169,7 +169,7 @@ class GraphLayoutApp {
     this.phase = 'loading';
     this.sourceView.begin(metadata);
     this.controls();
-    setStatus('グラフを読み込み中');
+    setStatus('Loading graph');
     try {
       const { graph, colorDistances } = await this.client.load(source);
       // Replace graph identity, parameters, and results together, only after a successful load.
@@ -190,7 +190,7 @@ class GraphLayoutApp {
       this.view.setGraph(graph, colorDistances);
       this.positions = null; // Selection loads graph data only; Run creates the layout.
       if (client !== this.client) return;
-      setStatus(this.context ? '準備完了' : 'WebGPU対応ブラウザで開いてください。', !this.context);
+      setStatus(this.context ? 'Ready' : 'Please open in a WebGPU-enabled browser.', !this.context);
       this.metrics();
     } catch (error) {
       if (client !== this.client) return;
@@ -232,7 +232,7 @@ class GraphLayoutApp {
     this.view.showInitial(this.positions, Number($('seed').value));
     this.metrics();
     this.controls();
-    setStatus('初期配置に戻しました');
+    setStatus('Reset to initial layout');
   }
   cancel() {
     if (!['loading', 'preparing'].includes(this.phase)) return;
@@ -248,7 +248,7 @@ class GraphLayoutApp {
     this.view.clear();
     this.phase = 'idle';
     this.controls();
-    setStatus('前処理を中止しました。グラフを読み込み直してください。');
+    setStatus('Preprocessing cancelled. Please reload a graph.');
   }
   disposeEngine() {
     this.engine?.dispose();
@@ -267,7 +267,7 @@ class GraphLayoutApp {
     this.config = config;
     this.positions = initialPositions(this.graph.n, config.seed);
     this.view.showInitial(this.positions, config.seed);
-    setStatus('前処理を準備中');
+    setStatus('Preparing preprocessing');
     const start = performance.now();
     let prepared = await this.client.prepare(this.config, this.context.limits);
     this.preprocessMs = performance.now() - start;
@@ -303,7 +303,7 @@ class GraphLayoutApp {
       maximumFractionDigits: 4,
     });
     $('stress-change').textContent = this.initialStress
-      ? `(${((1 - this.evaluation.value / this.initialStress) * 100).toFixed(1)}% 減少)`
+      ? `(${((1 - this.evaluation.value / this.initialStress) * 100).toFixed(1)}% reduction)`
       : '';
   }
   async run() {
@@ -329,7 +329,7 @@ class GraphLayoutApp {
         const eta = learningRate(this.prepared, this.config, this.epoch);
         this.positions = await this.engine.epoch(eta);
         if (!this.positions.every(Number.isFinite))
-          throw new Error('GPUが非有限の座標を返しました。');
+          throw new Error('GPU returned non-finite coordinates.');
         this.view.update(this.positions);
         this.elapsed += performance.now() - start;
         this.epoch++;
@@ -342,18 +342,20 @@ class GraphLayoutApp {
       }
       this.phase = 'rendering';
       this.controls();
-      setStatus('SGD完了・描画中');
+      setStatus('SGD complete · Rendering');
       const renderStart = performance.now();
       await this.view.whenIdle();
       this.renderWaitMs += performance.now() - renderStart;
       this.phase = 'evaluating';
       this.controls();
-      setStatus('stressを評価中');
+      setStatus('Evaluating stress');
       this.evaluation = await this.client.evaluate(this.positions);
       this.history.push({ epoch: this.epoch, stress: this.evaluation.value });
       this.displayEvaluation();
       $('result-text').value = resultSummary(this);
-      setStatus(this.epoch === this.config.iterations ? '完了' : `一時停止（${this.epoch}反復）`);
+      setStatus(
+        this.epoch === this.config.iterations ? 'Completed' : `Paused (epoch ${this.epoch})`,
+      );
     } catch (error) {
       this.disposeEngine();
       this.failed = true;

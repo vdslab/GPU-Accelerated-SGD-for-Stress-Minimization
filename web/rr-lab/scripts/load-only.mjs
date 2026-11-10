@@ -62,7 +62,7 @@ async function assertLoadOnly(name) {
 }
 try {
   await page.goto(base);
-  await page.waitForFunction(() => document.getElementById('status').textContent === '準備完了');
+  await page.waitForFunction(() => document.getElementById('status').textContent === 'Ready');
   await assertLoadOnly('USpowerGrid');
   await page.locator('#source-upload').check();
   await page.evaluate(() => (window.requests = []));
@@ -91,7 +91,7 @@ try {
   // Explicit keyboard activation starts the initial frame and the solver.
   await page.locator('#run').focus();
   await page.keyboard.press('Enter');
-  await page.waitForFunction(() => document.getElementById('status').textContent === '完了');
+  await page.waitForFunction(() => document.getElementById('status').textContent === 'Completed');
   assert.equal(await page.locator('#epoch').innerText(), '15 / 15');
   assert(!(await page.locator('#before-placeholder').isVisible()));
   assert(!(await page.locator('#after-placeholder').isVisible()));
@@ -106,7 +106,7 @@ try {
     .setInputFiles(resolve(import.meta.dirname, '../tests/fixtures/cycle257.mtx'));
   await assertLoadOnly('cycle257.mtx');
   await page.locator('#run').click();
-  await page.waitForFunction(() => document.getElementById('status').textContent === '完了');
+  await page.waitForFunction(() => document.getElementById('status').textContent === 'Completed');
   assert.equal(await page.locator('#epoch').innerText(), '15 / 15');
   console.log('Explicit keyboard and mouse starts passed.');
 } finally {

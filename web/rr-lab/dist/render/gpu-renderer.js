@@ -103,7 +103,7 @@ export class GpuGraphRenderer extends GpuBuffers {
     if (this.useSwapchain) {
       this.canvas = new OffscreenCanvas(4096, 4096);
       this.context = this.canvas.getContext('webgpu');
-      if (!this.context) throw Error('OffscreenCanvasのWebGPU描画を利用できません。');
+      if (!this.context) throw Error('OffscreenCanvas WebGPU rendering is unavailable.');
       this.format = navigator.gpu.getPreferredCanvasFormat();
     } else {
       this.format = 'rgba8unorm';
@@ -144,7 +144,7 @@ export class GpuGraphRenderer extends GpuBuffers {
       pipeline('node'),
     ]);
     this.device.lost.then((info) => {
-      this.failure = Error(info.message || '描画GPUの接続が失われました。');
+      this.failure = Error(info.message || 'Render GPU connection was lost.');
     });
     this.device.addEventListener('uncapturederror', (event) => {
       this.failure = event.error;
@@ -152,7 +152,7 @@ export class GpuGraphRenderer extends GpuBuffers {
   }
   slot(job) {
     for (const slot of this.positionSlots.values()) if (slot.id === job.positionId) return slot;
-    if (!job.positions) throw Error('描画座標のキャッシュが失われました。');
+    if (!job.positions) throw Error('Render coordinate cache was lost.');
     const key = job.viewId === 'before' ? 'before' : 'after';
     let slot = this.positionSlots.get(key);
     if (!slot) {

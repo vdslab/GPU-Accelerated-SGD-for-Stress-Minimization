@@ -24,7 +24,7 @@ export function largestComponent(graph) {
     if (parents[a] < parents[largest]) largest = a;
   });
   const n = -parents[largest];
-  if (n < 2) throw Error('辺で接続された2頂点以上のグラフが必要です。');
+  if (n < 2) throw Error('Graph must have at least 2 connected vertices.');
   const ids = new Uint32Array(n);
   if (n === graph.n) {
     for (let i = 0; i < n; i++) ids[i] = i + 1;

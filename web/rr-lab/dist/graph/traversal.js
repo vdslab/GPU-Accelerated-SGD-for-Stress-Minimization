@@ -38,7 +38,7 @@ export function bfs(csr, source, queue = new Uint32Array(csr.n)) {
       }
     }
   }
-  if (tail !== csr.n) throw new Error('距離計算には連結グラフが必要です。');
+  if (tail !== csr.n) throw new Error('Distance calculation requires a connected graph.');
   return row;
 }
 

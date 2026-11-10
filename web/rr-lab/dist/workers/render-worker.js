@@ -18,7 +18,7 @@ self.onmessage = ({ data }) => {
         const key = data.viewId === 'before' ? 'before' : 'after';
         if (data.positions) cpuSlots.set(key, { id: data.positionId, positions: data.positions });
         const slot = [...cpuSlots.values()].find((slot) => slot.id === data.positionId);
-        if (!slot) throw Error('描画座標がありません。');
+        if (!slot) throw Error('Missing render coordinates.');
         const canvas = new OffscreenCanvas(data.resolution, data.resolution);
         renderGraph(
           canvas,

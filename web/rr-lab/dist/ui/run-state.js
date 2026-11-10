@@ -11,19 +11,18 @@ export function runIntent(run, draft) {
   const resume = Boolean(
     run.engine && !run.failed && same && run.epoch > 0 && run.epoch < run.config.iterations,
   );
-  if (resume)
-    return { resume, label: '続きから再開', hint: '一時停止した位置から計算を続けます。' };
+  if (resume) return { resume, label: 'Resume', hint: 'Continue from the paused iteration.' };
   if (run.history.length)
     return {
       resume: false,
-      label: same ? 'もう一度計算' : 'この設定で再計算',
+      label: same ? 'Run Again' : 'Recalculate',
       hint: same
-        ? '初期配置から、同じ設定で計算し直せます。'
-        : '設定変更あり。初期配置から再計算します。',
+        ? 'Run again from the initial layout with the same settings.'
+        : 'Settings changed. Recalculates from the initial layout.',
     };
   return {
     resume: false,
-    label: 'レイアウトを計算',
-    hint: 'パラメータを指定して計算してください。',
+    label: 'Compute Layout',
+    hint: 'Set parameters and click Compute Layout.',
   };
 }

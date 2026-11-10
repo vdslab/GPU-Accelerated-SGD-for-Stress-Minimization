@@ -932,7 +932,7 @@ canvas {
 }
 
 .canvas-wrap:has(canvas[data-rendering='true'])::after {
-  content: '描画中…';
+  content: 'Rendering…';
   pointer-events: none;
   position: absolute;
   top: 8px;

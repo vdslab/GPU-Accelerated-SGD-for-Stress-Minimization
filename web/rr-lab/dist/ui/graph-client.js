@@ -20,7 +20,9 @@ export class GraphClient {
     };
     this.worker.onerror = (event) => {
       for (const request of this.pending.values())
-        request.reject(new Error(event.message || '前処理Workerでエラーが発生しました。'));
+        request.reject(
+          new Error(event.message || 'An error occurred in the preprocessing worker.'),
+        );
       this.pending.clear();
     };
   }
@@ -42,7 +44,7 @@ export class GraphClient {
   }
   dispose() {
     this.worker.terminate();
-    for (const p of this.pending.values()) p.reject(new Error('前処理を中止しました。'));
+    for (const p of this.pending.values()) p.reject(new Error('Preprocessing cancelled.'));
     this.pending.clear();
   }
 }

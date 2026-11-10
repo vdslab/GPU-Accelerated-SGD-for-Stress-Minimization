@@ -61,30 +61,30 @@ export async function layoutBlob(run) {
 
 export function resultSummary(run) {
   return [
-    `グラフ: ${run.source}`,
-    `読み込み元: ${run.sourceMetadata?.kind === 'sample' ? 'サンプル' : 'アップロード'}`,
-    `手法: ${METHOD_LABELS[run.config.method]} / WebGPU`,
-    `頂点: ${run.graph.n} / 辺: ${edgeCount(run.graph)}`,
-    `反復: ${run.epoch} / ${run.config.iterations}`,
+    `Graph: ${run.source}`,
+    `Source: ${run.sourceMetadata?.kind === 'sample' ? 'Sample' : 'Upload'}`,
+    `Method: ${METHOD_LABELS[run.config.method]} / WebGPU`,
+    `Vertices: ${run.graph.n} / Edges: ${edgeCount(run.graph)}`,
+    `Iterations: ${run.epoch} / ${run.config.iterations}`,
     `seed: ${run.config.seed} / epsilon: ${run.config.epsilon}`,
     ...(run.config.method === 'sparse'
       ? [`pivots: ${run.prepared.stats.pivots} / matching rounds: ${run.prepared.stats.rounds}`]
       : ['tile: 128 / workgroup: 64 / shared']),
-    `前処理: ${run.preprocessMs.toFixed(2)} ms`,
-    `GPU準備: ${run.gpuPrepareMs.toFixed(2)} ms`,
-    `反復経過時間: ${run.elapsed.toFixed(2)} ms`,
-    `描画: ${run.view.renderBackend === 'webgpu' ? `WebGPU${run.view.lastRenderStats?.adapterInfo?.isFallbackAdapter ? '（ソフトウェア）' : ''}` : 'Canvas 2D'}`,
-    `描画完了待ち: ${(run.renderWaitMs ?? 0).toFixed(2)} ms`,
-    `評価: ${evaluationLabel(run.evaluation)}`,
-    `初期stress: ${run.initialStress}`,
-    `現在のstress: ${run.history.at(-1)?.stress}`,
+    `Preprocess: ${run.preprocessMs.toFixed(2)} ms`,
+    `GPU setup: ${run.gpuPrepareMs.toFixed(2)} ms`,
+    `Iteration time: ${run.elapsed.toFixed(2)} ms`,
+    `Renderer: ${run.view.renderBackend === 'webgpu' ? `WebGPU${run.view.lastRenderStats?.adapterInfo?.isFallbackAdapter ? ' (Software)' : ''}` : 'Canvas 2D'}`,
+    `Render wait: ${(run.renderWaitMs ?? 0).toFixed(2)} ms`,
+    `Evaluation: ${evaluationLabel(run.evaluation)}`,
+    `Initial stress: ${run.initialStress}`,
+    `Current stress: ${run.history.at(-1)?.stress}`,
   ].join('\n');
 }
 export function evaluationLabel(evaluation) {
   if (!evaluation) return '—';
   return evaluation.exact
     ? 'exact full stress'
-    : `sampled full stress（固定${evaluation.sources}始点から総和を推定）`;
+    : `sampled full stress (estimated from ${evaluation.sources} fixed sources)`;
 }
 export function download(blob, name) {
   const url = URL.createObjectURL(blob),
@@ -97,11 +97,11 @@ export function download(blob, name) {
 export async function copyText(text) {
   try {
     await navigator.clipboard.writeText(text);
-    document.getElementById('copy-status').textContent = 'コピーしました';
+    document.getElementById('copy-status').textContent = 'Copied';
   } catch {
     const field = document.getElementById('result-text');
     field.value = text;
     field.select();
-    document.getElementById('copy-status').textContent = '選択したテキストをコピーしてください';
+    document.getElementById('copy-status').textContent = 'Copy the selected text';
   }
 }

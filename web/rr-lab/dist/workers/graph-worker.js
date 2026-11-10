@@ -22,10 +22,10 @@ self.onmessage = async ({ data }) => {
           total = data.file?.size;
         if (data.sample) {
           const sample = SAMPLES.find((s) => s.id === data.sample);
-          if (!sample?.file) throw new Error('サンプルが見つかりません。');
-          report(0, 'サンプルを読み込み中');
+          if (!sample?.file) throw new Error('Sample not found.');
+          report(0, 'Loading sample');
           const response = await fetch(new URL('../samples/' + sample.file, import.meta.url));
-          if (!response.ok) throw new Error('サンプルを取得できませんでした。');
+          if (!response.ok) throw new Error('Failed to fetch sample.');
           stream = response.body;
           total = Number(response.headers.get('content-length'));
         }
@@ -33,7 +33,7 @@ self.onmessage = async ({ data }) => {
           ? await parseMTXStream(stream, total, (v, label) => report(v * 0.4, label))
           : parseMTX(data.text);
       }
-      report(0.5, '最大連結成分を抽出中');
+      report(0.5, 'Extracting largest connected component');
       const candidate = largestComponent(raw);
       const colorDistances = bfs(adjacency(candidate), 0);
       // An invalid candidate must not destroy the active graph or its evaluation.
@@ -43,21 +43,21 @@ self.onmessage = async ({ data }) => {
         colorDistances.buffer,
       ]);
     } else if (kind === 'prepare') {
-      if (!graph) throw new Error('グラフを読み込んでください。');
+      if (!graph) throw new Error('Please load a graph first.');
       const prepared =
         data.config.method === 'sparse'
           ? prepareSparse(graph, data.config, data.limits, report)
           : prepareFull(graph, data.config, data.limits, report);
-      report(0.99, 'stress評価用の距離を準備中');
+      report(0.99, 'Preparing distances for stress evaluation');
       evaluation = prepareEvaluation(graph);
       const transfer = Object.values(prepared)
         .filter((value) => ArrayBuffer.isView(value))
         .map((value) => value.buffer);
       self.postMessage({ id, type: 'result', value: prepared }, transfer);
     } else if (kind === 'evaluate') {
-      if (!evaluation) throw new Error('評価距離が未準備です。');
+      if (!evaluation) throw new Error('Evaluation distances are not ready.');
       self.postMessage({ id, type: 'result', value: evaluateStress(data.positions, evaluation) });
-    } else throw new Error('未知の前処理要求です。');
+    } else throw new Error('Unknown preprocessing request.');
   } catch (error) {
     self.postMessage({ id, type: 'error', message: error.message });
   }

@@ -34,8 +34,8 @@ export class GraphSourceView {
     this.render();
     $('source-hint').hidden = false;
     $('source-hint').textContent = this.active
-      ? '読み込みに失敗しました。現在のグラフはそのままです。'
-      : '読み込みに失敗しました。別のグラフを選択してください。';
+      ? 'Failed to load. Keeping the current graph intact.'
+      : 'Failed to load. Please select another graph.';
   }
   clear() {
     this.active = null;
@@ -46,22 +46,22 @@ export class GraphSourceView {
     const active = this.active;
     $('active-graph-kind').textContent = active
       ? active.kind === 'sample'
-        ? 'サンプル'
-        : 'アップロード'
-      : '未読み込み';
+        ? 'Sample'
+        : 'Upload'
+      : 'Not loaded';
     $('active-graph-kind').dataset.kind = active?.kind ?? 'none';
-    $('active-graph-name').textContent = active?.name ?? 'グラフを読み込んでください';
+    $('active-graph-name').textContent = active?.name ?? 'Load a graph';
     $('active-graph-stats').textContent = active
-      ? `${active.graph.n.toLocaleString()} 頂点 · ${edgeCount(active.graph).toLocaleString()} 辺 · 最大連結成分${active.graph.n !== active.graph.originalN ? `（入力 ${active.graph.originalN.toLocaleString()} 頂点）` : ''}`
-      : '読み込みが完了すると、ここに表示されます。';
+      ? `${active.graph.n.toLocaleString()} vertices · ${edgeCount(active.graph).toLocaleString()} edges · LCC${active.graph.n !== active.graph.originalN ? ` (input ${active.graph.originalN.toLocaleString()} vertices)` : ''}`
+      : 'Graph details will appear here once loaded.';
     $('active-graph-state').textContent = this.pending
-      ? '読み込み中'
+      ? 'Loading'
       : active
-        ? '読み込み済み'
-        : '未読み込み';
+        ? 'Loaded'
+        : 'Not loaded';
     $('active-graph-pending').hidden = !this.pending;
     $('active-graph-pending').textContent = this.pending
-      ? `${this.pending.kind === 'sample' ? 'サンプル' : 'ファイル'}「${this.pending.name}」を読み込み中…${active ? ' 完了すると現在のグラフが切り替わります。' : ''}`
+      ? `Loading ${this.pending.kind === 'sample' ? 'sample' : 'file'} "${this.pending.name}"…${active ? ' Current graph will switch when finished.' : ''}`
       : '';
     this.renderHint();
   }
@@ -74,10 +74,10 @@ export class GraphSourceView {
     if ($('source-sample').checked) {
       const selected = SAMPLES.find((sample) => sample.id === $('sample').value);
       hint.hidden = this.active?.kind === 'sample' && this.active.sampleId === selected?.id;
-      hint.textContent = '読み込むまで切り替わりません。';
+      hint.textContent = 'Does not switch until you click Load.';
     } else {
       hint.hidden = this.active?.kind === 'upload';
-      hint.textContent = 'ファイルを選ぶと切り替わります。';
+      hint.textContent = 'Selecting a file will switch the graph.';
     }
   }
 }

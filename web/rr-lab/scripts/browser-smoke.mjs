@@ -30,8 +30,8 @@ const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } }),
 page.on('pageerror', (error) => errors.push(error.message));
 try {
   await page.goto(base);
-  await page.waitForFunction(() => document.getElementById('status').textContent === '準備完了');
-  assert.match(await page.locator('#gpu-state').innerText(), /利用可能/);
+  await page.waitForFunction(() => document.getElementById('status').textContent === 'Ready');
+  assert.match(await page.locator('#gpu-state').innerText(), /Available/);
   assert.equal(await page.locator('h1').innerText(), 'RR-SGD');
   assert.equal(await page.title(), 'RR-SGD');
   assert.equal(await page.locator('.app-shell > .active-graph').count(), 0);
@@ -42,49 +42,48 @@ try {
       .evaluate((button) => getComputedStyle(button).borderTopWidth),
     '0px',
   );
-  await page.getByRole('button', { name: 'RR-SGDの概要を読む' }).click();
-  assert(await page.getByRole('dialog', { name: 'RR-SGDについて' }).isVisible());
+  await page.getByRole('button', { name: 'Read RR-SGD overview' }).click();
+  assert(await page.getByRole('dialog', { name: 'About RR-SGD' }).isVisible());
   await page.keyboard.press('Escape');
   assert(!(await page.locator('#about-rrgraph').isVisible()));
-  assert(!(await page.locator('body').innerText()).includes('実験'));
 
   // Changing candidates or picker modes must not change the actual active graph.
-  assert.equal(await page.locator('#active-graph-kind').innerText(), 'サンプル');
+  assert.equal(await page.locator('#active-graph-kind').innerText(), 'Sample');
   assert.equal(await page.locator('#active-graph-name').innerText(), 'USpowerGrid');
   await page.locator('#sample').selectOption('luxembourg');
   assert.equal(await page.locator('#active-graph-name').innerText(), 'USpowerGrid');
-  assert.match(await page.locator('#source-hint').innerText(), /切り替わりません/);
+  assert.match(await page.locator('#source-hint').innerText(), /Does not switch/);
   await page.locator('#source-upload').check();
-  assert.equal(await page.locator('#active-graph-kind').innerText(), 'サンプル');
+  assert.equal(await page.locator('#active-graph-kind').innerText(), 'Sample');
   await page
     .locator('#file')
     .setInputFiles(resolve(import.meta.dirname, '../tests/fixtures/cycle257.mtx'));
   await page.waitForFunction(
     () => document.getElementById('active-graph-name').textContent === 'cycle257.mtx',
   );
-  assert.equal(await page.locator('#active-graph-kind').innerText(), 'アップロード');
-  assert.match(await page.locator('#active-graph-stats').innerText(), /257 頂点/);
+  assert.equal(await page.locator('#active-graph-kind').innerText(), 'Upload');
+  assert.match(await page.locator('#active-graph-stats').innerText(), /257 vertices/);
   await page.locator('#run').click();
-  await page.waitForFunction(() => document.getElementById('status').textContent === '完了');
+  await page.waitForFunction(() => document.getElementById('status').textContent === 'Completed');
   assert(await page.locator('#run').isEnabled());
-  assert.equal(await page.locator('#run').innerText(), 'もう一度計算');
+  assert.equal(await page.locator('#run').innerText(), 'Run Again');
   const originalStress = await page.locator('#stress').innerText();
   await page.locator('#run').click();
-  await page.waitForFunction(() => document.getElementById('status').textContent === '完了');
+  await page.waitForFunction(() => document.getElementById('status').textContent === 'Completed');
   assert.equal(await page.locator('#stress').innerText(), originalStress);
   assert(await page.locator('#seed').isEnabled());
   const previousResult = await page.locator('#result-text').inputValue();
   await page.locator('#seed').fill('7');
   await page.locator('#iterations').fill('5');
-  assert.equal(await page.locator('#run').innerText(), 'この設定で再計算');
+  assert.equal(await page.locator('#run').innerText(), 'Recalculate');
   assert.equal(await page.locator('#result-text').inputValue(), previousResult);
   await page.locator('#run').click();
-  await page.waitForFunction(() => document.getElementById('status').textContent === '完了');
+  await page.waitForFunction(() => document.getElementById('status').textContent === 'Completed');
   assert.equal(await page.locator('#epoch').innerText(), '5 / 5');
   assert.match(await page.locator('#result-text').inputValue(), /seed: 7/);
   console.log('Repeated calculation and changed parameters passed without resetting.');
   const uploadedResult = await page.locator('#result-text').inputValue();
-  assert.match(uploadedResult, /読み込み元: アップロード/);
+  assert.match(uploadedResult, /Source: Upload/);
   await page.locator('#file').setInputFiles({
     name: 'invalid.mtx',
     mimeType: 'text/plain',
@@ -93,14 +92,14 @@ try {
   await page.waitForFunction(() => document.getElementById('status').classList.contains('error'));
   assert.equal(await page.locator('#active-graph-name').innerText(), 'cycle257.mtx');
   assert.equal(await page.locator('#result-text').inputValue(), uploadedResult);
-  assert.match(await page.locator('#source-hint').innerText(), /そのまま/);
+  assert.match(await page.locator('#source-hint').innerText(), /intact/);
   await page.locator('#source-sample').check();
-  assert.equal(await page.locator('#active-graph-kind').innerText(), 'アップロード');
+  assert.equal(await page.locator('#active-graph-kind').innerText(), 'Upload');
   await page.locator('#sample').selectOption('powergrid');
   await page.locator('#load-sample').click();
-  await page.waitForFunction(() => document.getElementById('status').textContent === '準備完了');
+  await page.waitForFunction(() => document.getElementById('status').textContent === 'Ready');
   assert.equal(await page.locator('#active-graph-name').innerText(), 'USpowerGrid');
-  assert.equal(await page.locator('#active-graph-kind').innerText(), 'サンプル');
+  assert.equal(await page.locator('#active-graph-kind').innerText(), 'Sample');
   console.log(
     'Active graph identity, uploads, candidate selection, failed-load preservation, and overview passed.',
   );
@@ -204,7 +203,7 @@ try {
     () => {
       const status = document.getElementById('status');
       if (status.classList.contains('error')) throw new Error(status.textContent);
-      return status.textContent === '完了';
+      return status.textContent === 'Completed';
     },
     null,
     {
@@ -270,7 +269,7 @@ try {
   // The full Luxembourg graph is loaded; no hidden truncation/downsampling.
   await page.locator('#sample').selectOption('luxembourg');
   await page.locator('#load-sample').click();
-  await page.waitForFunction(() => document.getElementById('status').textContent === '準備完了');
+  await page.waitForFunction(() => document.getElementById('status').textContent === 'Ready');
   assert.equal(await page.locator('#nodes').innerText(), '114,599');
   assert.equal(await page.locator('#method').inputValue(), 'sparse');
   await page.locator('#iterations').fill('3');
@@ -279,7 +278,7 @@ try {
     () => {
       const status = document.getElementById('status');
       if (status.classList.contains('error')) throw new Error(status.textContent);
-      return status.textContent === '完了';
+      return status.textContent === 'Completed';
     },
     null,
     {
@@ -295,22 +294,22 @@ try {
     }),
   );
   assert(await page.locator('#iterations').isEnabled());
-  assert.equal(await page.locator('#run').innerText(), 'もう一度計算');
+  assert.equal(await page.locator('#run').innerText(), 'Run Again');
   await page.locator('#iterations').fill('100');
   await page.locator('#run').click();
   await page.locator('#pause').click();
   await page.waitForFunction(
-    () => document.getElementById('status').textContent.startsWith('一時停止'),
+    () => document.getElementById('status').textContent.startsWith('Paused'),
     null,
     { timeout: 120000 },
   );
   const pausedEpoch = Number((await page.locator('#epoch').innerText()).split('/')[0]);
   assert(pausedEpoch > 0 && pausedEpoch < 100);
-  assert.equal(await page.locator('#run').innerText(), '続きから再開');
+  assert.equal(await page.locator('#run').innerText(), 'Resume');
   await page.locator('#seed').fill('1');
-  assert.equal(await page.locator('#run').innerText(), 'この設定で再計算');
+  assert.equal(await page.locator('#run').innerText(), 'Recalculate');
   await page.locator('#seed').fill('0');
-  assert.equal(await page.locator('#run').innerText(), '続きから再開');
+  assert.equal(await page.locator('#run').innerText(), 'Resume');
   assert.equal(Number((await page.locator('#epoch').innerText()).split('/')[0]), pausedEpoch);
 
   await page.locator('#run').click();
@@ -318,7 +317,7 @@ try {
     () => {
       const status = document.getElementById('status');
       if (status.classList.contains('error')) throw new Error(status.textContent);
-      return status.textContent === '完了';
+      return status.textContent === 'Completed';
     },
     null,
     {
@@ -334,7 +333,7 @@ try {
     () => {
       const status = document.getElementById('status');
       if (status.classList.contains('error')) throw new Error(status.textContent);
-      return status.textContent === '完了';
+      return status.textContent === 'Completed';
     },
     null,
     {
@@ -429,7 +428,7 @@ try {
   // A separate mobile page avoids full-page capture artifacts during viewport changes.
   const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await mobile.goto(base);
-  await mobile.waitForFunction(() => document.getElementById('status').textContent === '準備完了');
+  await mobile.waitForFunction(() => document.getElementById('status').textContent === 'Ready');
   await mobile.screenshot({ path: resolve(dir, 'mobile.png'), fullPage: true });
   assert(await mobile.locator('#run').isEnabled());
   await mobile.close();
@@ -439,7 +438,7 @@ try {
   assert(await page.locator('#run').isDisabled());
   await page.locator('#sample').selectOption('community');
   await page.locator('#load-sample').click();
-  await page.waitForFunction(() => document.getElementById('status').textContent === '準備完了');
+  await page.waitForFunction(() => document.getElementById('status').textContent === 'Ready');
   assert(await page.locator('#run').isEnabled());
   console.log('Preprocessing cancellation and recovery passed.');
   assert.deepEqual(errors, []);

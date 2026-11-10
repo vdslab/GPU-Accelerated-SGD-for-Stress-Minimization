@@ -12,11 +12,16 @@ export function demoGraph() {
 }
 
 export const SAMPLES = [
-  { id: 'community', name: 'Community（240頂点）', file: null, method: 'full' },
-  { id: 'powergrid', name: 'USpowerGrid（4,941頂点）', file: 'USpowerGrid.mtx', method: 'full' },
+  { id: 'community', name: 'Community (240 vertices)', file: null, method: 'full' },
+  {
+    id: 'powergrid',
+    name: 'USpowerGrid (4,941 vertices)',
+    file: 'USpowerGrid.mtx',
+    method: 'full',
+  },
   {
     id: 'luxembourg',
-    name: 'Luxembourg OSM（114,599頂点）',
+    name: 'Luxembourg OSM (114,599 vertices)',
     file: 'luxembourg_osm.mtx',
     method: 'sparse',
   },

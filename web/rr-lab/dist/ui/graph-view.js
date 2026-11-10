@@ -51,8 +51,8 @@ export class GraphView {
     document.getElementById('zoom-out').onclick = () => this.zoom(0.8);
     document.getElementById('fit').onclick = () => this.fit();
     for (const [id, target, title] of [
-      ['expand-before', this.before, 'Before（初期配置）'],
-      ['expand-after', this.after, 'After（実行後）'],
+      ['expand-before', this.before, 'Before (Initial)'],
+      ['expand-after', this.after, 'After (Result)'],
     ]) {
       document.getElementById(id).onclick = () => {
         document.getElementById('image-title').textContent = title;
@@ -162,7 +162,7 @@ export class GraphView {
     this.fit();
   }
   setResolution(resolution) {
-    if (!RENDER_RESOLUTIONS.includes(resolution)) throw new Error('未対応の描画解像度です。');
+    if (!RENDER_RESOLUTIONS.includes(resolution)) throw new Error('Unsupported render resolution.');
     this.resolution = resolution;
     this.drawBefore();
     this.drawAfter();
@@ -261,8 +261,8 @@ export class GraphView {
     const caption = document.getElementById('view-caption');
     const adapter = this.lastRenderStats?.adapterInfo;
     caption.title = adapter
-      ? `描画GPU: ${adapter.vendor ?? ''} / ${adapter.architecture ?? ''}`
+      ? `Render GPU: ${adapter.vendor ?? ''} / ${adapter.architecture ?? ''}`
       : '';
-    caption.textContent = `${this.resolution} × ${this.resolution} px · 描画: ${this.renderBackend === 'webgpu' ? `WebGPU${adapter?.isFallbackAdapter ? '（ソフトウェア）' : ''}` : this.renderBackend === 'canvas2d' ? 'Canvas 2D' : '未実行'} · ${shown < count ? `表示 ${shown.toLocaleString()} / 全 ${count.toLocaleString()} 辺（計算は全辺）` : 'ドラッグで移動・スクロールでズーム'}${this.renderBackend === 'canvas2d' && this.graph?.n > 1000000 ? ' · 全頂点を画素単位で集約' : ''}`;
+    caption.textContent = `${this.resolution} × ${this.resolution} px · Render: ${this.renderBackend === 'webgpu' ? `WebGPU${adapter?.isFallbackAdapter ? ' (Software)' : ''}` : this.renderBackend === 'canvas2d' ? 'Canvas 2D' : 'Idle'} · ${shown < count ? `Showing ${shown.toLocaleString()} / ${count.toLocaleString()} edges (SGD uses all edges)` : 'Drag to pan · Scroll to zoom'}${this.renderBackend === 'canvas2d' && this.graph?.n > 1000000 ? ' · All vertices aggregated per pixel' : ''}`;
   }
 }

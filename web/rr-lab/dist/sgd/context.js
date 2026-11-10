@@ -2,9 +2,10 @@ const BUFFER_BUDGET = 1024 * 2 ** 20;
 
 /** Native browser WebGPU API initialization. */
 export async function createGpuContext() {
-  if (!navigator.gpu) throw new Error('WebGPUを利用できません。対応ブラウザで開いてください。');
+  if (!navigator.gpu)
+    throw new Error('WebGPU is not available. Please open in a supported browser.');
   const adapter = await navigator.gpu.requestAdapter({ powerPreference: 'high-performance' });
-  if (!adapter) throw new Error('WebGPUアダプターが見つかりません。');
+  if (!adapter) throw new Error('No WebGPU adapter found.');
   const maxStorageBufferBindingSize = Math.min(
     adapter.limits.maxStorageBufferBindingSize,
     BUFFER_BUDGET,
@@ -25,7 +26,7 @@ export async function createGpuContext() {
 }
 export async function shaderModule(device, url) {
   const response = await fetch(url);
-  if (!response.ok) throw new Error('WGSLシェーダーを読み込めませんでした。');
+  if (!response.ok) throw new Error('Failed to load WGSL shader.');
   const module = device.createShaderModule({ code: await response.text(), label: url.pathname });
   const info = await module.getCompilationInfo();
   const errors = info.messages.filter((message) => message.type === 'error');

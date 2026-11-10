@@ -30,7 +30,7 @@ export class RenderClient {
         return;
       }
       if (!this.active) {
-        this.fail(new Error(data.error || '描画の初期化に失敗しました。'));
+        this.fail(new Error(data.error || 'Failed to initialize renderer.'));
         return;
       }
       const { target, job } = this.active;
@@ -57,7 +57,7 @@ export class RenderClient {
     };
     this.worker.onerror = (event) => {
       if (this.worker !== worker) return;
-      this.fail(new Error(event.message || '描画Workerでエラーが発生しました。'));
+      this.fail(new Error(event.message || 'An error occurred in the render worker.'));
     };
   }
   fail(error) {

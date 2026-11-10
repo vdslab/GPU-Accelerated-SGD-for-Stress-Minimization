@@ -12,12 +12,12 @@ class MatrixReader {
     if (!this.header) {
       const h = s.split(/\s+/).map((x) => x.toLowerCase());
       if (h.length !== 5 || h[0] !== '%%matrixmarket' || h[1] !== 'matrix' || h[2] !== 'coordinate')
-        throw Error('Matrix Market coordinate形式の.mtxファイルを選んでください。');
+        throw Error('Please select a Matrix Market coordinate (.mtx) file.');
       if (
         !['pattern', 'real', 'integer', 'complex'].includes(h[3]) ||
         !['general', 'symmetric', 'hermitian', 'skew-symmetric'].includes(h[4])
       )
-        throw Error('未対応のMatrix Marketヘッダーです。');
+        throw Error('Unsupported Matrix Market header.');
       this.header = h;
       this.fields = { pattern: 2, real: 3, integer: 3, complex: 4 }[h[3]];
       return;
@@ -35,7 +35,7 @@ class MatrixReader {
         k < 0 ||
         k > 0x7fffffff
       )
-        throw Error('正方行列と32bitで表せる頂点数・要素数が必要です。');
+        throw Error('Requires a square matrix with 32-bit vertex and entry counts.');
       this.dimensions = parts;
       // Sort canonical endpoint pairs in native code; no string-key Set proportional to file size.
       this.keys = new BigUint64Array(k);
@@ -45,7 +45,7 @@ class MatrixReader {
     }
     const row = ++this.count;
     if (row > this.dimensions[2] || parts.length !== this.fields || !parts.every(Number.isFinite))
-      throw Error(`データ行 ${row} が不正です。`);
+      throw Error(`Invalid data row ${row}.`);
     const u = parts[0] - 1,
       v = parts[1] - 1;
     if (
@@ -56,7 +56,7 @@ class MatrixReader {
       u >= this.dimensions[0] ||
       v >= this.dimensions[0]
     )
-      throw Error(`データ行 ${row} の頂点番号が範囲外です。`);
+      throw Error(`Vertex index out of range at data row ${row}.`);
     if (u === v) return;
     const at = this.size++ * 2,
       a = Math.min(u, v),
@@ -66,7 +66,7 @@ class MatrixReader {
   }
   finish() {
     if (!this.dimensions || this.count !== this.dimensions[2])
-      throw Error('ヘッダーの非ゼロ要素数とデータ行数が一致しません。');
+      throw Error('Header nonzero count does not match the number of data rows.');
     const keys = this.keys.subarray(0, this.size);
     keys.sort();
     let unique = 0;
@@ -109,13 +109,13 @@ export async function parseMTXStream(stream, totalBytes = 0, report = () => {}) 
       start = end + 1;
     }
     pending = pending.slice(start);
-    if (pending.length > 1024 * 1024) throw Error('MTXの1行が長すぎます。');
+    if (pending.length > 1024 * 1024) throw Error('MTX line is too long.');
     report(
       totalBytes ? loaded / totalBytes : 0,
-      `MTXを読み込み中（${Math.round(loaded / 2 ** 20)} MiB）`,
+      `Reading MTX (${Math.round(loaded / 2 ** 20)} MiB)`,
     );
   }
   reader.line(pending + decoder.decode());
-  report(1, '辺の重複を除去中');
+  report(1, 'Deduplicating edges');
   return reader.finish();
 }

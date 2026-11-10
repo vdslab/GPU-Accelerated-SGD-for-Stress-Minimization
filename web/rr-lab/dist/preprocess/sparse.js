@@ -13,7 +13,7 @@ export function selectPivots(csr, count, random, report = () => {}) {
     }
   }
   const seed = random?.seed ?? 0;
-  report(0, 'pivot選択・最短路を計算中');
+  report(0, 'Selecting pivots and computing shortest paths');
   const selected = wasm_select_pivots(n, new Uint32Array(edges), h, seed >>> 0);
   const pivots = selected.take_pivots();
   const flatDistances = selected.take_flat_distances();
@@ -42,7 +42,7 @@ export function selectPivots(csr, count, random, report = () => {}) {
   for (let p = 0; p < h; p++) {
     for (let i = 1; i < prefix[p].length; i++) prefix[p][i] += prefix[p][i - 1];
   }
-  report(1, 'pivot選択・最短路を計算中');
+  report(1, 'Selecting pivots and computing shortest paths');
   return { pivots, rows, regions, prefix };
 }
 
@@ -58,10 +58,10 @@ export function prepareSparse(graph, config, limits, report = () => {}) {
   const max = multiBankCapacity(limits);
   if (bytes > max)
     throw new Error(
-      `Sparseのpivot表に${Math.ceil(bytes / 2 ** 20)} MiB必要です。このGPUではpivotsを${Math.floor(max / (8 * n))}以下にしてください。`,
+      `Sparse pivot table requires ${Math.ceil(bytes / 2 ** 20)} MiB. Please set pivots to at most ${Math.floor(max / (8 * n))} on this GPU.`,
     );
   const endpoints = graph.edgeData ?? Uint32Array.from(graph.edges.flat());
-  report(0.1, 'pivot選択・最短路を計算中');
+  report(0.1, 'Selecting pivots and computing shortest paths');
   const out = wasm_prepare_sparse(n, endpoints, h, (config.seed ?? 0) >>> 0);
   const pivots = out.take_pivots();
   const oneSided = out.take_one_sided();
@@ -73,7 +73,7 @@ export function prepareSparse(graph, config, limits, report = () => {}) {
   const twoSidedCount = out.two_sided_count();
   const constraints = out.constraint_count();
   out.free();
-  report(1, 'Sparse制約・RR matchingを構築中');
+  report(1, 'Building Sparse constraints and RR matchings');
   return {
     method: 'sparse',
     n,

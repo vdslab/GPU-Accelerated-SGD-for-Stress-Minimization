@@ -14,7 +14,7 @@ test('a completed layout can run again without reset', () => {
   const run = { ...paused(), epoch: 15 };
   const intent = runIntent(run, { ...config });
   assert.equal(intent.resume, false);
-  assert.equal(intent.label, 'もう一度計算');
+  assert.equal(intent.label, 'Run Again');
 });
 test('only an unchanged paused layout resumes its existing solver', () => {
   const run = paused();
@@ -28,7 +28,7 @@ test('only an unchanged paused layout resumes its existing solver', () => {
   ]) {
     const intent = runIntent(run, { ...config, ...change });
     assert.equal(intent.resume, false);
-    assert.equal(intent.label, 'この設定で再計算');
+    assert.equal(intent.label, 'Recalculate');
   }
   // Restoring a draft restores the option to resume; the saved run was never mutated.
   assert.equal(runIntent(run, { ...config }).resume, true);
@@ -42,6 +42,6 @@ test('failed or disposed solvers restart, and irrelevant Full pivot settings do 
   );
   assert.equal(
     runIntent({ engine: null, config: null, epoch: 0, history: [], failed: false }, config).label,
-    'レイアウトを計算',
+    'Compute Layout',
   );
 });

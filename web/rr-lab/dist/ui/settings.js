@@ -11,21 +11,21 @@ export function readSettings() {
     seed: Number(element('seed').value),
     pivots: Number(element('pivots').value),
   };
-  if (!['full', 'sparse'].includes(config.method)) throw new Error('手法を選択してください。');
+  if (!['full', 'sparse'].includes(config.method)) throw new Error('Please select a method.');
   if (element('method').selectedOptions[0]?.disabled)
-    throw new Error('選択した手法は現在利用できません。');
+    throw new Error('The selected method is currently unavailable.');
   if (!Number.isInteger(config.iterations) || config.iterations < 1 || config.iterations > 500)
-    throw new Error('反復回数は1–500です。');
+    throw new Error('Iterations must be between 1 and 500.');
   if (!Number.isInteger(config.seed) || config.seed < 0 || config.seed > 4294967295)
-    throw new Error('seedは0–4294967295の整数です。');
+    throw new Error('Seed must be an integer between 0 and 4294967295.');
   if (!Number.isFinite(config.epsilon) || config.epsilon < 0.0001 || config.epsilon > 1)
-    throw new Error('epsilonは0.0001–1です。');
+    throw new Error('Epsilon must be between 0.0001 and 1.');
   const maxPivots = Number(element('pivots').max);
   if (
     config.method === 'sparse' &&
     (!Number.isInteger(config.pivots) || config.pivots < 1 || config.pivots > maxPivots)
   )
-    throw new Error(`pivotsは1–${maxPivots}で指定してください。`);
+    throw new Error(`Pivots must be between 1 and ${maxPivots}.`);
   return config;
 }
 export function setStatus(message, error = false) {
@@ -54,14 +54,14 @@ export function updateMethodSupport(run) {
   const support = graphMethodSupport(run.graph.n, run.context.limits);
   fullOption.disabled = !support.full.available;
   sparseOption.disabled = support.sparse.maxPivots < 1;
-  fullOption.textContent = support.full.available ? 'RR Full SGD' : 'RR Full SGD（利用不可）';
+  fullOption.textContent = support.full.available ? 'RR Full SGD' : 'RR Full SGD (Unavailable)';
   if (!support.full.available && element('method').value === 'full')
     element('method').value = 'sparse';
   note.hidden = support.full.available;
-  note.textContent = `Full不可：距離行列 ${memoryLabel(support.full.requiredBytes)} > 上限 ${memoryLabel(support.full.limit)}。Sparseを使用してください。`;
+  note.textContent = `Full unavailable: distance matrix ${memoryLabel(support.full.requiredBytes)} > limit ${memoryLabel(support.full.limit)}. Use Sparse.`;
   element('pivots').max = String(support.sparse.maxPivots);
   pivotLimit.textContent =
-    support.sparse.maxPivots < 1000 ? `（上限 ${support.sparse.maxPivots}）` : '';
+    support.sparse.maxPivots < 1000 ? `(max ${support.sparse.maxPivots})` : '';
 }
 
 export function updateControls(run) {
@@ -79,11 +79,11 @@ export function updateControls(run) {
     element('run').textContent = intent.label;
     element('run-hint').textContent = intent.hint;
     element('run').title = intent.hint;
-    element('run-hint').hidden = intent.label !== 'この設定で再計算';
+    element('run-hint').hidden = intent.label !== 'Recalculate';
   } catch (error) {
     valid = false;
     element('run-hint').hidden = false;
-    element('run').textContent = 'レイアウトを計算';
+    element('run').textContent = 'Compute Layout';
     element('run-hint').textContent = error.message;
   }
   element('run').disabled = busy || !run.context || !run.graph || !valid;
@@ -98,7 +98,5 @@ export function updateControls(run) {
   element('json').disabled ||= Boolean(run.exporting);
   const large = run.graph && run.graph.n + edgeCount(run.graph) > 2000000;
   element('copy-json').disabled ||= Boolean(large);
-  element('copy-json').title = large
-    ? '大規模グラフのJSONは「座標JSONを保存」から保存してください。'
-    : '';
+  element('copy-json').title = large ? 'For large graphs, use "Save Layout JSON" instead.' : '';
 }

@@ -42,7 +42,7 @@ if (process.env.GPU_BUFFER_MB)
 page.setDefaultTimeout(120000);
 try {
   await page.goto(base);
-  await page.waitForFunction(() => document.getElementById('status').textContent === '準備完了');
+  await page.waitForFunction(() => document.getElementById('status').textContent === 'Ready');
   if (process.env.EDGE_LIMIT)
     await page.locator('#edge-detail').selectOption(process.env.EDGE_LIMIT);
   await page.locator('#source-upload').check();
@@ -70,7 +70,7 @@ try {
   await page.locator('#run').click();
   await page.waitForFunction(
     () =>
-      document.getElementById('status').textContent === '完了' ||
+      document.getElementById('status').textContent === 'Completed' ||
       document.getElementById('status').classList.contains('error'),
     null,
     { timeout: 1200000 },
@@ -100,7 +100,7 @@ try {
   const output = process.env.SCREENSHOT_DIR ?? '/tmp/rr-large';
   await mkdir(output, { recursive: true });
   await page.screenshot({ path: resolve(output, 'large-graph.png'), fullPage: true });
-  assert.equal(await page.locator('#status').innerText(), '完了');
+  assert.equal(await page.locator('#status').innerText(), 'Completed');
   for (const id of ['before', 'graph']) {
     await page.waitForFunction(
       (id) => document.getElementById(id).dataset.rendering !== 'true',

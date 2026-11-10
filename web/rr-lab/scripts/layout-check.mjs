@@ -72,7 +72,7 @@ async function assertFits(state) {
 }
 try {
   await page.goto(base);
-  await page.waitForFunction(() => document.getElementById('status').textContent === '準備完了');
+  await page.waitForFunction(() => document.getElementById('status').textContent === 'Ready');
   assert.equal(
     await page.locator('#method option[value=full]').evaluate((el) => el.disabled),
     false,
@@ -92,13 +92,16 @@ try {
   );
   await page.waitForFunction(
     () =>
-      document.getElementById('status').textContent === '準備完了' &&
+      document.getElementById('status').textContent === 'Ready' &&
       !document.getElementById('method').disabled,
   );
   assert.equal(await page.locator('#method').inputValue(), 'sparse');
   assert(await page.locator('#method option[value=full]').evaluate((el) => el.disabled));
   assert(!(await page.locator('#method option[value=sparse]').evaluate((el) => el.disabled)));
-  assert.match(await page.locator('#method-support').innerText(), /Full不可.*距離行列/);
+  assert.match(
+    await page.locator('#method-support').innerText(),
+    /Full unavailable.*distance matrix/,
+  );
   const maxPivots = Number(await page.locator('#pivots').getAttribute('max'));
   assert(maxPivots > 0 && maxPivots <= 1000);
   await page.locator('#pivots').fill(String(maxPivots + 1));
@@ -120,7 +123,7 @@ try {
   );
   await page.waitForFunction(
     () =>
-      document.getElementById('status').textContent === '準備完了' &&
+      document.getElementById('status').textContent === 'Ready' &&
       !document.getElementById('method').disabled,
   );
   assert(!(await page.locator('#method option[value=full]').evaluate((el) => el.disabled)));
