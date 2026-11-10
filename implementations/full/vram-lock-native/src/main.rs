@@ -138,7 +138,7 @@ fn main() -> Result<()> {
         config.epsilon,
         config.center,
         config.seed,
-    );
+    )?;
     let constraint_count = params.pairs.len();
     let common_preprocess_time = preprocess_started.elapsed();
     let _full_preprocess_sha256 = full_preprocess_sha256(&params.pairs);

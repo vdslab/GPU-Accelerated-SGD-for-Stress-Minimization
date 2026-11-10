@@ -1,11 +1,8 @@
-use anyhow::Result;
+use anyhow::{ensure, Result};
 use bytemuck::{Pod, Zeroable};
-use rayon::prelude::*;
 use sprs::io::read_matrix_market;
 use sprs::num_kinds::Pattern;
-use std::cell::RefCell;
 use std::path::Path;
-use std::sync::OnceLock;
 
 #[derive(Debug)]
 pub struct Graph {
@@ -43,41 +40,6 @@ pub struct FlatCsr {
     pub neighbors: Vec<u32>,
 }
 
-#[derive(Clone, Copy)]
-struct SendPtr(*mut EdgeInfo);
-unsafe impl Send for SendPtr {}
-unsafe impl Sync for SendPtr {}
-
-impl SendPtr {
-    #[inline(always)]
-    unsafe fn add(self, count: usize) -> *mut EdgeInfo {
-        self.0.add(count)
-    }
-}
-
-thread_local! {
-    static BFS_BUFFERS: RefCell<(Vec<u32>, Vec<u32>)> = const { RefCell::new((Vec::new(), Vec::new())) };
-}
-
-fn get_rayon_pool() -> &'static rayon::ThreadPool {
-    static POOL: OnceLock<rayon::ThreadPool> = OnceLock::new();
-    POOL.get_or_init(|| {
-        let max_threads = std::env::var("RAYON_NUM_THREADS")
-            .ok()
-            .and_then(|s| s.parse().ok())
-            .unwrap_or_else(|| {
-                std::thread::available_parallelism()
-                    .map(|n| n.get())
-                    .unwrap_or(8)
-            })
-            .clamp(1, 12);
-        rayon::ThreadPoolBuilder::new()
-            .num_threads(max_threads)
-            .thread_name(|i| format!("full-bfs-{}", i))
-            .build()
-            .expect("Failed to build BFS Rayon thread pool")
-    })
-}
 
 impl Graph {
     pub fn from_mtx(path: &Path) -> Result<Self> {
@@ -137,120 +99,128 @@ impl Graph {
         FlatCsr { offsets, neighbors }
     }
 
-    pub fn calc_edge_info_csr(&self, csr: &FlatCsr) -> (Vec<EdgeInfo>, f64, f64) {
+    pub fn calc_edge_info_csr(&self, csr: &FlatCsr) -> Result<(Vec<EdgeInfo>, f64, f64)> {
         let n = self.node_size;
         if n <= 1 {
-            return (Vec::new(), f64::INFINITY, 0.0);
+            return Ok((Vec::new(), f64::INFINITY, 0.0));
         }
-
-        let total_pairs = n * (n - 1) / 2;
-        let mut pairs = vec![EdgeInfo::default(); total_pairs];
-        let pairs_ptr = SendPtr(pairs.as_mut_ptr());
 
         let offsets = &csr.offsets;
         let neighbors = &csr.neighbors;
 
-        let pool = get_rayon_pool();
-        let (dmin, dmax) = pool.install(|| {
-            (0..n - 1)
-                .into_par_iter()
-                .map(move |u| {
-                    let slice_offset = u * n - u * (u + 1) / 2;
-                    let mut local_dmin = f64::INFINITY;
-                    let mut local_dmax = 0.0f64;
+        // Upfront connectivity check
+        if n > 1 {
+            let mut visited = vec![false; n];
+            let mut queue = Vec::with_capacity(n);
+            visited[0] = true;
+            queue.push(0u32);
+            let mut head = 0;
+            while head < queue.len() {
+                let curr = queue[head] as usize;
+                head += 1;
+                let start = offsets[curr] as usize;
+                let end = offsets[curr + 1] as usize;
+                for &nbr in &neighbors[start..end] {
+                    let nbr_idx = nbr as usize;
+                    if !visited[nbr_idx] {
+                        visited[nbr_idx] = true;
+                        queue.push(nbr);
+                    }
+                }
+            }
+            ensure!(
+                queue.len() == n,
+                "Graph must be connected for Full SGD: visited {} of {} nodes",
+                queue.len(),
+                n
+            );
+        }
 
-                    BFS_BUFFERS.with_borrow_mut(|(dist, queue)| {
-                        if dist.len() != n {
-                            dist.resize(n, u32::MAX);
-                        }
-                        if queue.capacity() < n {
-                            queue.reserve(n - queue.capacity());
-                        }
+        let total_pairs = n * (n - 1) / 2;
+        let mut pairs = vec![EdgeInfo::default(); total_pairs];
 
-                        dist[u] = 0;
-                        queue.push(u as u32);
-                        let mut head = 0;
+        let mut dmin = f64::INFINITY;
+        let mut dmax = 0.0f64;
 
-                        while head < queue.len() {
-                            let curr = queue[head] as usize;
-                            head += 1;
-                            let next_d = dist[curr] + 1;
-                            let start = offsets[curr] as usize;
-                            let end = offsets[curr + 1] as usize;
+        let mut dist = vec![u32::MAX; n];
+        let mut queue = Vec::with_capacity(n);
 
-                            for &nbr in &neighbors[start..end] {
-                                let nbr_idx = nbr as usize;
-                                if dist[nbr_idx] == u32::MAX {
-                                    dist[nbr_idx] = next_d;
-                                    queue.push(nbr);
-                                }
-                            }
-                        }
+        for u in 0..n - 1 {
+            let slice_offset = u * n - u * (u + 1) / 2;
 
-                        let out_ptr = unsafe { pairs_ptr.add(slice_offset) };
-                        for v in (u + 1)..n {
-                            let d = dist[v];
-                            if d != u32::MAX && d > 0 {
-                                let dij = d as f32;
-                                let wij = 1.0f32 / (dij * dij);
-                                let d_f64 = d as f64;
-                                if d_f64 < local_dmin {
-                                    local_dmin = d_f64;
-                                }
-                                if d_f64 > local_dmax {
-                                    local_dmax = d_f64;
-                                }
-                                unsafe {
-                                    *out_ptr.add(v - u - 1) = EdgeInfo {
-                                        u: u as u32,
-                                        v: v as u32,
-                                        dij,
-                                        wij,
-                                    };
-                                }
-                            }
-                        }
+            dist[u] = 0;
+            queue.push(u as u32);
+            let mut head = 0;
 
-                        for &v in queue.iter() {
-                            dist[v as usize] = u32::MAX;
-                        }
-                        queue.clear();
-                    });
+            while head < queue.len() {
+                let curr = queue[head] as usize;
+                head += 1;
+                let next_d = dist[curr] + 1;
+                let start = offsets[curr] as usize;
+                let end = offsets[curr + 1] as usize;
 
-                    (local_dmin, local_dmax)
-                })
-                .reduce(
-                    || (f64::INFINITY, 0.0f64),
-                    |a, b| (a.0.min(b.0), a.1.max(b.1)),
-                )
-        });
+                for &nbr in &neighbors[start..end] {
+                    let nbr_idx = nbr as usize;
+                    if dist[nbr_idx] == u32::MAX {
+                        dist[nbr_idx] = next_d;
+                        queue.push(nbr);
+                    }
+                }
+            }
+
+            for v in (u + 1)..n {
+                let d = dist[v];
+                if d != u32::MAX && d > 0 {
+                    let dij = d as f32;
+                    let wij = 1.0f32 / (dij * dij);
+                    let d_f64 = d as f64;
+                    if d_f64 < dmin {
+                        dmin = d_f64;
+                    }
+                    if d_f64 > dmax {
+                        dmax = d_f64;
+                    }
+                    pairs[slice_offset + (v - u - 1)] = EdgeInfo {
+                        u: u as u32,
+                        v: v as u32,
+                        dij,
+                        wij,
+                    };
+                }
+            }
+
+            for &v in queue.iter() {
+                dist[v as usize] = u32::MAX;
+            }
+            queue.clear();
+        }
 
         let wmin = 1.0 / (dmax * dmax);
         let wmax = 1.0 / (dmin * dmin);
 
-        (pairs, wmin, wmax)
+        Ok((pairs, wmin, wmax))
     }
 
-    /// Precompute SGD parameters using parallel CSR BFS
+    /// Precompute SGD parameters using single-threaded CSR BFS
     pub fn prepare_sgd_params(
         &self,
         iterations: usize,
         epsilon: f64,
         center: bool,
         seed: u64,
-    ) -> SgdParams {
+    ) -> Result<SgdParams> {
         let csr = self.to_flat_csr();
-        let (pairs, wmin, wmax) = self.calc_edge_info_csr(&csr);
+        let (pairs, wmin, wmax) = self.calc_edge_info_csr(&csr)?;
 
         let etas = calc_learning_rate(iterations, wmin, wmax, epsilon);
         let positions = experiment_common::seed::seeded_positions(self.node_size, seed, center);
 
-        SgdParams {
+        Ok(SgdParams {
             etas,
             positions,
             pairs,
             center,
-        }
+        })
     }
 }
 
@@ -298,7 +268,7 @@ mod tests {
         assert_eq!(csr.offsets.len(), 7);
         assert_eq!(csr.neighbors.len(), 12);
 
-        let (pairs, wmin, wmax) = graph.calc_edge_info_csr(&csr);
+        let (pairs, wmin, wmax) = graph.calc_edge_info_csr(&csr).unwrap();
         assert_eq!(pairs.len(), 15);
         assert!((wmin - 1.0 / 9.0).abs() < 1e-6);
         assert!((wmax - 1.0).abs() < 1e-6);
@@ -309,5 +279,23 @@ mod tests {
             assert!(pair.dij > 0.0);
             assert!(pair.wij > 0.0);
         }
+    }
+
+    #[test]
+    fn test_disconnected_graph_rejected() {
+        let graph = Graph {
+            node_size: 4,
+            edge_size: 2,
+            edge_src: vec![0, 2],
+            edge_dst: vec![1, 3],
+        };
+        let csr = graph.to_flat_csr();
+        let result = graph.calc_edge_info_csr(&csr);
+        assert!(result.is_err());
+        let err = result.unwrap_err().to_string();
+        assert!(
+            err.contains("Graph must be connected for Full SGD: visited 2 of 4 nodes"),
+            "unexpected error message: {err}"
+        );
     }
 }

@@ -1,5 +1,5 @@
 // Full Atomic SGD compute kernel for WebGPU / D3D12 (RTX 3050)
-// Features: atomicExchange spinlocks, rollback on 2nd lock failure,
+// Features: minimal-barrier atomicExchange spinlocks, zero-barrier rollback,
 // storageBarrier visibility, @workgroup_size(1, 1, 1), 2D grid dispatch.
 
 struct EdgeInfo {
@@ -34,37 +34,22 @@ var<storage, read_write> updated_count: atomic<u32>;
 @group(0) @binding(5)
 var<uniform> uniforms: Uniforms;
 
-fn try_lock(node: u32) -> bool {
-    let acquired = atomicExchange(&locks[node], 1u) == 0u;
-    if (acquired) {
-        storageBarrier();
-    }
-    return acquired;
-}
-
-fn unlock(node: u32) {
-    storageBarrier();
-    atomicExchange(&locks[node], 0u);
-}
-
-fn acquire_locks(node1: u32, node2: u32) {
-    let first = min(node1, node2);
-    let second = max(node1, node2);
+fn acquire_pair_locks(first: u32, second: u32) {
     loop {
-        if (try_lock(first)) {
-            if (try_lock(second)) {
+        if (atomicExchange(&locks[first], 1u) == 0u) {
+            if (atomicExchange(&locks[second], 1u) == 0u) {
+                storageBarrier();
                 return;
             }
-            unlock(first);
+            atomicExchange(&locks[first], 0u);
         }
     }
 }
 
-fn release_locks(node1: u32, node2: u32) {
-    let first = min(node1, node2);
-    let second = max(node1, node2);
-    unlock(second);
-    unlock(first);
+fn release_pair_locks(first: u32, second: u32) {
+    storageBarrier();
+    atomicExchange(&locks[second], 0u);
+    atomicExchange(&locks[first], 0u);
 }
 
 @compute @workgroup_size(1, 1, 1)
@@ -93,7 +78,7 @@ fn sgd(
     let wij = pair.wij;
     let eta = etas[uniforms.iteration];
 
-    acquire_locks(i, j);
+    acquire_pair_locks(i, j);
 
     // Read positions atomically via atomicAdd(0u) ensuring L2 cache coherence across workgroups
     let i_x = atomicAdd(&positions[2u * i], 0u);
@@ -126,7 +111,7 @@ fn sgd(
     atomicExchange(&positions[2u * j], bitcast<u32>(new_pos_j.x));
     atomicExchange(&positions[2u * j + 1u], bitcast<u32>(new_pos_j.y));
 
-    release_locks(i, j);
+    release_pair_locks(i, j);
 
     atomicAdd(&updated_count, 1u);
 }
