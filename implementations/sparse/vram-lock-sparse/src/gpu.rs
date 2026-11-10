@@ -1,13 +1,18 @@
+#[cfg(not(target_arch = "wasm32"))]
 #[allow(dead_code)]
 #[path = "../../../../shared/gpu-timing/wgpu.rs"]
 mod timing;
 
+#[cfg(not(target_arch = "wasm32"))]
 use crate::graph::{center_inplace, SgdParams};
 use anyhow::{ensure, Result};
 use bytemuck::{Pod, Zeroable};
+#[cfg(not(target_arch = "wasm32"))]
 use experiment_common::OutputFormat;
+#[cfg(not(target_arch = "wasm32"))]
 use rand::{seq::SliceRandom, Rng};
 use std::mem;
+#[cfg(not(target_arch = "wasm32"))]
 use std::time::{Duration, Instant};
 use wgpu::util::DeviceExt;
 
@@ -37,6 +42,7 @@ struct Uniforms {
     _pad2: u32,
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 #[allow(dead_code)]
 pub struct GpuContext {
     pub device: wgpu::Device,
@@ -48,6 +54,7 @@ pub struct GpuContext {
     pub backend: String,
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 pub struct GpuRunResult {
     pub initial_positions: Vec<[f64; 2]>,
     pub positions: Vec<[f64; 2]>,
@@ -65,6 +72,7 @@ pub struct GpuRunResult {
     pub dispatches: u64,
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 impl GpuContext {
     pub fn new() -> Result<Self> {
         Self::with_shader(include_str!("shader.wgsl"))
@@ -673,6 +681,414 @@ impl GpuContext {
     }
 }
 
+const STEPPER_SHADER_SRC: &str = r#"
+struct Pair {
+    u: u32,
+    v: u32,
+    dij: f32,
+    weight_u: f32,
+    weight_v: f32,
+};
+
+struct Uniforms {
+    chunk_start: u32,
+    chunk_count: u32,
+    epoch: u32,
+    eta: f32,
+    pair_count: u32,
+    _pad0: u32,
+    _pad1: u32,
+    _pad2: u32,
+};
+
+@group(0) @binding(0) var<storage, read_write> positions: array<atomic<u32>>;
+@group(0) @binding(1) var<storage, read> pairs: array<Pair>;
+@group(0) @binding(2) var<storage, read_write> locks: array<atomic<u32>>;
+@group(0) @binding(3) var<uniform> uniforms: Uniforms;
+@group(0) @binding(4) var<storage, read_write> updated_count: atomic<u32>;
+
+fn acquire_pair_locks(u: u32, v: u32) -> bool {
+    let first = min(u, v);
+    let second = max(u, v);
+    if (atomicExchange(&locks[first], 1u) != 0u) {
+        return false;
+    }
+    if (atomicExchange(&locks[second], 1u) == 0u) {
+        return true;
+    }
+    atomicExchange(&locks[first], 0u);
+    return false;
+}
+
+fn release_pair_locks(u: u32, v: u32) {
+    let first = min(u, v);
+    let second = max(u, v);
+    atomicExchange(&locks[second], 0u);
+    atomicExchange(&locks[first], 0u);
+}
+
+fn update_pair(p: Pair) {
+    let u = p.u;
+    let v = p.v;
+
+    // Read positions atomically via atomicAdd(0u) ensuring L2 cache coherence across workgroups
+    let u_x = atomicAdd(&positions[2u * u], 0u);
+    let u_y = atomicAdd(&positions[2u * u + 1u], 0u);
+    let pos_u = vec2<f32>(bitcast<f32>(u_x), bitcast<f32>(u_y));
+
+    let v_x = atomicAdd(&positions[2u * v], 0u);
+    let v_y = atomicAdd(&positions[2u * v + 1u], 0u);
+    let pos_v = vec2<f32>(bitcast<f32>(v_x), bitcast<f32>(v_y));
+
+    var diff = pos_v - pos_u;
+    var norm = length(diff);
+
+    if (norm < 1e-12) {
+        // Deterministic tiny fallback matching native Atomic SGD
+        diff = vec2<f32>(1e-6, 1e-6);
+        norm = length(diff);
+    }
+
+    let r = ((norm - p.dij) / (2.0 * norm)) * diff;
+    let du = min(uniforms.eta * p.weight_u, 1.0) * r;
+    let dv = min(uniforms.eta * p.weight_v, 1.0) * r;
+
+    let new_pos_u = pos_u + du;
+    let new_pos_v = pos_v - dv;
+
+    // Write back updated coordinates atomically ensuring L2 cache coherence across workgroups
+    atomicExchange(&positions[2u * u], bitcast<u32>(new_pos_u.x));
+    atomicExchange(&positions[2u * u + 1u], bitcast<u32>(new_pos_u.y));
+    atomicExchange(&positions[2u * v], bitcast<u32>(new_pos_v.x));
+    atomicExchange(&positions[2u * v + 1u], bitcast<u32>(new_pos_v.y));
+}
+
+@compute @workgroup_size(1, 1, 1)
+fn sparse_sgd(
+    @builtin(workgroup_id) group_id: vec3<u32>,
+    @builtin(num_workgroups) num_wgs: vec3<u32>,
+) {
+    let linear_idx = group_id.y * num_wgs.x + group_id.x;
+    if (linear_idx >= uniforms.chunk_count) {
+        return;
+    }
+    let slot = uniforms.chunk_start + linear_idx;
+    if (slot >= uniforms.pair_count) {
+        return;
+    }
+
+    let p = pairs[slot];
+    if (p.u == p.v) {
+        atomicAdd(&updated_count, 1u);
+        return;
+    }
+
+    loop {
+        if (acquire_pair_locks(p.u, p.v)) {
+            update_pair(p);
+            release_pair_locks(p.u, p.v);
+            atomicAdd(&updated_count, 1u);
+            break;
+        }
+    }
+}
+"#;
+
+pub struct AtomicSparseStepper {
+    n: usize,
+    initial_positions_flat: Vec<f32>,
+    pipeline: wgpu::ComputePipeline,
+    position_buffer: wgpu::Buffer,
+    download_buffer: wgpu::Buffer,
+    #[allow(dead_code)]
+    lock_buffer: wgpu::Buffer,
+    #[allow(dead_code)]
+    updated_count_buffer: wgpu::Buffer,
+    uniform_buffer: wgpu::Buffer,
+    #[allow(dead_code)]
+    pair_bank_buffers: Vec<wgpu::Buffer>,
+    bind_groups: Vec<wgpu::BindGroup>,
+    bank_pair_counts: Vec<u32>,
+    slot_size: usize,
+    epoch: u32,
+}
+
+impl AtomicSparseStepper {
+    pub fn new(
+        device: &wgpu::Device,
+        queue: &wgpu::Queue,
+        n: usize,
+        pairs: &[GpuPair],
+        initial_positions_flat: &[f32],
+    ) -> Result<Self> {
+        ensure!(n >= 2, "AtomicSparseStepper requires n >= 2");
+        ensure!(!pairs.is_empty(), "Empty Sparse workload");
+        ensure!(
+            initial_positions_flat.len() == n * 2,
+            "initial_positions_flat length must be 2 * n"
+        );
+
+        let max_binding_bytes = device.limits().max_storage_buffer_binding_size as usize;
+        let max_pairs_per_bank = (max_binding_bytes / mem::size_of::<GpuPair>())
+            .min(MAX_PAIRS_PER_BANK)
+            .max(1);
+        let total_pairs = pairs.len();
+        let num_banks = total_pairs.div_ceil(max_pairs_per_bank);
+
+        let mut bank_pair_counts = Vec::with_capacity(num_banks);
+        for b in 0..num_banks {
+            let start = b * max_pairs_per_bank;
+            let end = (start + max_pairs_per_bank).min(total_pairs);
+            bank_pair_counts.push((end - start) as u32);
+        }
+
+        let shader = device.create_shader_module(wgpu::ShaderModuleDescriptor {
+            label: Some("Sparse Atomic Stepper Shader"),
+            source: wgpu::ShaderSource::Wgsl(STEPPER_SHADER_SRC.into()),
+        });
+
+        let bind_group_layout = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
+            label: Some("Sparse Atomic Stepper bind group layout"),
+            entries: &[
+                wgpu::BindGroupLayoutEntry {
+                    binding: 0,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: false },
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 1,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: true },
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 2,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: false },
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 3,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Uniform,
+                        has_dynamic_offset: true,
+                        min_binding_size: Some(
+                            std::num::NonZeroU64::new(mem::size_of::<Uniforms>() as u64).unwrap(),
+                        ),
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 4,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: false },
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                },
+            ],
+        });
+
+        let pipeline_layout = device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
+            label: Some("Sparse Atomic Stepper pipeline layout"),
+            bind_group_layouts: &[&bind_group_layout],
+            push_constant_ranges: &[],
+        });
+
+        let pipeline = device.create_compute_pipeline(&wgpu::ComputePipelineDescriptor {
+            label: Some("Sparse Atomic Stepper compute pipeline"),
+            layout: Some(&pipeline_layout),
+            module: &shader,
+            entry_point: Some("sparse_sgd"),
+            compilation_options: Default::default(),
+            cache: None,
+        });
+
+        let position_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label: Some("Sparse Atomic Stepper Positions buffer"),
+            contents: bytemuck::cast_slice(initial_positions_flat),
+            usage: wgpu::BufferUsages::STORAGE
+                | wgpu::BufferUsages::COPY_SRC
+                | wgpu::BufferUsages::COPY_DST,
+        });
+
+        let download_buffer = device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("Sparse Atomic Stepper Download buffer"),
+            size: (initial_positions_flat.len() * mem::size_of::<f32>()) as u64,
+            usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
+            mapped_at_creation: false,
+        });
+
+        let pair_bank_buffers: Vec<wgpu::Buffer> = (0..num_banks)
+            .map(|b| {
+                let start = b * max_pairs_per_bank;
+                let end = (start + max_pairs_per_bank).min(total_pairs);
+                device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                    label: Some(&format!("Sparse Atomic Stepper Pairs bank buffer {}", b)),
+                    contents: bytemuck::cast_slice(&pairs[start..end]),
+                    usage: wgpu::BufferUsages::STORAGE,
+                })
+            })
+            .collect();
+
+        let locks = vec![0u32; n];
+        let lock_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label: Some("Sparse Atomic Stepper Locks buffer"),
+            contents: bytemuck::cast_slice(&locks),
+            usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
+        });
+
+        let updated_count_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label: Some("Sparse Atomic Stepper Updated Count buffer"),
+            contents: bytemuck::bytes_of(&0u32),
+            usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
+        });
+
+        let alignment =
+            (device.limits().min_uniform_buffer_offset_alignment as usize).max(DYNAMIC_UNIFORM_STRIDE);
+        let slot_size = mem::size_of::<Uniforms>().div_ceil(alignment) * alignment;
+        let uniform_bytes = vec![0u8; num_banks * slot_size];
+        let uniform_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label: Some("Sparse Atomic Stepper Uniform buffer"),
+            contents: &uniform_bytes,
+            usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
+        });
+
+        let bind_groups: Vec<wgpu::BindGroup> = (0..num_banks)
+            .map(|b| {
+                device.create_bind_group(&wgpu::BindGroupDescriptor {
+                    label: Some(&format!("Sparse Atomic Stepper bind group bank {}", b)),
+                    layout: &bind_group_layout,
+                    entries: &[
+                        wgpu::BindGroupEntry {
+                            binding: 0,
+                            resource: position_buffer.as_entire_binding(),
+                        },
+                        wgpu::BindGroupEntry {
+                            binding: 1,
+                            resource: pair_bank_buffers[b].as_entire_binding(),
+                        },
+                        wgpu::BindGroupEntry {
+                            binding: 2,
+                            resource: lock_buffer.as_entire_binding(),
+                        },
+                        wgpu::BindGroupEntry {
+                            binding: 3,
+                            resource: wgpu::BindingResource::Buffer(wgpu::BufferBinding {
+                                buffer: &uniform_buffer,
+                                offset: 0,
+                                size: Some(
+                                    std::num::NonZeroU64::new(mem::size_of::<Uniforms>() as u64)
+                                        .unwrap(),
+                                ),
+                            }),
+                        },
+                        wgpu::BindGroupEntry {
+                            binding: 4,
+                            resource: updated_count_buffer.as_entire_binding(),
+                        },
+                    ],
+                })
+            })
+            .collect();
+
+        let _ = queue;
+
+        Ok(Self {
+            n,
+            initial_positions_flat: initial_positions_flat.to_vec(),
+            pipeline,
+            position_buffer,
+            download_buffer,
+            lock_buffer,
+            updated_count_buffer,
+            uniform_buffer,
+            pair_bank_buffers,
+            bind_groups,
+            bank_pair_counts,
+            slot_size,
+            epoch: 0,
+        })
+    }
+
+    pub fn step_epoch(&mut self, device: &wgpu::Device, queue: &wgpu::Queue, eta: f32) {
+        self.epoch = self.epoch.wrapping_add(1);
+        let num_banks = self.bank_pair_counts.len();
+        let mut uniform_bytes = vec![0u8; num_banks * self.slot_size];
+        for (bank, &bank_pairs) in self.bank_pair_counts.iter().enumerate() {
+            let uniforms = Uniforms {
+                chunk_start: 0,
+                chunk_count: bank_pairs,
+                epoch: self.epoch,
+                eta,
+                pair_count: bank_pairs,
+                _pad0: 0,
+                _pad1: 0,
+                _pad2: 0,
+            };
+            let byte_offset = bank * self.slot_size;
+            let slice = bytemuck::bytes_of(&uniforms);
+            uniform_bytes[byte_offset..byte_offset + slice.len()].copy_from_slice(slice);
+        }
+        queue.write_buffer(&self.uniform_buffer, 0, &uniform_bytes);
+
+        let mut encoder = device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
+            label: Some("atomic_sparse_stepper_epoch"),
+        });
+
+        for (bank, &bank_pairs) in self.bank_pair_counts.iter().enumerate() {
+            let dynamic_offset = (bank * self.slot_size) as u32;
+            let mut cpass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
+                label: Some("atomic_sparse_stepper_pass"),
+                timestamp_writes: None,
+            });
+            cpass.set_pipeline(&self.pipeline);
+            cpass.set_bind_group(0, &self.bind_groups[bank], &[dynamic_offset]);
+            let height = bank_pairs.div_ceil(65_535);
+            let width = bank_pairs.div_ceil(height);
+            cpass.dispatch_workgroups(width, height, 1);
+        }
+
+        encoder.copy_buffer_to_buffer(
+            &self.position_buffer,
+            0,
+            &self.download_buffer,
+            0,
+            (self.n as u64) * 8,
+        );
+        queue.submit(std::iter::once(encoder.finish()));
+    }
+
+    pub fn reset(&mut self, queue: &wgpu::Queue) {
+        self.epoch = 0;
+        queue.write_buffer(
+            &self.position_buffer,
+            0,
+            bytemuck::cast_slice(&self.initial_positions_flat),
+        );
+    }
+
+    pub fn download_buffer(&self) -> &wgpu::Buffer {
+        &self.download_buffer
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -942,5 +1358,64 @@ mod tests {
         let center_y = (run.positions[0][1] + run.positions[1][1]) / 2.0;
         assert!(center_x.abs() < 1e-5, "{center_x}");
         assert!(center_y.abs() < 1e-5, "{center_y}");
+    }
+
+    #[test]
+    fn atomic_sparse_stepper_matches_cpu_reference_and_resets() {
+        let context = GpuContext::new().unwrap();
+        let pair = GpuPair {
+            u: 0,
+            v: 1,
+            dij: 2.0,
+            weight_u: 0.25,
+            weight_v: 0.25,
+        };
+        let initial_flat = vec![0.0f32, 0.0, 4.0, 0.0];
+        let mut stepper = AtomicSparseStepper::new(
+            &context.device,
+            &context.queue,
+            2,
+            &[pair],
+            &initial_flat,
+        )
+        .unwrap();
+        stepper.step_epoch(&context.device, &context.queue, 4.0);
+        let slice = stepper.download_buffer().slice(..);
+        slice.map_async(wgpu::MapMode::Read, |_| {});
+        context.device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
+        {
+            let view = slice.get_mapped_range();
+            let coords: &[f32] = bytemuck::cast_slice(&view);
+            assert_eq!(coords, &[1.0, 0.0, 3.0, 0.0]);
+        }
+        stepper.download_buffer().unmap();
+        stepper.reset(&context.queue);
+
+        let coincident_flat = vec![2.0f32, 3.0, 2.0, 3.0];
+        let mut coincident_stepper = AtomicSparseStepper::new(
+            &context.device,
+            &context.queue,
+            2,
+            &[GpuPair {
+                u: 0,
+                v: 1,
+                dij: 1.0,
+                weight_u: 1.0,
+                weight_v: 1.0,
+            }],
+            &coincident_flat,
+        )
+        .unwrap();
+        coincident_stepper.step_epoch(&context.device, &context.queue, 0.5);
+        let c_slice = coincident_stepper.download_buffer().slice(..);
+        c_slice.map_async(wgpu::MapMode::Read, |_| {});
+        context.device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
+        {
+            let view = c_slice.get_mapped_range();
+            let coords: &[f32] = bytemuck::cast_slice(&view);
+            assert!(coords.iter().all(|v| v.is_finite()));
+            assert!((coords[0] - coords[2]).abs() > 0.1, "Coincident vertices did not separate: {coords:?}");
+        }
+        coincident_stepper.download_buffer().unmap();
     }
 }

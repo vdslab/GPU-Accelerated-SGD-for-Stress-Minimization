@@ -6,7 +6,7 @@ Live URL: https://vdslab.github.io/GPU-Accelerated-SGD-for-Stress-Minimization/
 
 The site name, browser title, and page heading are **RR-SGD**. Click the **ⓘ** button next to the heading to view an overview of the algorithms, the differences between Full and Sparse, and usage instructions.
 
-This static web application performs Matrix Market (`.mtx`) preprocessing, RR Full / RR Sparse SGD, and stress evaluation directly in the browser. Both preprocessing and the RR Full / RR Sparse SGD GPU solvers share the Rust implementations (`implementations/full/rr_gpu`, `implementations/sparse/sparse-sgd-gpu`, `shared/experiment-common`) compiled to `wasm32-unknown-unknown` (`wgpu` WebGPU backend + `wasm-bindgen`) as a WebAssembly package (`web/rr-lab/wasm` → `dist/pkg/`). Graph rendering also uses a WebGPU render pipeline to draw edges and circular nodes onto an `OffscreenCanvas` inside a dedicated Web Worker. Canvas 2D is used only to composite finished frames onto the page and as a fallback when WebGPU rendering is unavailable.
+This static web application performs Matrix Market (`.mtx`) preprocessing, RR Full / RR Sparse / Atomic Full / Atomic Sparse SGD, and stress evaluation directly in the browser. Both preprocessing and the GPU solvers share the Rust implementations (`implementations/full/rr_gpu`, `implementations/sparse/sparse-sgd-gpu`, `implementations/full/vram-lock-native`, `implementations/sparse/vram-lock-sparse`, `shared/experiment-common`) compiled to `wasm32-unknown-unknown` (`wgpu` WebGPU backend + `wasm-bindgen`) as a WebAssembly package (`web/rr-lab/wasm` → `dist/pkg/`). Graph rendering also uses a WebGPU render pipeline to draw edges and circular nodes onto an `OffscreenCanvas` inside a dedicated Web Worker. Canvas 2D is used only to composite finished frames onto the page and as a fallback when WebGPU rendering is unavailable.
 
 The **Active Graph** card in the left sidebar displays the source type (`Sample` or `Upload`), graph name, active vertex count, and undirected edge count. Merely changing the sample dropdown or switching the source radio button does not replace the currently loaded graph; the active graph switches only after a new graph finishes loading, and if loading fails, the previous graph and results are preserved intact.
 
@@ -49,10 +49,12 @@ dist/app.js                 UI controller and calculation state coordinator
   sgd/initialization.js     Seeded initial layout generation (shared Rust WASM StdRng)
   sgd/learning-rate.js      Exponential learning-rate schedule
   sgd/full-schedule.js      Two-stage Round-Robin tile schedule for Full SGD
-  sgd/full-engine.js        Full GPU solver driver (Rust wgpu FullStepper)
-  sgd/sparse-engine.js      Sparse GPU solver driver (Rust wgpu SparseStepper)
-  sgd/full.wgsl             Full coordinate update shader (u16 4-bank distances, shared coordinates)
-  sgd/sparse.wgsl           Sparse coordinate update shader (shared pivot cache, 20B GpuPair, 4-bank table)
+  sgd/full-engine.js        Full GPU solver drivers (Rust wgpu FullStepper & AtomicFullStepper)
+  sgd/sparse-engine.js      Sparse GPU solver drivers (Rust wgpu SparseStepper & AtomicSparseStepper)
+  sgd/full.wgsl             RR Full coordinate update shader (u16 4-bank distances, shared coordinates)
+  sgd/sparse.wgsl           RR Sparse coordinate update shader (shared pivot cache, 20B GpuPair, 4-bank table)
+  sgd/atomic-full.wgsl      Atomic Full coordinate update shader (per-vertex spinlocks, 16B EdgeInfo)
+  sgd/atomic-sparse.wgsl    Atomic Sparse coordinate update shader (per-vertex spinlocks, 20B GpuPair)
 ```
 
 Preprocessing and stress evaluation have no DOM or GPU dependencies. The SGD engines are decoupled from file loading and UI state, and all Worker communication is encapsulated in `ui/graph-client.js`. Large CPU preprocessing buffers are released once uploaded to the GPU. To rebuild `dist/pkg/` after modifying the Rust solvers, run `npm run build:wasm`.
@@ -72,6 +74,11 @@ Preprocessing and stress evaluation have no DOM or GPU dependencies. The SGD eng
 - **Two-Sided Phase**: Conflict-free pivot circle matchings combined with fast `u64` bitmask First-Fit edge coloring (Phase 1B), packed into 20-byte padding-free `GpuPair` entries and dispatched in batched `ComputePass` chunks.
 - Per-vertex pivot ordering via a 4-round Feistel network with cycle walking, plus per-epoch shuffling of phase order, matching order, and shared-pivot order.
 - Exponential learning-rate decay from $1 / w_{\min}$ to $\varepsilon / w_{\max}$ using `f32` coordinate updates without atomics or locks.
+
+**Atomic Full SGD** and **Atomic Sparse SGD** execute the lock-based baseline GPU solvers (`implementations/full/vram-lock-native` and `implementations/sparse/vram-lock-sparse`) via WebAssembly + `wgpu`:
+
+- Each workgroup (`@workgroup_size(1, 1, 1)`) acquires ordered per-vertex VRAM spinlocks (`min(u, v)` then `max(u, v)`) via `atomicExchange` before updating vertex coordinates.
+- Constraints are stored in 16-byte `EdgeInfo` pairs (Atomic Full) or 20-byte `GpuPair` entries (Atomic Sparse) split across multiple storage buffer banks (`<= 128 MiB` per bank) and dispatched on a 2D compute grid (`width × height <= 65,535`).
 
 ## Scale and Memory Limits
 

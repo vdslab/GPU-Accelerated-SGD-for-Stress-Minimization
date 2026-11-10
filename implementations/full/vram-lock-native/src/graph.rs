@@ -1,7 +1,10 @@
 use anyhow::{ensure, Result};
 use bytemuck::{Pod, Zeroable};
+#[cfg(not(target_arch = "wasm32"))]
 use sprs::io::read_matrix_market;
+#[cfg(not(target_arch = "wasm32"))]
 use sprs::num_kinds::Pattern;
+#[cfg(not(target_arch = "wasm32"))]
 use std::path::Path;
 
 #[derive(Debug)]
@@ -42,6 +45,7 @@ pub struct FlatCsr {
 
 
 impl Graph {
+    #[cfg(not(target_arch = "wasm32"))]
     pub fn from_mtx(path: &Path) -> Result<Self> {
         let matrix: sprs::TriMat<Pattern> = read_matrix_market(path)?;
         let node_size: usize = matrix.rows();
@@ -63,6 +67,17 @@ impl Graph {
             edge_src,
             edge_dst,
         })
+    }
+
+    #[allow(dead_code)]
+    pub fn from_edges(node_size: usize, edge_src: Vec<usize>, edge_dst: Vec<usize>) -> Self {
+        let edge_size = edge_src.len();
+        Graph {
+            node_size,
+            edge_size,
+            edge_src,
+            edge_dst,
+        }
     }
 
     pub fn to_flat_csr(&self) -> FlatCsr {
@@ -235,6 +250,34 @@ pub fn calc_learning_rate(tmax: usize, wmin: f64, wmax: f64, eps: f64) -> Vec<f6
     (0..tmax)
         .map(|t| eta_max * (-lamb * t as f64).exp())
         .collect()
+}
+
+#[allow(dead_code)]
+pub fn build_pairs_from_dist_u16(n: usize, dist_u16: &[u16], seed: u64) -> Vec<EdgeInfo> {
+    use experiment_common::seed::{rng_for_stream, FULL_UPDATE_STREAM};
+    use rand::seq::SliceRandom;
+
+    let total_pairs = n * n.saturating_sub(1) / 2;
+    let mut pairs = Vec::with_capacity(total_pairs);
+    for u in 0..n.saturating_sub(1) {
+        let row_offset = u * n;
+        for v in (u + 1)..n {
+            let d = dist_u16[row_offset + v];
+            if d != u16::MAX && d > 0 {
+                let dij = f32::from(d);
+                let wij = 1.0f32 / (dij * dij);
+                pairs.push(EdgeInfo {
+                    u: u as u32,
+                    v: v as u32,
+                    dij,
+                    wij,
+                });
+            }
+        }
+    }
+    let mut shuffle_rng = rng_for_stream(seed, FULL_UPDATE_STREAM);
+    pairs.shuffle(&mut shuffle_rng);
+    pairs
 }
 
 #[cfg(test)]

@@ -107,9 +107,47 @@ try {
   await page.locator('#pivots').fill(String(maxPivots + 1));
   assert(await page.locator('#run').evaluate((el) => el.disabled));
   await assertFits('large-upload-pivot-warning');
+  await page.locator('#pivots').fill('200');
+  assert(await page.locator('#run').isEnabled());
+  await page.locator('#method').selectOption('atomic_sparse');
+  assert.equal(await page.locator('#pivots').inputValue(), '149');
+  assert(await page.locator('#run').isEnabled());
+  await page.locator('#method').selectOption('sparse');
   await page.locator('#pivots').fill('100');
   assert(await page.locator('#run').isEnabled());
   await assertFits('large-upload-ready');
+
+  const nMid = 9000;
+  const midLines = [
+    '%%MatrixMarket matrix coordinate pattern symmetric',
+    `${nMid} ${nMid} ${nMid - 1}`,
+  ];
+  for (let i = 1; i < nMid; i++) midLines.push(`${i} ${i + 1}`);
+  await page
+    .locator('#file')
+    .setInputFiles(resolve(import.meta.dirname, '../tests/fixtures/cycle257.mtx'));
+  await page.waitForFunction(
+    () =>
+      document.getElementById('active-graph-name').textContent === 'cycle257.mtx' &&
+      document.getElementById('status').textContent === 'Ready',
+  );
+  await page.locator('#method').selectOption('atomic_full');
+  await page.locator('#file').setInputFiles({
+    name: 'mid9000.mtx',
+    mimeType: 'text/plain',
+    buffer: Buffer.from(midLines.join('\n')),
+  });
+  await page.waitForFunction(
+    () =>
+      document.getElementById('active-graph-name').textContent === 'mid9000.mtx' &&
+      document.getElementById('status').textContent === 'Ready',
+  );
+  assert.equal(await page.locator('#method').inputValue(), 'atomic_sparse');
+  assert(!(await page.locator('#method option[value=full]').evaluate((el) => el.disabled)));
+  assert(await page.locator('#method option[value=atomic_full]').evaluate((el) => el.disabled));
+  assert.match(await page.locator('#method-support').innerText(), /Atomic Full unavailable/);
+  assert(await page.locator('#run').isEnabled());
+  await assertFits('mid-upload-atomic-full-unavailable');
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.waitForTimeout(350);
   const dir = process.env.SCREENSHOT_DIR ?? '/tmp/rrgraph-layout';

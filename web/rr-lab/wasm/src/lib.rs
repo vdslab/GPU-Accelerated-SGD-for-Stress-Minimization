@@ -4,6 +4,8 @@ use rr_gpu::gpu::{build_schedule, FullStepper, KernelConfig, MemoryMode};
 use sparse_sgd_gpu::gpu::SparseStepper;
 use sparse_sgd_gpu::preprocess::{prepare_with_backend, BfsBackend, Distances};
 use sparse_sgd_gpu::schedule::{build_prepared_schedule, GpuPair, OneSidedEntry};
+use vram_lock_native::gpu::AtomicFullStepper;
+use vram_lock_sparse::gpu::{AtomicSparseStepper, GpuPair as AtomicSparseGpuPair};
 use wasm_bindgen::prelude::*;
 
 fn to_js_err(err: impl std::fmt::Display) -> JsValue {
@@ -171,6 +173,75 @@ pub fn wasm_prepare_sparse(
         wmax: prepared.wmax,
         one_sided_count: prepared.one_sided_count,
         two_sided_count,
+        constraint_count: prepared.constraint_count,
+    })
+}
+
+#[wasm_bindgen]
+pub struct WasmAtomicSparsePrepared {
+    pivots: Vec<u32>,
+    pairs: Vec<u8>,
+    wmin: f64,
+    wmax: f64,
+    constraint_count: usize,
+}
+
+#[wasm_bindgen]
+impl WasmAtomicSparsePrepared {
+    pub fn take_pivots(&mut self) -> Vec<u32> {
+        std::mem::take(&mut self.pivots)
+    }
+
+    pub fn take_pairs(&mut self) -> Vec<u8> {
+        std::mem::take(&mut self.pairs)
+    }
+
+    pub fn wmin(&self) -> f64 {
+        self.wmin
+    }
+
+    pub fn wmax(&self) -> f64 {
+        self.wmax
+    }
+
+    pub fn constraint_count(&self) -> usize {
+        self.constraint_count
+    }
+}
+
+#[wasm_bindgen]
+pub fn wasm_prepare_atomic_sparse(
+    n: usize,
+    edge_data: &[u32],
+    pivots: usize,
+    seed: u32,
+) -> Result<WasmAtomicSparsePrepared, JsValue> {
+    let edges: Vec<(usize, usize)> = edge_data
+        .chunks_exact(2)
+        .map(|c| (c[0] as usize, c[1] as usize))
+        .collect();
+    let graph =
+        vram_lock_sparse::graph::Graph::try_from_edges(n, &edges).map_err(to_js_err)?;
+    let mut rng = StdRng::seed_from_u64(u64::from(seed));
+    let mut prepared = vram_lock_sparse::preprocess::prepare_with_backend(
+        &graph,
+        15,
+        0.1,
+        pivots,
+        true,
+        &mut rng,
+        vram_lock_sparse::preprocess::BfsBackend::Cpu,
+    )
+    .map_err(to_js_err)?;
+    prepared.pairs.shuffle(&mut rng);
+    let pivots_u32: Vec<u32> = prepared.pivots.iter().map(|&p| p as u32).collect();
+    let pairs_u8: Vec<u8> = bytemuck::cast_slice(&prepared.pairs).to_vec();
+
+    Ok(WasmAtomicSparsePrepared {
+        pivots: pivots_u32,
+        pairs: pairs_u8,
+        wmin: prepared.wmin,
+        wmax: prepared.wmax,
         constraint_count: prepared.constraint_count,
     })
 }
@@ -389,6 +460,93 @@ impl WasmSparseEngine {
         )
         .map_err(to_js_err)?;
         Ok(WasmSparseEngine { stepper, n })
+    }
+
+    pub async fn epoch(
+        &mut self,
+        ctx: &WasmGpuContext,
+        eta: f32,
+    ) -> Result<js_sys::Float32Array, JsValue> {
+        self.stepper.step_epoch(&ctx.device, &ctx.queue, eta);
+        readback_f32_buffer(&ctx.device, self.stepper.download_buffer(), self.n * 2).await
+    }
+
+    pub fn reset(&mut self, ctx: &WasmGpuContext) {
+        self.stepper.reset(&ctx.queue);
+    }
+}
+
+#[wasm_bindgen]
+pub struct WasmAtomicFullEngine {
+    stepper: AtomicFullStepper,
+    n: usize,
+}
+
+#[wasm_bindgen]
+impl WasmAtomicFullEngine {
+    #[wasm_bindgen(constructor)]
+    pub fn new(
+        ctx: &WasmGpuContext,
+        n: u32,
+        dist_u16: &[u16],
+        initial_positions: &[f32],
+        seed: u32,
+    ) -> Result<WasmAtomicFullEngine, JsValue> {
+        let stepper = AtomicFullStepper::new(
+            &ctx.device,
+            &ctx.queue,
+            n,
+            dist_u16,
+            initial_positions,
+            u64::from(seed),
+        )
+        .map_err(to_js_err)?;
+        Ok(WasmAtomicFullEngine {
+            stepper,
+            n: n as usize,
+        })
+    }
+
+    pub async fn epoch(
+        &mut self,
+        ctx: &WasmGpuContext,
+        eta: f32,
+    ) -> Result<js_sys::Float32Array, JsValue> {
+        self.stepper.step_epoch(&ctx.device, &ctx.queue, eta);
+        readback_f32_buffer(&ctx.device, self.stepper.download_buffer(), self.n * 2).await
+    }
+
+    pub fn reset(&mut self, ctx: &WasmGpuContext) {
+        self.stepper.reset(&ctx.queue);
+    }
+}
+
+#[wasm_bindgen]
+pub struct WasmAtomicSparseEngine {
+    stepper: AtomicSparseStepper,
+    n: usize,
+}
+
+#[wasm_bindgen]
+impl WasmAtomicSparseEngine {
+    #[wasm_bindgen(constructor)]
+    pub fn new(
+        ctx: &WasmGpuContext,
+        n: usize,
+        pairs_u8: &[u8],
+        initial_positions: &[f32],
+    ) -> Result<WasmAtomicSparseEngine, JsValue> {
+        let pairs: &[AtomicSparseGpuPair] = bytemuck::try_cast_slice(pairs_u8)
+            .map_err(|e| to_js_err(format!("Invalid atomic sparse pairs slice: {e}")))?;
+        let stepper = AtomicSparseStepper::new(
+            &ctx.device,
+            &ctx.queue,
+            n,
+            pairs,
+            initial_positions,
+        )
+        .map_err(to_js_err)?;
+        Ok(WasmAtomicSparseEngine { stepper, n })
     }
 
     pub async fn epoch(
@@ -666,6 +824,104 @@ pub fn wasm_reference_sparse(
         } else {
             run_two(&mut p);
             run_one(&mut p);
+        }
+    }
+    p
+}
+
+#[wasm_bindgen]
+pub fn wasm_reference_atomic_full(
+    n: u32,
+    dist_u16: &[u16],
+    diameter: f64,
+    iterations: usize,
+    seed: u32,
+    epsilon: f64,
+) -> Vec<f32> {
+    let mut p = wasm_initial_positions(n as usize, seed);
+    let pairs = vram_lock_native::graph::build_pairs_from_dist_u16(
+        n as usize,
+        dist_u16,
+        u64::from(seed),
+    );
+    for epoch in 0..iterations {
+        let eta = if iterations == 1 {
+            (diameter * diameter) as f32
+        } else {
+            let d2 = diameter * diameter;
+            (d2 * (-(d2 / epsilon).ln() * (epoch as f64) / ((iterations - 1) as f64)).exp()) as f32
+        };
+        for pair in &pairs {
+            let u = pair.u as usize;
+            let v = pair.v as usize;
+            if u >= v {
+                continue;
+            }
+            let mut dx = p[2 * v] - p[2 * u];
+            let mut dy = p[2 * v + 1] - p[2 * u + 1];
+            let mut dist = (dx * dx + dy * dy).sqrt();
+            if dist < 1e-12 {
+                dx = 1e-6;
+                dy = 1e-6;
+                dist = (dx * dx + dy * dy).sqrt();
+            }
+            let mu = (pair.wij * eta).min(1.0);
+            let scale = mu * (dist - pair.dij) * 0.5 / dist;
+            let rx = scale * dx;
+            let ry = scale * dy;
+            p[2 * u] += rx;
+            p[2 * u + 1] += ry;
+            p[2 * v] -= rx;
+            p[2 * v + 1] -= ry;
+        }
+    }
+    p
+}
+
+#[wasm_bindgen]
+pub fn wasm_reference_atomic_sparse(
+    n: usize,
+    pairs_u8: &[u8],
+    weight_min: f64,
+    weight_max: f64,
+    iterations: usize,
+    seed: u32,
+    epsilon: f64,
+) -> Vec<f32> {
+    let mut p = wasm_initial_positions(n, seed);
+    let pairs: &[AtomicSparseGpuPair] = bytemuck::cast_slice(pairs_u8);
+    for iteration in 0..iterations {
+        let eta = if iterations == 1 {
+            (1.0 / weight_min) as f32
+        } else {
+            let eta_max = 1.0 / weight_min;
+            let eta_min = epsilon / weight_max;
+            let lambda = (eta_max / eta_min).ln() / ((iterations - 1) as f64);
+            (eta_max * (-lambda * (iteration as f64)).exp()) as f32
+        };
+        for pair in pairs {
+            let u = pair.u as usize;
+            let v = pair.v as usize;
+            if u == v {
+                continue;
+            }
+            let mut dx = p[2 * v] - p[2 * u];
+            let mut dy = p[2 * v + 1] - p[2 * u + 1];
+            let mut norm = (dx * dx + dy * dy).sqrt();
+            if norm < 1e-12 {
+                dx = 1e-6;
+                dy = 1e-6;
+                norm = (dx * dx + dy * dy).sqrt();
+            }
+            let scale = (norm - pair.dij) / (2.0 * norm);
+            let rx = scale * dx;
+            let ry = scale * dy;
+            let mu_u = (pair.weight_u * eta).min(1.0);
+            let mu_v = (pair.weight_v * eta).min(1.0);
+            p[2 * u] += mu_u * rx;
+            p[2 * u + 1] += mu_u * ry;
+            p[2 * v] -= mu_v * rx;
+            p[2 * v + 1] -= mu_v * ry;
         }
     }
     p

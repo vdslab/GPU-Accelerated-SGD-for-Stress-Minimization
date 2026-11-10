@@ -1,6 +1,7 @@
 import { edgeCount } from '../graph/edges.js';
 import { runIntent } from './run-state.js';
 import { graphMethodSupport, memoryLabel } from '../graph/method-support.js';
+import { isSparseMethod } from '../sgd/learning-rate.js';
 
 export const element = (id) => document.getElementById(id);
 export function readSettings() {
@@ -11,7 +12,8 @@ export function readSettings() {
     seed: Number(element('seed').value),
     pivots: Number(element('pivots').value),
   };
-  if (!['full', 'sparse'].includes(config.method)) throw new Error('Please select a method.');
+  if (!['full', 'sparse', 'atomic_full', 'atomic_sparse'].includes(config.method))
+    throw new Error('Please select a method.');
   if (element('method').selectedOptions[0]?.disabled)
     throw new Error('The selected method is currently unavailable.');
   if (!Number.isInteger(config.iterations) || config.iterations < 1 || config.iterations > 500)
@@ -22,7 +24,7 @@ export function readSettings() {
     throw new Error('Epsilon must be between 0.0001 and 1.');
   const maxPivots = Number(element('pivots').max);
   if (
-    config.method === 'sparse' &&
+    isSparseMethod(config.method) &&
     (!Number.isInteger(config.pivots) || config.pivots < 1 || config.pivots > maxPivots)
   )
     throw new Error(`Pivots must be between 1 and ${maxPivots}.`);
@@ -40,12 +42,17 @@ export function setProgress(value) {
 export function updateMethodSupport(run) {
   const fullOption = element('method').querySelector('[value="full"]');
   const sparseOption = element('method').querySelector('[value="sparse"]');
+  const atomicFullOption = element('method').querySelector('[value="atomic_full"]');
+  const atomicSparseOption = element('method').querySelector('[value="atomic_sparse"]');
   const note = element('method-support');
   const pivotLimit = element('pivot-limit');
   if (!run.graph || !run.context) {
     fullOption.disabled = !run.context;
     sparseOption.disabled = !run.context;
+    if (atomicFullOption) atomicFullOption.disabled = !run.context;
+    if (atomicSparseOption) atomicSparseOption.disabled = !run.context;
     fullOption.textContent = 'RR Full SGD';
+    if (atomicFullOption) atomicFullOption.textContent = 'Atomic Full SGD';
     note.hidden = true;
     pivotLimit.textContent = '';
     element('pivots').max = '1000';
@@ -54,14 +61,43 @@ export function updateMethodSupport(run) {
   const support = graphMethodSupport(run.graph.n, run.context.limits);
   fullOption.disabled = !support.full.available;
   sparseOption.disabled = support.sparse.maxPivots < 1;
+  if (atomicFullOption) {
+    atomicFullOption.disabled = !support.atomic_full.available;
+    atomicFullOption.textContent = support.atomic_full.available
+      ? 'Atomic Full SGD'
+      : 'Atomic Full SGD (Unavailable)';
+  }
+  if (atomicSparseOption) {
+    atomicSparseOption.disabled = support.atomic_sparse.maxPivots < 1;
+  }
   fullOption.textContent = support.full.available ? 'RR Full SGD' : 'RR Full SGD (Unavailable)';
-  if (!support.full.available && element('method').value === 'full')
-    element('method').value = 'sparse';
-  note.hidden = support.full.available;
-  note.textContent = `Full unavailable: distance matrix ${memoryLabel(support.full.requiredBytes)} > limit ${memoryLabel(support.full.limit)}. Use Sparse.`;
-  element('pivots').max = String(support.sparse.maxPivots);
-  pivotLimit.textContent =
-    support.sparse.maxPivots < 1000 ? `(max ${support.sparse.maxPivots})` : '';
+  const switchedFromFull = !support.full.available && element('method').value === 'full';
+  const switchedFromAtomicFull =
+    !support.atomic_full.available && element('method').value === 'atomic_full';
+  if (switchedFromFull) element('method').value = 'sparse';
+  if (switchedFromAtomicFull) element('method').value = 'atomic_sparse';
+  if (!support.full.available) {
+    note.hidden = false;
+    note.textContent = `Full unavailable: distance matrix ${memoryLabel(support.full.requiredBytes)} > limit ${memoryLabel(support.full.limit)}. Use Sparse.`;
+  } else if (!support.atomic_full.available) {
+    note.hidden = false;
+    note.textContent = `Atomic Full unavailable: pair table ${memoryLabel(support.atomic_full.requiredBytes)} > limit ${memoryLabel(support.atomic_full.limit)}. Use Sparse.`;
+  } else {
+    note.hidden = true;
+  }
+  const maxPivots =
+    element('method').value === 'atomic_sparse'
+      ? support.atomic_sparse.maxPivots
+      : support.sparse.maxPivots;
+  element('pivots').max = String(maxPivots);
+  if (
+    (switchedFromFull || switchedFromAtomicFull) &&
+    maxPivots >= 1 &&
+    Number(element('pivots').value) > maxPivots
+  ) {
+    element('pivots').value = String(maxPivots);
+  }
+  pivotLimit.textContent = maxPivots < 1000 ? `(max ${maxPivots})` : '';
 }
 
 export function updateControls(run) {
@@ -70,7 +106,7 @@ export function updateControls(run) {
   for (const id of ['method', 'iterations', 'epsilon', 'seed', 'resolution'])
     element(id).disabled = busy;
   element('method').disabled = busy || !run.context;
-  element('pivots').disabled = busy || element('method').value !== 'sparse';
+  element('pivots').disabled = busy || !isSparseMethod(element('method').value);
   for (const id of ['file', 'sample', 'load-sample', 'source-sample', 'source-upload'])
     element(id).disabled = busy;
   let valid = true;

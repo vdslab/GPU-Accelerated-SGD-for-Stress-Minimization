@@ -1,5 +1,195 @@
 /* @ts-self-types="./rr_lab_wasm.d.ts" */
 
+export class WasmAtomicFullEngine {
+  __destroy_into_raw() {
+    const ptr = this.__wbg_ptr;
+    this.__wbg_ptr = 0;
+    WasmAtomicFullEngineFinalization.unregister(this);
+    return ptr;
+  }
+  free() {
+    const ptr = this.__destroy_into_raw();
+    wasm.__wbg_wasmatomicfullengine_free(ptr, 0);
+  }
+  /**
+   * @param {WasmGpuContext} ctx
+   * @param {number} eta
+   * @returns {Promise<Float32Array>}
+   */
+  epoch(ctx, eta) {
+    _assertClass(ctx, WasmGpuContext);
+    const ret = wasm.wasmatomicfullengine_epoch(this.__wbg_ptr, ctx.__wbg_ptr, eta);
+    return ret;
+  }
+  /**
+   * @param {WasmGpuContext} ctx
+   * @param {number} n
+   * @param {Uint16Array | number[]} dist_u16
+   * @param {Float32Array | number[]} initial_positions
+   * @param {number} seed
+   */
+  constructor(ctx, n, dist_u16, initial_positions, seed) {
+    _assertClass(ctx, WasmGpuContext);
+    const val3 = +n;
+    const val4 = +seed;
+    let ptr0, len0, ptr1, len1;
+    try {
+      ptr0 = passArray16ToWasm0(dist_u16, wasm.__wbindgen_malloc);
+      len0 = WASM_VECTOR_LEN;
+      ptr1 = passArrayF32ToWasm0(initial_positions, wasm.__wbindgen_malloc);
+      len1 = WASM_VECTOR_LEN;
+    } catch (e) {
+      if (ptr1) {
+        wasm.__wbindgen_free(ptr1, len1 * 4, 4);
+      }
+      if (ptr0) {
+        wasm.__wbindgen_free(ptr0, len0 * 2, 2);
+      }
+      throw e;
+    }
+    const ret = wasm.wasmatomicfullengine_new(ctx.__wbg_ptr, val3, ptr0, len0, ptr1, len1, val4);
+    if (ret[2]) {
+      throw takeFromExternrefTable0(ret[1]);
+    }
+    this.__wbg_ptr = ret[0];
+    WasmAtomicFullEngineFinalization.register(this, this.__wbg_ptr, this);
+    return this;
+  }
+  /**
+   * @param {WasmGpuContext} ctx
+   */
+  reset(ctx) {
+    _assertClass(ctx, WasmGpuContext);
+    wasm.wasmatomicfullengine_reset(this.__wbg_ptr, ctx.__wbg_ptr);
+  }
+}
+if (Symbol.dispose)
+  WasmAtomicFullEngine.prototype[Symbol.dispose] = WasmAtomicFullEngine.prototype.free;
+
+export class WasmAtomicSparseEngine {
+  __destroy_into_raw() {
+    const ptr = this.__wbg_ptr;
+    this.__wbg_ptr = 0;
+    WasmAtomicSparseEngineFinalization.unregister(this);
+    return ptr;
+  }
+  free() {
+    const ptr = this.__destroy_into_raw();
+    wasm.__wbg_wasmatomicsparseengine_free(ptr, 0);
+  }
+  /**
+   * @param {WasmGpuContext} ctx
+   * @param {number} eta
+   * @returns {Promise<Float32Array>}
+   */
+  epoch(ctx, eta) {
+    _assertClass(ctx, WasmGpuContext);
+    const ret = wasm.wasmatomicsparseengine_epoch(this.__wbg_ptr, ctx.__wbg_ptr, eta);
+    return ret;
+  }
+  /**
+   * @param {WasmGpuContext} ctx
+   * @param {number} n
+   * @param {Uint8Array | number[]} pairs_u8
+   * @param {Float32Array | number[]} initial_positions
+   */
+  constructor(ctx, n, pairs_u8, initial_positions) {
+    _assertClass(ctx, WasmGpuContext);
+    const val3 = +n;
+    let ptr0, len0, ptr1, len1;
+    try {
+      ptr0 = passArray8ToWasm0(pairs_u8, wasm.__wbindgen_malloc);
+      len0 = WASM_VECTOR_LEN;
+      ptr1 = passArrayF32ToWasm0(initial_positions, wasm.__wbindgen_malloc);
+      len1 = WASM_VECTOR_LEN;
+    } catch (e) {
+      if (ptr1) {
+        wasm.__wbindgen_free(ptr1, len1 * 4, 4);
+      }
+      if (ptr0) {
+        wasm.__wbindgen_free(ptr0, len0 * 1, 1);
+      }
+      throw e;
+    }
+    const ret = wasm.wasmatomicsparseengine_new(ctx.__wbg_ptr, val3, ptr0, len0, ptr1, len1);
+    if (ret[2]) {
+      throw takeFromExternrefTable0(ret[1]);
+    }
+    this.__wbg_ptr = ret[0];
+    WasmAtomicSparseEngineFinalization.register(this, this.__wbg_ptr, this);
+    return this;
+  }
+  /**
+   * @param {WasmGpuContext} ctx
+   */
+  reset(ctx) {
+    _assertClass(ctx, WasmGpuContext);
+    wasm.wasmatomicsparseengine_reset(this.__wbg_ptr, ctx.__wbg_ptr);
+  }
+}
+if (Symbol.dispose)
+  WasmAtomicSparseEngine.prototype[Symbol.dispose] = WasmAtomicSparseEngine.prototype.free;
+
+export class WasmAtomicSparsePrepared {
+  static __wrap(ptr) {
+    const obj = Object.create(WasmAtomicSparsePrepared.prototype);
+    obj.__wbg_ptr = ptr;
+    WasmAtomicSparsePreparedFinalization.register(obj, obj.__wbg_ptr, obj);
+    return obj;
+  }
+  __destroy_into_raw() {
+    const ptr = this.__wbg_ptr;
+    this.__wbg_ptr = 0;
+    WasmAtomicSparsePreparedFinalization.unregister(this);
+    return ptr;
+  }
+  free() {
+    const ptr = this.__destroy_into_raw();
+    wasm.__wbg_wasmatomicsparseprepared_free(ptr, 0);
+  }
+  /**
+   * @returns {number}
+   */
+  constraint_count() {
+    const ret = wasm.wasmatomicsparseprepared_constraint_count(this.__wbg_ptr);
+    return ret >>> 0;
+  }
+  /**
+   * @returns {Uint8Array}
+   */
+  take_pairs() {
+    const ret = wasm.wasmatomicsparseprepared_take_pairs(this.__wbg_ptr);
+    var v1 = getArrayU8FromWasm0(ret[0], ret[1]).slice();
+    wasm.__wbindgen_free(ret[0], ret[1] * 1, 1);
+    return v1;
+  }
+  /**
+   * @returns {Uint32Array}
+   */
+  take_pivots() {
+    const ret = wasm.wasmatomicsparseprepared_take_pivots(this.__wbg_ptr);
+    var v1 = getArrayU32FromWasm0(ret[0], ret[1]).slice();
+    wasm.__wbindgen_free(ret[0], ret[1] * 4, 4);
+    return v1;
+  }
+  /**
+   * @returns {number}
+   */
+  wmax() {
+    const ret = wasm.wasmatomicsparseprepared_wmax(this.__wbg_ptr);
+    return ret;
+  }
+  /**
+   * @returns {number}
+   */
+  wmin() {
+    const ret = wasm.wasmatomicsparseprepared_wmin(this.__wbg_ptr);
+    return ret;
+  }
+}
+if (Symbol.dispose)
+  WasmAtomicSparsePrepared.prototype[Symbol.dispose] = WasmAtomicSparsePrepared.prototype.free;
+
 export class WasmFullEngine {
   __destroy_into_raw() {
     const ptr = this.__wbg_ptr;
@@ -397,6 +587,26 @@ export function wasm_initial_positions(n, seed) {
 /**
  * @param {number} n
  * @param {Uint32Array | number[]} edge_data
+ * @param {number} pivots
+ * @param {number} seed
+ * @returns {WasmAtomicSparsePrepared}
+ */
+export function wasm_prepare_atomic_sparse(n, edge_data, pivots, seed) {
+  const val2 = +n;
+  const val3 = +pivots;
+  const val4 = +seed;
+  const ptr0 = passArray32ToWasm0(edge_data, wasm.__wbindgen_malloc);
+  const len0 = WASM_VECTOR_LEN;
+  const ret = wasm.wasm_prepare_atomic_sparse(val2, ptr0, len0, val3, val4);
+  if (ret[2]) {
+    throw takeFromExternrefTable0(ret[1]);
+  }
+  return WasmAtomicSparsePrepared.__wrap(ret[0]);
+}
+
+/**
+ * @param {number} n
+ * @param {Uint32Array | number[]} edge_data
  * @returns {WasmFullPrepared}
  */
 export function wasm_prepare_full(n, edge_data) {
@@ -428,6 +638,62 @@ export function wasm_prepare_sparse(n, edge_data, pivots, seed) {
     throw takeFromExternrefTable0(ret[1]);
   }
   return WasmSparsePrepared.__wrap(ret[0]);
+}
+
+/**
+ * @param {number} n
+ * @param {Uint16Array | number[]} dist_u16
+ * @param {number} diameter
+ * @param {number} iterations
+ * @param {number} seed
+ * @param {number} epsilon
+ * @returns {Float32Array}
+ */
+export function wasm_reference_atomic_full(n, dist_u16, diameter, iterations, seed, epsilon) {
+  const val2 = +n;
+  const val3 = +diameter;
+  const val4 = +iterations;
+  const val5 = +seed;
+  const val6 = +epsilon;
+  const ptr0 = passArray16ToWasm0(dist_u16, wasm.__wbindgen_malloc);
+  const len0 = WASM_VECTOR_LEN;
+  const ret = wasm.wasm_reference_atomic_full(val2, ptr0, len0, val3, val4, val5, val6);
+  var v7 = getArrayF32FromWasm0(ret[0], ret[1]).slice();
+  wasm.__wbindgen_free(ret[0], ret[1] * 4, 4);
+  return v7;
+}
+
+/**
+ * @param {number} n
+ * @param {Uint8Array | number[]} pairs_u8
+ * @param {number} weight_min
+ * @param {number} weight_max
+ * @param {number} iterations
+ * @param {number} seed
+ * @param {number} epsilon
+ * @returns {Float32Array}
+ */
+export function wasm_reference_atomic_sparse(
+  n,
+  pairs_u8,
+  weight_min,
+  weight_max,
+  iterations,
+  seed,
+  epsilon,
+) {
+  const val2 = +n;
+  const val3 = +weight_min;
+  const val4 = +weight_max;
+  const val5 = +iterations;
+  const val6 = +seed;
+  const val7 = +epsilon;
+  const ptr0 = passArray8ToWasm0(pairs_u8, wasm.__wbindgen_malloc);
+  const len0 = WASM_VECTOR_LEN;
+  const ret = wasm.wasm_reference_atomic_sparse(val2, ptr0, len0, val3, val4, val5, val6, val7);
+  var v8 = getArrayF32FromWasm0(ret[0], ret[1]).slice();
+  wasm.__wbindgen_free(ret[0], ret[1] * 4, 4);
+  return v8;
 }
 
 /**
@@ -1128,7 +1394,7 @@ function __wbg_get_imports() {
       }, arguments);
     },
     __wbindgen_generic_0000000000000001: function (arg0, arg1) {
-      // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [Externref], shim_idx: 231, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
+      // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [Externref], shim_idx: 322, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
       const ret = makeMutClosure(
         arg0,
         arg1,
@@ -1137,7 +1403,7 @@ function __wbg_get_imports() {
       return ret;
     },
     __wbindgen_generic_0000000000000002: function (arg0, arg1) {
-      // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [Externref], shim_idx: 263, ret: Result(Unit), inner_ret: Some(Result(Unit)) }, mutable: true }) -> Externref`.
+      // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [Externref], shim_idx: 354, ret: Result(Unit), inner_ret: Some(Result(Unit)) }, mutable: true }) -> Externref`.
       const ret = makeMutClosure(
         arg0,
         arg1,
@@ -1339,6 +1605,18 @@ const __wbindgen_enum_GpuTextureViewDimension = [
   'cube-array',
   '3d',
 ];
+const WasmAtomicFullEngineFinalization =
+  typeof FinalizationRegistry === 'undefined'
+    ? { register: () => {}, unregister: () => {} }
+    : new FinalizationRegistry((ptr) => wasm.__wbg_wasmatomicfullengine_free(ptr, 1));
+const WasmAtomicSparseEngineFinalization =
+  typeof FinalizationRegistry === 'undefined'
+    ? { register: () => {}, unregister: () => {} }
+    : new FinalizationRegistry((ptr) => wasm.__wbg_wasmatomicsparseengine_free(ptr, 1));
+const WasmAtomicSparsePreparedFinalization =
+  typeof FinalizationRegistry === 'undefined'
+    ? { register: () => {}, unregister: () => {} }
+    : new FinalizationRegistry((ptr) => wasm.__wbg_wasmatomicsparseprepared_free(ptr, 1));
 const WasmFullEngineFinalization =
   typeof FinalizationRegistry === 'undefined'
     ? { register: () => {}, unregister: () => {} }

@@ -1,5 +1,9 @@
 import { multiBankCapacity } from '../graph/method-support.js';
-import { wasm_prepare_sparse, wasm_select_pivots } from '../wasm/index.js';
+import {
+  wasm_prepare_atomic_sparse,
+  wasm_prepare_sparse,
+  wasm_select_pivots,
+} from '../wasm/index.js';
 
 /** Distance-proportional pivot sampling + inverted O(N) prefix counting via Rust sparse-sgd-gpu. */
 export function selectPivots(csr, count, random, report = () => {}) {
@@ -50,6 +54,10 @@ export function sparseMemoryBytes(n, pivots) {
   return n * pivots * 8;
 }
 
+export function atomicSparseMemoryBytes(n, pivots) {
+  return n * pivots * 20;
+}
+
 /** Rust sparse-sgd-gpu preprocessing: O(N) inverted prefix counts, u64 bitmask First-Fit coloring, and 20-byte GpuPair packing. */
 export function prepareSparse(graph, config, limits, report = () => {}) {
   const n = graph.n,
@@ -90,6 +98,41 @@ export function prepareSparse(graph, config, limits, report = () => {}) {
       constraints,
       rounds: roundOffsets.length - 1,
       bufferBytes: bytes + pairs.byteLength,
+    },
+  };
+}
+
+/** Rust vram-lock-sparse preprocessing: flat CSR BFS, O(N) inverted prefix counts, and 20-byte GpuPair streaming. */
+export function prepareAtomicSparse(graph, config, limits, report = () => {}) {
+  const n = graph.n,
+    h = Math.min(config.pivots, n),
+    bytes = atomicSparseMemoryBytes(n, h);
+  const max = multiBankCapacity(limits);
+  if (bytes > max)
+    throw new Error(
+      `Atomic Sparse pair table requires ${Math.ceil(bytes / 2 ** 20)} MiB. Please set pivots to at most ${Math.floor(max / (20 * n))} on this GPU.`,
+    );
+  const endpoints = graph.edgeData ?? Uint32Array.from(graph.edges.flat());
+  report(0.1, 'Selecting pivots and computing shortest paths');
+  const out = wasm_prepare_atomic_sparse(n, endpoints, h, (config.seed ?? 0) >>> 0);
+  const pivots = out.take_pivots();
+  const pairs = out.take_pairs();
+  const weightMin = out.wmin();
+  const weightMax = out.wmax();
+  const constraints = out.constraint_count();
+  out.free();
+  report(1, 'Streaming Atomic Sparse constraints');
+  return {
+    method: 'atomic_sparse',
+    n,
+    pivots,
+    pairs,
+    weightMin,
+    weightMax,
+    stats: {
+      pivots: h,
+      constraints,
+      bufferBytes: pairs.byteLength,
     },
   };
 }

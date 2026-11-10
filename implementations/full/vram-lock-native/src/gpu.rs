@@ -1,3 +1,4 @@
+#[cfg(not(target_arch = "wasm32"))]
 #[allow(dead_code)]
 #[path = "../../../../shared/gpu-timing/wgpu.rs"]
 mod timing;
@@ -5,8 +6,10 @@ mod timing;
 use crate::graph;
 use anyhow::{ensure, Result};
 use bytemuck::{Pod, Zeroable};
+#[cfg(not(target_arch = "wasm32"))]
 use experiment_common::OutputFormat;
 use std::num::NonZeroU64;
+#[cfg(not(target_arch = "wasm32"))]
 use std::time::{Duration, Instant};
 use wgpu::util::DeviceExt;
 
@@ -22,6 +25,7 @@ pub struct Uniforms {
     pub chunk_size: u32,
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 #[allow(dead_code)]
 pub struct GpuContext {
     pub instance: wgpu::Instance,
@@ -35,6 +39,7 @@ pub struct GpuContext {
     pub timestamp_supported: bool,
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 #[derive(Debug)]
 pub struct GpuRunResult {
     pub initial_positions: Vec<[f64; 2]>,
@@ -52,6 +57,7 @@ pub struct GpuRunResult {
     pub dispatches: u64,
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 impl GpuContext {
     pub fn new() -> Result<Self> {
         Self::with_shader(include_str!("shader.wgsl"))
@@ -541,6 +547,318 @@ impl GpuContext {
     }
 }
 
+#[allow(dead_code)]
+pub struct AtomicFullStepper {
+    n: u32,
+    initial_positions_flat: Vec<f32>,
+    pipeline: wgpu::ComputePipeline,
+    etas_buffer: wgpu::Buffer,
+    positions_buffer: wgpu::Buffer,
+    download_buffer: wgpu::Buffer,
+    #[allow(dead_code)]
+    lock_buffer: wgpu::Buffer,
+    #[allow(dead_code)]
+    updated_count_buffer: wgpu::Buffer,
+    #[allow(dead_code)]
+    uniforms_buffer: wgpu::Buffer,
+    #[allow(dead_code)]
+    pair_bank_buffers: Vec<wgpu::Buffer>,
+    bind_groups: Vec<wgpu::BindGroup>,
+    bank_pair_counts: Vec<u32>,
+    slot_size: usize,
+}
+
+#[allow(dead_code)]
+impl AtomicFullStepper {
+    pub fn new(
+        device: &wgpu::Device,
+        queue: &wgpu::Queue,
+        n: u32,
+        dist_u16: &[u16],
+        initial_positions_flat: &[f32],
+        seed: u64,
+    ) -> Result<Self> {
+        ensure!(n >= 2, "AtomicFullStepper requires n >= 2");
+        ensure!(
+            initial_positions_flat.len() == (n as usize) * 2,
+            "initial_positions_flat length must be 2 * n"
+        );
+        let pairs = graph::build_pairs_from_dist_u16(n as usize, dist_u16, seed);
+        ensure!(!pairs.is_empty(), "Empty Full workload");
+
+        let max_binding_bytes = device.limits().max_storage_buffer_binding_size as usize;
+        let max_pairs_per_bank = (max_binding_bytes / std::mem::size_of::<GpuEdgeInfo>())
+            .min(8_388_608)
+            .max(1);
+        let num_banks = pairs.len().div_ceil(max_pairs_per_bank);
+
+        let mut bank_pair_counts = Vec::with_capacity(num_banks);
+        for b in 0..num_banks {
+            let start = b * max_pairs_per_bank;
+            let end = (start + max_pairs_per_bank).min(pairs.len());
+            bank_pair_counts.push((end - start) as u32);
+        }
+
+        // Remove storageBarrier() inside non-uniform control flow for WebGPU Tint compliance.
+        let shader_src = include_str!("shader.wgsl").replace("storageBarrier();", "");
+        let module = device.create_shader_module(wgpu::ShaderModuleDescriptor {
+            label: Some("Atomic Full SGD Stepper Shader"),
+            source: wgpu::ShaderSource::Wgsl(shader_src.into()),
+        });
+
+        let bind_group_layout = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
+            label: Some("Atomic Full SGD Stepper Bind Group Layout"),
+            entries: &[
+                wgpu::BindGroupLayoutEntry {
+                    binding: 0,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: true },
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 1,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: false },
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 2,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: true },
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 3,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: false },
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 4,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: false },
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 5,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Uniform,
+                        has_dynamic_offset: true,
+                        min_binding_size: Some(
+                            NonZeroU64::new(std::mem::size_of::<Uniforms>() as u64).unwrap(),
+                        ),
+                    },
+                    count: None,
+                },
+            ],
+        });
+
+        let pipeline_layout = device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
+            label: Some("Atomic Full SGD Stepper Pipeline Layout"),
+            bind_group_layouts: &[&bind_group_layout],
+            push_constant_ranges: &[],
+        });
+
+        let pipeline = device.create_compute_pipeline(&wgpu::ComputePipelineDescriptor {
+            label: Some("Atomic Full SGD Stepper Pipeline"),
+            layout: Some(&pipeline_layout),
+            module: &module,
+            entry_point: Some("sgd"),
+            compilation_options: wgpu::PipelineCompilationOptions::default(),
+            cache: None,
+        });
+
+        let alignment = (device.limits().min_uniform_buffer_offset_alignment as usize).max(256);
+        let slot_size = std::mem::size_of::<Uniforms>().div_ceil(alignment) * alignment;
+        let mut uniform_bytes = vec![0u8; slot_size * num_banks];
+        for (b, &b_pairs) in bank_pair_counts.iter().enumerate() {
+            let u = Uniforms {
+                iteration: 0,
+                num_pairs: b_pairs,
+                chunk_offset: 0,
+                chunk_size: b_pairs,
+            };
+            let byte_offset = b * slot_size;
+            uniform_bytes[byte_offset..byte_offset + std::mem::size_of::<Uniforms>()]
+                .copy_from_slice(bytemuck::bytes_of(&u));
+        }
+
+        let uniforms_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label: Some("Atomic Full Stepper Uniforms Buffer"),
+            contents: &uniform_bytes,
+            usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
+        });
+
+        let etas_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label: Some("Atomic Full Stepper Etas Buffer"),
+            contents: bytemuck::bytes_of(&0.0f32),
+            usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
+        });
+
+        let positions_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label: Some("Atomic Full Stepper Positions Buffer"),
+            contents: bytemuck::cast_slice(initial_positions_flat),
+            usage: wgpu::BufferUsages::STORAGE
+                | wgpu::BufferUsages::COPY_SRC
+                | wgpu::BufferUsages::COPY_DST,
+        });
+
+        let download_buffer = device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("Atomic Full Stepper Download Buffer"),
+            size: (initial_positions_flat.len() * std::mem::size_of::<f32>()) as u64,
+            usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
+            mapped_at_creation: false,
+        });
+
+        let locks_zero = vec![0u32; n as usize];
+        let lock_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label: Some("Atomic Full Stepper Locks Buffer"),
+            contents: bytemuck::cast_slice(&locks_zero),
+            usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
+        });
+
+        let updated_count_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label: Some("Atomic Full Stepper Updated Count Buffer"),
+            contents: bytemuck::bytes_of(&0u32),
+            usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
+        });
+
+        let mut pair_bank_buffers = Vec::with_capacity(num_banks);
+        let mut bind_groups = Vec::with_capacity(num_banks);
+
+        for b in 0..num_banks {
+            let start = b * max_pairs_per_bank;
+            let end = (start + max_pairs_per_bank).min(pairs.len());
+            let bank_slice = &pairs[start..end];
+
+            let bank_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some(&format!("Atomic Full Stepper Pairs Bank Buffer {b}")),
+                contents: bytemuck::cast_slice(bank_slice),
+                usage: wgpu::BufferUsages::STORAGE,
+            });
+
+            let bg = device.create_bind_group(&wgpu::BindGroupDescriptor {
+                label: Some(&format!("Atomic Full Stepper Bind Group Bank {b}")),
+                layout: &bind_group_layout,
+                entries: &[
+                    wgpu::BindGroupEntry {
+                        binding: 0,
+                        resource: etas_buffer.as_entire_binding(),
+                    },
+                    wgpu::BindGroupEntry {
+                        binding: 1,
+                        resource: positions_buffer.as_entire_binding(),
+                    },
+                    wgpu::BindGroupEntry {
+                        binding: 2,
+                        resource: bank_buffer.as_entire_binding(),
+                    },
+                    wgpu::BindGroupEntry {
+                        binding: 3,
+                        resource: lock_buffer.as_entire_binding(),
+                    },
+                    wgpu::BindGroupEntry {
+                        binding: 4,
+                        resource: updated_count_buffer.as_entire_binding(),
+                    },
+                    wgpu::BindGroupEntry {
+                        binding: 5,
+                        resource: wgpu::BindingResource::Buffer(wgpu::BufferBinding {
+                            buffer: &uniforms_buffer,
+                            offset: 0,
+                            size: NonZeroU64::new(std::mem::size_of::<Uniforms>() as u64),
+                        }),
+                    },
+                ],
+            });
+
+            pair_bank_buffers.push(bank_buffer);
+            bind_groups.push(bg);
+        }
+
+        let _ = queue;
+
+        Ok(Self {
+            n,
+            initial_positions_flat: initial_positions_flat.to_vec(),
+            pipeline,
+            etas_buffer,
+            positions_buffer,
+            download_buffer,
+            lock_buffer,
+            updated_count_buffer,
+            uniforms_buffer,
+            pair_bank_buffers,
+            bind_groups,
+            bank_pair_counts,
+            slot_size,
+        })
+    }
+
+    pub fn step_epoch(&mut self, device: &wgpu::Device, queue: &wgpu::Queue, eta: f32) {
+        queue.write_buffer(&self.etas_buffer, 0, bytemuck::bytes_of(&eta));
+
+        let mut encoder = device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
+            label: Some("atomic_full_stepper_epoch"),
+        });
+
+        for (bank_idx, &b_pairs) in self.bank_pair_counts.iter().enumerate() {
+            let height = b_pairs.div_ceil(65_535);
+            let width = b_pairs.div_ceil(height);
+            let dynamic_offset = (bank_idx * self.slot_size) as u32;
+            let mut pass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
+                label: Some("atomic_full_stepper_pass"),
+                timestamp_writes: None,
+            });
+            pass.set_pipeline(&self.pipeline);
+            pass.set_bind_group(0, &self.bind_groups[bank_idx], &[dynamic_offset]);
+            pass.dispatch_workgroups(width, height, 1);
+        }
+
+        encoder.copy_buffer_to_buffer(
+            &self.positions_buffer,
+            0,
+            &self.download_buffer,
+            0,
+            (self.n as u64) * 8,
+        );
+        queue.submit(std::iter::once(encoder.finish()));
+    }
+
+    pub fn reset(&mut self, queue: &wgpu::Queue) {
+        queue.write_buffer(
+            &self.positions_buffer,
+            0,
+            bytemuck::cast_slice(&self.initial_positions_flat),
+        );
+    }
+
+    pub fn download_buffer(&self) -> &wgpu::Buffer {
+        &self.download_buffer
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -618,5 +936,54 @@ mod tests {
         assert_eq!(res_chunked.completed_updates, 6);
         assert_eq!(res_chunked.completed_updates, res_chunked.attempted_updates);
         assert_eq!(res_chunked.dispatches, 6);
+    }
+
+    #[test]
+    fn test_atomic_full_stepper_matches_known_solution_and_resets() {
+        let context = GpuContext::new().unwrap();
+        let dist_u16 = vec![0u16, 2u16, 2u16, 0u16];
+        let initial_flat = vec![0.0f32, 0.0, 4.0, 0.0];
+        let mut stepper = AtomicFullStepper::new(
+            &context.device,
+            &context.queue,
+            2,
+            &dist_u16,
+            &initial_flat,
+            0,
+        )
+        .unwrap();
+        stepper.step_epoch(&context.device, &context.queue, 4.0);
+        let slice = stepper.download_buffer().slice(..);
+        slice.map_async(wgpu::MapMode::Read, |_| {});
+        context.device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
+        {
+            let view = slice.get_mapped_range();
+            let coords: &[f32] = bytemuck::cast_slice(&view);
+            assert_eq!(coords, &[1.0, 0.0, 3.0, 0.0]);
+        }
+        stepper.download_buffer().unmap();
+        stepper.reset(&context.queue);
+
+        let coincident_flat = vec![2.0f32, 3.0, 2.0, 3.0];
+        let mut coincident_stepper = AtomicFullStepper::new(
+            &context.device,
+            &context.queue,
+            2,
+            &dist_u16,
+            &coincident_flat,
+            0,
+        )
+        .unwrap();
+        coincident_stepper.step_epoch(&context.device, &context.queue, 4.0);
+        let c_slice = coincident_stepper.download_buffer().slice(..);
+        c_slice.map_async(wgpu::MapMode::Read, |_| {});
+        context.device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
+        {
+            let view = c_slice.get_mapped_range();
+            let coords: &[f32] = bytemuck::cast_slice(&view);
+            assert!(coords.iter().all(|v| v.is_finite()));
+            assert!((coords[0] - coords[2]).abs() > 0.1, "Coincident vertices did not separate: {coords:?}");
+        }
+        coincident_stepper.download_buffer().unmap();
     }
 }

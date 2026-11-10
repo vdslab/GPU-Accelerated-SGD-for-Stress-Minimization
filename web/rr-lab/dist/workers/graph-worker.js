@@ -3,7 +3,7 @@ import { largestComponent } from '../graph/components.js';
 import { adjacency, bfs } from '../graph/traversal.js';
 import { SAMPLES, demoGraph } from '../graph/samples.js';
 import { prepareFull } from '../preprocess/full.js';
-import { prepareSparse } from '../preprocess/sparse.js';
+import { prepareAtomicSparse, prepareSparse } from '../preprocess/sparse.js';
 import { prepareEvaluation, evaluateStress } from '../graph/evaluation.js';
 
 let graph = null,
@@ -47,7 +47,9 @@ self.onmessage = async ({ data }) => {
       const prepared =
         data.config.method === 'sparse'
           ? prepareSparse(graph, data.config, data.limits, report)
-          : prepareFull(graph, data.config, data.limits, report);
+          : data.config.method === 'atomic_sparse'
+            ? prepareAtomicSparse(graph, data.config, data.limits, report)
+            : prepareFull(graph, data.config, data.limits, report);
       report(0.99, 'Preparing distances for stress evaluation');
       evaluation = prepareEvaluation(graph);
       const transfer = Object.values(prepared)

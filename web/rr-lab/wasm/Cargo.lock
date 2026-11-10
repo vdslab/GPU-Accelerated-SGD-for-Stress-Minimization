@@ -1346,6 +1346,8 @@ dependencies = [
  "rand 0.9.5",
  "rr-gpu",
  "sparse-sgd-gpu",
+ "vram-lock-native",
+ "vram-lock-sparse",
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "wgpu 27.0.1",
@@ -1641,6 +1643,37 @@ name = "version_check"
 version = "0.9.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a"
+
+[[package]]
+name = "vram-lock-native"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "bytemuck",
+ "chrono",
+ "env_logger",
+ "experiment-common",
+ "pollster",
+ "rand 0.9.5",
+ "serde_json",
+ "sprs",
+ "wgpu 27.0.1",
+]
+
+[[package]]
+name = "vram-lock-sparse"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "bytemuck",
+ "chrono",
+ "env_logger",
+ "experiment-common",
+ "pollster",
+ "rand 0.9.5",
+ "serde_json",
+ "wgpu 27.0.1",
+]
 
 [[package]]
 name = "wasi"

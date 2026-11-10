@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { prepareSparse, selectPivots } from '../dist/preprocess/sparse.js';
-import { prepareFull, fullMemoryBytes } from '../dist/preprocess/full.js';
+import { prepareAtomicSparse, prepareSparse, selectPivots } from '../dist/preprocess/sparse.js';
+import { atomicFullMemoryBytes, prepareFull, fullMemoryBytes } from '../dist/preprocess/full.js';
 import { adjacency, bfs } from '../dist/graph/traversal.js';
 import { prepareEvaluation, evaluateStress } from '../dist/graph/evaluation.js';
 import { rng } from '../dist/sgd/random.js';
@@ -97,7 +97,9 @@ test('Sparse constraints match an independent all-pairs definition, including di
 });
 test('capacity checks use required bytes, not a fixed node cutoff', () => {
   assert.equal(fullMemoryBytes(4941), 48826962);
+  assert.equal(atomicFullMemoryBytes(4941), 8 * 4941 * 4940);
   assert.throws(() => prepareFull(cycle(114599), {}, limits), /RR Sparse/);
+  assert.throws(() => prepareFull(cycle(114599), { method: 'atomic_full' }, limits), /RR Sparse/);
   assert.throws(
     () =>
       prepareSparse(
@@ -107,6 +109,31 @@ test('capacity checks use required bytes, not a fixed node cutoff', () => {
       ),
     /pivots/,
   );
+  assert.throws(
+    () =>
+      prepareAtomicSparse(
+        cycle(100),
+        { seed: 0, pivots: 50 },
+        { maxStorageBufferBindingSize: 100, maxBufferSize: 100 },
+      ),
+    /pivots/,
+  );
+});
+test('Atomic Sparse and Atomic Full preprocessing match expected constraint counts and weight ranges', () => {
+  const graph = cycle(29);
+  const rrSparse = prepareSparse(graph, { seed: 42, pivots: 5 }, limits);
+  const atomicSparse = prepareAtomicSparse(graph, { seed: 42, pivots: 5 }, limits);
+  assert.equal(atomicSparse.method, 'atomic_sparse');
+  assert.deepEqual(Array.from(atomicSparse.pivots), Array.from(rrSparse.pivots));
+  assert.equal(atomicSparse.stats.constraints, rrSparse.stats.constraints);
+  assert.equal(atomicSparse.pairs.byteLength, atomicSparse.stats.constraints * 20);
+  assert(Math.abs(atomicSparse.weightMin - rrSparse.weightMin) < 1e-12);
+  assert(Math.abs(atomicSparse.weightMax - rrSparse.weightMax) < 1e-12);
+
+  const atomicFull = prepareFull(graph, { method: 'atomic_full', seed: 42 }, limits);
+  assert.equal(atomicFull.method, 'atomic_full');
+  assert.equal(atomicFull.stats.constraints, (29 * 28) / 2);
+  assert.equal(atomicFull.stats.bufferBytes, atomicFullMemoryBytes(29));
 });
 test('learning rate uses both directional weight extremes', () => {
   const p = { weightMin: 0.01, weightMax: 2 },

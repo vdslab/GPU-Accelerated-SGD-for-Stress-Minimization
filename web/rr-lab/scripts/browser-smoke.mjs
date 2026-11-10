@@ -3,10 +3,11 @@ import { startStaticServer } from './static-server.mjs';
 import { readFile, mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import assert from 'node:assert/strict';
-import { prepareSparse } from '../dist/preprocess/sparse.js';
-import { sparseReference } from '../tests/sparse-reference.js';
-import { reference } from '../tests/reference.js';
+import { prepareAtomicSparse, prepareSparse } from '../dist/preprocess/sparse.js';
+import { atomicSparseReference, sparseReference } from '../tests/sparse-reference.js';
+import { atomicFullReference, reference } from '../tests/reference.js';
 import { prepareFull } from '../dist/preprocess/full.js';
+import { prepareEvaluation, evaluateStress } from '../dist/graph/evaluation.js';
 
 const root = resolve(import.meta.dirname, '../dist');
 const { server, base: localBase } = await startStaticServer(root);
@@ -184,6 +185,102 @@ try {
   const fullRMSE = Math.sqrt(fullMSE / fullActual.length);
   assert(fullRMSE < 0.001);
   console.log(JSON.stringify({ test: 'full-cpu-gpu', rmse: fullRMSE }));
+
+  // Verify Atomic Full and Atomic Sparse engines in WebGPU and through the UI.
+  const atomicFullConfig = { method: 'atomic_full', seed: 42, iterations: 15, epsilon: 0.1 };
+  const atomicFullActual = await page.evaluate(
+    async ({ graph, config }) => {
+      const { createGpuContext } = await import(new URL('sgd/context.js', document.baseURI).href);
+      const { prepareFull } = await import(new URL('preprocess/full.js', document.baseURI).href);
+      const { AtomicFullEngine } = await import(
+        new URL('sgd/full-engine.js', document.baseURI).href
+      );
+      const { learningRate } = await import(new URL('sgd/learning-rate.js', document.baseURI).href);
+      const context = await createGpuContext(),
+        prepared = prepareFull(graph, config, context.limits);
+      const engine = await AtomicFullEngine.create(context, prepared, config.seed);
+      let positions;
+      for (let i = 0; i < config.iterations; i++)
+        positions = await engine.epoch(learningRate(prepared, config, i));
+      engine.dispose();
+      context.device.destroy();
+      return Array.from(positions);
+    },
+    { graph: fullGraph, config: atomicFullConfig },
+  );
+  assert(atomicFullActual.every(Number.isFinite));
+  const fullEval = prepareEvaluation(fullGraph);
+  const atomicFullRef = atomicFullReference(
+    fullGraph,
+    fullPrepared.dist,
+    fullPrepared.stats.diameter,
+    atomicFullConfig,
+  );
+  const atomicFullGpuStress = evaluateStress(new Float32Array(atomicFullActual), fullEval).value;
+  const atomicFullRefStress = evaluateStress(atomicFullRef, fullEval).value;
+  assert(
+    Math.abs(atomicFullGpuStress - atomicFullRefStress) / atomicFullRefStress < 0.05,
+    `Atomic Full GPU stress ${atomicFullGpuStress} vs ref ${atomicFullRefStress}`,
+  );
+  console.log(
+    JSON.stringify({
+      test: 'atomic-full-gpu',
+      gpuStress: atomicFullGpuStress,
+      refStress: atomicFullRefStress,
+    }),
+  );
+
+  const atomicSparseConfig = {
+    method: 'atomic_sparse',
+    seed: 42,
+    pivots: 17,
+    iterations: 15,
+    epsilon: 0.1,
+  };
+  const atomicSparseActual = await page.evaluate(
+    async ({ graph, config }) => {
+      const { createGpuContext } = await import(new URL('sgd/context.js', document.baseURI).href);
+      const { prepareAtomicSparse } = await import(
+        new URL('preprocess/sparse.js', document.baseURI).href
+      );
+      const { AtomicSparseEngine } = await import(
+        new URL('sgd/sparse-engine.js', document.baseURI).href
+      );
+      const { learningRate } = await import(new URL('sgd/learning-rate.js', document.baseURI).href);
+      const context = await createGpuContext(),
+        prepared = prepareAtomicSparse(graph, config, context.limits);
+      const engine = await AtomicSparseEngine.create(context, prepared, config.seed);
+      let positions;
+      for (let i = 0; i < config.iterations; i++)
+        positions = await engine.epoch(learningRate(prepared, config, i));
+      engine.dispose();
+      context.device.destroy();
+      return Array.from(positions);
+    },
+    { graph: fullGraph, config: atomicSparseConfig },
+  );
+  assert(atomicSparseActual.every(Number.isFinite));
+  const atomicSparsePrepared = prepareAtomicSparse(fullGraph, atomicSparseConfig, {
+    maxStorageBufferBindingSize: 256 * 2 ** 20,
+    maxBufferSize: 256 * 2 ** 20,
+  });
+  const atomicSparseRef = atomicSparseReference(atomicSparsePrepared, atomicSparseConfig);
+  const atomicSparseGpuStress = evaluateStress(
+    new Float32Array(atomicSparseActual),
+    fullEval,
+  ).value;
+  const atomicSparseRefStress = evaluateStress(atomicSparseRef, fullEval).value;
+  assert(
+    Math.abs(atomicSparseGpuStress - atomicSparseRefStress) / atomicSparseRefStress < 0.05,
+    `Atomic Sparse GPU stress ${atomicSparseGpuStress} vs ref ${atomicSparseRefStress}`,
+  );
+  console.log(
+    JSON.stringify({
+      test: 'atomic-sparse-gpu',
+      gpuStress: atomicSparseGpuStress,
+      refStress: atomicSparseRefStress,
+    }),
+  );
   // Real sample: Full USpowerGrid, well above the former 4096-node cutoff.
   await page.locator('#iterations').fill('15');
   assert(await page.locator('#before-placeholder').isVisible());
@@ -441,6 +538,30 @@ try {
   await page.waitForFunction(() => document.getElementById('status').textContent === 'Ready');
   assert(await page.locator('#run').isEnabled());
   console.log('Preprocessing cancellation and recovery passed.');
+
+  // Run Atomic Full SGD and Atomic Sparse SGD through the UI on Community.
+  await page.locator('#method').selectOption('atomic_full');
+  await page.locator('#iterations').fill('5');
+  await page.locator('#run').click();
+  await page.waitForFunction(() => document.getElementById('status').textContent === 'Completed');
+  assert.match(
+    await page.locator('#result-text').inputValue(),
+    /Method: Atomic Full SGD \/ WebGPU/,
+  );
+  assert.match(await page.locator('#result-text').inputValue(), /spinlock/);
+
+  await page.locator('#method').selectOption('atomic_sparse');
+  assert(await page.locator('#pivots').isEnabled());
+  await page.locator('#pivots').fill('32');
+  await page.locator('#iterations').fill('5');
+  await page.locator('#run').click();
+  await page.waitForFunction(() => document.getElementById('status').textContent === 'Completed');
+  assert.match(
+    await page.locator('#result-text').inputValue(),
+    /Method: Atomic Sparse SGD \/ WebGPU/,
+  );
+  assert.match(await page.locator('#result-text').inputValue(), /pivots: 32/);
+  console.log('Atomic Full SGD and Atomic Sparse SGD UI execution passed.');
   assert.deepEqual(errors, []);
   console.log('Browser smoke checks passed. Screenshots: ' + dir);
 } finally {

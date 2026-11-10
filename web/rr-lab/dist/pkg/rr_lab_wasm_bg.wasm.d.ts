@@ -1,6 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
 export const memory: WebAssembly.Memory;
+export const __wbg_wasmatomicfullengine_free: (a: number, b: number) => void;
+export const __wbg_wasmatomicsparseengine_free: (a: number, b: number) => void;
+export const __wbg_wasmatomicsparseprepared_free: (a: number, b: number) => void;
 export const __wbg_wasmfullengine_free: (a: number, b: number) => void;
 export const __wbg_wasmfullprepared_free: (a: number, b: number) => void;
 export const __wbg_wasmgpucontext_free: (a: number, b: number) => void;
@@ -10,6 +13,13 @@ export const __wbg_wasmsparseprepared_free: (a: number, b: number) => void;
 export const create_wasm_gpu_context: (a: number, b: number) => any;
 export const wasm_hash32: (a: number) => number;
 export const wasm_initial_positions: (a: number, b: number) => [number, number];
+export const wasm_prepare_atomic_sparse: (
+  a: number,
+  b: number,
+  c: number,
+  d: number,
+  e: number,
+) => [number, number, number];
 export const wasm_prepare_full: (a: number, b: number, c: number) => [number, number, number];
 export const wasm_prepare_sparse: (
   a: number,
@@ -18,6 +28,25 @@ export const wasm_prepare_sparse: (
   d: number,
   e: number,
 ) => [number, number, number];
+export const wasm_reference_atomic_full: (
+  a: number,
+  b: number,
+  c: number,
+  d: number,
+  e: number,
+  f: number,
+  g: number,
+) => [number, number];
+export const wasm_reference_atomic_sparse: (
+  a: number,
+  b: number,
+  c: number,
+  d: number,
+  e: number,
+  f: number,
+  g: number,
+  h: number,
+) => [number, number];
 export const wasm_reference_full: (
   a: number,
   b: number,
@@ -51,6 +80,32 @@ export const wasm_select_pivots: (
   e: number,
 ) => [number, number, number];
 export const wasm_shuffle_pivot: (a: number, b: number, c: number) => number;
+export const wasmatomicfullengine_epoch: (a: number, b: number, c: number) => any;
+export const wasmatomicfullengine_new: (
+  a: number,
+  b: number,
+  c: number,
+  d: number,
+  e: number,
+  f: number,
+  g: number,
+) => [number, number, number];
+export const wasmatomicfullengine_reset: (a: number, b: number) => void;
+export const wasmatomicsparseengine_epoch: (a: number, b: number, c: number) => any;
+export const wasmatomicsparseengine_new: (
+  a: number,
+  b: number,
+  c: number,
+  d: number,
+  e: number,
+  f: number,
+) => [number, number, number];
+export const wasmatomicsparseengine_reset: (a: number, b: number) => void;
+export const wasmatomicsparseprepared_constraint_count: (a: number) => number;
+export const wasmatomicsparseprepared_take_pairs: (a: number) => [number, number];
+export const wasmatomicsparseprepared_take_pivots: (a: number) => [number, number];
+export const wasmatomicsparseprepared_wmax: (a: number) => number;
+export const wasmatomicsparseprepared_wmin: (a: number) => number;
 export const wasmfullengine_epoch: (a: number, b: number, c: number) => any;
 export const wasmfullengine_new: (
   a: number,

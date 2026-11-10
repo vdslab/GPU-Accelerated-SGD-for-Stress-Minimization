@@ -113,6 +113,8 @@
                 >Method<select id="method" aria-describedby="method-support">
                   <option value="full">RR Full SGD</option>
                   <option value="sparse">RR Sparse SGD</option>
+                  <option value="atomic_full">Atomic Full SGD</option>
+                  <option value="atomic_sparse">Atomic Sparse SGD</option>
                 </select></label
               >
               <label
@@ -321,6 +323,14 @@
           using one-sided updates and two-sided matchings to lay out large graphs within bounded
           memory.
         </li>
+        <li>
+          <strong>Atomic Full SGD:</strong> Baseline GPU Full SGD that acquires ordered per-vertex
+          VRAM spinlocks before updating each all-pairs constraint.
+        </li>
+        <li>
+          <strong>Atomic Sparse SGD:</strong> Baseline GPU Sparse SGD that acquires ordered
+          per-vertex VRAM spinlocks before updating each pivot or edge constraint.
+        </li>
       </ul>
       <h3>How to Use</h3>
       <ol>
@@ -335,6 +345,12 @@
         <p>
           Sparse: Pivot distances and directional weights. One-sided updates + two-sided matchings /
           workgroup 128 / shared pivot cache. Per-vertex Feistel permutation shuffles pivot order.
+        </p>
+        <p>
+          Atomic Full / Atomic Sparse: Ordered per-vertex VRAM spinlock acquisition (<code
+            >vram-lock-native</code
+          >
+          and <code>vram-lock-sparse</code>) across multi-bank 2D WebGPU compute dispatches.
         </p>
         <p>
           Extracts the largest connected component as an undirected, unweighted graph. Self-loops

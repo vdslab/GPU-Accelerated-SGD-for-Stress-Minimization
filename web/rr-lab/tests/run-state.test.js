@@ -40,6 +40,18 @@ test('failed or disposed solvers restart, and irrelevant Full pivot settings do 
   assert(
     sameSolverSettings({ ...config, method: 'full' }, { ...config, method: 'full', pivots: 17 }),
   );
+  assert(
+    sameSolverSettings(
+      { ...config, method: 'atomic_full' },
+      { ...config, method: 'atomic_full', pivots: 17 },
+    ),
+  );
+  assert(
+    !sameSolverSettings(
+      { ...config, method: 'atomic_sparse', pivots: 200 },
+      { ...config, method: 'atomic_sparse', pivots: 100 },
+    ),
+  );
   assert.equal(
     runIntent({ engine: null, config: null, epoch: 0, history: [], failed: false }, config).label,
     'Compute Layout',

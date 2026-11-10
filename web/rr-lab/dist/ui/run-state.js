@@ -1,8 +1,10 @@
+import { isSparseMethod } from '../sgd/learning-rate.js';
+
 /** Resume only the exact paused solver state; every other click starts a fresh run. */
 export function sameSolverSettings(previous, next) {
   if (!previous || !next) return false;
   const keys = ['method', 'iterations', 'epsilon', 'seed'];
-  if (previous.method === 'sparse') keys.push('pivots');
+  if (isSparseMethod(previous.method)) keys.push('pivots');
   return keys.every((key) => previous[key] === next[key]);
 }
 

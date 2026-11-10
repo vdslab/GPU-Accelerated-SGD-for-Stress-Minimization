@@ -1,8 +1,15 @@
 import { edgeCount, edgeAt, edges } from '../graph/edges.js';
 import { METHOD_LABELS } from '../sgd/learning-rate.js';
+const ALGORITHM_IDS = {
+  full: 'rr_sgd',
+  sparse: 'rr_sparse_sgd',
+  atomic_full: 'atomic_sgd',
+  atomic_sparse: 'atomic_sparse_sgd',
+};
+
 function resultMetadata(run) {
   return {
-    algorithm: run.config.method === 'sparse' ? 'rr_sparse_sgd' : 'rr_sgd',
+    algorithm: ALGORITHM_IDS[run.config.method] ?? 'rr_sgd',
     backend: 'WebGPU',
     source: run.source,
     sourceKind: run.sourceMetadata?.kind,
@@ -69,7 +76,13 @@ export function resultSummary(run) {
     `seed: ${run.config.seed} / epsilon: ${run.config.epsilon}`,
     ...(run.config.method === 'sparse'
       ? [`pivots: ${run.prepared.stats.pivots} / matching rounds: ${run.prepared.stats.rounds}`]
-      : ['tile: 128 / workgroup: 64 / shared']),
+      : run.config.method === 'atomic_sparse'
+        ? [
+            `pivots: ${run.prepared.stats.pivots} / constraints: ${run.prepared.stats.constraints} / spinlock`,
+          ]
+        : run.config.method === 'atomic_full'
+          ? [`constraints: ${run.prepared.stats.constraints} / spinlock`]
+          : ['tile: 128 / workgroup: 64 / shared']),
     `Preprocess: ${run.preprocessMs.toFixed(2)} ms`,
     `GPU setup: ${run.gpuPrepareMs.toFixed(2)} ms`,
     `Iteration time: ${run.elapsed.toFixed(2)} ms`,

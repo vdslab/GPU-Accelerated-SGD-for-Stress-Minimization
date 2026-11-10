@@ -2,10 +2,10 @@ import { bindRunTrigger } from './ui/run-trigger.js';
 import { graphMethodSupport } from './graph/method-support.js';
 import { edgeCount } from './graph/edges.js';
 import { createGpuContext } from './sgd/context.js';
-import { FullEngine } from './sgd/full-engine.js';
-import { SparseEngine } from './sgd/sparse-engine.js';
+import { AtomicFullEngine, FullEngine } from './sgd/full-engine.js';
+import { AtomicSparseEngine, SparseEngine } from './sgd/sparse-engine.js';
 import { initialPositions } from './sgd/initialization.js';
-import { learningRate, METHOD_LABELS } from './sgd/learning-rate.js';
+import { isSparseMethod, learningRate, METHOD_LABELS } from './sgd/learning-rate.js';
 import { SAMPLES } from './graph/samples.js';
 import { GraphClient } from './ui/graph-client.js';
 import { GraphView } from './ui/graph-view.js';
@@ -109,6 +109,13 @@ class GraphLayoutApp {
     if (this.phase !== 'idle') return;
     // Draft edits do not generate coordinates or start rendering.
     this.controls();
+    if (field === 'method' && this.context && this.graph && isSparseMethod($('method').value)) {
+      const maxPivots = Number($('pivots').max);
+      if (maxPivots >= 1 && Number($('pivots').value) > maxPivots) {
+        $('pivots').value = String(maxPivots);
+        this.controls();
+      }
+    }
     if (this.graph) this.metrics();
   }
   async initialize() {
@@ -179,10 +186,18 @@ class GraphLayoutApp {
       this.sourceMetadata = metadata;
       if (metadata.preferredMethod) $('method').value = metadata.preferredMethod;
       if (this.context) {
-        const maxPivots = graphMethodSupport(graph.n, this.context.limits).sparse.maxPivots;
+        const support = graphMethodSupport(graph.n, this.context.limits);
+        const isAtomic =
+          $('method').value === 'atomic_sparse' ||
+          ($('method').value === 'atomic_full' && !support.atomic_full.available);
+        const maxPivots = isAtomic ? support.atomic_sparse.maxPivots : support.sparse.maxPivots;
+        const bytesPerEntry = isAtomic ? 20 : 8;
         if (Number($('pivots').value) > maxPivots)
           $('pivots').value = String(
-            Math.max(1, Math.min(maxPivots, Math.floor((512 * 2 ** 20) / (8 * graph.n)))),
+            Math.max(
+              1,
+              Math.min(maxPivots, Math.floor((512 * 2 ** 20) / (bytesPerEntry * graph.n))),
+            ),
           );
       }
       this.sourceView.commit(metadata, graph);
@@ -278,7 +293,13 @@ class GraphLayoutApp {
       stats: prepared.stats,
     };
     const prepareStart = performance.now();
-    const Engine = this.config.method === 'sparse' ? SparseEngine : FullEngine;
+    const ENGINE_BY_METHOD = {
+      full: FullEngine,
+      sparse: SparseEngine,
+      atomic_full: AtomicFullEngine,
+      atomic_sparse: AtomicSparseEngine,
+    };
+    const Engine = ENGINE_BY_METHOD[this.config.method] ?? FullEngine;
     this.context.device.pushErrorScope('validation');
     try {
       this.engine = await Engine.create(this.context, prepared, this.config.seed);
