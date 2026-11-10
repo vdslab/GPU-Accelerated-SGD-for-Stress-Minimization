@@ -81,3 +81,5 @@ config/に全570jobs・入力hash・元570記録とhash・実行条件、raw/に
 ![absolute-time-stress](../figures/absolute-time-stress.png)
 
 ![speed-quality](../figures/speed-quality.png)
+
+[論文と同じ形式の比較チャート](paper-style-comparison.md)：辺数昇順・38グラフのマーカーとseed範囲。

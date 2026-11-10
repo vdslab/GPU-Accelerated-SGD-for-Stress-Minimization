@@ -20,3 +20,5 @@ EX1は742件での停止後、同じ新Fullの凍結バイナリで残り908件�
 ## 最新main Atomic Full 全グラフ
 
 [Atomic Full 全38グラフ・速度とStress](atomic-full-main-20261110/reports/results.md)。38グラフ×5 seed×3回の570/570件成功。v5比のグラフ等重み幾何平均で総計算2.811倍、Stress比0.8502。総計算35/38グラフで高速化、Stress32/38グラフで低下。1万頂点帯の3グラフでは総計算が遅い。GPU完了待ちを含む総計算を主指標とし、段階計時の範囲差も記載。4グラフの予備結果は流用せず全件新規測定。
+
+[論文形式のv5対v5.5チャート](atomic-full-main-20261110/reports/paper-style-comparison.md)：Atomic Full 38グラフ、辺数順・対数軸・マーカーと5seed範囲。速度・総計算・StressをPNG/PDF/SVGで保存。
