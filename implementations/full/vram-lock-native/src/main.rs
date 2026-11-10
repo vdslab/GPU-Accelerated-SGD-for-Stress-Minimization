@@ -138,7 +138,7 @@ fn main() -> Result<()> {
         config.epsilon,
         config.center,
         config.seed,
-    );
+    )?;
     let constraint_count = params.pairs.len();
     let common_preprocess_time = preprocess_started.elapsed();
     let _full_preprocess_sha256 = full_preprocess_sha256(&params.pairs);
@@ -368,10 +368,10 @@ fn full_preprocess_sha256(pairs: &[graph::EdgeInfo]) -> String {
     fingerprint.usize(pairs.len());
     for pair in pairs {
         fingerprint
-            .usize(pair.u)
-            .usize(pair.v)
-            .f64(pair.dij)
-            .f64(pair.wij);
+            .usize(pair.u as usize)
+            .usize(pair.v as usize)
+            .f64(pair.dij as f64)
+            .f64(pair.wij as f64);
     }
     fingerprint.finish()
 }

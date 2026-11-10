@@ -1,5 +1,5 @@
 // Sparse Atomic SGD compute kernel for WebGPU / D3D12 (RTX 3050)
-// Features: atomicExchange spinlocks, rollback on 2nd lock failure,
+// Features: minimal-barrier atomicExchange spinlocks, zero-barrier rollback,
 // storageBarrier visibility, @workgroup_size(1, 1, 1), 2D grid dispatch.
 
 struct Uniforms {
@@ -29,32 +29,25 @@ struct Pair {
 @group(0) @binding(5) var<uniform> uniforms: Uniforms;
 @group(0) @binding(6) var<storage, read_write> incomplete_counts: array<atomic<u32>>;
 
-fn try_lock(node: u32) -> bool {
-    let old = atomicExchange(&locks[node], 1u);
-    if (old == 0u) {
-        storageBarrier();
-        return true;
-    }
-    return false;
-}
-
-fn unlock(node: u32) {
-    storageBarrier();
-    atomicExchange(&locks[node], 0u);
-}
-
-fn acquire_locks(first: u32, second: u32) {
+fn acquire_pair_locks(first: u32, second: u32) {
     // Retry loop until both locks are acquired.
     // Prohibits MAX_LOCK_ATTEMPTS capping to prevent Selective Deferral Bias.
     loop {
-        if (try_lock(first)) {
-            if (try_lock(second)) {
+        if (atomicExchange(&locks[first], 1u) == 0u) {
+            if (atomicExchange(&locks[second], 1u) == 0u) {
+                storageBarrier();
                 return; // Both locks acquired successfully
             }
-            // Immediate rollback: release first lock before retrying
-            unlock(first);
+            // Immediate rollback: release first lock before retrying (zero barriers)
+            atomicExchange(&locks[first], 0u);
         }
     }
+}
+
+fn release_pair_locks(first: u32, second: u32) {
+    storageBarrier();
+    atomicExchange(&locks[second], 0u);
+    atomicExchange(&locks[first], 0u);
 }
 
 @compute @workgroup_size(1, 1, 1)
@@ -82,7 +75,7 @@ fn sparse_sgd(
     let second = max(u, v);
 
     // Acquire locks in canonical index order
-    acquire_locks(first, second);
+    acquire_pair_locks(first, second);
 
     // Read positions atomically via atomicAdd(0u) ensuring L2 cache coherence across workgroups
     let u_x = atomicAdd(&positions[2u * u], 0u);
@@ -116,8 +109,7 @@ fn sparse_sgd(
     atomicExchange(&positions[2u * v + 1u], bitcast<u32>(new_pos_v.y));
 
     // Release locks in reverse order
-    unlock(second);
-    unlock(first);
+    release_pair_locks(first, second);
 
     // Record completion epoch
     completed[slot] = uniforms.epoch;

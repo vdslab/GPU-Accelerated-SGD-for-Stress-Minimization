@@ -10,14 +10,8 @@ use std::num::NonZeroU64;
 use std::time::{Duration, Instant};
 use wgpu::util::DeviceExt;
 
-#[repr(C)]
-#[derive(Debug, Clone, Copy, Pod, Zeroable)]
-pub struct GpuEdgeInfo {
-    pub u: u32,
-    pub v: u32,
-    pub dij: f32,
-    pub wij: f32,
-}
+#[allow(dead_code)]
+pub type GpuEdgeInfo = crate::graph::EdgeInfo;
 
 #[repr(C)]
 #[derive(Debug, Clone, Copy, Pod, Zeroable)]
@@ -203,16 +197,7 @@ impl GpuContext {
             .into_iter()
             .map(|p| [p[0] as f32, p[1] as f32])
             .collect();
-        let gpu_pairs: Vec<GpuEdgeInfo> = params
-            .pairs
-            .into_iter()
-            .map(|p| GpuEdgeInfo {
-                u: p.u as u32,
-                v: p.v as u32,
-                dij: p.dij as f32,
-                wij: p.wij as f32,
-            })
-            .collect();
+        let gpu_pairs = params.pairs;
 
         let node_size = gpu_positions.len();
         let num_iterations = gpu_etas.len();

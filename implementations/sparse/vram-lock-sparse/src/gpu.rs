@@ -218,30 +218,8 @@ impl GpuContext {
         format: OutputFormat,
         cpu_shuffle: bool,
     ) -> Result<GpuRunResult> {
-        let execution_started = Instant::now();
-        let setup = Instant::now();
-        ensure!(
-            !params.pairs.is_empty() && !params.etas.is_empty(),
-            "Empty Sparse workload"
-        );
-        ensure!(
-            params.positions.len() <= (u32::MAX as usize / 2),
-            "Too many vertices"
-        );
-        ensure!(
-            params.pairs.len() <= u32::MAX as usize,
-            "Too many constraints"
-        );
-
         let initial_positions = params.positions;
-        ensure!(
-            initial_positions
-                .iter()
-                .flatten()
-                .all(|x| (*x as f32).is_finite()),
-            "Invalid initial coordinates"
-        );
-        let mut pairs: Vec<GpuPair> = params
+        let pairs: Vec<GpuPair> = params
             .pairs
             .iter()
             .map(|p| {
@@ -262,12 +240,56 @@ impl GpuContext {
                 })
             })
             .collect::<Result<Vec<_>>>()?;
+        self.execute_sgd_prepared(
+            pairs,
+            initial_positions,
+            params.etas,
+            params.center,
+            rng,
+            verbose,
+            format,
+            cpu_shuffle,
+        )
+    }
+
+    pub fn execute_sgd_prepared<R: Rng + ?Sized>(
+        &self,
+        mut pairs: Vec<GpuPair>,
+        initial_positions: Vec<[f64; 2]>,
+        etas_f64: Vec<f64>,
+        center: bool,
+        rng: &mut R,
+        verbose: bool,
+        format: OutputFormat,
+        cpu_shuffle: bool,
+    ) -> Result<GpuRunResult> {
+        let execution_started = Instant::now();
+        let setup = Instant::now();
+        ensure!(
+            !pairs.is_empty() && !etas_f64.is_empty(),
+            "Empty Sparse workload"
+        );
+        ensure!(
+            initial_positions.len() <= (u32::MAX as usize / 2),
+            "Too many vertices"
+        );
+        ensure!(
+            pairs.len() <= u32::MAX as usize,
+            "Too many constraints"
+        );
+        ensure!(
+            initial_positions
+                .iter()
+                .flatten()
+                .all(|x| (*x as f32).is_finite()),
+            "Invalid initial coordinates"
+        );
 
         if !cpu_shuffle {
             pairs.shuffle(rng);
         }
 
-        let etas: Vec<f32> = params.etas.iter().map(|&e| e as f32).collect();
+        let etas: Vec<f32> = etas_f64.iter().map(|&e| e as f32).collect();
         let initial_coords: Vec<[f32; 2]> = initial_positions
             .iter()
             .map(|&[x, y]| [x as f32, y as f32])
@@ -627,7 +649,7 @@ impl GpuContext {
         let result_ready_monotonic_ms = experiment_common::monotonic_time_ms();
 
         let postprocess = Instant::now();
-        if params.center {
+        if center {
             center_inplace(&mut final_positions);
         }
         let postprocess_time = postprocess.elapsed();

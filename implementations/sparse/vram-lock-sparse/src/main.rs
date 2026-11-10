@@ -14,6 +14,7 @@ use std::time::{Duration, Instant};
 use vram_lock_sparse::{
     gpu::GpuContext,
     graph::{Graph, SgdParams},
+    preprocess::{self, BfsBackend},
 };
 
 const PIVOT_SELECTION: &str = "max-min-random-sp-distance-proportional";
@@ -141,17 +142,19 @@ fn main() -> Result<()> {
 
     let preprocess_started = Instant::now();
     let mut rng = StdRng::seed_from_u64(config.seed);
-    let params = graph.prepare_sgd_params(
+    let prepared = preprocess::prepare_with_backend(
+        &graph,
         config.iterations,
         config.epsilon,
         config.pivot_count,
         config.center,
         &mut rng,
+        BfsBackend::Auto,
     )?;
     let common_preprocess_time = preprocess_started.elapsed();
-    let pivots = params.pivots.clone();
-    let constraint_count = params.pairs.len();
-    let preprocess_sha256 = sparse_preprocess_sha256(&params);
+    let pivots = prepared.pivots.clone();
+    let constraint_count = prepared.constraint_count;
+    let preprocess_sha256 = prepared.preprocess_sha256;
 
     let runtime_started = Instant::now();
     let context = GpuContext::new()?;
@@ -162,8 +165,11 @@ fn main() -> Result<()> {
     ));
 
     let before_execution = input_started.elapsed();
-    let run = context.execute_sgd_with_cpu_shuffle(
-        params,
+    let run = context.execute_sgd_prepared(
+        prepared.pairs,
+        prepared.initial_positions,
+        prepared.etas,
+        prepared.center,
         &mut rng,
         config.common.verbose,
         config.common.output_format,
@@ -304,6 +310,7 @@ fn main() -> Result<()> {
     Ok(())
 }
 
+#[allow(dead_code)]
 fn sparse_preprocess_sha256(params: &SgdParams) -> String {
     let mut fingerprint = FingerprintBuilder::new("sparse-preprocess-v1");
     fingerprint.usize(params.pivots.len());
